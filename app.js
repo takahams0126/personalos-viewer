@@ -60,14 +60,15 @@ function renderRoute(data) {
   const hasActual = Boolean(m?.actual_geojson);
   const actualMinutes = m?.actual_time_s ? Math.round(Number(m.actual_time_s) / 60) : null;
   const actualKm = m?.actual_distance_m ? (Number(m.actual_distance_m) / 1000).toFixed(1) : null;
+  const routingLabel = m?.routing_provider === 'google_routes' ? 'Google Routes API' : (m?.routing_provider || 'Routing provider');
   breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
   app.innerHTML = `
     <section class="hero"><div class="kicker">Route · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p><p>${esc(r.purpose||'')}</p></section>
     ${m ? `<section class="section"><h2>Map</h2>
-      ${hasActual ? `<div class="map-tabs"><button id="map-conceptual" class="map-tab active" type="button">計画</button><button id="map-actual" class="map-tab" type="button">実道路プレビュー</button></div>` : ''}
+      ${hasActual ? `<div class="map-tabs"><button id="map-conceptual" class="map-tab active" type="button">計画（Google）</button><button id="map-actual" class="map-tab" type="button">実道路（Google）</button></div>` : ''}
       <div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div>
       <p id="map-mode-note" class="note">${esc(m.note||'')}</p>
-      ${hasActual ? `<p class="note">実道路プレビュー: Geoapify Routing / 未確定${actualKm ? ` / 約${actualKm} km` : ''}${actualMinutes ? ` / 走行計算 約${actualMinutes}分` : ''}</p>` : ''}
+      ${hasActual ? `<p class="note">実道路プレビュー: ${esc(routingLabel)} / 未確定${actualKm ? ` / 約${actualKm} km` : ''}${actualMinutes ? ` / 走行計算 約${actualMinutes}分` : ''}</p>` : ''}
     </section>` : ''}
     <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||[]).map(x=>`<li><div>${refInline(x)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
     ${(r.highlights||[]).length ? `<section class="section"><h2>魅力</h2><ul class="list">${r.highlights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
@@ -88,7 +89,7 @@ function renderSpot(data) {
 }
 
 function initRouteMap(mapSpec, sequence) {
-  const spots = Object.fromEntries(sequence.map(x => [x.id, x]));
+  const spots = Object.fromEntries(sequence.map((x, index) => [x.id, {...x, order: index + 1}]));
   const conceptual = document.querySelector('#map-conceptual');
   const actual = document.querySelector('#map-actual');
   const setMode = (mode) => {
@@ -97,8 +98,8 @@ function initRouteMap(mapSpec, sequence) {
     const path = mode === 'actual' ? mapSpec.actual_geojson : mapSpec.geojson;
     const note = document.querySelector('#map-mode-note');
     if (note) note.textContent = mode === 'actual'
-      ? '道路ネットワークに沿った実道路プレビュー。Routing providerによる派生結果で、実施確定ルートではありません。'
-      : (mapSpec.note || '計画上の地点配置・概念geometry。');
+      ? 'Google Routes APIで道路ネットワークに沿って計算した実道路プレビュー。実施確定ルートではありません。'
+      : (mapSpec.note || 'Google Placesで解決した計画上の地点配置。');
     loadGoogleMap(path, spots, mode);
   };
   conceptual?.addEventListener('click', () => setMode('conceptual'));
@@ -143,7 +144,7 @@ async function loadGoogleMap(geojsonPath, spots = {}, mode = 'conceptual') {
       const spotId = event.feature.getProperty('spot_id') || '';
       const featureType = event.feature.getProperty('feature_type') || '';
       if (featureType === 'routed_path') {
-        info.setContent('<strong>実道路プレビュー</strong><br>Routing providerによる派生結果（未確定）');
+        info.setContent('<strong>実道路プレビュー</strong><br>Google Routes APIによる派生結果（未確定）');
         info.setPosition(event.latLng);
         info.open(map);
         return;
@@ -153,14 +154,16 @@ async function loadGoogleMap(geojsonPath, spots = {}, mode = 'conceptual') {
       const rawName = event.feature.getProperty('name') || spotId || 'Spot';
       const name = spot.label || rawName;
       const role = event.feature.getProperty('role') || spot.role || '';
+      const order = event.feature.getProperty('order') || spot.order || '';
       const googlePlaceId = event.feature.getProperty('google_place_id') || event.feature.getProperty('place_id') || '';
       const spotRef = {type: 'spot', id: spotId};
       const personalosLink = spotId && canOpen(spotRef)
         ? `<a href="${hrefFor(spotRef)}">PersonalOSで見る</a>`
         : '';
       const googleLink = `<a href="${esc(googleMapsSearchUrl(name, googlePlaceId))}" target="_blank" rel="noopener">Google Mapsで開く</a>`;
-      const links = [personalosLink, googleLink].filter(Boolean).join(' &nbsp;·&nbsp; ');
-      info.setContent(`<strong>${esc(name)}</strong>${role ? `<br>${esc(role)}` : ''}${links ? `<div style="margin-top:8px">${links}</div>` : ''}`);
+      const context = [order ? `#${esc(order)}` : '', role ? esc(role) : ''].filter(Boolean).join(' · ');
+      const links = [personalosLink, googleLink].filter(Boolean).map(link => `<div>${link}</div>`).join('');
+      info.setContent(`<div class="pin-popup"><strong>${esc(name)}</strong>${context ? `<div class="pin-context">${context}</div>` : ''}<div class="pin-caption">このRouteでの立寄り地点</div>${links ? `<div class="pin-links">${links}</div>` : ''}</div>`);
       info.setPosition(event.latLng);
       info.open(map);
     });
