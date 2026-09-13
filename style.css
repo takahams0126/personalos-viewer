@@ -40,6 +40,12 @@ a:hover { text-decoration: underline; }
 .map-wrap { min-height: 420px; border-radius: 12px; overflow: hidden; background: #e8eaed; }
 #map { width: 100%; height: 480px; }
 .map-message { padding: 20px; color: #5f6368; }
+.pin-popup { min-width: 150px; max-width: 220px; }
+.pin-popup strong { display:block; font-size:.95rem; margin-bottom:2px; }
+.pin-context { color:#3c4043; font-size:.82rem; font-weight:600; }
+.pin-caption { color:#5f6368; font-size:.78rem; margin-top:3px; }
+.pin-links { display:grid; gap:5px; margin-top:9px; }
+.pin-links a { display:block; }
 .note { padding: 10px 12px; background: #f8f9fa; border-left: 4px solid #9aa0a6; }
 .empty, .error, .loading { color: #5f6368; }
 .home-list { display: grid; gap: 10px; }
@@ -48,6 +54,8 @@ a:hover { text-decoration: underline; }
   .shell { padding: 16px 10px 48px; }
   .hero, .section { padding: 16px; border-radius: 10px; }
   #map { height: 380px; }
+  .map-tabs { flex-wrap:wrap; }
+  .pin-popup { min-width: 135px; max-width: 180px; }
 }
 @media (prefers-color-scheme: dark) {
   :root { color:#e8eaed; background:#171717; }
