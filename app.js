@@ -57,7 +57,7 @@ function renderPlan(data) {
 function renderRoute(data) {
   const r = data.route || {};
   const m = data.map || null;
-  const hasActual = Boolean(m?.actual_geojson);
+  const hasActual = Boolean(m?.route_json);
   const actualMinutes = m?.actual_time_s ? Math.round(Number(m.actual_time_s) / 60) : null;
   const actualKm = m?.actual_distance_m ? (Number(m.actual_distance_m) / 1000).toFixed(1) : null;
   const routingLabel = m?.routing_provider === 'google_routes' ? 'Google Routes API' : (m?.routing_provider || 'Routing provider');
@@ -89,20 +89,19 @@ function renderSpot(data) {
 }
 
 function initRouteMap(mapSpec, sequence) {
-  const spots = Object.fromEntries(sequence.map((x, index) => [x.id, {...x, order: index + 1}]));
+  const spots = Object.fromEntries(sequence.map((x, index) => [x.id, {...x, sequenceOrder: index + 1}]));
   const conceptual = document.querySelector('#map-conceptual');
   const actual = document.querySelector('#map-actual');
   const summary = document.querySelector('#route-summary');
   const setMode = (mode) => {
-    if (conceptual) conceptual.classList.toggle('active', mode === 'conceptual');
-    if (actual) actual.classList.toggle('active', mode === 'actual');
+    conceptual?.classList.toggle('active', mode === 'conceptual');
+    actual?.classList.toggle('active', mode === 'actual');
     if (summary) summary.hidden = mode !== 'actual';
-    const path = mode === 'actual' ? mapSpec.actual_geojson : mapSpec.geojson;
     const note = document.querySelector('#map-mode-note');
     if (note) note.textContent = mode === 'actual'
-      ? 'Google Routes APIで道路ネットワークに沿って計算した実道路プレビュー。A/B/C…は実道路計算に使った立寄り地点。実施確定ルートではありません。'
+      ? 'Google Routes APIで事前計算した短期route artifactを表示。A/B/C…は実道路計算に使った立寄り地点。ページ再表示ではRoutes APIを再計算しません。'
       : (mapSpec.note || 'Google Placesで解決した計画上の地点配置。');
-    loadGoogleMap(path, spots, mode);
+    loadGoogleMap(mapSpec, spots, mode);
   };
   conceptual?.addEventListener('click', () => setMode('conceptual'));
   actual?.addEventListener('click', () => setMode('actual'));
@@ -131,7 +130,68 @@ function popupHtml({spotId, name, role, order, googlePlaceId}) {
   return `<div class="pin-popup"><strong>${esc(name)}</strong>${context ? `<div class="pin-context">${context}</div>` : ''}<div class="pin-caption">このRouteでの立寄り地点</div>${links ? `<div class="pin-links">${links}</div>` : ''}</div>`;
 }
 
-async function loadGoogleMap(geojsonPath, spots = {}, mode = 'conceptual') {
+function decodePolyline(encoded) {
+  const path = [];
+  let index = 0;
+  let lat = 0;
+  let lng = 0;
+  while (index < encoded.length) {
+    let result = 0;
+    let shift = 0;
+    let byte;
+    do {
+      byte = encoded.charCodeAt(index++) - 63;
+      result |= (byte & 0x1f) << shift;
+      shift += 5;
+    } while (byte >= 0x20);
+    lat += (result & 1) ? ~(result >> 1) : (result >> 1);
+
+    result = 0;
+    shift = 0;
+    do {
+      byte = encoded.charCodeAt(index++) - 63;
+      result |= (byte & 0x1f) << shift;
+      shift += 5;
+    } while (byte >= 0x20);
+    lng += (result & 1) ? ~(result >> 1) : (result >> 1);
+    path.push({lat: lat / 1e5, lng: lng / 1e5});
+  }
+  return path;
+}
+
+async function fetchJson(path) {
+  const response = await fetch(path, {cache: 'no-store'});
+  if (!response.ok) throw new Error(`${path}: ${response.status}`);
+  return response.json();
+}
+
+function addPointMarker({map, info, point, spot, mode, bounds}) {
+  const position = {lat: Number(point.lat), lng: Number(point.lon)};
+  bounds.extend(position);
+  const displayOrder = point.order || '';
+  const labelText = mode === 'actual' ? routeLetter(displayOrder) : (displayOrder ? String(displayOrder) : '');
+  const marker = new google.maps.Marker({
+    map,
+    position,
+    label: labelText ? {text: labelText, color: '#fff', fontWeight: '700'} : undefined,
+    title: point.name || spot.label || point.spot_id,
+    zIndex: 100 + Number(displayOrder || 0),
+  });
+  marker.addListener('click', () => {
+    const name = spot.label || point.name || point.spot_id || 'Spot';
+    info.setContent(popupHtml({
+      spotId: point.spot_id,
+      name,
+      role: point.role || spot.role || '',
+      order: displayOrder,
+      googlePlaceId: point.place_id || '',
+    }));
+    info.open({map, anchor: marker});
+  });
+  return marker;
+}
+
+async function loadGoogleMap(mapSpec, spots = {}, mode = 'conceptual') {
   const key = window.PERSONALOS_CONFIG?.googleMapsApiKey || '';
   const message = document.querySelector('#map-message');
   const mapElement = document.querySelector('#map');
@@ -140,77 +200,47 @@ async function loadGoogleMap(geojsonPath, spots = {}, mode = 'conceptual') {
   mapElement.replaceChildren();
   if (!key) {
     mapElement.style.display = 'none';
-    message.innerHTML = `Google Maps API key 未設定。GeoJSONは <a href="${geojsonPath}">こちら</a>。`;
+    message.textContent = 'Google Maps API key 未設定。';
     return;
   }
+
   try {
     await ensureGoogleMaps(key);
+    const [pointArtifact, routeArtifact] = await Promise.all([
+      fetchJson(mapSpec.points_json),
+      mode === 'actual' ? fetchJson(mapSpec.route_json) : Promise.resolve(null),
+    ]);
+
     const map = new google.maps.Map(mapElement, {mapTypeControl:true, streetViewControl:false, fullscreenControl:true});
     const info = new google.maps.InfoWindow();
     const bounds = new google.maps.LatLngBounds();
-    const actualMarkers = [];
+    const points = pointArtifact.points || [];
 
-    map.data.loadGeoJson(geojsonPath, null, (features) => {
-      features.forEach(f => f.getGeometry()?.forEachLatLng?.(p => bounds.extend(p)));
-      if (!bounds.isEmpty()) map.fitBounds(bounds, 28);
-
-      if (mode === 'actual') {
-        features.forEach(feature => {
-          const featureType = feature.getProperty('feature_type');
-          if (featureType !== 'waypoint') return;
-          const geometry = feature.getGeometry();
-          const point = geometry?.get?.();
-          if (!point) return;
-          const spotId = feature.getProperty('spot_id') || '';
-          const spot = spots[spotId] || {};
-          const order = feature.getProperty('order') || spot.order || '';
-          const name = spot.label || feature.getProperty('name') || spotId || 'Spot';
-          const role = feature.getProperty('role') || spot.role || '';
-          const googlePlaceId = feature.getProperty('google_place_id') || feature.getProperty('place_id') || '';
-          const marker = new google.maps.Marker({
-            map,
-            position: point,
-            label: {text: routeLetter(order), color: '#fff', fontWeight: '700'},
-            title: name,
-            zIndex: 100 + Number(order || 0),
-          });
-          marker.addListener('click', () => {
-            info.setContent(popupHtml({spotId, name, role, order, googlePlaceId}));
-            info.open({map, anchor: marker});
-          });
-          actualMarkers.push(marker);
-        });
-      }
-    });
-
-    map.data.setStyle((feature) => {
-      const role = feature.getProperty('role');
-      const featureType = feature.getProperty('feature_type');
-      if (featureType === 'routed_path') return {strokeWeight: 6, strokeOpacity: .9};
-      if (mode === 'actual' && featureType === 'waypoint') return {visible:false};
-      return {strokeWeight: 5, strokeOpacity: .8, icon: role === 'optional' ? {path: google.maps.SymbolPath.CIRCLE, scale: 7} : undefined};
-    });
-
-    map.data.addListener('click', (event) => {
-      const spotId = event.feature.getProperty('spot_id') || '';
-      const featureType = event.feature.getProperty('feature_type') || '';
-      if (featureType === 'routed_path') {
-        info.setContent('<div class="pin-popup"><strong>実道路プレビュー</strong><div class="pin-caption">Google Routes APIによる派生結果（未確定）</div></div>');
+    if (mode === 'actual') {
+      const encoded = (routeArtifact?.encoded_polyline_chunks || []).join('');
+      if (!encoded) throw new Error('route artifactにencoded polylineがありません');
+      const path = decodePolyline(encoded);
+      path.forEach(p => bounds.extend(p));
+      const routeLine = new google.maps.Polyline({
+        map,
+        path,
+        geodesic: false,
+        strokeColor: '#1a73e8',
+        strokeOpacity: 0.95,
+        strokeWeight: 7,
+        clickable: true,
+      });
+      routeLine.addListener('click', (event) => {
+        info.setContent('<div class="pin-popup"><strong>実道路プレビュー</strong><div class="pin-caption">Google Routes APIで事前計算した短期派生結果（未確定）</div></div>');
         info.setPosition(event.latLng);
         info.open(map);
-        return;
-      }
-      if (mode === 'actual') return;
-      const spot = spots[spotId] || {};
-      const rawName = event.feature.getProperty('name') || spotId || 'Spot';
-      const name = spot.label || rawName;
-      const role = event.feature.getProperty('role') || spot.role || '';
-      const order = event.feature.getProperty('order') || spot.order || '';
-      const googlePlaceId = event.feature.getProperty('google_place_id') || event.feature.getProperty('place_id') || '';
-      info.setContent(popupHtml({spotId, name, role, order, googlePlaceId}));
-      info.setPosition(event.latLng);
-      info.open(map);
-    });
+      });
+      points.filter(p => p.order).forEach(point => addPointMarker({map, info, point, spot: spots[point.spot_id] || {}, mode, bounds}));
+    } else {
+      points.forEach(point => addPointMarker({map, info, point, spot: spots[point.spot_id] || {}, mode, bounds}));
+    }
+
+    if (!bounds.isEmpty()) map.fitBounds(bounds, 28);
     message.textContent = '';
   } catch (e) {
     mapElement.style.display = 'none';
