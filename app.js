@@ -1,0 +1,147 @@
+const app = document.querySelector('#app');
+const breadcrumb = document.querySelector('#breadcrumb');
+
+const qs = new URLSearchParams(location.search);
+const type = qs.get('type');
+const id = qs.get('id');
+
+const pathFor = (t, i) => `./data/${t === 'plan' ? 'plans' : t === 'route' ? 'routes' : 'spots'}/${i}.json`;
+const hrefFor = (ref) => `./?type=${encodeURIComponent(ref.type)}&id=${encodeURIComponent(ref.id)}`;
+const esc = (v='') => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+
+function refCard(ref) {
+  const clickable = ['plan','route','spot'].includes(ref.type);
+  const label = esc(ref.label || ref.id);
+  const body = clickable ? `<a href="${hrefFor(ref)}"><strong>${label}</strong></a>` : `<strong>${label}</strong>`;
+  const role = ref.role ? `<span class="badge">${esc(ref.role)}</span>` : '';
+  const priority = ref.priority ? `<span class="badge">${esc(ref.priority)}</span>` : '';
+  return `<article class="card">${body}${role}${priority}</article>`;
+}
+
+function renderHome(manifest) {
+  document.title = 'PersonalOS Leisure';
+  breadcrumb.innerHTML = '';
+  app.innerHTML = `
+    <section class="hero">
+      <div class="kicker">Public materialized view</div>
+      <h1>PersonalOS Leisure</h1>
+      <p class="summary">Plan / Route / Spot の公開用Viewer。機微情報はprivate側に残します。</p>
+    </section>
+    <section class="section">
+      <h2>Views</h2>
+      <div class="home-list">
+        ${manifest.items.map(x => `<div class="home-item"><a href="${hrefFor(x)}"><strong>${esc(x.id)}</strong> ${esc(x.title)}</a> <span class="badge">${esc(x.type)}</span></div>`).join('')}
+      </div>
+    </section>`;
+}
+
+function renderPlan(data) {
+  const p = data.plan || {};
+  breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
+  app.innerHTML = `
+    <section class="hero"><div class="kicker">Plan · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p></section>
+    <section class="section"><h2>この旅の主役</h2><div class="cards">${(data.hero_refs||[]).map(refCard).join('')}</div></section>
+    <section class="section"><h2>日別Plan</h2>${(p.days||[]).map(day => `<article class="card" style="margin-bottom:10px"><h3>Day ${esc(day.day)}</h3><p>${esc(day.purpose)}</p>${(day.route_refs||[]).map(x=>`<div>Route: ${refCard(x)}</div>`).join('')}${(day.fallback_refs||[]).map(x=>`<div>Fallback: ${refCard(x)}</div>`).join('')}</article>`).join('')}</section>
+    ${(p.food||[]).length ? `<section class="section"><h2>食事</h2><div class="cards">${p.food.map(refCard).join('')}</div></section>` : ''}
+    ${(p.onsen||[]).length ? `<section class="section"><h2>温泉</h2><div class="cards">${p.onsen.map(refCard).join('')}</div></section>` : ''}
+    ${p.public_note ? `<p class="note">${esc(p.public_note)}</p>` : ''}`;
+}
+
+function renderRoute(data) {
+  const r = data.route || {};
+  breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`<a href="${hrefFor(x)}">${esc(x.label||x.id)}</a><span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
+  app.innerHTML = `
+    <section class="hero"><div class="kicker">Route · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p><p>${esc(r.purpose||'')}</p></section>
+    ${data.map ? `<section class="section"><h2>Map</h2><div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div><p class="note">${esc(data.map.note||'')}</p></section>` : ''}
+    <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||[]).map(x=>`<li><div>${['plan','route','spot'].includes(x.type) ? `<a href="${hrefFor(x)}">${esc(x.label||x.id)}</a>` : esc(x.label||x.id)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
+    ${(r.highlights||[]).length ? `<section class="section"><h2>魅力</h2><ul class="list">${r.highlights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
+    <section class="section"><h2>所要・難易度</h2><p>${esc(r.duration||'')} ${r.difficulty?`<span class="badge">${esc(r.difficulty)}</span>`:''}</p></section>
+    ${(r.constraints||[]).length ? `<section class="section"><h2>重要制約</h2><ul class="list">${r.constraints.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}`;
+  if (data.map) loadGoogleMap(data.map.geojson);
+}
+
+function renderSpot(data) {
+  const s = data.spot || {};
+  breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
+  app.innerHTML = `
+    <section class="hero"><div class="kicker">Spot · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p></section>
+    ${(s.highlights||[]).length ? `<section class="section"><h2>Highlights</h2><ul class="list">${s.highlights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
+    ${(s.value_points||[]).length ? `<section class="section"><h2>Value</h2><ul class="list">${s.value_points.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
+    ${(s.practicality||[]).length ? `<section class="section"><h2>Practicality</h2><ul class="list">${s.practicality.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
+    ${(s.related||[]).length ? `<section class="section"><h2>関連</h2><div class="cards">${s.related.map(refCard).join('')}</div></section>` : ''}`;
+}
+
+async function loadGoogleMap(geojsonPath) {
+  const key = window.PERSONALOS_CONFIG?.googleMapsApiKey || '';
+  const message = document.querySelector('#map-message');
+  if (!key) {
+    document.querySelector('#map').style.display = 'none';
+    message.innerHTML = `Google Maps API key 未設定。GeoJSONは <a href="${geojsonPath}">こちら</a>。`;
+    return;
+  }
+  try {
+    await ensureGoogleMaps(key);
+    const map = new google.maps.Map(document.querySelector('#map'), {mapTypeControl:true, streetViewControl:false});
+    const info = new google.maps.InfoWindow();
+    map.data.loadGeoJson(geojsonPath, null, (features) => {
+      const bounds = new google.maps.LatLngBounds();
+      features.forEach(f => f.getGeometry()?.forEachLatLng?.(p => bounds.extend(p)));
+      if (!bounds.isEmpty()) map.fitBounds(bounds, 28);
+    });
+    map.data.setStyle((feature) => {
+      const role = feature.getProperty('role');
+      return {
+        strokeWeight: 5,
+        strokeOpacity: .8,
+        icon: role === 'optional' ? {path: google.maps.SymbolPath.CIRCLE, scale: 7} : undefined
+      };
+    });
+    map.data.addListener('click', (event) => {
+      const name = event.feature.getProperty('name') || event.feature.getProperty('spot_id') || 'Spot';
+      const role = event.feature.getProperty('role') || '';
+      info.setContent(`<strong>${esc(name)}</strong>${role ? `<br>${esc(role)}` : ''}`);
+      info.setPosition(event.latLng);
+      info.open(map);
+    });
+    message.textContent = '';
+  } catch (e) {
+    document.querySelector('#map').style.display = 'none';
+    message.textContent = `地図の読み込みに失敗しました: ${e.message}`;
+  }
+}
+
+let googlePromise;
+function ensureGoogleMaps(key) {
+  if (window.google?.maps) return Promise.resolve();
+  if (googlePromise) return googlePromise;
+  googlePromise = new Promise((resolve, reject) => {
+    window.__personalosGoogleMapsReady = resolve;
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=__personalosGoogleMapsReady&v=weekly`;
+    script.async = true;
+    script.defer = true;
+    script.onerror = () => reject(new Error('Google Maps JavaScript API load error'));
+    document.head.appendChild(script);
+  });
+  return googlePromise;
+}
+
+async function main() {
+  try {
+    if (!type || !id) {
+      const manifest = await fetch('./manifest.json', {cache:'no-store'}).then(r => r.ok ? r.json() : Promise.reject(new Error(`manifest ${r.status}`)));
+      renderHome(manifest);
+      return;
+    }
+    if (!['plan','route','spot'].includes(type)) throw new Error(`unsupported type: ${type}`);
+    const data = await fetch(pathFor(type,id), {cache:'no-store'}).then(r => r.ok ? r.json() : Promise.reject(new Error(`${r.status} ${r.statusText}`)));
+    document.title = `${data.title} · PersonalOS Leisure`;
+    if (type === 'plan') renderPlan(data);
+    if (type === 'route') renderRoute(data);
+    if (type === 'spot') renderSpot(data);
+  } catch (e) {
+    app.innerHTML = `<section class="section"><h1>表示できませんでした</h1><p class="error">${esc(e.message)}</p><p><a href="./">Homeへ戻る</a></p></section>`;
+  }
+}
+
+main();
