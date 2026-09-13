@@ -40,15 +40,14 @@
     ]
   },
   "map": {
-    "geojson": "./maps/R011-google-plan.geojson",
-    "actual_geojson": "./maps/R011-google-preview.geojson",
-    "path_mode": "conceptual",
+    "points_json": "./maps/R011-google-points.json",
+    "route_json": "./maps/R011-google-route.json",
     "location_provider": "google_places",
     "routing_provider": "google_routes",
     "actual_preview": true,
     "actual_confirmed": false,
     "actual_distance_m": 90414,
     "actual_time_s": 7955,
-    "note": "計画表示の地点はGoogle Places解決。実道路プレビューはGoogle Routes APIによる派生結果で未確定。"
+    "note": "計画表示はGoogle PlacesのPlace ID/座標。実道路はGoogle Routes APIの短期派生route artifactを描画し、閲覧時にはRoutes APIを再計算しません。"
   }
 }
