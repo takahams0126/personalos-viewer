@@ -4,18 +4,25 @@ const breadcrumb = document.querySelector('#breadcrumb');
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const id = qs.get('id');
+let published = new Set();
 
 const pathFor = (t, i) => `./data/${t === 'plan' ? 'plans' : t === 'route' ? 'routes' : 'spots'}/${i}.json`;
 const hrefFor = (ref) => `./?type=${encodeURIComponent(ref.type)}&id=${encodeURIComponent(ref.id)}`;
+const keyFor = (ref) => `${ref.type}:${ref.id}`;
+const canOpen = (ref) => published.has(keyFor(ref));
 const esc = (v='') => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
 function refCard(ref) {
-  const clickable = ['plan','route','spot'].includes(ref.type);
   const label = esc(ref.label || ref.id);
-  const body = clickable ? `<a href="${hrefFor(ref)}"><strong>${label}</strong></a>` : `<strong>${label}</strong>`;
+  const body = canOpen(ref) ? `<a href="${hrefFor(ref)}"><strong>${label}</strong></a>` : `<strong>${label}</strong>`;
   const role = ref.role ? `<span class="badge">${esc(ref.role)}</span>` : '';
   const priority = ref.priority ? `<span class="badge">${esc(ref.priority)}</span>` : '';
   return `<article class="card">${body}${role}${priority}</article>`;
+}
+
+function refInline(ref) {
+  const label = esc(ref.label || ref.id);
+  return canOpen(ref) ? `<a href="${hrefFor(ref)}">${label}</a>` : label;
 }
 
 function renderHome(manifest) {
@@ -41,7 +48,7 @@ function renderPlan(data) {
   app.innerHTML = `
     <section class="hero"><div class="kicker">Plan · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p></section>
     <section class="section"><h2>この旅の主役</h2><div class="cards">${(data.hero_refs||[]).map(refCard).join('')}</div></section>
-    <section class="section"><h2>日別Plan</h2>${(p.days||[]).map(day => `<article class="card" style="margin-bottom:10px"><h3>Day ${esc(day.day)}</h3><p>${esc(day.purpose)}</p>${(day.route_refs||[]).map(x=>`<div>Route: ${refCard(x)}</div>`).join('')}${(day.fallback_refs||[]).map(x=>`<div>Fallback: ${refCard(x)}</div>`).join('')}</article>`).join('')}</section>
+    <section class="section"><h2>日別Plan</h2>${(p.days||[]).map(day => `<article class="card" style="margin-bottom:10px"><h3>Day ${esc(day.day)}</h3><p>${esc(day.purpose)}</p>${(day.route_refs||[]).map(x=>`<div>Route: ${refInline(x)}</div>`).join('')}${(day.fallback_refs||[]).map(x=>`<div>Fallback: ${refInline(x)}</div>`).join('')}</article>`).join('')}</section>
     ${(p.food||[]).length ? `<section class="section"><h2>食事</h2><div class="cards">${p.food.map(refCard).join('')}</div></section>` : ''}
     ${(p.onsen||[]).length ? `<section class="section"><h2>温泉</h2><div class="cards">${p.onsen.map(refCard).join('')}</div></section>` : ''}
     ${p.public_note ? `<p class="note">${esc(p.public_note)}</p>` : ''}`;
@@ -49,11 +56,11 @@ function renderPlan(data) {
 
 function renderRoute(data) {
   const r = data.route || {};
-  breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`<a href="${hrefFor(x)}">${esc(x.label||x.id)}</a><span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
+  breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
   app.innerHTML = `
     <section class="hero"><div class="kicker">Route · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p><p>${esc(r.purpose||'')}</p></section>
     ${data.map ? `<section class="section"><h2>Map</h2><div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div><p class="note">${esc(data.map.note||'')}</p></section>` : ''}
-    <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||[]).map(x=>`<li><div>${['plan','route','spot'].includes(x.type) ? `<a href="${hrefFor(x)}">${esc(x.label||x.id)}</a>` : esc(x.label||x.id)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
+    <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||[]).map(x=>`<li><div>${refInline(x)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
     ${(r.highlights||[]).length ? `<section class="section"><h2>魅力</h2><ul class="list">${r.highlights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
     <section class="section"><h2>所要・難易度</h2><p>${esc(r.duration||'')} ${r.difficulty?`<span class="badge">${esc(r.difficulty)}</span>`:''}</p></section>
     ${(r.constraints||[]).length ? `<section class="section"><h2>重要制約</h2><ul class="list">${r.constraints.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}`;
@@ -90,11 +97,7 @@ async function loadGoogleMap(geojsonPath) {
     });
     map.data.setStyle((feature) => {
       const role = feature.getProperty('role');
-      return {
-        strokeWeight: 5,
-        strokeOpacity: .8,
-        icon: role === 'optional' ? {path: google.maps.SymbolPath.CIRCLE, scale: 7} : undefined
-      };
+      return {strokeWeight: 5, strokeOpacity: .8, icon: role === 'optional' ? {path: google.maps.SymbolPath.CIRCLE, scale: 7} : undefined};
     });
     map.data.addListener('click', (event) => {
       const name = event.feature.getProperty('name') || event.feature.getProperty('spot_id') || 'Spot';
@@ -128,12 +131,14 @@ function ensureGoogleMaps(key) {
 
 async function main() {
   try {
+    const manifest = await fetch('./manifest.json', {cache:'no-store'}).then(r => r.ok ? r.json() : Promise.reject(new Error(`manifest ${r.status}`)));
+    published = new Set((manifest.items || []).map(keyFor));
     if (!type || !id) {
-      const manifest = await fetch('./manifest.json', {cache:'no-store'}).then(r => r.ok ? r.json() : Promise.reject(new Error(`manifest ${r.status}`)));
       renderHome(manifest);
       return;
     }
     if (!['plan','route','spot'].includes(type)) throw new Error(`unsupported type: ${type}`);
+    if (!published.has(`${type}:${id}`)) throw new Error(`not published: ${type}:${id}`);
     const data = await fetch(pathFor(type,id), {cache:'no-store'}).then(r => r.ok ? r.json() : Promise.reject(new Error(`${r.status} ${r.statusText}`)));
     document.title = `${data.title} · PersonalOS Leisure`;
     if (type === 'plan') renderPlan(data);
