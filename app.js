@@ -122,7 +122,7 @@ function routeLetter(order) {
 function popupHtml({spotId, name, role, order, googlePlaceId}) {
   const spotRef = {type: 'spot', id: spotId};
   const personalosLink = spotId && canOpen(spotRef)
-    ? `<a href="${hrefFor(spotRef)}">PersonalOSで見る</a>`
+    ? `<a href="${hrefFor(spotRef)}" target="_blank" rel="noopener">PersonalOSで見る</a>`
     : '';
   const googleLink = `<a href="${esc(googleMapsSearchUrl(name, googlePlaceId))}" target="_blank" rel="noopener">Google Mapsで開く</a>`;
   const context = [order ? `#${esc(order)}` : '', role ? esc(role) : ''].filter(Boolean).join(' · ');
