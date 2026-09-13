@@ -10,7 +10,7 @@ const pathFor = (t, i) => `./data/${t === 'plan' ? 'plans' : t === 'route' ? 'ro
 const hrefFor = (ref) => `./?type=${encodeURIComponent(ref.type)}&id=${encodeURIComponent(ref.id)}`;
 const keyFor = (ref) => `${ref.type}:${ref.id}`;
 const canOpen = (ref) => published.has(keyFor(ref));
-const esc = (v='') => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const esc = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 
 function refCard(ref) {
   const label = esc(ref.label || ref.id);
@@ -88,7 +88,7 @@ function renderSpot(data) {
 }
 
 function initRouteMap(mapSpec, sequence) {
-  const labels = Object.fromEntries(sequence.map(x => [x.id, x.label || x.id]));
+  const spots = Object.fromEntries(sequence.map(x => [x.id, x]));
   const conceptual = document.querySelector('#map-conceptual');
   const actual = document.querySelector('#map-actual');
   const setMode = (mode) => {
@@ -99,14 +99,20 @@ function initRouteMap(mapSpec, sequence) {
     if (note) note.textContent = mode === 'actual'
       ? '道路ネットワークに沿った実道路プレビュー。Routing providerによる派生結果で、実施確定ルートではありません。'
       : (mapSpec.note || '計画上の地点配置・概念geometry。');
-    loadGoogleMap(path, labels, mode);
+    loadGoogleMap(path, spots, mode);
   };
   conceptual?.addEventListener('click', () => setMode('conceptual'));
   actual?.addEventListener('click', () => setMode('actual'));
   setMode('conceptual');
 }
 
-async function loadGoogleMap(geojsonPath, labels = {}, mode = 'conceptual') {
+function googleMapsSearchUrl(name, placeId = '') {
+  const params = new URLSearchParams({api: '1', query: name});
+  if (placeId) params.set('query_place_id', placeId);
+  return `https://www.google.com/maps/search/?${params.toString()}`;
+}
+
+async function loadGoogleMap(geojsonPath, spots = {}, mode = 'conceptual') {
   const key = window.PERSONALOS_CONFIG?.googleMapsApiKey || '';
   const message = document.querySelector('#map-message');
   const mapElement = document.querySelector('#map');
@@ -135,12 +141,26 @@ async function loadGoogleMap(geojsonPath, labels = {}, mode = 'conceptual') {
     });
     map.data.addListener('click', (event) => {
       const spotId = event.feature.getProperty('spot_id') || '';
-      const rawName = event.feature.getProperty('name') || spotId || (mode === 'actual' ? '実道路プレビュー' : 'Spot');
-      const name = labels[spotId] || rawName;
-      const role = event.feature.getProperty('role') || '';
       const featureType = event.feature.getProperty('feature_type') || '';
-      const extra = featureType === 'routed_path' ? '<br>実道路プレビュー（未確定）' : (role ? `<br>${esc(role)}` : '');
-      info.setContent(`<strong>${esc(name)}</strong>${extra}`);
+      if (featureType === 'routed_path') {
+        info.setContent('<strong>実道路プレビュー</strong><br>Routing providerによる派生結果（未確定）');
+        info.setPosition(event.latLng);
+        info.open(map);
+        return;
+      }
+
+      const spot = spots[spotId] || {};
+      const rawName = event.feature.getProperty('name') || spotId || 'Spot';
+      const name = spot.label || rawName;
+      const role = event.feature.getProperty('role') || spot.role || '';
+      const googlePlaceId = event.feature.getProperty('google_place_id') || event.feature.getProperty('place_id') || '';
+      const spotRef = {type: 'spot', id: spotId};
+      const personalosLink = spotId && canOpen(spotRef)
+        ? `<a href="${hrefFor(spotRef)}">PersonalOSで見る</a>`
+        : '';
+      const googleLink = `<a href="${esc(googleMapsSearchUrl(name, googlePlaceId))}" target="_blank" rel="noopener">Google Mapsで開く</a>`;
+      const links = [personalosLink, googleLink].filter(Boolean).join(' &nbsp;·&nbsp; ');
+      info.setContent(`<strong>${esc(name)}</strong>${role ? `<br>${esc(role)}` : ''}${links ? `<div style="margin-top:8px">${links}</div>` : ''}`);
       info.setPosition(event.latLng);
       info.open(map);
     });
