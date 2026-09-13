@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "view_type": "plan",
+  "id": "P005",
+  "title": "屋久島 4泊5日基本Plan",
+  "summary": "縄文杉の達成体験、白谷雲水峡の苔と原生林、島一周の海・滝・西部林道・温泉を4泊5日で重複少なく組み合わせるPlan",
+  "hero_refs": [
+    {"type":"route","id":"R005","label":"縄文杉ルート・縄文杉往復"},
+    {"type":"route","id":"R011","label":"屋久島一周ドライブ"},
+    {"type":"route","id":"R004","label":"白谷雲水峡ルート・太鼓岩往復"}
+  ],
+  "plan": {
+    "days": [
+      {"day":2,"purpose":"屋久島を象徴する縄文杉へ長距離を歩いて到達する","route_refs":[{"type":"route","id":"R005","label":"縄文杉ルート・縄文杉往復"}],"fallback_refs":[{"type":"route","id":"R007","label":"縄文杉ルート・ウィルソン株往復"}]},
+      {"day":3,"purpose":"山岳Routeと異なる海・滝・西部林道の屋久島を体験し、山行予備日も兼ねる","route_refs":[{"type":"route","id":"R011","label":"屋久島一周ドライブ"}],"fallback_refs":[{"type":"route","id":"R010","label":"屋久島南部雨天ドライブ"}]},
+      {"day":4,"purpose":"白谷雲水峡の苔・渓流・原生林から太鼓岩の展望まで景観変化を楽しむ","route_refs":[{"type":"route","id":"R004","label":"白谷雲水峡ルート・太鼓岩往復"}],"fallback_refs":[]}
+    ],
+    "food": [
+      {"type":"spot","id":"S045","label":"手打ちそば 松竹","role":"lunch"},
+      {"type":"spot","id":"S046","label":"PANORAMA","role":"dinner"}
+    ],
+    "onsen": [
+      {"type":"spot","id":"S028","label":"平内海中温泉","priority":"primary"},
+      {"type":"spot","id":"S026","label":"尾之間温泉","priority":"fallback"},
+      {"type":"spot","id":"S030","label":"楠川温泉","priority":"primary"}
+    ],
+    "public_note": "宿泊先・予約情報などの機微情報は公開projectionから除外しています。"
+  }
+}
