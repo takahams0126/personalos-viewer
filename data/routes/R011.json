@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "view_type": "route",
+  "id": "R011",
+  "title": "屋久島一周ドライブ",
+  "summary": "西部林道を一日の主役にし、永田いなか浜・大川の滝を必須級、トローキの滝・千尋の滝を高優先として島の海岸線と滝を一周で楽しむ体験型ドライブRoute",
+  "parent_refs": [
+    {"type":"plan","id":"P005","label":"屋久島 4泊5日基本Plan"}
+  ],
+  "route": {
+    "route_type": "driving",
+    "purpose": "登山をしない晴れ〜曇りの予備日に、西部林道を主役として北部・西部・南部の海岸景観、滝、亜熱帯植生、温泉を一周で体験する",
+    "duration": "8〜10時間程度",
+    "difficulty": "easy",
+    "highlights": [
+      "屋久島の海岸線と地域ごとの景観差を一度に体験できる",
+      "西部林道を疲労が少ない前半〜中盤に置ける",
+      "海へ落ちるトローキの滝、巨大花崗岩の千尋の滝、大川の滝を一日で組み合わせられる",
+      "登山Routeと体験が重複しにくい",
+      "永田いなか浜・西部林道・大川の滝という強いcoreがある"
+    ],
+    "sequence": [
+      {"type":"spot","id":"S037","label":"志戸子ガジュマル公園","role":"optional"},
+      {"type":"spot","id":"S038","label":"永田いなか浜","role":"core"},
+      {"type":"spot","id":"S039","label":"西部林道","role":"core"},
+      {"type":"spot","id":"S036","label":"大川の滝","role":"core"},
+      {"type":"spot","id":"S045","label":"手打ちそば 松竹","role":"main_lunch"},
+      {"type":"spot","id":"S034","label":"トローキの滝","role":"high_priority"},
+      {"type":"spot","id":"S035","label":"千尋の滝","role":"high_priority"},
+      {"type":"spot","id":"S040","label":"中間ガジュマル","role":"optional"},
+      {"type":"spot","id":"S028","label":"平内海中温泉","role":"condition_high"},
+      {"type":"spot","id":"S026","label":"尾之間温泉","role":"fallback_onsen"}
+    ],
+    "constraints": [
+      "豪雨・強風時は使わず雨天Routeへ切り替える",
+      "西部林道は狭い蛇行路で、進入前にトイレ・燃料・体調を確認する",
+      "西部林道の通行規制・道路状況は実施前に再確認する",
+      "平内海中温泉は潮位・波・風・足元条件に左右される",
+      "時間超過時はoptionalを先に削る"
+    ]
+  },
+  "map": {
+    "geojson": "./maps/R011.geojson",
+    "path_mode": "conceptual",
+    "note": "地点位置と概念geometryを表示。実道路trackではない。"
+  }
+}
