@@ -61,6 +61,9 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   hero.classList.add('route-demo-hero');
 
   if ((appeal.themes||[]).length) hero.insertAdjacentHTML('beforeend', routeChipList(appeal.themes));
+  if (r.family || r.variant) {
+    hero.insertAdjacentHTML('beforeend', `<div class="route-hero-meta">${r.family?`<span><small>系統</small><strong>${escRoute(r.family)}</strong></span>`:''}${r.variant?`<span><small>バリエーション</small><strong>${escRoute(variantRoute(r.variant))}</strong></span>`:''}</div>`);
+  }
   if ((data.hero_refs||[]).length) {
     hero.insertAdjacentHTML('beforeend', `<div class="route-hero-refs">${data.hero_refs.map(x=>routeRefMini(x,published)).join('')}</div>`);
   }
@@ -161,8 +164,4 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     arrow.classList.add('route-flow-arrow');
     arrow.innerHTML = flowChevron();
   });
-
-  if (r.family || r.variant) {
-    app.insertAdjacentHTML('beforeend', `<section class="section route-demo-section route-family-section"><h2>このルートの位置づけ</h2><div class="route-family-card">${r.family?`<div><span>系統</span><strong>${escRoute(r.family)}</strong></div>`:''}${r.variant?`<div><span>バリエーション</span><strong>${escRoute(variantRoute(r.variant))}</strong></div>`:''}</div></section>`);
-  }
 }
