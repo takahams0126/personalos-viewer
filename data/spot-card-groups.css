@@ -11,7 +11,7 @@
 .spot-related-card strong{grid-area:title;margin-top:2px;color:#202124;font-size:1rem}
 .spot-related-meta{grid-area:meta;margin-top:3px;color:#5f6368;font-size:.8rem}
 .spot-related-arrow{grid-area:arrow;justify-self:center;display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#eef4fd;color:#3b78c8;transform:translateX(-4px);transition:transform .16s ease,color .16s ease,background .16s ease}
-.spot-related-arrow svg{display:block;width:15px;height:15px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.spot-related-arrow svg{display:block;width:15px;height:15px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transform:translateY(1px)}
 .spot-related-card:hover .spot-related-arrow{background:#e1ecfb;color:#185abc;transform:translateX(-1px)}
 
 @media(max-width:900px){
