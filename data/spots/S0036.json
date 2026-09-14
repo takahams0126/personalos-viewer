@@ -1,0 +1,44 @@
+{
+  "schema_version": 3,
+  "view_type": "spot",
+  "id": "S0036",
+  "title": "大川の滝",
+  "summary": "落差88mの大瀑布を駐車場から徒歩数分で滝壺近くまで迫って見られる、南西部ドライブの主役級景勝地",
+  "hero_refs": [
+    {"type":"spot","id":"S0036","label":"大川の滝"}
+  ],
+  "parent_refs": [
+    {"type":"route","id":"R011","label":"屋久島一周ドライブ"}
+  ],
+  "spot": {
+    "category": "attraction",
+    "highlights": [
+      "落差88mの大瀑布",
+      "滝壺近くから感じる水しぶきと轟音",
+      "日本の滝100選"
+    ],
+    "value_points": [
+      "駐車場から短い徒歩で高い景観価値を得られる",
+      "島一周ドライブの移動負荷に対して追加負担が小さい"
+    ],
+    "practicality": [
+      "30〜60分程度の立ち寄りに向く",
+      "駐車場から徒歩約2分程度で主要景観へ到達できる",
+      "トイレ・多目的トイレがある",
+      "豪雨・強風時は道路・滝壺周辺の安全を優先して見送る"
+    ],
+    "image_refs": [
+      {
+        "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-okawa-no-taki-01.jpg",
+        "role": "hero",
+        "priority": 1,
+        "source_url": "https://yakukan.jp/spot/6999.html",
+        "source_type": "tourism"
+      }
+    ],
+    "related": [
+      {"type":"spot","id":"S0039","label":"西部林道","relation_type":"good_pair","role":"after_western_forest_road"},
+      {"type":"spot","id":"S0045","label":"手打ちそば 松竹","relation_type":"good_pair","role":"lunch_near_kurio"}
+    ]
+  }
+}
