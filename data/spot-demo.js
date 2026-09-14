@@ -23,6 +23,7 @@ async function initSpotDemo() {
     if (!hero || app.dataset.spotDemoAttached) return false;
     app.dataset.spotDemoAttached = '1';
     render(data, app);
+    initCarousel(app);
     return true;
   };
   if (attach()) return;
@@ -30,9 +31,22 @@ async function initSpotDemo() {
   observer.observe(app,{childList:true,subtree:true});
 }
 
+function galleryHtml(images=[], title='') {
+  const sorted = [...images].sort((a,b)=>(a.priority??999)-(b.priority??999));
+  if (!sorted.length) return '';
+  const slides = sorted.map((img,i)=>`<figure class="spot-carousel-slide ${i===0?'active':''}" data-index="${i}"><img src="${esc(img.url)}" alt="${esc(img.caption||`${title} ${i+1}`)}" draggable="false"><figcaption><span>${esc(img.caption||'')}</span>${img.credit?`<small>${esc(img.credit)}</small>`:''}</figcaption></figure>`).join('');
+  const thumbs = sorted.map((img,i)=>`<button class="spot-carousel-thumb ${i===0?'active':''}" data-index="${i}" aria-label="画像 ${i+1} を表示"><img src="${esc(img.url)}" alt=""></button>`).join('');
+  return `<div class="spot-carousel" data-count="${sorted.length}">
+    <div class="spot-carousel-stage" tabindex="0">
+      <div class="spot-carousel-track">${slides}</div>
+      ${sorted.length>1?`<button class="spot-carousel-nav prev" aria-label="前の画像">‹</button><button class="spot-carousel-nav next" aria-label="次の画像">›</button><div class="spot-carousel-count"><span class="current">1</span> / ${sorted.length}</div>`:''}
+    </div>
+    ${sorted.length>1?`<div class="spot-carousel-thumbs">${thumbs}</div>`:''}
+  </div>`;
+}
+
 function render(data, app) {
   const s = data.spot || {};
-  const heroImg = (s.image_refs||[])[0]?.url || '';
   const reviews = s.review_summary || {};
   const links = s.links || [];
   const related = s.related || [];
@@ -45,7 +59,7 @@ function render(data, app) {
         <p class="spot-demo-summary">${esc(data.summary||'')}</p>
         ${chipList(s.themes||[])}
       </div>
-      ${heroImg?`<figure class="spot-demo-hero-image"><img src="${esc(heroImg)}" alt="${esc(data.title)}"></figure>`:''}
+      ${galleryHtml(s.image_refs||[], data.title)}
     </section>
 
     ${(s.facts||[]).length?`<section class="spot-demo-facts">${s.facts.map(x=>`<div><span>${esc(x.label)}</span><strong>${esc(x.value)}</strong></div>`).join('')}</section>`:''}
@@ -64,4 +78,29 @@ function render(data, app) {
 
     ${links.length?`<section class="section spot-demo-section"><h2>公式・参考情報</h2><div class="spot-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join('')}</div></section>`:''}
   `;
+}
+
+function initCarousel(root) {
+  root.querySelectorAll('.spot-carousel').forEach(carousel => {
+    const slides = [...carousel.querySelectorAll('.spot-carousel-slide')];
+    const thumbs = [...carousel.querySelectorAll('.spot-carousel-thumb')];
+    const stage = carousel.querySelector('.spot-carousel-stage');
+    const count = carousel.querySelector('.spot-carousel-count .current');
+    if (slides.length < 2) return;
+    let index = 0;
+    const show = next => {
+      index = (next + slides.length) % slides.length;
+      slides.forEach((x,i)=>x.classList.toggle('active', i===index));
+      thumbs.forEach((x,i)=>x.classList.toggle('active', i===index));
+      if (count) count.textContent = String(index+1);
+      thumbs[index]?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    };
+    carousel.querySelector('.prev')?.addEventListener('click',()=>show(index-1));
+    carousel.querySelector('.next')?.addEventListener('click',()=>show(index+1));
+    thumbs.forEach((thumb,i)=>thumb.addEventListener('click',()=>show(i)));
+    stage?.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')show(index-1); if(e.key==='ArrowRight')show(index+1); });
+    let startX = null;
+    stage?.addEventListener('pointerdown',e=>{ startX=e.clientX; stage.setPointerCapture?.(e.pointerId); });
+    stage?.addEventListener('pointerup',e=>{ if(startX===null)return; const dx=e.clientX-startX; startX=null; if(Math.abs(dx)>45)show(index+(dx<0?1:-1)); });
+  });
 }
