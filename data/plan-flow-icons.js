@@ -2,7 +2,7 @@ import {
   renderTablerIcon,
   resolveDestinationIcon,
   resolveTransferIcon
-} from './icon-registry.js';
+} from './icon-registry.js?v=20260915-12';
 
 const planIconQs = new URLSearchParams(location.search);
 if (planIconQs.get('type') === 'plan') initPlanFlowIcons();
