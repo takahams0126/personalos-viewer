@@ -58,6 +58,7 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   const r = data.route || {};
   const appeal = r.appeal || {};
   const published = new Set((manifest.items||[]).map(x=>`${x.type}:${x.id}`));
+  hero.classList.add('route-demo-hero');
 
   if ((appeal.themes||[]).length) hero.insertAdjacentHTML('beforeend', routeChipList(appeal.themes));
   if ((data.hero_refs||[]).length) {
@@ -76,6 +77,7 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   hero.insertAdjacentHTML('afterend', facts);
 
   const mapSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='ルートの地図');
+  mapSection?.querySelector('#map-mode-note')?.remove();
   const anchor = mapSection || hero.nextElementSibling;
 
   const valueHtml = `
@@ -111,7 +113,6 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   wrapper.innerHTML = valueHtml + fitHtml + conditionalHtml + notesHtml;
   if (anchor) anchor.insertAdjacentElement('afterend', wrapper); else hero.insertAdjacentElement('afterend', wrapper);
 
-  // Base rendererの重複セクションは、上部Factsや拡張表示へ一本化する。
   [...app.querySelectorAll(':scope > .section')].forEach(section => {
     const h = section.querySelector(':scope > h2');
     const title = h?.textContent.trim();
@@ -120,7 +121,6 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     }
   });
 
-  // Traversal固有の前提と理由を、順序そのものとは分けて補足表示する。
   const traversalSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='巡り方');
   if (traversalSection) {
     const cards = [...traversalSection.querySelectorAll(':scope > .card')];
@@ -141,7 +141,6 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     });
   }
 
-  // canonical sequenceのroleは、立ち寄り順で小バッジとして明示する。
   const sequenceSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='立ち寄り順');
   if (sequenceSection) {
     const stops = [...sequenceSection.querySelectorAll('.route-stop')];
@@ -158,13 +157,11 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     });
   }
 
-  // Route内部の進行は、ページ遷移用の青chevronとは分けて黄色の二重chevronで統一する。
   app.querySelectorAll('.route-arrow').forEach(arrow => {
     arrow.classList.add('route-flow-arrow');
     arrow.innerHTML = flowChevron();
   });
 
-  // family / variant は実リンク先がない場合にリンクの見た目を偽装せず、位置づけ情報として最下部へ置く。
   if (r.family || r.variant) {
     app.insertAdjacentHTML('beforeend', `<section class="section route-demo-section route-family-section"><h2>このルートの位置づけ</h2><div class="route-family-card">${r.family?`<div><span>系統</span><strong>${escRoute(r.family)}</strong></div>`:''}${r.variant?`<div><span>バリエーション</span><strong>${escRoute(variantRoute(r.variant))}</strong></div>`:''}</div></section>`);
   }
