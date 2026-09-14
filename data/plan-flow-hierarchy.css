@@ -1,19 +1,19 @@
 /* Plan Flow hierarchy: destinations are primary nodes; transfers are connector edges. */
-.plan-axis>.flow-item{grid-template-columns:32px minmax(0,1fr)!important;column-gap:12px!important}
+.plan-axis>.flow-item{grid-template-columns:38px minmax(0,1fr)!important;column-gap:12px!important}
 
-/* All location-bearing destinations use one visual language regardless of Spot/TravelPoint/start/end role. */
+/* All location-bearing destinations use one strong visual language regardless of Spot/TravelPoint/start/end role. */
 .plan-axis .flow-item.plan-axis-point>.flow-icon,
 .plan-axis .flow-item.plan-axis-destination>.flow-icon,
 .plan-axis .flow-item.plan-axis-start>.flow-icon,
 .plan-axis .flow-item.plan-axis-end>.flow-icon{
-  width:28px!important;
-  height:28px!important;
+  width:34px!important;
+  height:34px!important;
   margin:0!important;
   border-radius:50%!important;
-  border:1px solid rgba(26,115,232,.22)!important;
+  border:1px solid rgba(26,115,232,.20)!important;
   background:#e8f0fe!important;
   color:transparent!important;
-  box-shadow:none!important;
+  box-shadow:0 2px 7px rgba(26,115,232,.14)!important;
   font-size:0!important;
   display:grid!important;
   place-items:center!important;
@@ -23,25 +23,25 @@
 .plan-axis .flow-item.plan-axis-start>.flow-icon::after,
 .plan-axis .flow-item.plan-axis-end>.flow-icon::after{
   content:"";
-  width:9px;
-  height:9px;
+  width:12px;
+  height:12px;
   border-radius:50%;
   background:#1a73e8;
 }
 .plan-axis .plan-axis-point .flow-title,
 .plan-axis .plan-axis-destination .flow-title{
-  font-size:1rem;
+  font-size:1.02rem;
   line-height:1.45;
-  font-weight:760;
+  font-weight:780;
 }
 
 /* Route remains a primary experience node, but keeps its own yellow identity. */
 .plan-axis .flow-item.plan-axis-route>.flow-icon{
-  width:30px!important;
-  height:30px!important;
+  width:34px!important;
+  height:34px!important;
   margin:0!important;
   border-radius:50%!important;
-  box-shadow:none!important;
+  box-shadow:0 2px 7px rgba(251,188,4,.16)!important;
 }
 
 /* Transfer is an edge between destinations, not an equal-weight node. */
@@ -51,9 +51,9 @@
   align-items:center!important;
 }
 .plan-axis .flow-item.plan-axis-transfer>.flow-icon{
-  width:7px!important;
-  height:7px!important;
-  margin:0 0 0 10px!important;
+  width:6px!important;
+  height:6px!important;
+  margin:0 0 0 14px!important;
   border:0!important;
   border-radius:50%!important;
   background:#aab0b6!important;
@@ -91,16 +91,16 @@
 }
 
 @media(max-width:640px){
-  .plan-axis>.flow-item{grid-template-columns:28px minmax(0,1fr)!important;column-gap:10px!important}
+  .plan-axis>.flow-item{grid-template-columns:36px minmax(0,1fr)!important;column-gap:10px!important}
   .plan-axis .flow-item.plan-axis-point>.flow-icon,
   .plan-axis .flow-item.plan-axis-destination>.flow-icon,
   .plan-axis .flow-item.plan-axis-start>.flow-icon,
-  .plan-axis .flow-item.plan-axis-end>.flow-icon{width:25px!important;height:25px!important}
+  .plan-axis .flow-item.plan-axis-end>.flow-icon{width:32px!important;height:32px!important}
   .plan-axis .flow-item.plan-axis-point>.flow-icon::after,
   .plan-axis .flow-item.plan-axis-destination>.flow-icon::after,
   .plan-axis .flow-item.plan-axis-start>.flow-icon::after,
-  .plan-axis .flow-item.plan-axis-end>.flow-icon::after{width:8px;height:8px}
-  .plan-axis .flow-item.plan-axis-transfer>.flow-icon{margin-left:9px!important}
+  .plan-axis .flow-item.plan-axis-end>.flow-icon::after{width:11px;height:11px}
+  .plan-axis .flow-item.plan-axis-transfer>.flow-icon{margin-left:13px!important}
   .plan-axis .flow-item.plan-axis-transfer>div:nth-child(2){margin-left:6px}
 }
 
@@ -111,6 +111,7 @@
   .plan-axis .flow-item.plan-axis-end>.flow-icon{
     border-color:#3f5878!important;
     background:#243449!important;
+    box-shadow:0 2px 8px rgba(0,0,0,.22)!important;
   }
   .plan-axis .flow-item.plan-axis-point>.flow-icon::after,
   .plan-axis .flow-item.plan-axis-destination>.flow-icon::after,
