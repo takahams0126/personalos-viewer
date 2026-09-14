@@ -1,10 +1,8 @@
 {
   "schema_version": 3,
   "items": [
-    {
-      "type": "plan",
-      "id": "P001",
-      "title": "屋久島 4泊5日基本Plan"
-    }
+    {"type":"plan","id":"P001","title":"屋久島 4泊5日基本Plan"},
+    {"type":"route","id":"R011","title":"屋久島一周ドライブ"},
+    {"type":"spot","id":"S0036","title":"大川の滝"}
   ]
 }
