@@ -1,0 +1,98 @@
+{
+  "schema_version": 3,
+  "view_type": "route",
+  "id": "R011",
+  "title": "屋久島一周ドライブ",
+  "summary": "西部林道を一日の主役にし、永田いなか浜・大川の滝を必須級、トローキの滝・千尋の滝を高優先として島の海岸線と滝を一周で楽しむ体験型ドライブRoute",
+  "hero_refs": [
+    {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core"},
+    {"type":"spot","id":"S0039","label":"西部林道","role":"core"},
+    {"type":"spot","id":"S0036","label":"大川の滝","role":"core"}
+  ],
+  "parent_refs": [
+    {"type":"plan","id":"P001","label":"屋久島 4泊5日基本Plan"}
+  ],
+  "route": {
+    "route_type": "driving",
+    "family": "屋久島一周ドライブ",
+    "variant": "standard",
+    "purpose": "登山をしない晴れ〜曇りの予備日に、西部林道を主役として北部・西部・南部の海岸景観、滝、亜熱帯植生、温泉を一周で体験する",
+    "duration": "8〜10時間程度",
+    "difficulty": "easy",
+    "highlights": [
+      "屋久島の海岸線と地域ごとの景観差を一度に体験できる",
+      "西部林道を前半〜中盤に置ける",
+      "登山Routeと体験が重複しにくい"
+    ],
+    "sequence": [
+      {"type":"spot","id":"S0037","label":"志戸子ガジュマル公園","role":"optional"},
+      {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core"},
+      {"type":"spot","id":"S0039","label":"西部林道","role":"core"},
+      {"type":"spot","id":"S0036","label":"大川の滝","role":"core"},
+      {"type":"spot","id":"S0045","label":"手打ちそば 松竹","role":"main_lunch"},
+      {"type":"spot","id":"S0034","label":"トローキの滝","role":"high_priority"},
+      {"type":"spot","id":"S0035","label":"千尋の滝","role":"high_priority"},
+      {"type":"spot","id":"S0040","label":"中間ガジュマル","role":"optional"},
+      {"type":"spot","id":"S0028","label":"平内海中温泉","role":"condition_high"},
+      {"type":"spot","id":"S0026","label":"尾之間温泉","role":"fallback_onsen"}
+    ],
+    "traversals": [
+      {
+        "traversal_id": "miyanoura_counterclockwise",
+        "direction": "counterclockwise",
+        "start_context": "宮之浦側宿泊拠点",
+        "end_context": "宮之浦側宿泊拠点",
+        "ordered_spot_refs": [
+          {"type":"spot","id":"S0037","label":"志戸子ガジュマル公園","role":"optional"},
+          {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core"},
+          {"type":"spot","id":"S0039","label":"西部林道","role":"core"},
+          {"type":"spot","id":"S0036","label":"大川の滝","role":"core"},
+          {"type":"spot","id":"S0045","label":"手打ちそば 松竹","role":"main_lunch"},
+          {"type":"spot","id":"S0035","label":"千尋の滝","role":"high_priority"},
+          {"type":"spot","id":"S0034","label":"トローキの滝","role":"high_priority"}
+        ]
+      },
+      {
+        "traversal_id": "anbo_clockwise",
+        "direction": "clockwise",
+        "start_context": "安房側宿泊拠点",
+        "end_context": "安房側宿泊拠点",
+        "ordered_spot_refs": [
+          {"type":"spot","id":"S0034","label":"トローキの滝","role":"high_priority"},
+          {"type":"spot","id":"S0035","label":"千尋の滝","role":"high_priority"},
+          {"type":"spot","id":"S0045","label":"手打ちそば 松竹","role":"main_lunch"},
+          {"type":"spot","id":"S0036","label":"大川の滝","role":"core"},
+          {"type":"spot","id":"S0039","label":"西部林道","role":"core"},
+          {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core"},
+          {"type":"spot","id":"S0037","label":"志戸子ガジュマル公園","role":"optional"}
+        ]
+      }
+    ],
+    "conditional_refs": [
+      {"type":"spot","id":"S0028","label":"平内海中温泉","role":"onsen","insertion_policy":"南部通過時に潮位・波・風条件が合う場合だけ挿入"},
+      {"type":"spot","id":"S0026","label":"尾之間温泉","role":"fallback_onsen","fallback_for":"S0028"},
+      {"type":"spot","id":"S0040","label":"中間ガジュマル","role":"optional","insertion_policy":"時間余裕がある場合のみ"}
+    ],
+    "support_refs": [],
+    "constraints": [
+      "R010とR011は同日に混在させない",
+      "豪雨・強風時はR010へ切り替える",
+      "西部林道は狭い蛇行路で駐車場・トイレがなく携帯圏外のため進入前確認が必要",
+      "西部林道の通行規制・道路状況をConcrete Planで再確認する",
+      "平内海中温泉は潮位・波・風条件に左右される",
+      "立寄りを増やし過ぎずcoreを優先する",
+      "S0045の営業時間・定休日はConcrete化時に確認する"
+    ]
+  },
+  "map": {
+    "points_json": "./maps/R011-google-points.json",
+    "route_json": "./maps/R011-google-route.json",
+    "location_provider": "google_places",
+    "routing_provider": "google_routes",
+    "actual_preview": true,
+    "actual_confirmed": false,
+    "actual_distance_m": 90414,
+    "actual_time_s": 7955,
+    "note": "計画表示はGoogle Placesの地点情報、実道路はGoogle Routes APIの事前計算artifactを表示します。閲覧時にはRoutes APIを再計算しません。"
+  }
+}
