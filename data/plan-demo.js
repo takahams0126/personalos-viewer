@@ -4,10 +4,12 @@ const planId = qsPlan.get('id');
 if (planType === 'plan' && planId === 'P001') initPlanDemo();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
-const transportLabel = (v='') => ({air_and_rental_car:'飛行機＋レンタカー',air:'飛行機',rental_car:'レンタカー',train:'電車',bus:'バス'}[v] || String(v).replaceAll('_',' '));
+const transportLabel = (v='') => ({air_and_rental_car:'飛行機＋レンタカー',air:'飛行機',rental_car:'レンタカー',train:'電車',bus:'バス',rental_car_and_mountain_access:'車＋登山アクセス'}[v] || String(v).replaceAll('_',' '));
 const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopover:'立ち寄り',lodging:'宿泊',dinner:'夕食',onsen:'温泉',optional:'任意',support:'補助',high_priority:'高優先',main_lunch:'昼食',condition_high:'条件付き',fallback_onsen:'代替温泉'}[v] || String(v).replaceAll('_',' '));
 const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低',optional:'任意'}[v] || String(v).replaceAll('_',' '));
 const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
+const budgetTotalLabel = (v='') => ({'1day':'終日',long_day:'長時間',full_day:'終日'}[v] || v.replace?.('-', '〜') || v);
+const budgetStartLabel = (v='') => ({morning:'朝出発',early_morning:'早朝出発',afternoon:'午後開始',evening:'夕方開始'}[v] || v.replaceAll?.('_',' ') || v);
 
 function planInternalChevron(){
   return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
@@ -72,6 +74,23 @@ function refPlan(ref,published){
   return published.has(key)
     ? `<a href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${label}</a>`
     : label;
+}
+
+function endpointKey(ref){
+  if(!ref) return '';
+  return `${ref.type||''}:${ref.id||''}`;
+}
+
+function endpointInlinePlan(ref,published){
+  if(!ref) return '';
+  if(ref.type==='route_endpoint') return refPlan(ref.route_ref||{},published);
+  return refPlan(ref,published);
+}
+
+function axisEndpointItem(ref,label,published,cls=''){
+  if(!ref) return '';
+  const pointType=ref.point_type?`<span class="plan-axis-type">${escPlan(ref.point_type==='home'?'自宅':ref.point_type==='airport'?'空港':ref.point_type==='station'?'駅':ref.point_type)}</span>`:'';
+  return `<li class="flow-item plan-axis-point ${cls}"><div class="flow-icon">●</div><div><div class="flow-title"><span class="plan-axis-kicker">${escPlan(label)}</span>${endpointInlinePlan(ref,published)} ${pointType}</div></div></li>`;
 }
 
 function routeSequenceFrom(data,fallback=[]){
@@ -158,7 +177,6 @@ function makeDayToggle(card){
   if(!header || card.dataset.dayToggle) return;
   card.dataset.dayToggle='1';
 
-  // 折りたたみ状態では「日番号 + タイトル」だけを残し、説明文は展開後へ移す。
   const detail = header.querySelector(':scope > div > p') || header.querySelector(':scope > p');
   const body = document.createElement('div');
   body.className='plan-day-body';
@@ -183,6 +201,69 @@ function makeDayToggle(card){
   };
   header.addEventListener('click',toggle);
   header.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+}
+
+function enhanceDayStructure(card,day,published){
+  const body=card.querySelector('.plan-day-body');
+  if(!body) return;
+
+  const detail=body.querySelector('.plan-day-detail');
+  const oldTime=body.querySelector('.day-time');
+  const oldEndpoints=body.querySelector('.day-endpoints');
+  const total=day.time_budget?.expected_total;
+  const start=day.time_budget?.preferred_start;
+  const constraints=day.time_budget?.constraints||[];
+  const badges=[total?budgetTotalLabel(total):'',start?budgetStartLabel(start):''].filter(Boolean);
+
+  const overview=document.createElement('section');
+  overview.className='plan-day-overview';
+  overview.innerHTML=`<div class="plan-day-subhead">1日の概要</div>${badges.length?`<div class="plan-day-overview-badges">${badges.map(x=>`<span>${escPlan(x)}</span>`).join('')}</div>`:''}${detail?`<p>${detail.innerHTML}</p>`:''}${constraints.length?`<div class="plan-day-constraints">${constraints.map(x=>`<span>${escPlan(x)}</span>`).join('')}</div>`:''}`;
+  detail?.remove();
+  oldTime?.remove();
+  oldEndpoints?.remove();
+  body.prepend(overview);
+
+  const list=body.querySelector('.flow-list');
+  if(!list) return;
+  list.classList.add('plan-axis');
+  list.insertAdjacentHTML('beforebegin','<div class="plan-day-flow-heading"><span>1日のFlow</span></div>');
+  list.insertAdjacentHTML('afterbegin',axisEndpointItem(day.start,'始点',published,'plan-axis-start'));
+
+  const items=[...list.querySelectorAll(':scope > .flow-item:not(.plan-axis-point)')];
+  (day.flow||[]).forEach((flow,index)=>{
+    const item=items[index];
+    if(!item) return;
+    if(flow.type==='transfer'){
+      item.classList.add('plan-axis-transfer');
+      item.querySelector('.flow-detail')?.remove();
+      const title=item.querySelector('.flow-title');
+      if(title && flow.duration_estimate) title.insertAdjacentHTML('beforeend',`<span class="plan-axis-duration">${escPlan(flow.duration_estimate)}</span>`);
+      const to=flow.to;
+      const next=(day.flow||[])[index+1];
+      const nextSpot=next?.spot_ref;
+      const targetIsEnd=endpointKey(to) && endpointKey(to)===endpointKey(day.end);
+      const representedByNext=to && ((nextSpot && endpointKey(nextSpot)===endpointKey(to)) || next?.type==='route' || next?.type==='activity');
+      if(to && ['spot','travel_point'].includes(to.type) && !targetIsEnd && !representedByNext){
+        item.insertAdjacentHTML('afterend',axisEndpointItem(to,'目的地',published,'plan-axis-destination'));
+      }
+    }else if(flow.type==='spot'){
+      item.classList.add('plan-axis-destination');
+    }else if(flow.type==='route'){
+      item.classList.add('plan-axis-route');
+    }else if(flow.type==='activity'){
+      item.classList.add('plan-axis-activity');
+    }
+  });
+
+  const lastFlow=(day.flow||[]).at(-1);
+  const lastItem=[...list.querySelectorAll(':scope > .flow-item:not(.plan-axis-start)')].at(-1);
+  const lastSpot=lastFlow?.spot_ref;
+  if(lastSpot && endpointKey(lastSpot)===endpointKey(day.end) && lastItem){
+    lastItem.classList.add('plan-axis-end');
+    lastItem.querySelector('.flow-title')?.insertAdjacentHTML('afterbegin','<span class="plan-axis-kicker">終点</span>');
+  }else{
+    list.insertAdjacentHTML('beforeend',axisEndpointItem(day.end,'終点',published,'plan-axis-end'));
+  }
 }
 
 function enhanceTripValue(section,value={}){
@@ -246,6 +327,7 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
     const notes=extra.day_notes?.[String(day.day)]||[];
     if(notes.length) card.insertAdjacentHTML('beforeend',`<div class="plan-day-notes"><span>補足</span><ul>${notes.map(x=>`<li>${escPlan(x)}</li>`).join('')}</ul></div>`);
     makeDayToggle(card);
+    enhanceDayStructure(card,day,published);
   });
 
   const breakdown=p.estimated_cost?.breakdown||[];
