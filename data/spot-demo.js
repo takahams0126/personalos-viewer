@@ -8,7 +8,9 @@ function esc(v='') { return String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<
 function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">${items.map(x=>`<span class="spot-chip">${esc(x)}</span>`).join('')}</div>` : ''; }
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
 function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards ${className?`spot-demo-cards-${esc(className)}`:''}">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
-function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div></div>` : ''; }
+function externalLinkIcon() { return `<svg class="spot-link-icon external" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`; }
+function internalLinkIcon() { return `<svg class="spot-link-icon internal" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M5 12h11"/><path d="M13 7l5 5-5 5"/></svg>`; }
+function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener"><span>${esc(x.label)}</span>${externalLinkIcon()}</a>`).join('')}</div></div>` : ''; }
 function factValue(fact, spot={}) {
   if (fact?.label === '季節' && (spot.season||[]).length) {
     const seasons = spot.season.map(x=>`<i class="spot-season-icon" title="${esc(x)}" aria-label="${esc(x)}">${esc(x.slice(0,1))}</i>`).join('');
@@ -83,7 +85,7 @@ function render(data, app) {
 
     ${(s.practicality||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}</section>`:''}
 
-    ${related.length?`<section class="section spot-demo-section spot-related-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<a class="spot-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-related-kind">関連スポット</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-meta">${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span><span class="spot-related-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false"><path d="M5 12h11"/><path d="M13 7l5 5-5 5"/></svg></span></a>`).join('')}</div></section>`:''}
+    ${related.length?`<section class="section spot-demo-section spot-related-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<a class="spot-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-related-kind">関連スポット</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-meta">${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span><span class="spot-related-arrow" aria-hidden="true">${internalLinkIcon()}</span></a>`).join('')}</div></section>`:''}
   `;
 }
 
