@@ -9,6 +9,18 @@ const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopov
 const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低',optional:'任意'}[v] || String(v).replaceAll('_',' '));
 const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
 
+function planInternalChevron(){
+  return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
+}
+
+function planMainRouteCard(ref,published){
+  const key=`${ref?.type||'route'}:${ref?.id||''}`;
+  const content=`<span class="plan-main-route-kind">主役Route</span><strong>${escPlan(ref?.label||ref?.id||'')}</strong>${planInternalChevron()}`;
+  return published.has(key)
+    ? `<a class="plan-main-route-card" href="?type=${encodeURIComponent(ref.type||'route')}&id=${encodeURIComponent(ref.id||'')}">${content}</a>`
+    : `<span class="plan-main-route-card is-disabled">${content}</span>`;
+}
+
 async function initPlanDemo(){
   let planData, extra, manifest;
   try{
@@ -165,6 +177,24 @@ function makeDayToggle(card){
   header.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
 }
 
+function enhanceTripValue(section,value={}){
+  if(!section) return;
+  const heading=section.querySelector(':scope > h2');
+  if(!heading) return;
+  const highlights=Array.isArray(value.highlights)?value.highlights:[];
+  const keyRows=[
+    ['旅の流れ',value.flow],
+    ['体験の幅',value.diversity],
+    ['移動効率',value.travel_efficiency],
+    ['トレードオフ',Array.isArray(value.tradeoffs)?value.tradeoffs.join(' / '):value.tradeoffs]
+  ].filter(([,v])=>v);
+  [...section.children].filter(x=>x!==heading).forEach(x=>x.remove());
+  section.insertAdjacentHTML('beforeend',`
+    ${value.summary?`<p class="plan-value-summary">${escPlan(value.summary)}</p>`:''}
+    ${highlights.length?`<div class="plan-value-highlights">${highlights.map(x=>`<article>${escPlan(x)}</article>`).join('')}</div>`:''}
+    ${keyRows.length?`<div class="plan-value-key-wrap"><h3>旅の要点</h3><div class="plan-value-key-grid">${keyRows.map(([label,text])=>`<article><span>${escPlan(label)}</span><p>${escPlan(text)}</p></article>`).join('')}</div></div>`:''}`);
+}
+
 function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
   const p=data.plan||{};
   hero.classList.add('plan-demo-hero');
@@ -176,11 +206,19 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
     hero.insertAdjacentHTML('beforeend',`<div class="plan-hero-meta">${primary?`<span><small>主な移動</small><strong>${escPlan(transportLabel(primary))}</strong></span>`:''}${alternatives.length?`<span><small>代替移動</small><strong>${alternatives.map(x=>escPlan(transportLabel(x))).join(' / ')}</strong></span>`:''}</div>`);
   }
 
-  // Planの設計メタ情報はPublic Viewerへ出さない。
   [...app.querySelectorAll('.section')].filter(x=>['旅を成立させる設計','このPlanの確定度'].includes(x.querySelector('h2')?.textContent.trim())).forEach(x=>x.remove());
-
-  // 計画Planでは全体Mapを持たず、Day内のRoute選択を中心に見せる。
   [...app.querySelectorAll('.section')].filter(x=>x.querySelector('h2')?.textContent.trim()==='旅全体の地図').forEach(x=>x.remove());
+
+  const tripValue=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
+  enhanceTripValue(tripValue,p.trip_value||{});
+
+  const mainRoutes=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
+  if(mainRoutes && (data.hero_refs||[]).length){
+    const oldCards=mainRoutes.querySelector('.cards');
+    const html=`<div class="plan-main-route-grid">${data.hero_refs.map(x=>planMainRouteCard(x,published)).join('')}</div>`;
+    if(oldCards) oldCards.outerHTML=html;
+    else mainRoutes.insertAdjacentHTML('beforeend',html);
+  }
 
   const days=p.days||[];
   const dayCards=[...itinerary.querySelectorAll('.day-card')];
@@ -210,7 +248,6 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
 
   const riskSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');
   if(riskSection){
-    riskSection.classList.add('plan-open-block');
     const rows=[...riskSection.querySelectorAll('li')];
     (p.risks||[]).forEach((risk,index)=>{
       const row=rows[index]; if(!row||!risk.impact) return;
@@ -218,13 +255,10 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
     });
   }
 
-  // PlanもRouteと同じ「タイトルをタップして開閉」の表示文法へ統一する。
-  const tripValue=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
-  const mainRoutes=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
   const costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');
   makePlanCollapsible(tripValue,false);
   makePlanCollapsible(mainRoutes,true);
   makePlanCollapsible(itinerary,true);
-  makePlanCollapsible(costSection,true);
-  makePlanCollapsible(riskSection,true);
+  makePlanCollapsible(costSection,false);
+  makePlanCollapsible(riskSection,false);
 }
