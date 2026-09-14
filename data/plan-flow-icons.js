@@ -2,7 +2,7 @@ import {
   renderTablerIcon,
   resolveDestinationIcon,
   resolveTransferIcon
-} from './icon-registry.js?v=20260915-13';
+} from './icon-registry.js?v=20260915-14';
 
 const planIconQs = new URLSearchParams(location.search);
 if (planIconQs.get('type') === 'plan') initPlanFlowIcons();
@@ -28,6 +28,7 @@ function transferModeFor(item) {
   if (text.includes('飛行機')) return 'air';
   if (text.includes('電車')) return 'train';
   if (text.includes('徒歩')) return 'walk';
+  if (text.includes('バイク') || text.includes('モーターサイクル')) return 'motorbike';
   if (text.includes('レンタカー') || text.includes('車＋登山アクセス')) return 'rental_car';
   return 'default';
 }
