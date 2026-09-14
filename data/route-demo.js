@@ -17,6 +17,9 @@ function routeCards(items=[], cls='') {
 function internalChevron() {
   return `<svg class="route-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
+function flowChevron() {
+  return `<svg class="route-flow-chevron" viewBox="0 0 34 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 4l8 8-8 8"/><path d="M14 4l8 8-8 8"/></svg>`;
+}
 
 async function initRouteDemo() {
   let data;
@@ -93,5 +96,11 @@ function enhanceRoute(data, app, hero) {
   [...app.querySelectorAll(':scope > .section')].forEach(section => {
     const h = section.querySelector(':scope > h2');
     if (h?.textContent.trim()==='このルートの魅力') section.classList.add('route-demo-hide-duplicate');
+  });
+
+  // Route内部の進行は、ページ遷移用の青chevronとは分けて黄色の二重chevronで統一する。
+  app.querySelectorAll('.route-arrow').forEach(arrow => {
+    arrow.classList.add('route-flow-arrow');
+    arrow.innerHTML = flowChevron();
   });
 }
