@@ -105,19 +105,27 @@ function initCarousel(root) {
     prev?.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(index-1); });
     next?.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(index+1); });
     thumbs.forEach((thumb,i)=>thumb.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(i); }));
-    slides.forEach(slide => slide.querySelector('img')?.addEventListener('click', openLightbox));
     stage?.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')show(index-1); if(e.key==='ArrowRight')show(index+1); if(e.key==='Enter')openLightbox(); });
     let startX = null;
+    let startY = null;
+    let pointerStartedOnImage = false;
     stage?.addEventListener('pointerdown',e=>{
       if (e.target.closest('button')) return;
       startX=e.clientX;
+      startY=e.clientY;
+      pointerStartedOnImage = Boolean(e.target.closest('.spot-carousel-slide img'));
       stage.setPointerCapture?.(e.pointerId);
     });
     stage?.addEventListener('pointerup',e=>{
       if (startX===null || e.target.closest('button')) return;
       const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+      const startedOnImage = pointerStartedOnImage;
       startX=null;
-      if(Math.abs(dx)>45)show(index+(dx<0?1:-1));
+      startY=null;
+      pointerStartedOnImage=false;
+      if(Math.abs(dx)>45){ show(index+(dx<0?1:-1)); return; }
+      if(startedOnImage && Math.abs(dx)<10 && Math.abs(dy)<10) openLightbox();
     });
   });
 }
