@@ -112,6 +112,35 @@ function addRouteSwitcher(flow,item,routeData,published){
   existingStops.replaceWith(host);
 }
 
+function makePlanCollapsible(section,open=true){
+  if(!section || section.dataset.planCollapsible==='1') return;
+  const headingHost = section.querySelector(':scope > h2') || section.querySelector(':scope > .section-heading');
+  const title = headingHost?.matches('h2') ? headingHost : headingHost?.querySelector('h2');
+  if(!headingHost || !title) return;
+  section.dataset.planCollapsible='1';
+  section.classList.add('plan-collapsible');
+
+  const body=document.createElement('div');
+  body.className='plan-collapsible-body';
+  [...section.children].filter(x=>x!==headingHost).forEach(x=>body.appendChild(x));
+  section.appendChild(body);
+
+  headingHost.classList.add('plan-toggle-heading');
+  headingHost.setAttribute('role','button');
+  headingHost.setAttribute('tabindex','0');
+  const apply=nextOpen=>{
+    section.classList.toggle('is-collapsed',!nextOpen);
+    body.hidden=!nextOpen;
+    headingHost.setAttribute('aria-expanded',nextOpen?'true':'false');
+  };
+  const toggle=()=>apply(headingHost.getAttribute('aria-expanded')!=='true');
+  headingHost.addEventListener('click',toggle);
+  headingHost.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}
+  });
+  apply(open);
+}
+
 function makeDayToggle(card){
   const header = card.querySelector(':scope > .day-head');
   if(!header || card.dataset.dayToggle) return;
@@ -125,7 +154,7 @@ function makeDayToggle(card){
   header.setAttribute('role','button');
   header.setAttribute('tabindex','0');
   header.setAttribute('aria-expanded','false');
-  header.insertAdjacentHTML('beforeend','<span class="plan-day-toggle-icon" aria-hidden="true">⌄</span>');
+  header.insertAdjacentHTML('beforeend','<span class="plan-day-toggle-icon" aria-hidden="true"></span>');
   const toggle=()=>{
     const open=body.hidden;
     body.hidden=!open;
@@ -144,7 +173,7 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
   const primary=extra.transport?.primary;
   const alternatives=extra.transport?.alternatives||[];
   if(primary||alternatives.length){
-    hero.insertAdjacentHTML('afterend',`<section class="plan-demo-facts">${primary?`<div><span>主な移動</span><strong>${escPlan(transportLabel(primary))}</strong></div>`:''}${alternatives.length?`<div><span>代替移動</span><strong>${alternatives.map(x=>escPlan(transportLabel(x))).join(' / ')}</strong></div>`:''}</section>`);
+    hero.insertAdjacentHTML('beforeend',`<div class="plan-hero-meta">${primary?`<span><small>主な移動</small><strong>${escPlan(transportLabel(primary))}</strong></span>`:''}${alternatives.length?`<span><small>代替移動</small><strong>${alternatives.map(x=>escPlan(transportLabel(x))).join(' / ')}</strong></span>`:''}</div>`);
   }
 
   // Planの設計メタ情報はPublic Viewerへ出さない。
@@ -188,4 +217,14 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
       row.insertAdjacentHTML('afterbegin',`<span class="plan-impact impact-${escPlan(risk.impact)}">${escPlan(impactPlan(risk.impact))}</span>`);
     });
   }
+
+  // PlanもRouteと同じ「タイトルをタップして開閉」の表示文法へ統一する。
+  const tripValue=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
+  const mainRoutes=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
+  const costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');
+  makePlanCollapsible(tripValue,false);
+  makePlanCollapsible(mainRoutes,true);
+  makePlanCollapsible(itinerary,true);
+  makePlanCollapsible(costSection,true);
+  makePlanCollapsible(riskSection,true);
 }
