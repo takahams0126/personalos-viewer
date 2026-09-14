@@ -19,6 +19,30 @@
     box-shadow:0 3px 12px rgba(45,55,65,.10);
   }
 
+  /* Hero and plan/execution switch are structural UI, not ordinary white cards. */
+  .hero{
+    background:linear-gradient(135deg,#eaf2f9 0%,#f2f7fb 58%,#e4eef7 100%);
+    border:1px solid #b8c8d7;
+    box-shadow:0 8px 24px rgba(45,67,88,.14),0 1px 3px rgba(45,67,88,.10);
+  }
+  .plan-mode-switch{
+    background:#e7edf3;
+    border-color:#b7c3ce;
+    box-shadow:0 4px 14px rgba(45,55,65,.13);
+  }
+  .plan-mode-btn{
+    color:#4f5963;
+  }
+  .plan-mode-btn.active{
+    background:#dce9fb;
+    color:#174ea6;
+    box-shadow:0 2px 8px rgba(26,115,232,.16);
+  }
+  .demo-chip{
+    background:#dce3e9;
+    color:#4e5963;
+  }
+
   /* Yellow semantic/value cards: stronger surface and boundary. */
   .plan-value-highlights article,
   .plan-value-key-grid article,
