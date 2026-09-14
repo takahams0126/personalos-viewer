@@ -1,4 +1,19 @@
 /* Semantic Plan Flow icon layer. Destination = primary node, transfer = indented connector. */
+.plan-axis{position:relative!important}
+/* One continuous spine avoids per-row zig-zag seams. */
+.plan-axis::before{
+  content:"";
+  position:absolute;
+  left:17px;
+  top:18px;
+  bottom:18px;
+  width:2px;
+  background:#dfe3e7;
+  border-radius:999px;
+  z-index:0;
+}
+.plan-axis>.flow-item::before{display:none!important}
+
 .plan-axis .plan-axis-point>.flow-icon,
 .plan-axis .plan-axis-destination>.flow-icon,
 .plan-axis .plan-axis-start>.flow-icon,
@@ -6,29 +21,45 @@
   width:36px!important;
   height:36px!important;
   border-radius:50%!important;
-  border:1px solid rgba(26,115,232,.24)!important;
+  border:1px solid rgba(26,115,232,.30)!important;
   background:#e8f0fe!important;
   color:#1a73e8!important;
   box-shadow:0 3px 9px rgba(26,115,232,.14)!important;
   display:grid!important;
   place-items:center!important;
   font-size:0!important;
+  position:relative;
+  z-index:2;
 }
 .plan-axis .plan-axis-point>.flow-icon::after,
 .plan-axis .plan-axis-destination>.flow-icon::after,
 .plan-axis .plan-axis-start>.flow-icon::after,
 .plan-axis .plan-axis-end>.flow-icon::after{content:none!important}
-.plan-tabler-icon{display:block;width:20px;height:20px;flex:none}
+.plan-tabler-icon{
+  display:block!important;
+  width:20px!important;
+  height:20px!important;
+  min-width:20px!important;
+  min-height:20px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  color:inherit!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+.plan-destination-icon{color:#1a73e8!important;stroke:#1a73e8!important}
 .plan-axis .plan-axis-point .flow-title,
 .plan-axis .plan-axis-destination .flow-title{font-size:1.03rem!important;font-weight:780!important;line-height:1.45!important}
 
-/* Transfers stay visible, but read as edges rather than peer nodes. */
+/* Transfers are visibly subordinate connector rows, with extra indentation. */
 .plan-axis .flow-item.plan-axis-transfer{
-  margin-left:18px!important;
+  margin-left:28px!important;
   min-height:30px!important;
   padding:4px 0!important;
   grid-template-columns:20px minmax(0,1fr)!important;
-  column-gap:7px!important;
+  column-gap:8px!important;
+  position:relative;
+  z-index:1;
 }
 .plan-axis .flow-item.plan-axis-transfer>.flow-icon{
   width:18px!important;
@@ -44,7 +75,7 @@
   place-items:center!important;
 }
 .plan-axis .flow-item.plan-axis-transfer>.flow-icon::after{content:none!important}
-.plan-axis .flow-item.plan-axis-transfer .plan-tabler-icon{width:16px;height:16px}
+.plan-axis .flow-item.plan-axis-transfer .plan-tabler-icon{width:17px!important;height:17px!important;min-width:17px!important;min-height:17px!important;color:#7b8187!important;stroke:#7b8187!important}
 .plan-axis .flow-item.plan-axis-transfer>div:nth-child(2){margin-left:0!important}
 .plan-axis .flow-item.plan-axis-transfer .flow-title{font-size:0!important;line-height:1.2!important;color:#7b8187!important}
 .plan-axis .flow-item.plan-axis-transfer .badge,
@@ -57,37 +88,37 @@
   background:transparent!important;
   color:#6f7780!important;
   box-shadow:none!important;
-  font-size:.78rem!important;
+  font-size:.8rem!important;
   font-weight:680!important;
 }
 .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration::before{content:"·";margin-right:8px;color:#aab0b6}
 
-/* Keep the vertical spine aligned to destination nodes, not transfer indents. */
-.plan-axis>.flow-item::before{left:17px!important}
-.plan-axis .flow-item.plan-axis-transfer::before{left:-1px!important}
-
 @media(max-width:640px){
+  .plan-axis::before{left:17px}
   .plan-axis .plan-axis-point>.flow-icon,
   .plan-axis .plan-axis-destination>.flow-icon,
   .plan-axis .plan-axis-start>.flow-icon,
   .plan-axis .plan-axis-end>.flow-icon{width:34px!important;height:34px!important}
-  .plan-tabler-icon{width:19px;height:19px}
-  .plan-axis .flow-item.plan-axis-transfer{margin-left:17px!important}
+  .plan-tabler-icon{width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important}
+  .plan-axis .flow-item.plan-axis-transfer{margin-left:27px!important}
   .plan-axis .flow-item.plan-axis-transfer .badge,
-  .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration{font-size:.76rem!important}
+  .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration{font-size:.78rem!important}
 }
 
 @media(prefers-color-scheme:dark){
+  .plan-axis::before{background:#3c4043}
   .plan-axis .plan-axis-point>.flow-icon,
   .plan-axis .plan-axis-destination>.flow-icon,
   .plan-axis .plan-axis-start>.flow-icon,
   .plan-axis .plan-axis-end>.flow-icon{
-    border-color:#3f5878!important;
+    border-color:#46698f!important;
     background:#243449!important;
     color:#8ab4f8!important;
     box-shadow:0 3px 10px rgba(0,0,0,.22)!important;
   }
+  .plan-destination-icon{color:#8ab4f8!important;stroke:#8ab4f8!important}
   .plan-axis .flow-item.plan-axis-transfer>.flow-icon,
+  .plan-axis .flow-item.plan-axis-transfer .plan-tabler-icon,
   .plan-axis .flow-item.plan-axis-transfer .badge,
-  .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration{color:#aeb4ba!important}
+  .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration{color:#b7bdc3!important;stroke:#b7bdc3!important}
 }
