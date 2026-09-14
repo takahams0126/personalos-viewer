@@ -5,8 +5,14 @@ const routeId = qsRoute.get('id');
 if (routeType === 'route' && routeId === 'R011') initRouteDemo();
 
 const escRoute = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
-const roleRoute = (v='') => ({core:'主役',optional:'任意',main_lunch:'昼食',high_priority:'高優先',condition_high:'条件付き',fallback_onsen:'代替温泉',onsen:'温泉'}[v] || String(v).replaceAll('_',' '));
-const difficultyRoute = (v='') => ({easy:'やさしい',easy_to_medium:'やさしい〜中程度',medium:'中程度',medium_to_hard:'中程度〜難しい',hard:'難しい'}[v] || v);
+const roleRoute = (v='') => ({
+  core:'主役', main:'主役', optional:'任意', main_lunch:'昼食', high_priority:'高優先',
+  condition_high:'条件付き', fallback_onsen:'代替温泉', onsen:'温泉', fallback:'代替'
+}[v] || String(v).replaceAll('_',' '));
+const difficultyRoute = (v='') => ({
+  easy:'やさしい', easy_to_medium:'やさしい〜中程度', medium:'中程度',
+  medium_to_hard:'中程度〜難しい', hard:'難しい'
+}[v] || v);
 const variantRoute = (v='') => ({standard:'標準',full:'フル',short:'短縮'}[v] || String(v).replaceAll('_',' '));
 
 function routeChipList(items=[]) {
@@ -18,15 +24,48 @@ function routeCards(items=[], cls='') {
 function internalChevron() {
   return `<svg class="route-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
-function flowChevron() {
-  return `<svg class="route-flow-chevron" viewBox="0 0 34 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 4l8 8-8 8"/><path d="M14 4l8 8-8 8"/></svg>`;
-}
 function routeRefMini(ref, published=new Set()) {
   const key = `${ref.type || 'spot'}:${ref.id || ''}`;
   const inner = `<span class="route-hero-ref-kind">主役Spot</span><strong>${escRoute(ref.label || ref.id || '')}</strong>${internalChevron()}`;
   return published.has(key)
     ? `<a class="route-hero-ref" href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${inner}</a>`
     : `<span class="route-hero-ref route-hero-ref-disabled">${inner}</span>`;
+}
+
+function findSection(app, title) {
+  return [...app.querySelectorAll(':scope > .section')].find(x => x.querySelector(':scope > h2')?.textContent.trim() === title) || null;
+}
+
+function makeCollapsible(section, open=true) {
+  if (!section || section.dataset.routeCollapsible === '1') return;
+  const heading = section.querySelector(':scope > h2');
+  if (!heading) return;
+  section.dataset.routeCollapsible = '1';
+  section.classList.add('route-collapsible');
+
+  const body = document.createElement('div');
+  body.className = 'route-collapsible-body';
+  [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
+  section.appendChild(body);
+
+  heading.classList.add('route-toggle-heading');
+  heading.setAttribute('role','button');
+  heading.setAttribute('tabindex','0');
+
+  const apply = nextOpen => {
+    section.classList.toggle('is-collapsed', !nextOpen);
+    body.hidden = !nextOpen;
+    heading.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+  };
+  const toggle = () => apply(heading.getAttribute('aria-expanded') !== 'true');
+  heading.addEventListener('click', toggle);
+  heading.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+  apply(open);
 }
 
 async function initRouteDemo() {
@@ -68,83 +107,40 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     hero.insertAdjacentHTML('beforeend', `<div class="route-hero-refs">${data.hero_refs.map(x=>routeRefMini(x,published)).join('')}</div>`);
   }
 
-  const endpointText = r.start_point || r.end_point ? `${escRoute(r.start_point||'—')} → ${escRoute(r.end_point||'—')}` : '';
-  const facts = `
-    <section class="route-demo-facts">
-      <div><span>所要時間</span><strong>${escRoute(r.duration||'')}</strong></div>
-      <div><span>難易度</span><strong>${escRoute(difficultyRoute(r.difficulty||''))}</strong></div>
-      <div><span>移動</span><strong>${r.route_type==='driving'?'車':escRoute(r.route_type||'')}</strong></div>
-      <div><span>季節</span><strong class="route-season-icons">${(r.season||[]).map(x=>`<i title="${escRoute(x)}">${escRoute(x.slice(0,1))}</i>`).join('')}</strong></div>
-      ${endpointText?`<div class="route-endpoint-fact"><span>起点 → 終点</span><strong>${endpointText}</strong></div>`:''}
-    </section>`;
-  hero.insertAdjacentHTML('afterend', facts);
-
-  const mapSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='ルートの地図');
-  mapSection?.querySelector('#map-mode-note')?.remove();
-  const anchor = mapSection || hero.nextElementSibling;
-
-  const valueHtml = `
-    <section class="section route-demo-section route-demo-value">
-      <h2>このルートの魅力</h2>
-      ${appeal.summary?`<p class="route-appeal-summary">${escRoute(appeal.summary)}</p>`:''}
-      ${routeCards(r.highlights||[],'primary')}
-      ${(appeal.strengths||[]).length?`<div class="route-demo-detail"><h3>組み合わせる意味</h3><ul>${appeal.strengths.map(x=>`<li>${escRoute(x)}</li>`).join('')}</ul></div>`:''}
-    </section>`;
-
-  const fitHtml = ((appeal.user_fit||[]).length || (r.suitable_for||[]).length) ? `
-    <section class="section route-demo-section">
-      <h2>こんな旅に向いている</h2>
-      ${routeCards(appeal.user_fit||[],'fit')}
-      ${routeChipList(r.suitable_for||[])}
-    </section>` : '';
-
-  const conditional = r.conditional_refs || [];
-  const conditionalHtml = conditional.length ? `
-    <section class="section route-demo-section route-conditional-section">
-      <h2>条件付き・代替の立ち寄り</h2>
-      <div class="route-ref-grid">${conditional.map(x=>`<a class="route-ref-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="route-ref-kind">${escRoute(roleRoute(x.role||''))}</span><strong>${escRoute(x.label||x.id)}</strong><span class="route-ref-meta">${escRoute(x.insertion_policy || (x.fallback_for?`${x.fallback_for} の代替`:''))}</span>${internalChevron()}</a>`).join('')}</div>
-    </section>` : '';
-
-  const notesHtml = (r.notes||[]).length ? `
-    <section class="section route-demo-section route-notes-section">
-      <h2>このルートをうまく回るコツ</h2>
-      <ul class="route-demo-notes">${r.notes.map(x=>`<li>${escRoute(x)}</li>`).join('')}</ul>
-    </section>` : '';
-
-  const wrapper = document.createElement('div');
-  wrapper.className = 'route-demo-insert';
-  wrapper.innerHTML = valueHtml + fitHtml + conditionalHtml + notesHtml;
-  if (anchor) anchor.insertAdjacentElement('afterend', wrapper); else hero.insertAdjacentElement('afterend', wrapper);
-
-  [...app.querySelectorAll(':scope > .section')].forEach(section => {
-    const h = section.querySelector(':scope > h2');
-    const title = h?.textContent.trim();
-    if (title === 'このルートの魅力' || title === '所要時間・難易度') {
-      section.classList.add('route-demo-hide-duplicate');
-    }
-  });
-
-  const traversalSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='巡り方');
-  if (traversalSection) {
-    const cards = [...traversalSection.querySelectorAll(':scope > .card')];
-    cards.forEach((card,index)=>{
-      const t = (r.traversals||[])[index];
-      if (!t) return;
-      const heading = card.querySelector('h3');
-      if (heading && (t.start_context || t.end_context)) {
-        heading.insertAdjacentHTML('afterend', `<div class="route-traversal-context"><span>前提</span>${escRoute(t.start_context||'—')} → ${escRoute(t.end_context||'—')}</div>`);
-      }
-      const context = card.querySelector('.route-traversal-context');
-      if (t.reason) (context || heading)?.insertAdjacentHTML('afterend', `<p class="route-traversal-reason">${escRoute(t.reason)}</p>`);
-      const stops = [...card.querySelectorAll('.route-stop')];
-      stops.forEach((stop,i)=>{
-        const role = t.ordered_spot_refs?.[i]?.role;
-        if (role) stop.insertAdjacentHTML('beforeend', `<small class="route-role-badge role-${escRoute(role)}">${escRoute(roleRoute(role))}</small>`);
-      });
-    });
+  const facts = [
+    ['所要時間', r.duration || ''],
+    ['難易度', difficultyRoute(r.difficulty || '')],
+    ['移動', r.route_type === 'driving' ? '車' : (r.route_type || '')],
+  ].filter(([,value]) => value);
+  if ((r.season||[]).length) {
+    const season = `<span class="route-season-icons">${r.season.map(x=>`<i title="${escRoute(x)}">${escRoute(x.slice(0,1))}</i>`).join('')}</span>`;
+    facts.push(['季節', season]);
+  }
+  if (facts.length) {
+    hero.insertAdjacentHTML('beforeend', `<div class="route-hero-facts">${facts.map(([label,value])=>`<div><span>${escRoute(label)}</span><strong>${label==='季節'?value:escRoute(value)}</strong></div>`).join('')}</div>`);
   }
 
-  const sequenceSection = [...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='立ち寄り順');
+  // Public Routeはconceptual mapのみ。旧JSONにactual artifactが残っていてもUIへ出さない。
+  const mapSection = findSection(app, 'ルートの地図');
+  mapSection?.querySelector('.map-tabs')?.remove();
+  mapSection?.querySelector('#route-summary')?.remove();
+  mapSection?.querySelector('#map-mode-note')?.remove();
+
+  // 旧renderer由来のPublic Route責務外blockを除去する。
+  findSection(app, 'このルートの魅力')?.remove();
+  findSection(app, '巡り方')?.remove();
+  findSection(app, '所要時間・難易度')?.remove();
+
+  const strengths = (appeal.strengths||r.highlights||[]);
+  const appealSection = document.createElement('section');
+  appealSection.className = 'section route-demo-section route-demo-value';
+  appealSection.innerHTML = `
+    <h2>このルートの魅力</h2>
+    ${appeal.summary?`<p class="route-appeal-summary">${escRoute(appeal.summary)}</p>`:''}
+    ${routeCards(strengths,'primary')}`;
+  hero.insertAdjacentElement('afterend', appealSection);
+
+  const sequenceSection = findSection(app, '立ち寄り順');
   if (sequenceSection) {
     const stops = [...sequenceSection.querySelectorAll('.route-stop')];
     stops.forEach((stop,index)=>{
@@ -160,8 +156,16 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     });
   }
 
-  app.querySelectorAll('.route-arrow').forEach(arrow => {
-    arrow.classList.add('route-flow-arrow');
-    arrow.innerHTML = flowChevron();
-  });
+  const constraintSection = findSection(app, '重要な条件');
+
+  // 公開Routeの固定骨格: Hero → 魅力 → Map → 立ち寄り順 → 重要な条件。
+  // 重要な条件は常に最後へ置く。
+  if (mapSection) appealSection.insertAdjacentElement('afterend', mapSection);
+  if (sequenceSection) (mapSection || appealSection).insertAdjacentElement('afterend', sequenceSection);
+  if (constraintSection) app.appendChild(constraintSection);
+
+  makeCollapsible(appealSection, false);
+  makeCollapsible(mapSection, true);
+  makeCollapsible(sequenceSection, true);
+  makeCollapsible(constraintSection, true);
 }
