@@ -39,7 +39,7 @@ function galleryHtml(images=[], title='') {
   return `<div class="spot-carousel" data-count="${sorted.length}">
     <div class="spot-carousel-stage" tabindex="0">
       <div class="spot-carousel-track">${slides}</div>
-      ${sorted.length>1?`<button class="spot-carousel-nav prev" aria-label="前の画像">‹</button><button class="spot-carousel-nav next" aria-label="次の画像">›</button><div class="spot-carousel-count"><span class="current">1</span> / ${sorted.length}</div>`:''}
+      ${sorted.length>1?`<button type="button" class="spot-carousel-nav prev" aria-label="前の画像">‹</button><button type="button" class="spot-carousel-nav next" aria-label="次の画像">›</button><div class="spot-carousel-count"><span class="current">1</span> / ${sorted.length}</div>`:''}
     </div>
     ${sorted.length>1?`<div class="spot-carousel-thumbs">${thumbs}</div>`:''}
   </div>`;
@@ -86,7 +86,7 @@ function initCarousel(root) {
     const thumbs = [...carousel.querySelectorAll('.spot-carousel-thumb')];
     const stage = carousel.querySelector('.spot-carousel-stage');
     const count = carousel.querySelector('.spot-carousel-count .current');
-    if (slides.length < 2) return;
+    if (!slides.length) return;
     let index = 0;
     const show = next => {
       index = (next + slides.length) % slides.length;
@@ -95,12 +95,71 @@ function initCarousel(root) {
       if (count) count.textContent = String(index+1);
       thumbs[index]?.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
     };
-    carousel.querySelector('.prev')?.addEventListener('click',()=>show(index-1));
-    carousel.querySelector('.next')?.addEventListener('click',()=>show(index+1));
-    thumbs.forEach((thumb,i)=>thumb.addEventListener('click',()=>show(i)));
-    stage?.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')show(index-1); if(e.key==='ArrowRight')show(index+1); });
+    const openLightbox = () => openSpotLightbox(slides, index, show);
+    const prev = carousel.querySelector('.prev');
+    const next = carousel.querySelector('.next');
+    [prev,next,...thumbs].filter(Boolean).forEach(btn => {
+      btn.addEventListener('pointerdown', e => e.stopPropagation());
+      btn.addEventListener('pointerup', e => e.stopPropagation());
+    });
+    prev?.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(index-1); });
+    next?.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(index+1); });
+    thumbs.forEach((thumb,i)=>thumb.addEventListener('click',e=>{ e.preventDefault(); e.stopPropagation(); show(i); }));
+    slides.forEach(slide => slide.querySelector('img')?.addEventListener('click', openLightbox));
+    stage?.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')show(index-1); if(e.key==='ArrowRight')show(index+1); if(e.key==='Enter')openLightbox(); });
     let startX = null;
-    stage?.addEventListener('pointerdown',e=>{ startX=e.clientX; stage.setPointerCapture?.(e.pointerId); });
-    stage?.addEventListener('pointerup',e=>{ if(startX===null)return; const dx=e.clientX-startX; startX=null; if(Math.abs(dx)>45)show(index+(dx<0?1:-1)); });
+    stage?.addEventListener('pointerdown',e=>{
+      if (e.target.closest('button')) return;
+      startX=e.clientX;
+      stage.setPointerCapture?.(e.pointerId);
+    });
+    stage?.addEventListener('pointerup',e=>{
+      if (startX===null || e.target.closest('button')) return;
+      const dx=e.clientX-startX;
+      startX=null;
+      if(Math.abs(dx)>45)show(index+(dx<0?1:-1));
+    });
   });
+}
+
+function openSpotLightbox(slides, startIndex, syncCarousel) {
+  let index = startIndex;
+  const overlay = document.createElement('div');
+  overlay.className = 'spot-lightbox';
+  overlay.innerHTML = `
+    <button type="button" class="spot-lightbox-close" aria-label="閉じる">×</button>
+    ${slides.length>1?`<button type="button" class="spot-lightbox-nav prev" aria-label="前の画像">‹</button><button type="button" class="spot-lightbox-nav next" aria-label="次の画像">›</button>`:''}
+    <figure class="spot-lightbox-figure"><img alt=""><figcaption></figcaption></figure>
+    <div class="spot-lightbox-count"></div>`;
+  const img = overlay.querySelector('img');
+  const caption = overlay.querySelector('figcaption');
+  const counter = overlay.querySelector('.spot-lightbox-count');
+  const show = next => {
+    index = (next + slides.length) % slides.length;
+    const source = slides[index];
+    const sourceImg = source.querySelector('img');
+    img.src = sourceImg?.src || '';
+    img.alt = sourceImg?.alt || '';
+    caption.innerHTML = source.querySelector('figcaption')?.innerHTML || '';
+    if (counter) counter.textContent = `${index+1} / ${slides.length}`;
+    syncCarousel?.(index);
+  };
+  const close = () => {
+    document.removeEventListener('keydown', onKey);
+    overlay.remove();
+    document.body.classList.remove('spot-lightbox-open');
+  };
+  const onKey = e => {
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(index-1);
+    if (e.key === 'ArrowRight') show(index+1);
+  };
+  overlay.querySelector('.spot-lightbox-close')?.addEventListener('click', close);
+  overlay.querySelector('.prev')?.addEventListener('click',()=>show(index-1));
+  overlay.querySelector('.next')?.addEventListener('click',()=>show(index+1));
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', onKey);
+  document.body.appendChild(overlay);
+  document.body.classList.add('spot-lightbox-open');
+  show(index);
 }
