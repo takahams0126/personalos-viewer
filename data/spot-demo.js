@@ -83,7 +83,7 @@ function render(data, app) {
 
     ${(s.practicality||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}</section>`:''}
 
-    ${related.length?`<section class="section spot-demo-section spot-related-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<a class="spot-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-related-kind">関連スポット</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-meta">${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span><span class="spot-related-arrow" aria-hidden="true">→</span></a>`).join('')}</div></section>`:''}
+    ${related.length?`<section class="section spot-demo-section spot-related-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<a class="spot-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-related-kind">関連スポット</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-meta">${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span><span class="spot-related-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false"><path d="M5 12h11"/><path d="M13 7l5 5-5 5"/></svg></span></a>`).join('')}</div></section>`:''}
   `;
 }
 
