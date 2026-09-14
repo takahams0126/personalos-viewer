@@ -7,12 +7,12 @@ if (type === 'spot' && id === 'S0036') initSpotDemo();
 function esc(v='') { return String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c])); }
 function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">${items.map(x=>`<span class="spot-chip">${esc(x)}</span>`).join('')}</div>` : ''; }
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
-function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
+function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards ${className?`spot-demo-cards-${esc(className)}`:''}">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
 function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div></div>` : ''; }
 function factValue(fact, spot={}) {
   if (fact?.label === '季節' && (spot.season||[]).length) {
-    const seasons = spot.season.map(x=>`<i class="spot-season-icon" title="${esc(x)}">${esc(x.slice(0,1))}</i>`).join('');
-    return `<strong class="spot-season-fact"><span class="spot-season-icons">${seasons}</span><b>${esc(fact.value||'')}</b></strong>`;
+    const seasons = spot.season.map(x=>`<i class="spot-season-icon" title="${esc(x)}" aria-label="${esc(x)}">${esc(x.slice(0,1))}</i>`).join('');
+    return `<strong class="spot-season-fact"><span class="spot-season-icons">${seasons}</span></strong>`;
   }
   return `<strong>${esc(fact?.value||'')}</strong>`;
 }
@@ -81,7 +81,7 @@ function render(data, app) {
 
     ${(reviews.positives||[]).length || (reviews.cautions||[]).length || (reviews.best_for||[]).length?`<section class="section spot-demo-section"><div class="spot-demo-review-head"><div><h2>口コミから見える評価</h2><p>正本に保存された口コミ要約を表示しています。</p></div>${reviews.checked_at?`<span>確認 ${esc(reviews.checked_at)}</span>`:''}</div><div class="spot-review-grid"><article class="spot-review-card positive"><h3>よく評価されている点</h3>${list(reviews.positives)}</article><article class="spot-review-card caution"><h3>気をつけたい点</h3>${list(reviews.cautions)}</article><article class="spot-review-card best"><h3>特に向いているケース</h3>${list(reviews.best_for)}</article></div></section>`:''}
 
-    ${(s.practicality||[]).length || (s.season||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}${(s.season||[]).length?`<div class="spot-demo-sub"><h3>季節</h3>${chipList(s.season)}</div>`:''}</section>`:''}
+    ${(s.practicality||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}</section>`:''}
 
     ${related.length?`<section class="section spot-demo-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<article class="spot-related-card"><strong>${esc(x.label||x.id)}</strong><span>${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span></article>`).join('')}</div></section>`:''}
   `;
