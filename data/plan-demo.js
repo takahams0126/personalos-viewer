@@ -5,11 +5,17 @@ if (planType === 'plan' && planId === 'P001') initPlanDemo();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 const transportLabel = (v='') => ({air_and_rental_car:'飛行機＋レンタカー',air:'飛行機',rental_car:'レンタカー',train:'電車',bus:'バス',rental_car_and_mountain_access:'車＋登山アクセス'}[v] || String(v).replaceAll('_',' '));
-const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopover:'立ち寄り',lodging:'宿泊',dinner:'夕食',onsen:'温泉',optional:'任意',support:'補助',high_priority:'高優先',main_lunch:'昼食',condition_high:'条件付き',fallback_onsen:'代替温泉'}[v] || String(v).replaceAll('_',' '));
+const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopover:'立ち寄り',lodging:'宿泊',dinner:'夕食',onsen:'温泉',optional:'任意',support:'補助',high_priority:'高優先',main_lunch:'昼食',condition_high:'条件付き',fallback_onsen:'代替温泉',transfer:'乗換・移動',end:'終点'}[v] || String(v).replaceAll('_',' '));
 const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低',optional:'任意'}[v] || String(v).replaceAll('_',' '));
 const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
+const pointTypePlan = (v='') => ({home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',other:'その他'}[v] || String(v).replaceAll('_',' '));
 const budgetTotalLabel = (v='') => ({'1day':'終日',long_day:'長時間',full_day:'終日'}[v] || v.replace?.('-', '〜') || v);
 const budgetStartLabel = (v='') => ({morning:'朝出発',early_morning:'早朝出発',afternoon:'午後開始',evening:'夕方開始'}[v] || v.replaceAll?.('_',' ') || v);
+const badgeLabelPlan = (v='') => ({
+  home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',
+  primary:'優先',secondary:'次点',optional:'任意',high:'高',medium:'中',low:'低',
+  main:'主役',core:'主役',support:'補助',stopover:'立ち寄り',lodging:'宿泊',dinner:'夕食',onsen:'温泉',main_lunch:'昼食',high_priority:'高優先',condition_high:'条件付き',fallback_onsen:'代替温泉',transfer:'乗換・移動'
+}[v] || v);
 
 function planInternalChevron(){
   return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
@@ -87,9 +93,21 @@ function endpointInlinePlan(ref,published){
   return refPlan(ref,published);
 }
 
+function localizeBadges(root){
+  root?.querySelectorAll('.badge').forEach(el=>{
+    const raw=el.textContent.trim();
+    const localized=badgeLabelPlan(raw);
+    if(localized!==raw) el.textContent=localized;
+  });
+}
+
+function hasBadgeText(title,text){
+  return [...(title?.querySelectorAll('.badge,.plan-flow-badge')||[])].some(x=>x.textContent.trim()===text);
+}
+
 function axisEndpointItem(ref,label,published,cls=''){
   if(!ref) return '';
-  const pointType=ref.point_type?`<span class="plan-axis-type">${escPlan(ref.point_type==='home'?'自宅':ref.point_type==='airport'?'空港':ref.point_type==='station'?'駅':ref.point_type)}</span>`:'';
+  const pointType=ref.point_type?`<span class="plan-axis-type">${escPlan(pointTypePlan(ref.point_type))}</span>`:'';
   return `<li class="flow-item plan-axis-point ${cls}"><div class="flow-icon">●</div><div><div class="flow-title"><span class="plan-axis-kicker">${escPlan(label)}</span>${endpointInlinePlan(ref,published)} ${pointType}</div></div></li>`;
 }
 
@@ -203,7 +221,26 @@ function makeDayToggle(card){
   header.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
 }
 
-function enhanceDayStructure(card,day,published){
+function flowOverrideHtml(nodes=[],published){
+  return nodes.map(node=>{
+    if(node.type==='transfer'){
+      const mode=node.mode?` <span class="badge">${escPlan(transportLabel(node.mode))}</span>`:'';
+      return `<li class="flow-item transfer plan-axis-transfer"><div class="flow-icon">↔</div><div><div class="flow-title">移動${mode}</div></div></li>`;
+    }
+    const isStart=node.type==='start', isEnd=node.type==='end';
+    const kicker=isStart?'始点':isEnd?'終点':'目的地';
+    const ref=node.ref||null;
+    const name=ref?refPlan(ref,published):escPlan(node.label||'');
+    const type=node.point_type?`<span class="plan-axis-type">${escPlan(pointTypePlan(node.point_type))}</span>`:'';
+    const role=node.role?`<span class="plan-flow-badge role">${escPlan(rolePlan(node.role))}</span>`:'';
+    const priority=node.priority?`<span class="plan-flow-badge priority">${escPlan(priorityPlan(node.priority))}</span>`:'';
+    const activities=(node.activities||[]).length?`<div class="plan-axis-activities">${node.activities.map(x=>`<span>${escPlan(x)}</span>`).join('')}</div>`:'';
+    const notes=(node.notes||[]).map(x=>`<div class="flow-note">${escPlan(x)}</div>`).join('');
+    return `<li class="flow-item plan-axis-point plan-axis-destination${isStart?' plan-axis-start':''}${isEnd?' plan-axis-end':''}"><div class="flow-icon">●</div><div><div class="flow-title"><span class="plan-axis-kicker">${kicker}</span>${name} ${type}${role}${priority}</div>${activities}${notes}</div></li>`;
+  }).join('');
+}
+
+function enhanceDayStructure(card,day,published,flowOverride=null){
   const body=card.querySelector('.plan-day-body');
   if(!body) return;
 
@@ -227,8 +264,13 @@ function enhanceDayStructure(card,day,published){
   if(!list) return;
   list.classList.add('plan-axis');
   list.insertAdjacentHTML('beforebegin','<div class="plan-day-flow-heading"><span>1日のFlow</span></div>');
-  list.insertAdjacentHTML('afterbegin',axisEndpointItem(day.start,'始点',published,'plan-axis-start'));
 
+  if(Array.isArray(flowOverride) && flowOverride.length){
+    list.innerHTML=flowOverrideHtml(flowOverride,published);
+    return;
+  }
+
+  list.insertAdjacentHTML('afterbegin',axisEndpointItem(day.start,'始点',published,'plan-axis-start'));
   const items=[...list.querySelectorAll(':scope > .flow-item:not(.plan-axis-point)')];
   (day.flow||[]).forEach((flow,index)=>{
     const item=items[index];
@@ -313,6 +355,7 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
   const dayCards=[...itinerary.querySelectorAll('.day-card')];
   dayCards.forEach((card,dayIndex)=>{
     const day=days[dayIndex]; if(!day) return;
+    localizeBadges(card);
     const items=[...card.querySelectorAll('.flow-item')];
     items.forEach((item,itemIndex)=>{
       const flow=day.flow?.[itemIndex]; if(!flow) return;
@@ -320,14 +363,16 @@ function enhancePlan(data,extra,app,hero,itinerary,routeData,published){
       const ref=flow.spot_ref||flow.route_ref||{};
       const role=ref.role||flow.role;
       const priority=ref.priority||flow.priority;
-      if(title&&role) title.insertAdjacentHTML('beforeend',`<span class="plan-flow-badge role">${escPlan(rolePlan(role))}</span>`);
-      if(title&&priority) title.insertAdjacentHTML('beforeend',`<span class="plan-flow-badge priority">${escPlan(priorityPlan(priority))}</span>`);
+      const roleText=rolePlan(role||'');
+      const priorityText=priorityPlan(priority||'');
+      if(title&&role&&!hasBadgeText(title,roleText)) title.insertAdjacentHTML('beforeend',`<span class="plan-flow-badge role">${escPlan(roleText)}</span>`);
+      if(title&&priority&&!hasBadgeText(title,priorityText)) title.insertAdjacentHTML('beforeend',`<span class="plan-flow-badge priority">${escPlan(priorityText)}</span>`);
       if(flow.type==='route') addRouteSwitcher(flow,item,routeData,published);
     });
     const notes=extra.day_notes?.[String(day.day)]||[];
     if(notes.length) card.insertAdjacentHTML('beforeend',`<div class="plan-day-notes"><span>補足</span><ul>${notes.map(x=>`<li>${escPlan(x)}</li>`).join('')}</ul></div>`);
     makeDayToggle(card);
-    enhanceDayStructure(card,day,published);
+    enhanceDayStructure(card,day,published,extra.day_flow_overrides?.[String(day.day)]||null);
   });
 
   const breakdown=p.estimated_cost?.breakdown||[];
