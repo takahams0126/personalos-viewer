@@ -9,7 +9,7 @@ function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
 function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards ${className?`spot-demo-cards-${esc(className)}`:''}">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
 function externalLinkIcon() { return `<svg class="spot-link-icon external" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`; }
-function internalLinkIcon() { return `<svg class="spot-link-icon internal" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M5 12h11"/><path d="M13 7l5 5-5 5"/></svg>`; }
+function internalLinkIcon() { return `<svg class="spot-link-icon internal triple-chevron" viewBox="0 0 42 20" fill="none" aria-hidden="true" focusable="false"><path class="chev chev-1" d="M2 3l7 7-7 7"/><path class="chev chev-2" d="M13 3l7 7-7 7"/><path class="chev chev-3" d="M24 3l7 7-7 7"/></svg>`; }
 function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener"><span>${esc(x.label)}</span>${externalLinkIcon()}</a>`).join('')}</div></div>` : ''; }
 function factValue(fact, spot={}) {
   if (fact?.label === '季節' && (spot.season||[]).length) {
