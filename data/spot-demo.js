@@ -8,6 +8,7 @@ function esc(v='') { return String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<
 function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">${items.map(x=>`<span class="spot-chip">${esc(x)}</span>`).join('')}</div>` : ''; }
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
 function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
+function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div></div>` : ''; }
 
 async function initSpotDemo() {
   let data;
@@ -58,6 +59,7 @@ function render(data, app) {
         <h1>${esc(data.title)}</h1>
         <p class="spot-demo-summary">${esc(data.summary||'')}</p>
         ${chipList(s.themes||[])}
+        ${heroLinks(links)}
       </div>
       ${galleryHtml(s.image_refs||[], data.title)}
     </section>
@@ -75,8 +77,6 @@ function render(data, app) {
     ${(s.practicality||[]).length || (s.season||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}${(s.season||[]).length?`<div class="spot-demo-sub"><h3>季節</h3>${chipList(s.season)}</div>`:''}</section>`:''}
 
     ${related.length?`<section class="section spot-demo-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<article class="spot-related-card"><strong>${esc(x.label||x.id)}</strong><span>${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span></article>`).join('')}</div></section>`:''}
-
-    ${links.length?`<section class="section spot-demo-section"><h2>公式・参考情報</h2><div class="spot-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join('')}</div></section>`:''}
   `;
 }
 
