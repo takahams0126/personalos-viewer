@@ -2,7 +2,7 @@ import {
   renderTablerIcon,
   resolveDestinationIcon,
   resolveTransferIcon
-} from './icon-registry.js?v=20260915-12';
+} from './icon-registry.js?v=20260915-13';
 
 const planIconQs = new URLSearchParams(location.search);
 if (planIconQs.get('type') === 'plan') initPlanFlowIcons();
@@ -10,9 +10,11 @@ if (planIconQs.get('type') === 'plan') initPlanFlowIcons();
 function destinationSemantics(item) {
   const text = item.textContent || '';
 
+  // Match specific semantic entities before broad substrings.
+  // Example: "屋久島空港周辺レンタカー営業所" contains "空港" but is a rental_car_office.
+  if (text.includes('レンタカー営業所')) return {pointType:'rental_car_office'};
   if (text.includes('自宅')) return {pointType:'home'};
   if (text.includes('空港')) return {pointType:'airport'};
-  if (text.includes('レンタカー営業所')) return {pointType:'rental_car_office'};
   if (text.includes('宿泊') || text.includes('素泊民宿')) return {category:'lodging'};
   if (text.includes('温泉')) return {category:'onsen'};
   if (text.includes('夕食')) return {role:'dinner'};
