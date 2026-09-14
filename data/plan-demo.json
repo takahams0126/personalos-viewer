@@ -4,6 +4,21 @@
     "primary": "air_and_rental_car",
     "alternatives": []
   },
+  "day_flow_overrides": {
+    "1": [
+      {"type":"start","label":"自宅","point_type":"home"},
+      {"type":"transfer","mode":"train"},
+      {"type":"destination","label":"羽田空港","point_type":"airport"},
+      {"type":"transfer","mode":"air"},
+      {"type":"destination","label":"屋久島空港","point_type":"airport"},
+      {"type":"transfer","mode":null},
+      {"type":"destination","label":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office","activities":["レンタカー受取"]},
+      {"type":"transfer","mode":"rental_car"},
+      {"type":"destination","ref":{"type":"spot","id":"S0050","label":"お食事処 樹"},"role":"dinner","priority":"optional","notes":["疲れていれば自炊・軽食へ切替"]},
+      {"type":"transfer","mode":"rental_car"},
+      {"type":"end","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"role":"lodging","priority":"primary","activities":["チェックイン","買い出し・登山準備"]}
+    ]
+  },
   "day_notes": {
     "3": [
       "昼食の手打ちそば 松竹、条件付きの平内海中温泉、代替の尾之間温泉はR011内で順序と役割を持つため、Planには重複配置しない"
