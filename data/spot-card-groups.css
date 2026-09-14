@@ -10,7 +10,8 @@
 .spot-related-kind{grid-area:kind;color:#1a73e8;font-size:.7rem;font-weight:800;letter-spacing:.03em}
 .spot-related-card strong{grid-area:title;margin-top:2px;color:#202124;font-size:1rem}
 .spot-related-meta{grid-area:meta;margin-top:3px;color:#5f6368;font-size:.8rem}
-.spot-related-arrow{grid-area:arrow;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#e8f0fe;color:#1a73e8;font-weight:900;font-size:1.05rem}
+.spot-related-arrow{grid-area:arrow;display:block;width:auto;height:auto;border-radius:0;background:transparent;color:#7b91ad;font-weight:500;font-size:1.6rem;line-height:1;transform:translateX(0);transition:transform .16s ease,color .16s ease}
+.spot-related-card:hover .spot-related-arrow{color:#1a73e8;transform:translateX(3px)}
 
 @media(max-width:900px){
   .spot-demo-cards-fit,.spot-demo-cards-value{gap:10px}
@@ -28,5 +29,6 @@
   .spot-related-card strong{color:#e8eaed}
   .spot-related-meta{color:#bdc1c6}
   .spot-related-kind{color:#8ab4f8}
-  .spot-related-arrow{background:#253b5c;color:#8ab4f8}
+  .spot-related-arrow{background:transparent;color:#9db6d8}
+  .spot-related-card:hover .spot-related-arrow{color:#8ab4f8}
 }
