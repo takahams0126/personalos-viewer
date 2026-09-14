@@ -9,6 +9,13 @@ function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
 function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
 function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)} <span aria-hidden="true">↗</span></a>`).join('')}</div></div>` : ''; }
+function factValue(fact, spot={}) {
+  if (fact?.label === '季節' && (spot.season||[]).length) {
+    const seasons = spot.season.map(x=>`<i class="spot-season-icon" title="${esc(x)}">${esc(x.slice(0,1))}</i>`).join('');
+    return `<strong class="spot-season-fact"><span class="spot-season-icons">${seasons}</span><b>${esc(fact.value||'')}</b></strong>`;
+  }
+  return `<strong>${esc(fact?.value||'')}</strong>`;
+}
 
 async function initSpotDemo() {
   let data;
@@ -64,7 +71,7 @@ function render(data, app) {
       ${galleryHtml(s.image_refs||[], data.title)}
     </section>
 
-    ${(s.facts||[]).length?`<section class="spot-demo-facts">${s.facts.map(x=>`<div><span>${esc(x.label)}</span><strong>${esc(x.value)}</strong></div>`).join('')}</section>`:''}
+    ${(s.facts||[]).length?`<section class="spot-demo-facts">${s.facts.map(x=>`<div><span>${esc(x.label)}</span>${factValue(x,s)}</div>`).join('')}</section>`:''}
 
     ${(s.highlights||[]).length|| (s.strengths||[]).length?`<section class="section spot-demo-section"><h2>このスポットの魅力</h2>${cards(s.highlights||[],'highlight')}${(s.strengths||[]).length?`<div class="spot-demo-sub"><h3>強み</h3>${list(s.strengths)}</div>`:''}</section>`:''}
 
