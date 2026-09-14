@@ -21,37 +21,108 @@ function refCard(ref) {
 }
 
 function refInline(ref) {
-  const label = esc(ref.label || ref.id);
+  if (!ref) return '';
+  const label = esc(ref.label || ref.id || '');
   return canOpen(ref) ? `<a href="${hrefFor(ref)}">${label}</a>` : label;
+}
+
+function endpointInline(endpoint) {
+  if (!endpoint) return '';
+  if (endpoint.type === 'route_endpoint') {
+    const route = refInline(endpoint.route_ref || {});
+    return `${route}${endpoint.endpoint ? ` ${esc(endpoint.endpoint)}` : ''}`;
+  }
+  if (endpoint.type === 'travel_point') {
+    const pointType = endpoint.point_type ? `<span class="badge">${esc(endpoint.point_type)}</span>` : '';
+    return `${esc(endpoint.label || endpoint.id || '')}${pointType}`;
+  }
+  if (endpoint.type && endpoint.id) return refInline(endpoint);
+  return esc(endpoint.label || endpoint.name || endpoint.id || '');
+}
+
+function flowItemHtml(item) {
+  if (!item) return '';
+  if (item.type === 'transfer') {
+    const from = endpointInline(item.from);
+    const to = endpointInline(item.to);
+    const mode = item.mode ? `<span class="badge">${esc(item.mode)}</span>` : '';
+    return `<li><div><strong>移動</strong> ${mode}</div><div>${from}${from && to ? ' → ' : ''}${to}</div></li>`;
+  }
+  if (item.type === 'route') {
+    const traversal = item.traversal_id && item.traversal_id !== 'canonical'
+      ? `<span class="badge">${esc(item.direction || item.traversal_id)}</span>` : '';
+    const alternatives = (item.alternative_route_refs || []).length
+      ? `<div class="note">代替: ${(item.alternative_route_refs || []).map(refInline).join(' / ')}</div>` : '';
+    const sequence = (item.ordered_spot_refs || []).length
+      ? `<ol class="route-sequence">${item.ordered_spot_refs.map(x => `<li>${refInline(x)}${x.role ? ` <span class="badge">${esc(x.role)}</span>` : ''}</li>`).join('')}</ol>` : '';
+    return `<li><div><strong>Route</strong> ${refInline(item.route_ref || {})} ${traversal}</div>${sequence}${alternatives}</li>`;
+  }
+  if (item.type === 'spot') {
+    const ref = item.spot_ref || {};
+    const role = ref.role ? `<span class="badge">${esc(ref.role)}</span>` : '';
+    const fallback = (item.fallback_spot_refs || []).length
+      ? `<div class="note">Fallback: ${item.fallback_spot_refs.map(refInline).join(' / ')}</div>` : '';
+    return `<li><div><strong>立寄り</strong> ${refInline(ref)} ${role}</div>${fallback}</li>`;
+  }
+  if (item.type === 'activity') {
+    const from = endpointInline(item.from);
+    const to = endpointInline(item.to);
+    const location = from || to ? `<div>${from}${from && to ? ' → ' : ''}${to}</div>` : '';
+    return `<li><div><strong>${esc(item.label || item.activity || 'Activity')}</strong></div>${location}</li>`;
+  }
+  return `<li>${esc(item.label || item.type || '')}</li>`;
+}
+
+function dayHtml(day) {
+  const flow = day.flow || [];
+  const oldRoutes = day.route_refs || [];
+  const oldFallbacks = day.fallback_refs || [];
+  const endpoint = (day.start || day.end)
+    ? `<div class="note">${endpointInline(day.start)}${day.start && day.end ? ' → ' : ''}${endpointInline(day.end)}</div>` : '';
+  return `<article class="card" style="margin-bottom:14px">
+    <h3>Day ${esc(day.day)}</h3>
+    ${day.appeal ? `<p class="summary">${esc(day.appeal)}</p>` : ''}
+    <p>${esc(day.purpose || '')}</p>
+    ${endpoint}
+    ${flow.length ? `<ol class="route-sequence">${flow.map(flowItemHtml).join('')}</ol>` : ''}
+    ${oldRoutes.map(x => `<div>Route: ${refInline(x)}</div>`).join('')}
+    ${oldFallbacks.map(x => `<div>Fallback: ${refInline(x)}</div>`).join('')}
+  </article>`;
 }
 
 function renderHome(manifest) {
   document.title = 'PersonalOS Leisure';
   breadcrumb.innerHTML = '';
+  const plans = (manifest.items || []).filter(x => x.type === 'plan');
+  const routes = (manifest.items || []).filter(x => x.type === 'route');
+  const spots = (manifest.items || []).filter(x => x.type === 'spot');
+  const section = (title, items) => items.length ? `<section class="section"><h2>${esc(title)}</h2><div class="home-list">${items.map(x => `<div class="home-item"><a href="${hrefFor(x)}"><strong>${esc(x.id)}</strong> ${esc(x.title)}</a> <span class="badge">${esc(x.type)}</span></div>`).join('')}</div></section>` : '';
   app.innerHTML = `
     <section class="hero">
-      <div class="kicker">Public materialized view</div>
-      <h1>PersonalOS Leisure</h1>
-      <p class="summary">Plan / Route / Spot の公開用Viewer。機微情報はprivate側に残します。</p>
+      <div class="kicker">PersonalOS Leisure</div>
+      <h1>レジャー</h1>
+      <p class="summary">旅程Planを入口に、RouteとSpotへ掘り下げられます。</p>
     </section>
-    <section class="section">
-      <h2>Views</h2>
-      <div class="home-list">
-        ${manifest.items.map(x => `<div class="home-item"><a href="${hrefFor(x)}"><strong>${esc(x.id)}</strong> ${esc(x.title)}</a> <span class="badge">${esc(x.type)}</span></div>`).join('')}
-      </div>
-    </section>`;
+    ${section('Plans', plans)}
+    ${section('Routes', routes)}
+    ${section('Spots', spots)}`;
 }
 
 function renderPlan(data) {
   const p = data.plan || {};
+  const m = data.map || null;
   breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
   app.innerHTML = `
     <section class="hero"><div class="kicker">Plan · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p></section>
-    <section class="section"><h2>この旅の主役</h2><div class="cards">${(data.hero_refs||[]).map(refCard).join('')}</div></section>
-    <section class="section"><h2>日別Plan</h2>${(p.days||[]).map(day => `<article class="card" style="margin-bottom:10px"><h3>Day ${esc(day.day)}</h3><p>${esc(day.purpose)}</p>${(day.route_refs||[]).map(x=>`<div>Route: ${refInline(x)}</div>`).join('')}${(day.fallback_refs||[]).map(x=>`<div>Fallback: ${refInline(x)}</div>`).join('')}</article>`).join('')}</section>
-    ${(p.food||[]).length ? `<section class="section"><h2>食事</h2><div class="cards">${p.food.map(refCard).join('')}</div></section>` : ''}
-    ${(p.onsen||[]).length ? `<section class="section"><h2>温泉</h2><div class="cards">${p.onsen.map(refCard).join('')}</div></section>` : ''}
+    ${(data.hero_refs||[]).length ? `<section class="section"><h2>この旅の主役</h2><div class="cards">${data.hero_refs.map(refCard).join('')}</div></section>` : ''}
+    <section class="section"><h2>旅程</h2>${(p.days||[]).map(dayHtml).join('')}</section>
+    ${m ? `<section class="section"><h2>旅のMap</h2><div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div><p class="note">${esc(m.note||'旅程上の主要地点を表示します。')}</p></section>` : ''}
+    ${p.strategies?.stay?.summary ? `<section class="section"><h2>宿泊戦略</h2><p>${esc(p.strategies.stay.summary)}</p></section>` : ''}
+    ${p.strategies?.meal?.summary ? `<section class="section"><h2>食事戦略</h2><p>${esc(p.strategies.meal.summary)}</p></section>` : ''}
+    ${p.strategies?.onsen?.summary ? `<section class="section"><h2>温泉戦略</h2><p>${esc(p.strategies.onsen.summary)}</p></section>` : ''}
+    ${(p.risks||p.risk_items||[]).length ? `<section class="section"><h2>変動要素・リスク</h2><ul class="list">${(p.risks||p.risk_items||[]).map(x=>`<li>${esc(x.risk || x)}</li>`).join('')}</ul></section>` : ''}
     ${p.public_note ? `<p class="note">${esc(p.public_note)}</p>` : ''}`;
+  if (m) loadGoogleMap(m, {}, 'conceptual');
 }
 
 function renderRoute(data) {
@@ -62,6 +133,7 @@ function renderRoute(data) {
   const actualKm = m?.actual_distance_m ? (Number(m.actual_distance_m) / 1000).toFixed(1) : null;
   const routingLabel = m?.routing_provider === 'google_routes' ? 'Google Routes API' : (m?.routing_provider || 'Routing provider');
   breadcrumb.innerHTML = `<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
+  const traversals = r.traversals || [];
   app.innerHTML = `
     <section class="hero"><div class="kicker">Route · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary)}</p><p>${esc(r.purpose||'')}</p></section>
     ${m ? `<section class="section"><h2>Map</h2>
@@ -70,11 +142,12 @@ function renderRoute(data) {
       <div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div>
       <p id="map-mode-note" class="note">${esc(m.note||'')}</p>
     </section>` : ''}
-    <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||[]).map(x=>`<li><div>${refInline(x)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
-    ${(r.highlights||[]).length ? `<section class="section"><h2>魅力</h2><ul class="list">${r.highlights.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
+    ${traversals.length ? `<section class="section"><h2>周回方向</h2>${traversals.map(t => `<article class="card" style="margin-bottom:10px"><h3>${esc(t.direction || t.traversal_id)}</h3><ol class="route-sequence">${(t.ordered_spot_refs||[]).map(x=>`<li>${refInline(x)}</li>`).join('')}</ol></article>`).join('')}</section>` : ''}
+    <section class="section"><h2>Route sequence</h2><ol class="route-sequence">${(r.sequence||r.sequence_refs||[]).map(x=>`<li><div>${refInline(x)} ${x.role?`<span class="badge">${esc(x.role)}</span>`:''}</div></li>`).join('')}</ol></section>
+    ${(r.highlights||r.highlight_items||[]).length ? `<section class="section"><h2>魅力</h2><ul class="list">${(r.highlights||r.highlight_items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}
     <section class="section"><h2>所要・難易度</h2><p>${esc(r.duration||'')} ${r.difficulty?`<span class="badge">${esc(r.difficulty)}</span>`:''}</p></section>
-    ${(r.constraints||[]).length ? `<section class="section"><h2>重要制約</h2><ul class="list">${r.constraints.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}`;
-  if (m) initRouteMap(m, r.sequence || []);
+    ${(r.constraints||r.constraint_items||[]).length ? `<section class="section"><h2>重要制約</h2><ul class="list">${(r.constraints||r.constraint_items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>` : ''}`;
+  if (m) initRouteMap(m, r.sequence || r.sequence_refs || []);
 }
 
 function renderSpot(data) {
@@ -119,15 +192,16 @@ function routeLetter(order) {
   return n > 0 && n <= 26 ? String.fromCharCode(64 + n) : '';
 }
 
-function popupHtml({spotId, name, role, order, googlePlaceId}) {
-  const spotRef = {type: 'spot', id: spotId};
-  const personalosLink = spotId && canOpen(spotRef)
-    ? `<a href="${hrefFor(spotRef)}" target="_blank" rel="noopener">PersonalOSで見る</a>`
+function popupHtml({entityType='spot', entityId, name, role, order, googlePlaceId}) {
+  const ref = {type: entityType, id: entityId};
+  const personalosLink = entityId && canOpen(ref)
+    ? `<a href="${hrefFor(ref)}" target="_blank" rel="noopener">PersonalOSで見る</a>`
     : '';
   const googleLink = `<a href="${esc(googleMapsSearchUrl(name, googlePlaceId))}" target="_blank" rel="noopener">Google Mapsで開く</a>`;
   const context = [order ? `#${esc(order)}` : '', role ? esc(role) : ''].filter(Boolean).join(' · ');
   const links = [personalosLink, googleLink].filter(Boolean).map(link => `<div>${link}</div>`).join('');
-  return `<div class="pin-popup"><strong>${esc(name)}</strong>${context ? `<div class="pin-context">${context}</div>` : ''}<div class="pin-caption">このRouteでの立寄り地点</div>${links ? `<div class="pin-links">${links}</div>` : ''}</div>`;
+  const caption = entityType === 'travel_point' ? '旅程上の移動・アクセス地点' : '旅程上の立寄り地点';
+  return `<div class="pin-popup"><strong>${esc(name)}</strong>${context ? `<div class="pin-context">${context}</div>` : ''}<div class="pin-caption">${caption}</div>${links ? `<div class="pin-links">${links}</div>` : ''}</div>`;
 }
 
 function decodePolyline(encoded) {
@@ -169,18 +243,21 @@ function addPointMarker({map, info, point, spot, mode, bounds}) {
   const position = {lat: Number(point.lat), lng: Number(point.lon)};
   bounds.extend(position);
   const displayOrder = point.order || '';
+  const entityType = point.entity_type || 'spot';
+  const entityId = point.entity_id || point.spot_id;
   const labelText = mode === 'actual' ? routeLetter(displayOrder) : (displayOrder ? String(displayOrder) : '');
   const marker = new google.maps.Marker({
     map,
     position,
     label: labelText ? {text: labelText, color: '#fff', fontWeight: '700'} : undefined,
-    title: point.name || spot.label || point.spot_id,
+    title: point.name || spot.label || entityId,
     zIndex: 100 + Number(displayOrder || 0),
   });
   marker.addListener('click', () => {
-    const name = spot.label || point.name || point.spot_id || 'Spot';
+    const name = spot.label || point.name || entityId || 'Point';
     info.setContent(popupHtml({
-      spotId: point.spot_id,
+      entityType,
+      entityId,
       name,
       role: point.role || spot.role || '',
       order: displayOrder,
@@ -208,7 +285,7 @@ async function loadGoogleMap(mapSpec, spots = {}, mode = 'conceptual') {
     await ensureGoogleMaps(key);
     const [pointArtifact, routeArtifact] = await Promise.all([
       fetchJson(mapSpec.points_json),
-      mode === 'actual' ? fetchJson(mapSpec.route_json) : Promise.resolve(null),
+      mode === 'actual' && mapSpec.route_json ? fetchJson(mapSpec.route_json) : Promise.resolve(null),
     ]);
 
     const map = new google.maps.Map(mapElement, {mapTypeControl:true, streetViewControl:false, fullscreenControl:true});
@@ -235,9 +312,15 @@ async function loadGoogleMap(mapSpec, spots = {}, mode = 'conceptual') {
         info.setPosition(event.latLng);
         info.open(map);
       });
-      points.filter(p => p.order).forEach(point => addPointMarker({map, info, point, spot: spots[point.spot_id] || {}, mode, bounds}));
+      points.filter(p => p.order).forEach(point => {
+        const entityId = point.entity_id || point.spot_id;
+        addPointMarker({map, info, point, spot: spots[entityId] || {}, mode, bounds});
+      });
     } else {
-      points.forEach(point => addPointMarker({map, info, point, spot: spots[point.spot_id] || {}, mode, bounds}));
+      points.forEach(point => {
+        const entityId = point.entity_id || point.spot_id;
+        addPointMarker({map, info, point, spot: spots[entityId] || {}, mode, bounds});
+      });
     }
 
     if (!bounds.isEmpty()) map.fitBounds(bounds, 28);
