@@ -21,10 +21,9 @@
 .spot-demo-facts div+div{border-left:1px solid #e6ebef}
 .spot-demo-facts span{font-size:.7rem;letter-spacing:.02em}
 .spot-demo-facts strong{margin-top:1px;font-size:1.02rem}
-.spot-season-fact{display:flex!important;align-items:center;gap:10px;flex-wrap:wrap}
+.spot-season-fact{display:flex!important;align-items:center;gap:8px;flex-wrap:wrap}
 .spot-season-icons{display:inline-flex;gap:4px}
 .spot-season-icon{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff7d6;border:1px solid #efcf66;color:#6d5200;font-size:.68rem;font-style:normal;font-weight:800;line-height:1}
-.spot-season-fact b{font-size:.92rem;font-weight:800;color:#3c4043}
 
 .section.spot-demo-section{position:relative;margin:0;padding:38px 4px 36px;background:transparent;border:0;border-radius:0;box-shadow:none}
 .section.spot-demo-section+.section.spot-demo-section{margin-top:8px;padding-top:46px;border-top:2px solid #d8dee4;background:linear-gradient(180deg,rgba(244,247,249,.62) 0,rgba(244,247,249,0) 34px)}
@@ -35,6 +34,10 @@
 .spot-demo-card{padding:8px 22px 8px 0;background:transparent;border:0;border-radius:0;box-shadow:none;font-size:.98rem;line-height:1.65}
 .spot-demo-card+.spot-demo-card{padding-left:22px;border-left:1px solid #e1e5e9}
 .spot-demo-card.highlight,.spot-demo-card.fit,.spot-demo-card.value{border-left:0}
+.spot-demo-cards-highlight{gap:12px}
+.spot-demo-card.highlight{display:flex;align-items:center;min-height:82px;padding:16px 18px;background:linear-gradient(180deg,#fff,#fbfcfd);border:1px solid #e1e6eb;border-radius:14px;box-shadow:0 3px 10px rgba(60,64,67,.05);font-weight:750;line-height:1.55}
+.spot-demo-card.highlight+.spot-demo-card.highlight{padding-left:18px;border-left:1px solid #e1e6eb}
+.spot-demo-card.highlight::before{content:"";flex:0 0 5px;align-self:stretch;margin-right:12px;border-radius:999px;background:linear-gradient(180deg,#fbbc04,#f9ab00)}
 .spot-demo-sub{margin-top:26px;padding-top:20px;border-top:1px dashed #dfe3e7}
 .spot-demo-sub h3{font-size:.88rem;color:#5f6368;letter-spacing:.02em}
 .spot-demo-list{columns:2;column-gap:42px;padding-left:1.15rem}
@@ -63,6 +66,9 @@
   .spot-demo-cards{grid-template-columns:1fr}
   .spot-demo-card,.spot-demo-card+.spot-demo-card{padding:12px 0;border-left:0;border-top:1px solid #eceff2}
   .spot-demo-card:first-child{border-top:0}
+  .spot-demo-cards-highlight{gap:10px}
+  .spot-demo-card.highlight,.spot-demo-card.highlight+.spot-demo-card.highlight{min-height:auto;padding:14px 16px;border:1px solid #e1e6eb;border-radius:12px}
+  .spot-demo-card.highlight:first-child{border-top:1px solid #e1e6eb}
   .spot-demo-list{columns:1}
   .spot-related-card,.spot-related-card+.spot-related-card{padding:12px 0;border-left:0;border-top:1px solid #eceff2}
   .spot-related-card:first-child{border-top:0}
@@ -78,5 +84,5 @@
   .spot-carousel{background:#202124}
   .spot-demo-facts div+div,.spot-demo-card+.spot-demo-card,.spot-related-card+.spot-related-card{border-color:#3c4043}
   .spot-season-icon{background:#3b3524;border-color:#796b35;color:#fdd663}
-  .spot-season-fact b{color:#e8eaed}
+  .spot-demo-card.highlight{background:linear-gradient(180deg,#252629,#222326);border-color:#3c4043}
 }
