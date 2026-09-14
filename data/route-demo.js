@@ -111,10 +111,13 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   wrapper.innerHTML = valueHtml + fitHtml + conditionalHtml + notesHtml;
   if (anchor) anchor.insertAdjacentElement('afterend', wrapper); else hero.insertAdjacentElement('afterend', wrapper);
 
-  // Base renderer already has a simpler highlights section. Hide only that duplicate.
+  // Base rendererの重複セクションは、上部Factsや拡張表示へ一本化する。
   [...app.querySelectorAll(':scope > .section')].forEach(section => {
     const h = section.querySelector(':scope > h2');
-    if (h?.textContent.trim()==='このルートの魅力') section.classList.add('route-demo-hide-duplicate');
+    const title = h?.textContent.trim();
+    if (title === 'このルートの魅力' || title === '所要時間・難易度') {
+      section.classList.add('route-demo-hide-duplicate');
+    }
   });
 
   // Traversal固有の前提と理由を、順序そのものとは分けて補足表示する。
