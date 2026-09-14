@@ -157,11 +157,19 @@ function makeDayToggle(card){
   const header = card.querySelector(':scope > .day-head');
   if(!header || card.dataset.dayToggle) return;
   card.dataset.dayToggle='1';
+
+  // 折りたたみ状態では「日番号 + タイトル」だけを残し、説明文は展開後へ移す。
+  const detail = header.querySelector(':scope > div > p') || header.querySelector(':scope > p');
   const body = document.createElement('div');
   body.className='plan-day-body';
   while(header.nextSibling) body.appendChild(header.nextSibling);
+  if(detail){
+    detail.classList.add('plan-day-detail');
+    body.prepend(detail);
+  }
   card.appendChild(body);
   body.hidden=true;
+
   header.classList.add('plan-day-toggle');
   header.setAttribute('role','button');
   header.setAttribute('tabindex','0');
