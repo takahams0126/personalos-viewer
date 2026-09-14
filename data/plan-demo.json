@@ -11,7 +11,7 @@
       {"type":"destination","label":"羽田空港","point_type":"airport"},
       {"type":"transfer","mode":"air"},
       {"type":"destination","label":"屋久島空港","point_type":"airport"},
-      {"type":"transfer","mode":null},
+      {"type":"transfer","mode":"walk"},
       {"type":"destination","label":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office","activities":["レンタカー受取"]},
       {"type":"transfer","mode":"rental_car"},
       {"type":"destination","ref":{"type":"spot","id":"S0050","label":"お食事処 樹"},"role":"dinner","priority":"optional","notes":["疲れていれば自炊・軽食へ切替"]},
