@@ -26,6 +26,12 @@ export const iconPaths = {
     '<path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
     '<path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />'
   ],
+  motorbike: [
+    '<path d="M2 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />',
+    '<path d="M16 16a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />',
+    '<path d="M7.5 14h5l4 -4h-10.5m1.5 4l4 -4" />',
+    '<path d="M13 6h2l1.5 3l2 4" />'
+  ],
   walk: [
     '<path d="M12 4a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />',
     '<path d="M7 21l3 -4" />',
@@ -102,6 +108,8 @@ export const leisureIconMap = {
     train: 'train',
     rental_car: 'car',
     car: 'car',
+    motorbike: 'motorbike',
+    motorcycle: 'motorbike',
     walk: 'walk',
     '徒歩': 'walk',
     rental_car_and_mountain_access: 'car',
