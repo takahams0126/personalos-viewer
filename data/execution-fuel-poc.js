@@ -31,7 +31,7 @@ function renderFuelPlan(panel,spec){
   const stations=Object.fromEntries((spec.travel_point_candidates||[]).map(s=>[s.poc_id,s]));
   const rows=(spec.planned_refuels||[]).map(p=>fuelRow(p,stations[p.station_poc_id])).join('');
   const cost=spec.fuel_cost||{};
-  const html=`<section class="section exec-fuel-plan"><div class="section-heading"><h2>給油計画</h2><p>給油候補はTravelPointとして特定し、途中給油は実行可能性、返却前給油は最終日の実行手順として扱います。</p></div><div class="exec-fuel-grid">${rows}</div><div class="exec-fuel-cost"><span>燃料費</span><strong>${cost.estimated_cost_yen==null?'未算定':yen(cost.estimated_cost_yen)}</strong><small>${esc(cost.display_note||'')}</small></div></section>`;
+  const html=`<section class="section exec-fuel-plan"><div class="section-heading"><h2>給油計画</h2><p>${esc(spec.purpose||'')}</p></div><div class="exec-fuel-grid">${rows}</div><div class="exec-fuel-cost"><span>燃料費</span><strong>${cost.estimated_cost_yen==null?'未算定':yen(cost.estimated_cost_yen)}</strong><small>${esc(cost.display_note||'')}</small></div></section>`;
   const costSection=panel.querySelector('.exec-trip-cost');
   if(costSection)costSection.insertAdjacentHTML('beforebegin',html); else days.insertAdjacentHTML('afterend',html);
 }
@@ -40,7 +40,7 @@ function fuelRow(p,s={}){
   const required=p.required?'<span class="exec-fuel-required">必須</span>':'<span class="exec-fuel-recommended">推奨</span>';
   const constraint=p.constraint?`<div class="exec-fuel-constraint"><span>${esc(p.constraint.label||'制約')} ${esc(p.constraint.at||'')}</span><b>${p.constraint.slack&&p.constraint.slack!=='未算定'?`余裕 ${esc(p.constraint.slack)}`:'余裕 未算定'}</b></div>`:'';
   const checks=(p.checks||[]).map(x=>`<span>${esc(x)}</span>`).join('');
-  return `<article class="exec-fuel-card ${p.required?'is-required':''}"><div class="exec-fuel-head"><div><span class="exec-fuel-day">Day${esc(p.day)}</span>${required}</div><strong>${esc(p.timing||'')}</strong></div><div class="exec-fuel-station"><div class="exec-fuel-icon">⛽</div><div><strong>${esc(s.label||'給油候補')}</strong><span>${esc(s.area||'')}</span><small>${esc(s.hours||'')}</small></div></div><p>${esc(p.reason||'')}</p>${constraint}<div class="exec-fuel-checks">${checks}</div>${p.timeline?'<div class="exec-fuel-flow-note">最終日の行動順へ組み込み済み</div>':'<div class="exec-fuel-flow-note is-passive">通常の行動順には入れず、残量に応じて実施</div>'}</article>`;
+  return `<article class="exec-fuel-card ${p.required?'is-required':''}"><div class="exec-fuel-head"><div><span class="exec-fuel-day">Day${esc(p.day)}</span>${required}</div><strong>${esc(p.timing||'')}</strong></div><div class="exec-fuel-station"><div class="exec-fuel-icon">⛽</div><div><strong>${esc(s.label||'給油候補')}</strong><span>${esc(s.area||'')}</span><small>${esc(s.hours||'')}</small></div></div><p>${esc(p.reason||'')}</p>${constraint}<div class="exec-fuel-checks">${checks}</div>${p.timeline?'<div class="exec-fuel-flow-note">行動順へ組み込む</div>':'<div class="exec-fuel-flow-note is-passive">行動順には固定せず、残量に応じて実施</div>'}</article>`;
 }
 
 function patchDay5Flow(panel,spec){
@@ -50,25 +50,28 @@ function patchDay5Flow(panel,spec){
   if(!flow||flow.dataset.fuelPatched)return;
   flow.dataset.fuelPatched='1';
   const items=[...flow.children]; if(!items.length)return;
-  const first=items[0];
-  first.insertAdjacentHTML('afterend',freeTimeItem(patch.free_time));
-  const returnItem=[...flow.children].find(li=>li.textContent.includes('タイムズレンタカー'));
-  if(returnItem) returnItem.insertAdjacentHTML('beforebegin',refuelItem(patch.refuel,spec));
+  items[0].insertAdjacentHTML('afterend',freeTimeItem(patch.free_time));
+  const returnLabel=patch.rental_return?.label||'';
+  const returnItem=returnLabel?[...flow.children].find(li=>li.textContent.includes(returnLabel)):null;
+  const refuelPlan=(spec.planned_refuels||[]).find(x=>Number(x.day)===5&&x.kind==='return_refuel');
+  if(returnItem) returnItem.insertAdjacentHTML('beforebegin',refuelItem(patch.refuel,spec,refuelPlan));
 }
 
 function freeTimeItem(x={}){
   return `<li class="exec-flow-item exec-free-time-poc"><div class="exec-flow-time">${esc(x.time||'')}</div><div class="exec-free-time-node">○</div><div class="exec-flow-main"><div class="exec-destination-title">${esc(x.label||'自由時間')}</div><div class="exec-free-time-note">${esc(x.note||'')}</div></div></li>`;
 }
-function refuelItem(x={},spec){
+function refuelItem(x={},spec,plan={}){
   const station=(spec.travel_point_candidates||[]).find(s=>s.poc_id===x.station_poc_id)||{};
-  return `<li class="exec-flow-item exec-refuel-flow"><div class="exec-flow-time">${esc(x.time||'')}</div><div class="exec-refuel-node">⛽</div><div class="exec-flow-main"><div class="exec-destination-title">${esc(station.label||'ガソリンスタンド')}<span class="exec-required-badge">必須</span></div><div class="exec-activities"><div class="exec-activity"><span>${esc(x.activity||'給油')}</span>${x.duration?`<strong>${esc(x.duration)}</strong>`:''}</div></div><div class="exec-flow-subnote">返却前給油。営業時間・返却条件は実施前に再確認。</div></div></li>`;
+  const note=[plan.reason,...(plan.checks||[])].filter(Boolean).join(' / ');
+  return `<li class="exec-flow-item exec-refuel-flow"><div class="exec-flow-time">${esc(x.time||'')}</div><div class="exec-refuel-node">⛽</div><div class="exec-flow-main"><div class="exec-destination-title">${esc(station.label||'ガソリンスタンド')}<span class="exec-required-badge">必須</span></div><div class="exec-activities"><div class="exec-activity"><span>${esc(x.activity||'給油')}</span>${x.duration?`<strong>${esc(x.duration)}</strong>`:''}</div></div>${note?`<div class="exec-flow-subnote">${esc(note)}</div>`:''}</div></li>`;
 }
 
 function renderAlternativeCosts(panel,spec){
   const impacts=spec.alternative_cost_impacts||[]; if(!impacts.length)return;
   const cost=panel.querySelector('.exec-trip-cost'); if(!cost||cost.querySelector('.exec-alt-costs'))return;
   const rows=impacts.filter(x=>x.delta_yen!==0).map(x=>`<div class="exec-alt-cost-row"><span><b>Day${esc(x.day)}</b> ${esc(x.label)}</span><strong class="${x.delta_yen<0?'is-minus':'is-plus'}">${x.delta_yen>0?'+':''}${yen(x.delta_yen)}</strong></div>`).join('');
-  cost.querySelector('.exec-cost-groups')?.insertAdjacentHTML('afterend',`<div class="exec-alt-costs"><div class="exec-alt-cost-head"><strong>代替案の費用影響</strong><span>基準は標準Route。差額はPoC仮値。</span></div>${rows}<div class="exec-selected-cost" hidden></div></div>`);
+  const policy=spec.cost_policy?.display_rule||'';
+  cost.querySelector('.exec-cost-groups')?.insertAdjacentHTML('afterend',`<div class="exec-alt-costs"><div class="exec-alt-cost-head"><strong>代替案の費用影響</strong>${policy?`<span>${esc(policy)}</span>`:''}</div>${rows}<div class="exec-selected-cost" hidden></div></div>`);
 }
 
 function updateSelectedAlternativeCost(panel,spec,day,variant){
