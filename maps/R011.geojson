@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "source_id": "R011",
+    "path_mode": "conceptual",
+    "note": "地点位置と概念geometry。実道路trackではない。"
+  },
+  "features": [
+    {"type":"Feature","properties":{"spot_id":"S037","name":"志戸子ガジュマル公園","role":"optional"},"geometry":{"type":"Point","coordinates":[130.5204258,30.4483138]}},
+    {"type":"Feature","properties":{"spot_id":"S038","name":"永田いなか浜","role":"core"},"geometry":{"type":"Point","coordinates":[130.4336082,30.4073985]}},
+    {"type":"Feature","properties":{"spot_id":"S039","name":"西部林道","role":"core","representation":"conceptual_segment"},"geometry":{"type":"LineString","coordinates":[[130.4336082,30.4073985],[130.413506,30.2995927]]}},
+    {"type":"Feature","properties":{"spot_id":"S036","name":"大川の滝","role":"core"},"geometry":{"type":"Point","coordinates":[130.413506,30.2995927]}},
+    {"type":"Feature","properties":{"spot_id":"S045","name":"手打ちそば 松竹","role":"main_lunch"},"geometry":{"type":"Point","coordinates":[130.425353,30.2719847]}},
+    {"type":"Feature","properties":{"spot_id":"S034","name":"トローキの滝","role":"high_priority"},"geometry":{"type":"Point","coordinates":[130.5906482,30.2506575]}},
+    {"type":"Feature","properties":{"spot_id":"S035","name":"千尋の滝","role":"high_priority"},"geometry":{"type":"Point","coordinates":[130.5819331,30.262559]}},
+    {"type":"Feature","properties":{"spot_id":"S040","name":"中間ガジュマル","role":"optional"},"geometry":{"type":"Point","coordinates":[130.4327018,30.2559832]}},
+    {"type":"Feature","properties":{"spot_id":"S028","name":"平内海中温泉","role":"condition_high"},"geometry":{"type":"Point","coordinates":[130.4839375,30.2309647]}},
+    {"type":"Feature","properties":{"spot_id":"S026","name":"尾之間温泉","role":"fallback_onsen"},"geometry":{"type":"Point","coordinates":[130.5561375,30.2412913]}}
+  ]
+}

@@ -1,64 +1,166 @@
-import {renderTablerIcon,resolveDestinationIcon,resolveTransferIcon} from './data/icon-registry.js';
-const app=document.querySelector('#app');
-const breadcrumb=document.querySelector('#breadcrumb');
-const qs=new URLSearchParams(location.search);const type=qs.get('type');const id=qs.get('id');let published=new Set();
-const dirs={plan:'plans',concrete_plan:'concrete-plans',route:'routes',spot:'spots'};
-const pathFor=(t,i)=>`./data/${dirs[t]}/${i}.json`;const hrefFor=r=>`./?type=${encodeURIComponent(r.type)}&id=${encodeURIComponent(r.id)}`;const keyFor=r=>`${r.type}:${r.id}`;const canOpen=r=>r?.type&&r?.id&&published.has(keyFor(r));
-const esc=(v='')=>String(v).replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
-const labels={mode:{train:'電車',air:'飛行機',rental_car:'レンタカー',rental_car_and_mountain_access:'車＋登山アクセス',walk:'徒歩',bus:'バス',drive:'車',car:'車',air_and_rental_car:'飛行機＋レンタカー'},difficulty:{easy:'やさしい',easy_to_medium:'やさしい〜中程度',medium:'中程度',medium_to_hard:'中程度〜難しい',hard:'難しい'},role:{main:'主役',core:'主役',support:'補助',optional:'任意',fallback:'代替',start:'開始',end:'終了',parking:'駐車',access:'アクセス',transfer:'乗換・移動',lodging:'宿泊',primary:'主役',dinner:'夕食',onsen:'温泉'},status:{draft:'作成中',ready:'実施可能',completed:'完了',cancelled:'中止',viable:'実施可能',conditional:'条件付き',blocked:'実施不可',unknown:'未確認',confirmed:'確認済み',pending:'未確認',not_needed:'確認不要'}};
-const human=(g,v='')=>v?(labels[g]?.[v]||String(v).replaceAll('_',' ')):'';const modeLabel=v=>human('mode',v);const roleLabel=v=>human('role',v);const difficultyLabel=v=>human('difficulty',v);const statusLabel=v=>human('status',v);
-const yen=v=>typeof v==='number'?`${v.toLocaleString('ja-JP')}円`:esc(v??'');
-async function fetchJson(path){const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw new Error(`${path}: ${r.status}`);return r.json();}
-function refInline(ref){if(!ref)return'';const label=esc(ref.label||ref.id||'');return canOpen(ref)?`<a href="${hrefFor(ref)}">${label}</a>`:label;}
-function refCard(ref){return `<article class="card ref-card"><div>${refInline(ref)}</div>${ref.role?`<span class="badge">${esc(roleLabel(ref.role))}</span>`:''}</article>`;}
-function endpoint(ref){if(!ref)return'';return ref.type==='travel_point'?esc(ref.label||ref.id||''):refInline(ref);}
-function badge(text,cls=''){return text?`<span class="badge ${cls}">${esc(text)}</span>`:'';}
-function routeStops(refs=[]){return refs.length?`<div class="route-stops">${refs.map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span>${refInline(x)}${x.role?` <small>${esc(roleLabel(x.role))}</small>`:''}</span>`).join('<span class="route-arrow">→</span>')}</div>`:'';}
-function listHtml(items=[]){return items.length?`<ul class="list">${items.map(x=>`<li>${esc(typeof x==='string'?x:(x.label||x.note||JSON.stringify(x)))}</li>`).join('')}</ul>`:'';}
-function labeledRows(rows=[]){const filtered=rows.filter(([,v])=>v!==null&&v!==undefined&&v!==''&&(!Array.isArray(v)||v.length));return filtered.length?`<dl class="fact-grid">${filtered.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${Array.isArray(v)?esc(v.join(' / ')):esc(v)}</dd></div>`).join('')}</dl>`:'';}
-function conditionHtml(item){const parts=[];const c=item.conditions||{};if(c.opening_hours)parts.push(`営業時間 ${c.opening_hours}`);if(c.last_order_at)parts.push(`L.O. ${c.last_order_at}`);if(c.reservation?.status)parts.push(`予約 ${statusLabel(c.reservation.status)}`);if(c.road?.status)parts.push(`道路 ${statusLabel(c.road.status)}`);if(c.trail?.status)parts.push(`登山道 ${statusLabel(c.trail.status)}`);for(const x of c.other||[])parts.push([x.label,x.status?statusLabel(x.status):'',x.note].filter(Boolean).join(' · '));for(const x of item.time_constraints||[])parts.push([x.label||human('',x.kind),x.target_at?`目標 ${x.target_at}`:'',x.latest_safe_at?`最遅 ${x.latest_safe_at}`:'',x.slack?`余裕 ${x.slack}`:'',x.status?statusLabel(x.status):''].filter(Boolean).join(' · '));const f=item.feasibility||{};if(f.status)parts.push(`成立性 ${statusLabel(f.status)}`);for(const x of f.cautions||[])parts.push(x);return parts.length?`<div class="exec-conditions">${parts.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:'';}
-function flowItem(item,execution=false){
-  if(item.type==='transfer'){const schedule=item.schedule||{};const time=schedule.depart_at||schedule.start_at||schedule.arrive_at||'';const service=item.transport_service||{};const endpointText=item.from_ref||item.to_ref?`${endpoint(item.from_ref)} → ${endpoint(item.to_ref)}`:'';const meta=[endpointText,item.duration_estimate||schedule.duration,schedule.depart_at&&schedule.arrive_at?`${schedule.depart_at} → ${schedule.arrive_at}`:'',service.service_name||service.operator].filter(Boolean).join(' · ');return `<li class="flow-item transfer"><div class="flow-icon">${renderTablerIcon(resolveTransferIcon(item.mode))}</div><div>${time?`<div class="exec-flow-time">${esc(time)}</div>`:''}<div class="flow-title">移動 ${badge(modeLabel(item.mode))}</div>${meta?`<div class="flow-detail">${esc(meta)}</div>`:''}${conditionHtml(item)}</div></li>`;}
-  if(item.type==='destination'){const acts=(item.activities||[]).map(x=>x.label||x.activity).filter(Boolean).join(' / ');const stay=item.stay_duration||item.duration_estimate;const icon=resolveDestinationIcon({pointType:item.destination_ref?.point_type,role:item.role||item.destination_ref?.role});return `<li class="flow-item destination"><div class="flow-icon">${renderTablerIcon(icon)}</div><div><div class="flow-title">${endpoint(item.destination_ref)} ${item.role?badge(roleLabel(item.role)):''}</div>${stay?`<div class="flow-detail">滞在 ${esc(stay)}</div>`:''}${acts?`<div class="flow-note">${esc(acts)}</div>`:''}${conditionHtml(item)}</div></li>`;}
-  if(item.type==='route'){return `<li class="flow-item route"><div class="flow-icon">${renderTablerIcon('map-pin')}</div><div><div class="flow-title">${refInline(item.route_ref||{})}</div>${routeStops(item.ordered_spot_refs||[])}${(item.adjustments||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}${conditionHtml(item)}</div></li>`;}
-  if(item.type==='free_time')return `<li class="flow-item free-time"><div class="flow-icon">○</div><div><div class="flow-title">${esc(item.label||'自由時間')}</div>${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
-  return'';
+const app = document.querySelector('#app');
+const breadcrumb = document.querySelector('#breadcrumb');
+const qs = new URLSearchParams(location.search);
+const type = qs.get('type');
+const id = qs.get('id');
+let published = new Set();
+
+const dirFor = (t) => t === 'plan' ? 'plans' : t === 'route' ? 'routes' : 'spots';
+const pathFor = (t, i) => `./data/${dirFor(t)}/${i}.json`;
+const hrefFor = (ref) => `./?type=${encodeURIComponent(ref.type)}&id=${encodeURIComponent(ref.id)}`;
+const keyFor = (ref) => `${ref.type}:${ref.id}`;
+const canOpen = (ref) => ref?.type && ref?.id && published.has(keyFor(ref));
+const esc = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
+
+const presentationLabels = {
+  mode: {train:'電車',air:'飛行機',rental_car:'レンタカー',rental_car_and_mountain_access:'車＋登山アクセス',walk:'徒歩',bus:'バス',drive:'車'},
+  activity: {rental_car_pickup:'レンタカー受取',rental_car_return:'レンタカー返却',shopping_and_hiking_preparation:'買い出し・登山準備',optional_local_time:'自由時間・予備枠'},
+  direction: {canonical:'基本ルート',clockwise:'時計回り',counterclockwise:'反時計回り',outbound_return:'往復',other:'その他'},
+  difficulty: {unknown:'未評価',easy:'やさしい',easy_to_medium:'やさしい〜中程度',medium:'中程度',medium_to_hard:'中程度〜難しい',hard:'難しい'},
+  pointType: {home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',other:'その他'},
+  role: {main:'主役',core:'主役',support:'補助',optional:'任意',fallback:'代替',start:'開始',end:'終了',parking:'駐車',access:'アクセス',transfer:'乗換・移動'},
+  priority: {primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低'}
+};
+const humanize = (group, value='') => value ? (presentationLabels[group]?.[value] || String(value).replaceAll('_',' ')) : '';
+const modeLabel = (v='') => humanize('mode', v);
+const activityLabel = (v='') => humanize('activity', v);
+const directionLabel = (v='') => humanize('direction', v);
+const difficultyLabel = (v='') => humanize('difficulty', v);
+const pointTypeLabel = (v='') => humanize('pointType', v);
+const roleLabel = (v='') => humanize('role', v);
+const priorityLabel = (v='') => humanize('priority', v);
+
+function refInline(ref) {
+  if (!ref) return '';
+  const label = esc(ref.label || ref.id || '');
+  return canOpen(ref) ? `<a href="${hrefFor(ref)}">${label}</a>` : label;
 }
-function timeBudget(tb={}){const chips=[tb.expected_total,tb.preferred_start].filter(Boolean).map(x=>badge(x)).join('');const constraints=(tb.constraints||[]).map(x=>`<span>${esc(x)}</span>`).join('');return chips||constraints?`<div class="day-time">${chips}${constraints?`<div class="day-constraints">${constraints}</div>`:''}</div>`:'';}
-function routeChoice(flow,dayNo){const alternatives=flow.alternative_routes||[];if(!alternatives.length)return `<ol class="flow-list">${flowItem(flow)}</ol>`;const key=`${dayNo}-${flow.flow_id}`.replace(/[^A-Za-z0-9_-]/g,'-');const options=[{label:'基本',route_ref:flow.route_ref,ordered_spot_refs:flow.ordered_spot_refs||[]},...alternatives.map(x=>({label:x.route_ref?.label||'代替',...x}))];return `<div class="plan-route-choice" data-route-choice="${key}"><div class="variant-tabs">${options.map((x,i)=>`<button class="${i===0?'active':''}" data-choice="${i}">${esc(x.label)}</button>`).join('')}</div>${options.map((x,i)=>`<div class="plan-route-choice-panel" data-choice-panel="${i}" ${i?'hidden':''}><ol class="flow-list">${flowItem({...flow,route_ref:x.route_ref,ordered_spot_refs:x.ordered_spot_refs,adjustments:i?flow.adjustments:[]})}</ol></div>`).join('')}</div>`;}
-function dayPlan(day){return `<article class="day-card"><details><summary><div class="day-number">${esc(day.day)}日目</div><div><h3>${esc(day.purpose||'')}</h3><p>${esc(day.summary||'')}</p></div></summary><div class="day-card-body"><div class="day-overview"><h4>1日の概要</h4>${timeBudget(day.time_budget||{})}<p>${esc(day.summary||'')}</p></div>${day.start||day.end?`<div class="day-endpoints">${endpoint(day.start)}<span>→</span>${endpoint(day.end)}</div>`:''}<div class="plan-day-subhead">1日のFlow</div><div class="flow-list-wrap">${(day.flow||[]).map(x=>x.type==='route'?routeChoice(x,day.day):`<ol class="flow-list">${flowItem(x)}</ol>`).join('')}</div></div></details></article>`;}
-function bindPlan(){app.querySelectorAll('[data-route-choice]').forEach(host=>host.querySelectorAll('button[data-choice]').forEach(btn=>btn.addEventListener('click',()=>{host.querySelectorAll('button[data-choice]').forEach(x=>x.classList.toggle('active',x===btn));host.querySelectorAll('[data-choice-panel]').forEach(p=>p.hidden=p.dataset.choicePanel!==btn.dataset.choice);})));}
-function tripValue(v={}){const cards=(v.highlights||[]).map(x=>`<article class="card value-card">${esc(x)}</article>`).join('');const rows=[['旅の流れ',v.flow],['体験の幅',v.diversity],['移動効率',v.travel_efficiency],['トレードオフ',Array.isArray(v.tradeoffs)?v.tradeoffs.join(' / '):v.tradeoffs]].filter(([,x])=>x);return `<details class="section collapsible"><summary>この旅の価値</summary><div class="collapsible-body">${v.summary?`<p>${esc(v.summary)}</p>`:''}${cards?`<div class="cards">${cards}</div>`:''}${rows.length?labeledRows(rows):''}</div></details>`;}
-function estimatedCost(v={}){const breakdown=v.breakdown||[];if(v.total==null&&!breakdown.length)return'';return `<details class="section collapsible"><summary>費用の内訳</summary><div class="collapsible-body">${v.total!=null?`<p><strong>${yen(v.total)}</strong></p>`:''}${listHtml(breakdown)}</div></details>`;}
-function renderPlan(data){const p=data.plan||{};breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;const cpRefs=data.concrete_plan_refs||[];app.innerHTML=`<section class="hero"><div class="kicker">旅のプラン · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p>${p.transport?.primary?`<div class="hero-meta">${badge(modeLabel(p.transport.primary))}</div>`:''}</section>${cpRefs.length?`<div class="mode-switch"><span class="badge">計画</span>${cpRefs.map(x=>`<a href="${hrefFor(x)}">実施</a>`).join('')}</div>`:''}${tripValue(p.trip_value||{})}${(data.hero_refs||[]).length?`<section class="section"><h2>この旅の主役</h2><div class="cards">${data.hero_refs.map(refCard).join('')}</div></section>`:''}<section class="section itinerary"><h2>日ごとの旅程</h2>${(p.days||[]).map(dayPlan).join('')}</section>${estimatedCost(p.estimated_cost||{})}`;bindPlan();}
-function renderRoute(data){const r=data.route||{},m=data.map||null;breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;const facts=[['所要時間',r.duration],['難易度',difficultyLabel(r.difficulty)],['移動',r.route_type==='driving'?'車':r.route_type]].filter(([,v])=>v);app.innerHTML=`<section class="hero"><div class="kicker">ルート · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p><p>${esc(r.purpose||'')}</p>${facts.length?labeledRows(facts):''}</section>${(r.highlights||[]).length?`<details class="section collapsible"><summary>このルートの魅力</summary><div class="collapsible-body"><p>${esc(r.appeal?.summary||'')}</p><div class="cards">${r.highlights.map(x=>`<article class="card">${esc(x)}</article>`).join('')}</div></div></details>`:''}${m?`<section class="section"><h2>ルートの地図</h2><div class="map-wrap"><div id="route-map" class="exec-map"></div><div id="route-map-message" class="map-message"></div></div><p class="note">立ち寄り順を示す概念地図です。</p></section>`:''}<section class="section"><h2>立ち寄り順</h2><div class="route-stops vertical">${(r.sequence||[]).map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span>${refInline(x)}${x.role?` <small>${esc(roleLabel(x.role))}</small>`:''}</span>`).join('')}</div></section>${(r.constraints||[]).length?`<section class="section"><h2>重要な条件</h2>${listHtml(r.constraints)}</section>`:''}`;if(m)renderGoogleMap('route-map','route-map-message',m);}
-function imageGallery(raw=[]){const urls=raw.map(x=>typeof x==='string'?x:(x.url||x.source_url||x.image_url||'')).filter(Boolean);return urls.length?`<section class="section"><h2>写真</h2><div class="image-grid">${urls.map((u,i)=>`<figure class="image-card"><img src="${esc(u)}" loading="lazy" alt="写真 ${i+1}" onerror="this.closest('figure').remove()"></figure>`).join('')}</div></section>`:'';}
-function valueHtml(v={}){const rows=[['費用感',v.cost_level],['コストパフォーマンス',v.cost_performance]].filter(([,x])=>x);return Object.keys(v||{}).length?`<section class="section"><h2>このスポットの価値</h2>${rows.length?labeledRows(rows):''}${listHtml(v.value_points||[])}${(v.worth_paying_for||[]).length?`<h3>お金を払う価値</h3>${listHtml(v.worth_paying_for)}`:''}</section>`:'';}
-function practicalityHtml(v={}){if(!v||!Object.keys(v).length)return'';return `<section class="section"><h2>利用情報</h2>${labeledRows([['アクセス',v.access],['予約',v.reservation]])}${(v.time_fit||[]).length?`<h3>時間の目安</h3>${listHtml(v.time_fit)}`:''}${(v.strengths||[]).length?`<h3>利用しやすさ</h3>${listHtml(v.strengths)}`:''}${(v.constraints||[]).length?`<h3>注意点</h3>${listHtml(v.constraints)}`:''}</section>`;}
-function linksHtml(s){const refs=[];if(s.official_url)refs.push({label:'公式情報',url:s.official_url});for(const x of s.info_urls||[])if(x?.url)refs.push({label:x.label||'参考情報',url:x.url});return refs.length?`<section class="section"><h2>リンク</h2><div class="external-links">${refs.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)} ↗</a>`).join('')}</div></section>`:'';}
-function relatedHtml(items=[]){return items.length?`<section class="section"><h2>関連スポット</h2><div class="cards">${items.map(refCard).join('')}</div></section>`:'';}
-function renderSpot(data){const s=data.spot||{};breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;app.innerHTML=`<section class="hero"><div class="kicker">スポット · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p>${(s.season||[]).length?`<div class="hero-meta">${s.season.map(x=>badge(x)).join('')}</div>`:''}</section>${imageGallery(s.image_refs||[])}${(s.highlights||[]).length?`<section class="section"><h2>魅力</h2><div class="cards">${s.highlights.map(x=>`<article class="card">${esc(x)}</article>`).join('')}</div></section>`:''}${valueHtml(s.value||{})}${practicalityHtml(s.practicality||{})}${relatedHtml(s.related||[])}${linksHtml(s)}`;}
-function statusClass(v=''){return ['viable','ready','confirmed'].includes(v)?'status-good':['conditional','pending'].includes(v)?'status-warn':['cancelled','blocked','infeasible'].includes(v)?'status-bad':'status-unknown';}
-function dayChecks(items=[]){return items.length?`<div class="check-list"><h4>当日確認</h4>${items.map(x=>`<div class="check-row"><strong class="${statusClass(x.status)}">${esc(statusLabel(x.status))}</strong><span>${esc(x.label)}</span>${x.note?`<small>${esc(x.note)}</small>`:''}</div>`).join('')}</div>`:'';}
-function feasibilityBox(v={}){if(!v||!Object.keys(v).length)return'';const status=v.status||v.feasibility;return `<div class="weather-box"><strong class="${statusClass(status)}">成立性: ${esc(statusLabel(status||'unknown'))}</strong>${(v.blockers||[]).length?`<div class="status-bad">${listHtml(v.blockers)}</div>`:''}${(v.cautions||[]).length?listHtml(v.cautions):''}${v.checked_at?`<small>確認 ${esc(v.checked_at)}</small>`:''}</div>`;}
-function weatherBox(v){if(!v)return'';const precip=v.precipitation||{};return `<div class="weather-box"><strong>天候判断 ${v.status?`· ${esc(statusLabel(v.status))}`:''}</strong>${labeledRows([['予報',v.forecast_summary],['午前の降水',precip.morning],['午後の降水',precip.afternoon],['風',v.wind],['山の状態',v.mountain_condition],['判断',v.decision],['代替ルール',v.alternative_rule]])}${listHtml(v.decision_reasons||[])}${v.checked_at?`<small>確認 ${esc(v.checked_at)}</small>`:''}</div>`;}
-function summaryGrid(v={}){const labels={total_time:'総所要時間',travel_distance:'総移動距離',travel_time:'総移動時間',procedure_time:'手続き時間',experience_time:'体験時間',estimated_cost:'概算費用'};const rows=Object.entries(v||{}).filter(([,x])=>x!==null&&x!==undefined&&x!==''&&typeof x!=='object');return rows.length?`<div class="exec-summary-grid">${rows.map(([k,x])=>`<div><span>${esc(labels[k]||k.replaceAll('_',' '))}</span><strong>${k.includes('cost')&&typeof x==='number'?yen(x):esc(x)}</strong></div>`).join('')}</div>`:'';}
-function alternativeHtml(items=[]){if(!items.length)return'';return `<div class="decision-block"><h4>代替案・切替条件</h4><div class="decision-grid">${items.map(x=>`<article class="decision-card"><strong>${refInline(x.route_ref||{})||'代替案'}</strong>${(x.switch_conditions||[]).length?`<ul class="switch-conditions">${x.switch_conditions.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`:''}</article>`).join('')}</div></div>`;}
-function concreteDay(day,cpId){const variants=day.variants||[];const initial=variants[0]||null;return `<article class="day-card exec-day" data-day="${esc(day.day)}"><details><summary><div class="day-number">Day ${esc(day.day)}</div><div><h3>${day.date?`${esc(day.date)} · `:''}${esc(day.purpose||'')}</h3><p>${esc(day.summary||'')}</p></div></summary><div class="day-card-body"><div class="day-overview"><h4>1日の概要</h4>${timeBudget(day.time_budget||{})}<p>${esc(day.summary||'')}</p></div>${alternativeHtml(day.alternatives||[])}${initial?`<div class="execution-summary"><h4>実行サマリー</h4>${summaryGrid(initial.summary||{})}</div>`:''}${feasibilityBox(day.feasibility||{})}${dayChecks(day.day_of_checks||[])}${weatherBox(day.weather_assessment)}${variants.length>1?`<div class="variant-tabs">${variants.map((v,i)=>`<button data-variant="${esc(v.variant_id)}" class="${i===0?'active':''}">${esc(v.label||v.variant_id)}</button>`).join('')}</div>`:''}<div class="variant-host">${initial?variantPanel(initial,day.day,cpId):'<p class="empty">実施variantがありません。</p>'}</div></div></details></article>`;}
-function variantPanel(v,dayNo,cpId){const mapId=`exec-map-${cpId}-${dayNo}-${v.variant_id}`.replace(/[^A-Za-z0-9_-]/g,'-');return `<div class="variant-panel" data-active-variant="${esc(v.variant_id)}">${v.cost_projection&&Object.keys(v.cost_projection).length?`<div class="variant-cost">${summaryGrid(v.cost_projection)}</div>`:''}<div class="view-tabs"><button class="active" data-view="flow">行動順</button><button data-view="map">マップ</button></div><div class="view-panel" data-panel="flow"><ol class="flow-list">${(v.flow||[]).map(x=>flowItem(x,true)).join('')}</ol></div><div class="view-panel" data-panel="map" hidden><div class="exec-map-wrap"><div id="${mapId}" class="exec-map"></div><div id="${mapId}-message" class="exec-map-message"></div></div></div></div>`;}
-function bindConcrete(data){const cp=data.concrete_plan||{};app.querySelectorAll('.exec-day').forEach(card=>{const dayNo=Number(card.dataset.day);const day=(cp.days||[]).find(x=>Number(x.day)===dayNo);if(!day)return;const host=card.querySelector('.variant-host');const summary=card.querySelector('.execution-summary');card.querySelectorAll('.variant-tabs button').forEach(btn=>btn.addEventListener('click',()=>{card.querySelectorAll('.variant-tabs button').forEach(x=>x.classList.toggle('active',x===btn));const v=(day.variants||[]).find(x=>x.variant_id===btn.dataset.variant);if(v){host.innerHTML=variantPanel(v,dayNo,data.id);if(summary)summary.innerHTML=`<h4>実行サマリー</h4>${summaryGrid(v.summary||{})}`;bindVariantViews(host,v,dayNo,data.id);}}));const first=(day.variants||[])[0];if(first)bindVariantViews(host,first,dayNo,data.id);});}
-function bindVariantViews(host,variant,dayNo,cpId){host.querySelectorAll('.view-tabs button').forEach(btn=>btn.addEventListener('click',()=>{host.querySelectorAll('.view-tabs button').forEach(x=>x.classList.toggle('active',x===btn));host.querySelectorAll('.view-panel').forEach(p=>p.hidden=p.dataset.panel!==btn.dataset.view);if(btn.dataset.view==='map'){const mapId=`exec-map-${cpId}-${dayNo}-${variant.variant_id}`.replace(/[^A-Za-z0-9_-]/g,'-');renderGoogleMap(mapId,`${mapId}-message`,variant.map||{});}}));}
-function fuelHtml(fuel){if(!fuel)return'';const stations=(fuel.station_refs||[]).map(x=>`${refInline(x.ref||{})}${x.role?` ${badge(roleLabel(x.role))}`:''}`).filter(Boolean);const planned=(fuel.planned_refuels||[]).map(x=>`<li><strong>Day ${esc(x.day)}</strong> ${refInline(x.station_ref||{})}${x.timing?` · ${esc(x.timing)}`:''}${x.reason?` · ${esc(x.reason)}`:''}${x.required?` ${badge('必須','status-warn')}`:''}</li>`).join('');return `<details class="section collapsible"><summary>給油計画</summary><div class="collapsible-body"><div class="fuel-box">${stations.length?`<p>候補: ${stations.join(' / ')}</p>`:''}${planned?`<ul class="list">${planned}</ul>`:''}${summaryGrid(fuel.estimate||{})}</div></div></details>`;}
-function costItems(items=[]){return items.length?`<ul class="cost-items">${items.map(x=>`<li><span>${esc(x.label||'費用')}</span><strong>${x.amount==null?'未確定':yen(x.amount)}</strong>${x.note?`<small>${esc(x.note)}</small>`:''}</li>`).join('')}</ul>`:'';}
-function costHtml(cost){if(!cost||!Object.keys(cost).length)return'';return `<details class="section collapsible"><summary>旅全体の費用</summary><div class="collapsible-body"><div class="cost-box"><h4>確定済み</h4>${costItems(cost.confirmed_items||[])}${cost.confirmed_total!=null?`<p class="cost-total">確定計 ${yen(cost.confirmed_total)}</p>`:''}<h4>変動見積</h4>${costItems(cost.variable_estimates||[])}${cost.variable_estimated_total!=null?`<p class="cost-total">変動見積 ${yen(cost.variable_estimated_total)}</p>`:''}${cost.grand_total_estimate!=null?`<p class="cost-grand">概算総額 ${yen(cost.grand_total_estimate)}</p>`:''}${(cost.alternative_impacts||[]).length?`<h4>代替案の差額</h4><ul class="list">${cost.alternative_impacts.map(x=>`<li>Day ${esc(x.day)} ${esc(x.variant_id)}: ${x.delta>=0?'+':''}${yen(x.delta)}${x.note?` · ${esc(x.note)}`:''}</li>`).join('')}</ul>`:''}${listHtml(cost.notes||[])}</div></div></details>`;}
-function confirmedInputs(items=[]){return items.length?`<div class="confirmed-inputs">${items.map(x=>badge(x.label||human('',x.role)||x.source_type,'status-good')).join('')}</div>`:'';}
-function auxExecution(cp){const packing=cp.packing_preparation||[],changes=cp.change_cancel_conditions||[];return `${packing.length?`<details class="section collapsible"><summary>準備・持ち物</summary><div class="collapsible-body">${listHtml(packing.map(x=>`${x.label}${x.status?` · ${statusLabel(x.status)}`:''}`))}</div></details>`:''}${changes.length?`<details class="section collapsible"><summary>変更・中止条件</summary><div class="collapsible-body">${listHtml(changes.map(x=>`${x.condition} → ${x.action}`))}</div></details>`:''}`;}
-function renderConcrete(data){const cp=data.concrete_plan||{},source=cp.source_plan_ref||{};breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span>${refInline(source)}<span>›</span><span>${esc(data.id)}</span>`;const win=cp.execution_window||{};app.innerHTML=`<section class="hero"><div class="kicker">実施プラン · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p><div class="exec-meta">${badge(statusLabel(cp.status))}${win.start_date&&win.end_date?badge(`${win.start_date}〜${win.end_date}`):''}${(cp.primary_transport||[]).map(x=>badge(modeLabel(x))).join('')}${cp.last_verified_at?badge(`確認 ${cp.last_verified_at}`):''}</div>${source.id?`<p class="source-plan">元Plan: ${refInline(source)}</p>`:''}${confirmedInputs(cp.confirmed_inputs||[])}</section>${source.id?`<div class="mode-switch"><a href="${hrefFor(source)}">計画</a><span class="badge">実施</span></div>`:''}<section class="section"><h2>日ごとの実施計画</h2>${(cp.days||[]).map(d=>concreteDay(d,data.id)).join('')}</section>${fuelHtml(cp.fuel_plan)}${costHtml(cp.cost_summary)}${auxExecution(cp)}`;bindConcrete(data);}
-function googleSearch(name,placeId=''){const p=new URLSearchParams({api:'1',query:name});if(placeId)p.set('query_place_id',placeId);return `https://www.google.com/maps/search/?${p}`;}
-function popup(point){const ref={type:point.entity_type,id:point.entity_id};return `<div class="pin-popup"><strong>${esc(point.name||point.entity_id)}</strong>${point.role?`<div>${esc(roleLabel(point.role))}</div>`:''}<div class="pin-links">${canOpen(ref)?`<a href="${hrefFor(ref)}">PersonalOSで見る</a>`:''}<a href="${esc(googleSearch(point.name||point.entity_id,point.place_id||''))}" target="_blank" rel="noopener">Google Mapsで開く</a></div></div>`;}
+
+function refCard(ref) {
+  const role = ref.role ? `<span class="badge">${esc(roleLabel(ref.role))}</span>` : '';
+  const priority = ref.priority ? `<span class="badge">${esc(priorityLabel(ref.priority))}</span>` : '';
+  return `<article class="card ref-card"><div>${refInline(ref)}</div><div>${role}${priority}</div></article>`;
+}
+
+function endpointInline(endpoint) {
+  if (!endpoint) return '';
+  if (endpoint.type === 'travel_point') {
+    const kind = endpoint.point_type ? `<span class="badge subtle">${esc(pointTypeLabel(endpoint.point_type))}</span>` : '';
+    return `${esc(endpoint.label || endpoint.id || '')}${kind}`;
+  }
+  if (endpoint.type && endpoint.id) return refInline(endpoint);
+  return esc(endpoint.label || endpoint.name || endpoint.id || '');
+}
+
+function routeStops(item) {
+  const refs = item.ordered_spot_refs || [];
+  if (!refs.length) return '';
+  return `<div class="route-stops">${refs.map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span>${refInline(x)}${x.role?` <small>${esc(roleLabel(x.role))}</small>`:''}</span>`).join('<span class="route-arrow">→</span>')}</div>`;
+}
+
+function flowItemHtml(item) {
+  if (!item) return '';
+  if (item.type === 'transfer') {
+    const details = [item.duration_estimate, item.preferred_window].filter(Boolean).map(esc).join(' · ');
+    return `<li class="flow-item transfer"><div class="flow-icon">↔</div><div><div class="flow-title">移動 <span class="badge">${esc(modeLabel(item.mode||''))}</span></div>${details?`<div class="flow-detail">${details}</div>`:''}</div></li>`;
+  }
+  if (item.type === 'route') {
+    const traversalValue = item.direction || item.traversal_id;
+    const traversal = item.traversal_id && item.traversal_id !== 'canonical' ? `<span class="badge">${esc(directionLabel(traversalValue))}</span>` : '';
+    const alt = (item.alternative_route_refs||[]).length ? `<div class="flow-note">代替: ${(item.alternative_route_refs||[]).map(refInline).join(' / ')}</div>` : '';
+    const adjust = (item.adjustments||[]).length ? `<div class="flow-note">${item.adjustments.map(esc).join(' / ')}</div>` : '';
+    return `<li class="flow-item route"><div class="flow-icon">★</div><div><div class="flow-title">${refInline(item.route_ref||{})} ${traversal}</div>${routeStops(item)}${alt}${adjust}</div></li>`;
+  }
+  if (item.type === 'destination') {
+    const ref = item.destination_ref || {};
+    const role = item.role ? `<span class="badge">${esc(roleLabel(item.role))}</span>` : '';
+    const priority = item.priority ? `<span class="badge">${esc(priorityLabel(item.priority))}</span>` : '';
+    const activities = (item.activities||[]).length ? `<div class="flow-note">${item.activities.map(x=>esc(x.label || activityLabel(x.activity||''))).join(' / ')}</div>` : '';
+    const fallback = (item.fallback_spot_refs||[]).length ? `<div class="flow-note">代替: ${item.fallback_spot_refs.map(refInline).join(' / ')}</div>` : '';
+    return `<li class="flow-item destination"><div class="flow-icon">●</div><div><div class="flow-title">${endpointInline(ref)} ${role}${priority}</div>${activities}${fallback}${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
+  }
+  if (item.type === 'free_time') {
+    return `<li class="flow-item free-time"><div class="flow-icon">○</div><div><div class="flow-title">${esc(item.label || '自由時間')}</div>${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
+  }
+  return '';
+}
+
+function timeBudgetHtml(tb) {
+  if (!tb) return '';
+  const tags = [tb.expected_total, tb.preferred_start].filter(Boolean).map(x=>`<span class="badge">${esc(x)}</span>`).join('');
+  const constraints = (tb.constraints||[]).length ? `<div class="day-constraints">${tb.constraints.map(x=>`<span>${esc(x)}</span>`).join('')}</div>` : '';
+  return `<div class="day-time">${tags}${constraints}</div>`;
+}
+
+function dayHtml(day) {
+  const flow = day.flow || [];
+  const endpoints = day.start || day.end ? `<div class="day-endpoints">${endpointInline(day.start)}<span>→</span>${endpointInline(day.end)}</div>` : '';
+  return `<article class="day-card">
+    <header class="day-head"><div class="day-number">${esc(day.day)}日目</div><div><h3>${esc(day.purpose||'')}</h3>${day.summary?`<p>${esc(day.summary)}</p>`:''}</div></header>
+    ${timeBudgetHtml(day.time_budget)}${endpoints}
+    ${flow.length?`<ol class="flow-list">${flow.map(flowItemHtml).join('')}</ol>`:''}
+  </article>`;
+}
+
+function tripValueHtml(v={}) {
+  const highlights = (v.highlights||[]).length ? `<div class="cards">${v.highlights.map(x=>`<article class="card value-card">${esc(x)}</article>`).join('')}</div>` : '';
+  const rows = [['旅の流れ',v.flow],['体験の幅',v.diversity],['移動効率',v.travel_efficiency],['トレードオフ',v.tradeoffs]].filter(([,x])=>x);
+  return `<section class="section value-section"><h2>この旅の価値</h2>${v.summary?`<p class="summary">${esc(v.summary)}</p>`:''}${highlights}${rows.length?`<dl class="fact-grid">${rows.map(([k,x])=>`<div><dt>${esc(k)}</dt><dd>${esc(x)}</dd></div>`).join('')}</dl>`:''}</section>`;
+}
+
+function imageCandidates(raw=[]) { return raw.map(x => typeof x === 'string' ? x : (x.url || x.source_url || x.image_url || x.href || '')).filter(Boolean); }
+function imageGallery(raw=[]) {
+  const urls=imageCandidates(raw); if(!urls.length) return '';
+  return `<section class="section"><h2>写真</h2><div class="image-grid">${urls.map((u,i)=>`<figure class="image-card"><img src="${esc(u)}" loading="lazy" alt="写真 ${i+1}" onerror="this.closest('figure').remove()"></figure>`).join('')}</div></section>`;
+}
+
+function renderHome(manifest) {
+  document.title='PersonalOS Leisure'; breadcrumb.innerHTML=''; const items=manifest.items||[];
+  const section=(title,t)=>{const a=items.filter(x=>x.type===t);return a.length?`<section class="section"><h2>${esc(title)}</h2><div class="home-list">${a.map(x=>`<div class="home-item"><a href="${hrefFor(x)}"><strong>${esc(x.title||x.id)}</strong></a><span class="badge">${esc(x.id)}</span></div>`).join('')}</div></section>`:'';};
+  app.innerHTML=`<section class="hero"><div class="kicker">PersonalOS Leisure</div><h1>レジャー</h1><p class="summary">旅の計画から、ルート、スポットへ掘り下げて見られます。</p></section>${section('旅のプラン','plan')}${section('ルート','route')}${section('スポット','spot')}`;
+}
+
+function renderPlan(data) {
+  const p=data.plan||{}; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
+  const transport=p.transport?.primary ? `<span class="badge">${esc(modeLabel(p.transport.primary))}</span>` : '';
+  app.innerHTML=`<section class="hero"><div class="kicker">旅のプラン · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p>${transport?`<div class="hero-meta">${transport}</div>`:''}</section>
+    ${tripValueHtml(p.trip_value||{})}
+    ${(data.hero_refs||[]).length?`<section class="section"><h2>この旅の主役</h2><div class="cards">${data.hero_refs.map(refCard).join('')}</div></section>`:''}
+    <section class="section itinerary"><div class="section-heading"><div><h2>日ごとの旅程</h2><p>その日の魅力と、旅を成立させる移動・宿泊・準備を順番に見られます。</p></div></div>${(p.days||[]).map(dayHtml).join('')}</section>`;
+}
+
+function renderRoute(data) {
+  const r=data.route||{},m=data.map||null; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
+  app.innerHTML=`<section class="hero"><div class="kicker">ルート · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p><p>${esc(r.purpose||'')}</p></section>
+    ${m?`<section class="section"><h2>ルートの地図</h2><div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div><p class="note">${esc(m.note||'立ち寄り順を示す概念地図です。')}</p></section>`:''}
+    ${(r.highlights||[]).length?`<section class="section"><h2>このルートの魅力</h2><div class="cards">${r.highlights.map(x=>`<article class="card">${esc(x)}</article>`).join('')}</div></section>`:''}
+    <section class="section"><h2>立ち寄り順</h2><div class="route-stops vertical">${(r.sequence||r.sequence_refs||[]).map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span>${refInline(x)}${x.role?` <small>${esc(roleLabel(x.role))}</small>`:''}</span>`).join('')}</div></section>
+    <section class="section"><h2>所要時間・難易度</h2><p>${esc(r.duration||'')} ${r.difficulty?`<span class="badge">${esc(difficultyLabel(r.difficulty))}</span>`:''}</p></section>
+    ${(r.constraints||[]).length?`<section class="section"><h2>重要な条件</h2><ul class="list">${r.constraints.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>`:''}`;
+  if(m) initRouteMap(m,r.sequence||r.sequence_refs||[]);
+}
+
+function renderSpot(data) {
+  const s=data.spot||{}; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
+  app.innerHTML=`<section class="hero"><div class="kicker">スポット · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p></section>
+    ${imageGallery(s.image_refs||s.images||[])}
+    ${(s.highlights||[]).length?`<section class="section"><h2>魅力</h2><div class="cards">${s.highlights.map(x=>`<article class="card">${esc(x)}</article>`).join('')}</div></section>`:''}
+    ${(s.value_points||[]).length?`<section class="section"><h2>このスポットの価値</h2><ul class="list">${s.value_points.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>`:''}
+    ${(s.practicality||[]).length?`<section class="section"><h2>利用情報</h2><ul class="list">${s.practicality.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>`:''}
+    ${(s.related||[]).length?`<section class="section"><h2>関連スポット</h2><div class="cards">${s.related.map(refCard).join('')}</div></section>`:''}`;
+}
+
+function initRouteMap(mapSpec,sequence){const spots=Object.fromEntries(sequence.map((x,index)=>[x.id,{...x,sequenceOrder:index+1}]));loadGoogleMap(mapSpec,spots);}
+
+function googleMapsSearchUrl(name,placeId=''){const p=new URLSearchParams({api:'1',query:name});if(placeId)p.set('query_place_id',placeId);return `https://www.google.com/maps/search/?${p}`;}
+function routeLetter(order){const n=Number(order||0);return n>0&&n<=26?String.fromCharCode(64+n):'';}
+function normalizeEntityId(id=''){const m=String(id).match(/^([ST])(\d{1,4})$/);return m?`${m[1]}${m[2].padStart(4,'0')}`:String(id);}
+function popupHtml({entityType='spot',entityId,name,role,order,googlePlaceId}){const ref={type:entityType,id:entityId};const pl=entityId&&canOpen(ref)?`<a href="${hrefFor(ref)}">PersonalOSで見る</a>`:'';const gl=`<a href="${esc(googleMapsSearchUrl(name,googlePlaceId))}" target="_blank" rel="noopener">Google Mapsで開く</a>`;return `<div class="pin-popup"><strong>${esc(name)}</strong>${role?`<div>${esc(roleLabel(role))}</div>`:''}${order?`<div>${esc(order)}番目</div>`:''}<div class="pin-links">${pl}${gl}</div></div>`;}
 function decodePolyline(encoded){const path=[];let index=0,lat=0,lng=0;while(index<encoded.length){let result=0,shift=0,byte;do{byte=encoded.charCodeAt(index++)-63;result|=(byte&0x1f)<<shift;shift+=5;}while(byte>=0x20);lat+=(result&1)?~(result>>1):(result>>1);result=0;shift=0;do{byte=encoded.charCodeAt(index++)-63;result|=(byte&0x1f)<<shift;shift+=5;}while(byte>=0x20);lng+=(result&1)?~(result>>1):(result>>1);path.push({lat:lat/1e5,lng:lng/1e5});}return path;}
+async function fetchJson(path){const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw new Error(`${path}: ${r.status}`);return r.json();}
+function addPointMarker({map,info,point,spot,bounds}){const position={lat:Number(point.lat),lng:Number(point.lon)};bounds.extend(position);const order=point.order||'',entityType=point.entity_type||'spot',entityId=normalizeEntityId(point.entity_id||point.spot_id),label=order?String(order):'';const marker=new google.maps.Marker({map,position,label:label?{text:label,color:'#fff',fontWeight:'700'}:undefined,title:point.name||spot.label||entityId,zIndex:100+Number(order||0)});marker.addListener('click',()=>{const name=spot.label||point.name||entityId||'Point';info.setContent(popupHtml({entityType,entityId,name,role:point.role||spot.role||'',order,googlePlaceId:point.place_id||''}));info.open({map,anchor:marker});});}
+async function loadGoogleMap(mapSpec,spots={}){const key=window.PERSONALOS_CONFIG?.googleMapsApiKey||'',message=document.querySelector('#map-message'),mapElement=document.querySelector('#map');if(!mapElement||!message)return;mapElement.style.display='';mapElement.replaceChildren();if(!key){mapElement.style.display='none';message.textContent='Google Maps API key 未設定。';return;}try{await ensureGoogleMaps(key);const pointArtifact=await fetchJson(mapSpec.points_json);const map=new google.maps.Map(mapElement,{mapTypeControl:true,streetViewControl:false,fullscreenControl:true}),info=new google.maps.InfoWindow(),bounds=new google.maps.LatLngBounds(),points=pointArtifact.points||[];points.forEach(point=>addPointMarker({map,info,point,spot:spots[normalizeEntityId(point.entity_id||point.spot_id)]||{},bounds}));if(!bounds.isEmpty())map.fitBounds(bounds,28);message.textContent='';}catch(e){mapElement.style.display='none';message.textContent=`地図の読み込みに失敗しました: ${e.message}`;}}
 let googlePromise;function ensureGoogleMaps(key){if(window.google?.maps)return Promise.resolve();if(googlePromise)return googlePromise;googlePromise=new Promise((resolve,reject)=>{window.__personalosGoogleMapsReady=resolve;const s=document.createElement('script');s.src=`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=__personalosGoogleMapsReady&v=weekly`;s.async=true;s.defer=true;s.onerror=()=>reject(new Error('Google Maps JavaScript API load error'));document.head.appendChild(s);});return googlePromise;}
-async function renderGoogleMap(mapId,messageId,spec){const el=document.getElementById(mapId),message=document.getElementById(messageId);if(!el||!message||el.dataset.loaded)return;if(!spec?.points_json){message.textContent='地図データがありません。';return;}const key=window.PERSONALOS_CONFIG?.googleMapsApiKey||'';if(!key){message.textContent='Google Maps API key 未設定。';return;}try{await ensureGoogleMaps(key);const points=await fetchJson(spec.points_json);const map=new google.maps.Map(el,{mapTypeControl:true,streetViewControl:false,fullscreenControl:true});const info=new google.maps.InfoWindow(),bounds=new google.maps.LatLngBounds();(points.points||[]).forEach(point=>{const pos={lat:Number(point.lat),lng:Number(point.lon)};bounds.extend(pos);const marker=new google.maps.Marker({map,position:pos,label:point.order?{text:String(point.order),color:'#fff',fontWeight:'700'}:undefined,title:point.name||point.entity_id});marker.addListener('click',()=>{info.setContent(popup(point));info.open({map,anchor:marker});});});for(const routeRef of spec.execution_routes||[]){try{const artifact=await fetchJson(routeRef.path);const encoded=(artifact.encoded_polyline_chunks||[]).join('');if(encoded){const path=decodePolyline(encoded);path.forEach(p=>bounds.extend(p));new google.maps.Polyline({map,path,strokeWeight:5});}}catch(e){message.textContent=`一部の実道路線を読み込めませんでした: ${e.message}`;}}if(!bounds.isEmpty())map.fitBounds(bounds,28);el.dataset.loaded='1';}catch(e){message.textContent=`地図の読み込みに失敗しました: ${e.message}`;}}
-function renderHome(manifest){document.title='PersonalOS Leisure';breadcrumb.innerHTML='';const items=manifest.items||[];const section=(title,t)=>{const rows=items.filter(x=>x.type===t);return rows.length?`<section class="section"><h2>${esc(title)}</h2><div class="home-list">${rows.map(x=>`<div class="home-item"><a href="${hrefFor(x)}"><strong>${esc(x.title||x.id)}</strong></a><span class="badge">${esc(x.id)}</span></div>`).join('')}</div></section>`:'';};app.innerHTML=`<section class="hero"><div class="kicker">PersonalOS Leisure</div><h1>レジャー</h1><p class="summary">旅の計画から実施、ルート、スポットへ掘り下げて見られます。</p></section>${section('旅のプラン','plan')}${section('実施プラン','concrete_plan')}${section('ルート','route')}${section('スポット','spot')}`;}
-async function main(){try{const manifest=await fetchJson('./manifest.json');published=new Set((manifest.items||[]).map(keyFor));if(!type||!id){renderHome(manifest);return;}if(!dirs[type])throw new Error(`unsupported type: ${type}`);if(!published.has(`${type}:${id}`))throw new Error(`not published: ${type}:${id}`);const data=await fetchJson(pathFor(type,id));document.title=`${data.title} · PersonalOS Leisure`;if(type==='plan')renderPlan(data);else if(type==='concrete_plan')renderConcrete(data);else if(type==='route')renderRoute(data);else if(type==='spot')renderSpot(data);}catch(e){app.innerHTML=`<section class="section"><h1>表示できませんでした</h1><p class="error">${esc(e.message)}</p><p><a href="./">Homeへ戻る</a></p></section>`;}}
+
+async function main(){try{const manifest=await fetch('./manifest.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(`manifest ${r.status}`)));published=new Set((manifest.items||[]).map(keyFor));if(!type||!id){renderHome(manifest);return;}if(!['plan','route','spot'].includes(type))throw new Error(`unsupported type: ${type}`);if(!published.has(`${type}:${id}`))throw new Error(`not published: ${type}:${id}`);const data=await fetch(pathFor(type,id),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(new Error(`${r.status} ${r.statusText}`)));document.title=`${data.title} · PersonalOS Leisure`;if(type==='plan')renderPlan(data);if(type==='route')renderRoute(data);if(type==='spot')renderSpot(data);}catch(e){app.innerHTML=`<section class="section"><h1>表示できませんでした</h1><p class="error">${esc(e.message)}</p><p><a href="./">Homeへ戻る</a></p></section>`;}}
 main();

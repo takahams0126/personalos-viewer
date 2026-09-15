@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "poc": true,
+  "source_plan_id": "P001",
+  "purpose": "Concrete Planで天気予報そのものではなく、予報に基づく実施判断・代替判断・確認時刻をどう表示するか検証する一時PoC。正式Canonical schemaではない。",
+  "source_policy": "現時点では実施日が未来で予報未取得のため、値は未確認として保持する。実際のConcrete生成時は複数天気ソースと山岳・道路情報を評価して更新する。",
+  "days": {
+    "2": {
+      "weather_assessment": {
+        "scope": "縄文杉ルート R005 / R007",
+        "status": "unknown",
+        "status_label": "要確認",
+        "forecast_summary": "未確認",
+        "precipitation": {
+          "morning": "未確認",
+          "afternoon": "未確認"
+        },
+        "wind": "未確認",
+        "mountain_condition": "未確認",
+        "decision": "予報取得後にR005実施可否を判定",
+        "decision_reasons": [
+          "降水量・風・登山道状況を確認",
+          "増水・強風・進行遅延リスクを評価"
+        ],
+        "alternative_rule": "条件が悪い場合はR007短縮案、またはDay3への振替を検討",
+        "checked_at": null,
+        "evidence_refs": []
+      }
+    },
+    "3": {
+      "weather_assessment": {
+        "scope": "天候予備日",
+        "status": "unknown",
+        "status_label": "振替判断待ち",
+        "forecast_summary": "未確認",
+        "precipitation": {
+          "morning": "未確認",
+          "afternoon": "未確認"
+        },
+        "wind": "未確認",
+        "mountain_condition": "Day2 / Day4を比較して判断",
+        "decision": "Day2またはDay4の山行を振り替えるか判断",
+        "decision_reasons": [
+          "縄文杉と白谷雲水峡の山岳条件を比較",
+          "より条件の悪い山行日をDay3へ移す"
+        ],
+        "alternative_rule": "両日とも成立する場合はPlan既定のDay3行程を実施",
+        "checked_at": null,
+        "evidence_refs": []
+      }
+    },
+    "4": {
+      "weather_assessment": {
+        "scope": "白谷雲水峡・太鼓岩 R004",
+        "status": "unknown",
+        "status_label": "要確認",
+        "forecast_summary": "未確認",
+        "precipitation": {
+          "morning": "未確認",
+          "afternoon": "未確認"
+        },
+        "wind": "未確認",
+        "mountain_condition": "未確認",
+        "decision": "予報取得後にR004実施可否を判定",
+        "decision_reasons": [
+          "降水量・風・増水状況を確認",
+          "太鼓岩までの登山道・展望条件を評価"
+        ],
+        "alternative_rule": "増水・悪天候時はDay3への振替または山行見直し",
+        "checked_at": null,
+        "evidence_refs": []
+      }
+    }
+  }
+}
