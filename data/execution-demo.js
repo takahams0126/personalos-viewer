@@ -65,11 +65,23 @@ function mergeDetailPoc(base,poc){
     }
     if(!day)continue;
     if(extra.date)day.date=extra.date;
+    if(extra.weekday)day.weekday=extra.weekday;
+    if(extra.wake_up_at)day.wake_up_at=extra.wake_up_at;
+    if(extra.purpose_override)day.purpose_override=extra.purpose_override;
     day.day_of_checks=extra.day_of_checks||[];
+
     const variants=extra.variants||{};
-    for(const v of day.variants||[]){
-      const vx=variants[v.id]; if(!vx)continue;
+    for(const [variantId,vx] of Object.entries(variants)){
+      let v=(day.variants||[]).find(x=>x.id===variantId);
+      if(!v && vx.prototype){
+        v={id:variantId,label:vx.label||variantId,route_id:vx.route_id||null,summary:{},flow:[]};
+        (day.variants||(day.variants=[])).push(v);
+      }
+      if(!v)continue;
+      if(vx.label)v.label=vx.label;
+      if(vx.route_id)v.route_id=vx.route_id;
       v.summary={...(v.summary||{}),...(vx.summary_extra||{})};
+      if(Array.isArray(vx.replace_flow)) v.flow=JSON.parse(JSON.stringify(vx.replace_flow));
       for(const [idx,detail] of Object.entries(vx.flow_details||{})){
         const item=v.flow?.[Number(idx)]; if(item) Object.assign(item,detail);
       }
@@ -80,7 +92,7 @@ function mergeDetailPoc(base,poc){
 }
 
 const e=escapeDayHtml;
-const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'},condition:{opening_hours:'営業時間',operating_hours:'営業時間',last_order_at:'LO',reservation:'予約',parking:'駐車',fee:'料金',weather:'天候',road:'道路',trail:'登山道',bus_operation:'バス運行',turnaround_rule:'短縮条件',check_in:'チェックイン'}};
+const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'},condition:{opening_hours:'営業時間',operating_hours:'営業時間',last_order_at:'LO',reservation:'予約',parking:'駐車',fee:'料金',weather:'天候',road:'道路',trail:'登山道',bus_operation:'バス運行',turnaround_rule:'短縮条件',check_in:'チェックイン',supplies:'買い出し',bus_ticket:'バス券',portable_toilet:'携帯トイレ',milestones:'主要地点',target_return:'目標帰着',switch_rule:'振替条件',closed:'休業',amenities:'備品'}};
 const l=(g,v)=>labels[g]?.[v]||String(v||'').replaceAll('_',' ');
 const destinationIcon=ref=>renderTablerIcon(resolveDestinationIcon(ref.type==='travel_point'?{pointType:ref.point_type}:{category:ref.category,role:ref.role}),'exec-destination-svg');
 const transferIcon=mode=>renderTablerIcon(resolveTransferIcon(mode),'exec-transfer-svg');
@@ -147,10 +159,11 @@ function executionDay(day,planDay={}){
   const vm=overlayConcreteDay(planVM,day);
   const active=vm.execution.activeVariant||{id:'standard',summary:{},flow:[]};
   const f=day.feasibility?`<span class="exec-status ${e(day.feasibility)}">${e(l('feasibility',day.feasibility))}</span>`:'';
-  const date=day.date?`<span class="exec-day-date-inline">${e(day.date)}</span>`:'';
-  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(active.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><div><h3>${e(vm.title||day.purpose||'')}</h3>${date}</div>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary"><div class="exec-summary-metrics">${summaryHtml(active.summary||{})}</div>${dayChecksHtml(day.day_of_checks||[])}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
+  const date=day.date?`<span class="exec-day-date-inline">${e(day.date)}${day.weekday?`（${e(day.weekday)}）`:''}${day.wake_up_at?`・起床 ${e(day.wake_up_at)}`:''}</span>`:'';
+  const title=day.purpose_override||vm.title||day.purpose||'';
+  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(active.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><div><h3>${e(title)}</h3>${date}</div>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary"><div class="exec-summary-metrics">${summaryHtml(active.summary||{})}</div>${dayChecksHtml(day.day_of_checks||[])}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
 }
-function executionHtml(data,planDays={},detailPoc={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">PoC・仮想データ</span></div><p>${e(detailPoc.notice||data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>今回は便・時刻・営業時間・費用・buffer・当日確認まで試作し、最終Schemaへ落とす前に表示価値を検証します。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>Plan Day ViewModelへConcrete実行差分を重ねます。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
+function executionHtml(data,planDays={},detailPoc={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">PoC・ユーザー提供/未検証</span></div><p>${e(detailPoc.notice||data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>便・時刻・営業時間・費用・buffer・当日確認を試作し、最終Schemaへ落とす前に表示価値を検証します。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>Plan Day ViewModelへConcrete実行差分を重ねます。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
 
 function bindExecutionDays(panel,data){
   panel.querySelectorAll('.execution-day').forEach(card=>{
