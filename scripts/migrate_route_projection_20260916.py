@@ -12,6 +12,12 @@ def replace_function(text: str, start_name: str, next_name: str, replacement: st
     return text[:start] + replacement.rstrip() + "\n\n" + text[end:]
 
 
+def replace_until(text: str, start_marker: str, end_marker: str, replacement: str) -> str:
+    start = text.index(start_marker)
+    end = text.index(end_marker, start)
+    return text[:start] + replacement.rstrip() + "\n" + text[end:]
+
+
 text = APP.read_text(encoding="utf-8")
 render = '''function renderRoute(data) {
   const r=data.route||{},m=data.map||null; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span>${(data.parent_refs||[]).map(x=>`${refInline(x)}<span>›</span>`).join('')}<span>${esc(data.id)}</span>`;
@@ -24,6 +30,17 @@ render = '''function renderRoute(data) {
   if(m) initRouteMap(m,r.sequence||r.sequence_refs||[]);
 }'''
 text = replace_function(text, "renderRoute(data)", "renderSpot(data)", render)
+
+init_map = '''function initRouteMap(mapSpec,sequence){const spots=Object.fromEntries(sequence.map((x,index)=>[x.id,{...x,sequenceOrder:index+1}]));loadGoogleMap(mapSpec,spots);}'''
+text = replace_function(text, "initRouteMap(mapSpec,sequence)", "googleMapsSearchUrl(name,placeId='')", init_map)
+
+load_map = '''async function loadGoogleMap(mapSpec,spots={}){const key=window.PERSONALOS_CONFIG?.googleMapsApiKey||'',message=document.querySelector('#map-message'),mapElement=document.querySelector('#map');if(!mapElement||!message)return;mapElement.style.display='';mapElement.replaceChildren();if(!key){mapElement.style.display='none';message.textContent='Google Maps API key 未設定。';return;}try{await ensureGoogleMaps(key);const pointArtifact=await fetchJson(mapSpec.points_json);const map=new google.maps.Map(mapElement,{mapTypeControl:true,streetViewControl:false,fullscreenControl:true}),info=new google.maps.InfoWindow(),bounds=new google.maps.LatLngBounds(),points=pointArtifact.points||[];points.forEach(point=>addPointMarker({map,info,point,spot:spots[normalizeEntityId(point.entity_id||point.spot_id)]||{},bounds}));if(!bounds.isEmpty())map.fitBounds(bounds,28);message.textContent='';}catch(e){mapElement.style.display='none';message.textContent=`地図の読み込みに失敗しました: ${e.message}`;}}'''
+text = replace_until(text, "async function loadGoogleMap(mapSpec,spots={},mode='conceptual')", "let googlePromise", load_map)
+
+# Conceptual markers no longer need an execution-map mode.
+text = text.replace("function addPointMarker({map,info,point,spot,mode,bounds}){", "function addPointMarker({map,info,point,spot,bounds}){")
+text = text.replace("label=mode==='actual'?routeLetter(order):(order?String(order):'');", "label=order?String(order):'';")
+
 APP.write_text(text, encoding="utf-8")
 
 route = ROUTE_VIEW.read_text(encoding="utf-8")
