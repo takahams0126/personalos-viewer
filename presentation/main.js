@@ -15,7 +15,7 @@ function waitFor(selector, timeout = 5000) {
       observer.disconnect();
       resolve(node);
     });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
     setTimeout(() => { observer.disconnect(); resolve(null); }, timeout);
   });
 }
@@ -37,9 +37,11 @@ if (type === 'spot') {
     await load('./modules/home-explorer.js');
   } else if (type === 'plan') {
     // Deterministic Plan composition order:
-    // base Plan DOM -> shared Day UI -> SVG flow -> alternatives -> Concrete overlay -> execution supplements.
+    // base Plan DOM -> Plan Day materialization -> SVG flow -> shared decisions -> Concrete overlay -> execution supplements.
     await load('./modules/plan-demo.js');
-    await waitFor('.plan-demo-itinerary .day-card, .itinerary .day-card');
+    // The SVG decorator is defined against the approved plan-axis DOM.
+    // Do not start it on the raw base itinerary; wait until Plan has materialized the axis first.
+    await waitFor('.plan-demo-itinerary .plan-axis');
     await load('./modules/plan-flow-icons.js');
     await load('./modules/day-decision-demo.js');
     await load('./modules/execution-demo.js');
