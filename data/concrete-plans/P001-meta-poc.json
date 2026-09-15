@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "poc": true,
+  "concrete_plan_id": "CP001",
+  "source_plan_id": "P001",
+  "title": "屋久島 4泊5日 実施プラン",
+  "status": "conditional",
+  "last_verified_at": null,
+  "description": "実施日・予約便・移動時刻・営業時間・給油・費用などを具体化し、各日の行動が無理なく成立するかを確認できる実行計画です。時間制約や乗り継ぎ余裕、代替案、当日確認事項も日ごとに確認できます。",
+  "display": {
+    "kicker": "実施プラン",
+    "heading": "実施日の行動計画",
+    "poc_badge": "PoC・ユーザー提供/未検証",
+    "days_heading": "日ごとの実施計画",
+    "days_description": "実施日ごとに、計画Dayを具体的な時刻・移動・手続・条件へ展開します。"
+  }
+}
