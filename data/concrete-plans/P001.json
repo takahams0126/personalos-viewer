@@ -9,13 +9,14 @@
     {
       "day": 1,
       "date_label": "実施日 1日目",
-      "purpose": "自宅から屋久島へ移動し、レンタカーを受け取って生活拠点へ入る",
+      "purpose": "屋久島へ移動し、宮之浦の生活拠点を立ち上げる",
       "feasibility": "viable",
       "variants": [
         {
           "id": "standard",
           "label": "標準",
           "summary": {
+            "total_time": "約7時間25分",
             "travel_distance": "未算定",
             "travel_time": "約5時間",
             "procedure_time": "約1時間35分",
@@ -62,7 +63,7 @@
     {
       "day": 3,
       "date_label": "実施日 3日目",
-      "purpose": "屋久島一周ドライブを実道路・駐車・徒歩アクセスまで含めて実行する",
+      "purpose": "山岳Routeと異なる海・滝・西部林道の屋久島を体験し、山行予備日も兼ねる",
       "feasibility": "conditional",
       "variants": [
         {
@@ -70,10 +71,11 @@
           "label": "標準",
           "route_id": "R011",
           "summary": {
+            "total_time": "約9時間30分",
             "travel_distance": "未算定",
-            "travel_time": "未算定",
-            "procedure_time": "約10分",
-            "experience_time": "約2時間"
+            "travel_time": "約7時間33分",
+            "procedure_time": "約5分",
+            "experience_time": "約1時間52分"
           },
           "flow": [
             {"type":"destination","time":"08:00","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}},
