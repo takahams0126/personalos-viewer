@@ -21,7 +21,8 @@ async function initDayDecisionDemo(){
 
   const addOverviewBadges = (host, decision, mode) => {
     const badges = decision?.overview_badges || [];
-    if(!badges.length || !host || host.querySelector('.day-decision-overview-badges')) return;
+    if(!badges.length || !host || host.dataset.dayDecisionBadgesAttached === '1') return;
+    host.dataset.dayDecisionBadgesAttached = '1';
     const wrap = document.createElement('div');
     wrap.className = `day-decision-overview-badges ${mode}`;
     wrap.innerHTML = badges.map(x=>`<span>${escDayDecision(x)}</span>`).join('');
@@ -97,7 +98,13 @@ async function initDayDecisionDemo(){
     });
   };
 
-  const apply = () => { renderPlan(); renderExecution(); };
+  let applying = false;
+  const apply = () => {
+    if(applying) return;
+    applying = true;
+    try { renderPlan(); renderExecution(); }
+    finally { applying = false; }
+  };
   apply();
   const observer = new MutationObserver(apply);
   observer.observe(app,{childList:true,subtree:true});
