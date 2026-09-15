@@ -2,7 +2,7 @@
 
 `maps/` contains only the **published Map Artifacts required by the Viewer**.
 
-The formal map path is Google Maps based. GeoJSON is not part of the production contract.
+The formal map path is Google Maps based.
 
 ## Boundary
 
@@ -68,15 +68,14 @@ Exact filenames are references emitted by the formal Public Projection / Map Art
 
 ## Rules
 
-1. GeoJSON is not used by the formal production Viewer.
-2. Route conceptual map points are owned by a Route.
-3. ConcretePlan points are owned by ConcretePlan + Day + variant.
-4. Precomputed Google Routes artifacts are owned by the ConcretePlan Day/variant element that uses them.
-5. Published entity JSON explicitly references the artifacts it needs.
-6. Presentation follows those references and never constructs paths from entity IDs by convention.
-7. Place resolution, cache/index maintenance, hash/TTL decisions and Google Routes API calls happen upstream.
-8. Adding new published Routes and ConcretePlans may add map artifacts without any HTML/CSS/JavaScript change.
+1. Route conceptual map points are owned by a Route.
+2. ConcretePlan points are owned by ConcretePlan + Day + variant.
+3. Precomputed Google Routes artifacts are owned by the ConcretePlan Day/variant element that uses them.
+4. Published entity JSON explicitly references the artifacts it needs.
+5. Presentation follows those references and never constructs paths from entity IDs by convention.
+6. Place resolution, cache/index maintenance, hash/TTL decisions and Google Routes API calls happen upstream.
+7. Adding new published Routes and ConcretePlans may add map artifacts without any HTML/CSS/JavaScript change.
 
 ## Current migration state
 
-Legacy R011 files are still flat under `maps/` only to preserve the frozen Viewer baseline. Some obsolete GeoJSON-era files also remain as migration residue. They are not part of the target contract and will be removed only after current Public Projection references and the upstream publish contract are migrated together.
+Legacy R011 Google-map JSON files remain flat under `maps/` only to preserve the frozen Viewer baseline. They will be reorganized only when current Public Projection references and the upstream publish contract are migrated together.
