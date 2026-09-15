@@ -7,19 +7,24 @@ const id = qs.get('id');
 if (type === 'plan' && id) initConcreteDemo();
 
 async function initConcreteDemo(){
-  let concrete, planData, detailPoc={};
+  let concrete, planData, detailPoc={}, metaPoc={}, fuelPoc={};
   try {
-    const [c,p,d]=await Promise.all([
+    const [c,p,d,m,f]=await Promise.all([
       fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
       fetch(`./data/plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
-      fetch(`./data/concrete-plans/${encodeURIComponent(id)}-detail-poc.json`,{cache:'no-store'})
+      fetch(`./data/concrete-plans/${encodeURIComponent(id)}-detail-poc.json`,{cache:'no-store'}),
+      fetch(`./data/concrete-plans/${encodeURIComponent(id)}-meta-poc.json`,{cache:'no-store'}),
+      fetch(`./data/concrete-plans/${encodeURIComponent(id)}-fuel-poc.json`,{cache:'no-store'})
     ]);
     if(!c.ok||!p.ok)return;
     [concrete,planData]=await Promise.all([c.json(),p.json()]);
     if(d.ok) detailPoc=await d.json();
+    if(m.ok) metaPoc=await m.json();
+    if(f.ok) fuelPoc=await f.json();
   } catch { return; }
 
   concrete=mergeDetailPoc(concrete,detailPoc);
+  concrete=mergeFuelPoc(concrete,fuelPoc);
   const planDaysByNumber=Object.fromEntries((planData.plan?.days||[]).map(d=>[Number(d.day),d]));
   const app=document.querySelector('#app');
   const attach=()=>{
@@ -37,7 +42,7 @@ async function initConcreteDemo(){
     executionPanel.id='execution-mode-panel';
     executionPanel.className='mode-panel';
     executionPanel.hidden=true;
-    executionPanel.innerHTML=executionHtml(concrete,planDaysByNumber,detailPoc);
+    executionPanel.innerHTML=executionHtml(concrete,planDaysByNumber,detailPoc,metaPoc);
 
     const switcher=document.createElement('div');
     switcher.className='plan-mode-switch';
@@ -91,8 +96,53 @@ function mergeDetailPoc(base,poc){
   return out;
 }
 
+function mergeFuelPoc(base,spec={}){
+  const out=JSON.parse(JSON.stringify(base||{}));
+  const patch=spec.day5_flow_patch;
+  if(!patch)return out;
+  const day=(out.days||[]).find(d=>Number(d.day)===5);
+  const variant=(day?.variants||[]).find(v=>v.id==='standard')||(day?.variants||[])[0];
+  if(!variant?.flow?.length)return out;
+
+  if(patch.free_time&&!variant.flow.some(x=>x.type==='free_time')){
+    variant.flow.splice(1,0,{
+      type:'free_time',
+      time:patch.free_time.time||'',
+      label:patch.free_time.label||'自由時間',
+      note:patch.free_time.note||''
+    });
+  }
+
+  const refuel=patch.refuel;
+  if(refuel&&!variant.flow.some(x=>x.ref?.point_type==='gas_station')){
+    const station=(spec.travel_point_candidates||[]).find(s=>s.poc_id===refuel.station_poc_id)||{};
+    const plan=(spec.planned_refuels||[]).find(x=>Number(x.day)===5&&x.kind==='return_refuel')||{};
+    const returnIndex=variant.flow.findIndex(x=>x.type==='destination'&&x.ref?.point_type==='rental_car_office');
+    if(returnIndex>=0){
+      const gasDestination={
+        type:'destination',
+        time:refuel.time||'',
+        ref:{
+          type:'travel_point',
+          id:station.canonical_id||station.poc_id||null,
+          label:station.label||'給油候補',
+          point_type:'gas_station'
+        },
+        activities:[{label:refuel.activity||'給油',duration:refuel.duration||null,required:refuel.required===true}],
+        conditions:{
+          operating_hours:station.hours||null,
+          refuel_reason:plan.reason||null,
+          refuel_checks:(plan.checks||[]).join(' / ')||null
+        }
+      };
+      variant.flow.splice(returnIndex,0,gasDestination,{type:'transfer',mode:'rental_car',duration:'未算定'});
+    }
+  }
+  return out;
+}
+
 const e=escapeDayHtml;
-const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'},condition:{opening_hours:'営業時間',operating_hours:'営業時間',last_order_at:'LO',reservation:'予約',parking:'駐車',fee:'料金',weather:'天候',road:'道路',trail:'登山道',bus_operation:'バス運行',turnaround_rule:'短縮条件',check_in:'チェックイン',supplies:'買い出し',bus_ticket:'バス券',portable_toilet:'携帯トイレ',milestones:'主要地点',target_return:'目標帰着',switch_rule:'振替条件',closed:'休業',amenities:'備品'}};
+const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'},condition:{opening_hours:'営業時間',operating_hours:'営業時間',last_order_at:'LO',reservation:'予約',parking:'駐車',fee:'料金',weather:'天候',road:'道路',trail:'登山道',bus_operation:'バス運行',turnaround_rule:'短縮条件',check_in:'チェックイン',supplies:'買い出し',bus_ticket:'バス券',portable_toilet:'携帯トイレ',milestones:'主要地点',target_return:'目標帰着',switch_rule:'振替条件',closed:'休業',amenities:'備品',refuel_reason:'給油理由',refuel_checks:'確認'}};
 const l=(g,v)=>labels[g]?.[v]||String(v||'').replaceAll('_',' ');
 const destinationIcon=ref=>renderTablerIcon(resolveDestinationIcon(ref.type==='travel_point'?{pointType:ref.point_type}:{category:ref.category,role:ref.role}),'exec-destination-svg');
 const transferIcon=mode=>renderTablerIcon(resolveTransferIcon(mode),'exec-transfer-svg');
@@ -134,7 +184,7 @@ function serviceHtml(i){
   const s=i.service; if(!s)return'';
   return `<div class="exec-service"><strong>${e(s.service_name||s.operator||'交通サービス')}</strong>${s.service_number?`<span>${e(s.service_number)}</span>`:''}${s.reservation?`<small>${e(s.reservation)}</small>`:''}</div>`;
 }
-function activityHtml(a){return `<div class="exec-activity"><span>${e(a.label||'')}</span>${a.duration?`<strong>${e(a.duration)}</strong>`:''}</div>`;}
+function activityHtml(a){return `<div class="exec-activity"><span>${e(a.label||'')}</span>${a.duration?`<strong>${e(a.duration)}</strong>`:''}${a.required?'<b class="exec-required-badge">必須</b>':''}</div>`;}
 function destinationHtml(i){
   const r=i.ref||{},acts=(i.activities||[]).map(activityHtml).join(''),acc=(i.accessories||[]).map(a=>`<span class="exec-accessory">${e(a.label||'')}</span>`).join(''),stay=i.stay_duration?`<span class="exec-stay">滞在 ${e(i.stay_duration)}</span>`:'';
   return `<li class="exec-flow-item exec-destination"><div class="exec-flow-time">${e(i.time||'')}</div><div class="exec-destination-node">${destinationIcon(r)}</div><div class="exec-flow-main"><div class="exec-destination-title">${e(r.label||r.id||'')}${stay}${moneyHtml(i.cost)}</div>${acts?`<div class="exec-activities">${acts}</div>`:''}${acc?`<div class="exec-accessories">${acc}</div>`:''}${conditionsHtml(i.conditions)}</div></li>`;
@@ -145,7 +195,8 @@ function transferHtml(i){
   return `<li class="exec-flow-item exec-transfer"><div class="exec-flow-time"></div><div class="exec-transfer-node">${transferIcon(i.mode)}</div><div class="exec-transfer-main"><div class="exec-transfer-line"><span>${e(l('mode',i.mode))}</span>${i.duration?`<strong>${e(i.duration)}</strong>`:''}${distance}${moneyHtml(i.cost)}${scheduleHtml(i)}</div>${serviceHtml(i)}${buffer?`<div class="exec-buffer">余裕 ${e(buffer)}</div>`:''}${conditionsHtml(i.conditions)}</div></li>`;
 }
 function routeHtml(i){return `<li class="exec-flow-item exec-route"><div class="exec-flow-time">${e(i.time||'')}</div><div class="exec-route-node">★</div><div class="exec-flow-main"><div class="exec-destination-title">${e(i.label||i.route_id||'Route')}${i.duration?`<span class="exec-stay">${e(i.duration)}</span>`:''}</div>${conditionsHtml(i.conditions)}</div></li>`;}
-function flowHtml(flow=[]){return `<ol class="exec-flow">${flow.map(i=>i.type==='transfer'?transferHtml(i):i.type==='route'?routeHtml(i):destinationHtml(i)).join('')}</ol>`;}
+function freeTimeHtml(i){return `<li class="exec-flow-item exec-free-time-poc"><div class="exec-flow-time">${e(i.time||'')}</div><div class="exec-free-time-node">○</div><div class="exec-flow-main"><div class="exec-destination-title">${e(i.label||'自由時間')}</div>${i.note?`<div class="exec-free-time-note">${e(i.note)}</div>`:''}</div></li>`;}
+function flowHtml(flow=[]){return `<ol class="exec-flow">${flow.map(i=>i.type==='transfer'?transferHtml(i):i.type==='route'?routeHtml(i):i.type==='free_time'?freeTimeHtml(i):destinationHtml(i)).join('')}</ol>`;}
 
 function variantTabs(day){
   const vs=day.variants||[]; if(vs.length<=1)return'';
@@ -163,7 +214,41 @@ function executionDay(day,planDay={}){
   const title=day.purpose_override||vm.title||day.purpose||'';
   return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(active.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><div><h3>${e(title)}</h3>${date}</div>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary"><div class="exec-summary-metrics">${summaryHtml(active.summary||{})}</div>${dayChecksHtml(day.day_of_checks||[])}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
 }
-function executionHtml(data,planDays={},detailPoc={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">PoC・ユーザー提供/未検証</span></div><p>${e(detailPoc.notice||data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>便・時刻・営業時間・費用・buffer・当日確認を試作し、最終Schemaへ落とす前に表示価値を検証します。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>Plan Day ViewModelへConcrete実行差分を重ねます。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
+
+function executionHtml(data,planDays={},detailPoc={},meta={}){
+  const display=meta.display||{};
+  const intro=renderExecutionIntro(meta,detailPoc,data);
+  const daysHeading=e(display.days_heading||'日ごとの実施計画');
+  const daysDescription=e(display.days_description||'');
+  return `${intro}<section class="section execution-days"><div class="section-heading"><h2>${daysHeading}</h2>${daysDescription?`<p>${daysDescription}</p>`:''}</div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;
+}
+
+function renderExecutionIntro(meta={},detail={},data={}){
+  const display=meta.display||{};
+  const period=formatPeriod(detail.execution_window);
+  const transports=derivePrimaryTransports(data);
+  const bookings=(detail.booking_connections||[]).map(x=>x.label).filter(Boolean);
+  const verified=meta.last_verified_at?formatDateTime(meta.last_verified_at):'未確認';
+  const badge=display.poc_badge?`<span class="demo-chip warn">${e(display.poc_badge)}</span>`:'';
+  const facts=[
+    ['実施期間',period||'未設定'],
+    ['元Plan',meta.source_plan_id||detail.source_plan_id||data.source_plan_id||'—'],
+    ['主な移動',transports.length?transports.join('＋'):'未設定'],
+    ['主要予約',bookings.length?bookings.join('・'):'未接続'],
+    ['状態',l('feasibility',meta.status||'unknown')],
+    ['最終確認',verified]
+  ];
+  return `<section class="section execution-intro execution-intro-meta"><div class="execution-title-row"><div><div class="kicker">${e(display.kicker||'実施プラン')}${meta.concrete_plan_id?`・${e(meta.concrete_plan_id)}`:''}</div><h2>${e(display.heading||'実施日の行動計画')}</h2></div>${badge}</div><div class="exec-meta-title">${e(meta.title||data.title||'')}</div><p>${e(meta.description||detail.notice||data.notice||'')}</p><div class="exec-meta-facts">${facts.map(([k,v])=>`<div><span>${e(k)}</span><strong>${e(v)}</strong></div>`).join('')}</div></section>`;
+}
+function derivePrimaryTransports(data={}){
+  const found=[];const add=x=>{if(x&&!found.includes(x))found.push(x);};
+  for(const day of data.days||[])for(const v of day.variants||[])for(const item of v.flow||[])if(item?.type==='transfer')add(item.mode);
+  const priority=['air','rental_car','bus','train','motorbike','walk'];
+  return priority.filter(x=>found.includes(x)&&x!=='walk').map(x=>l('mode',x));
+}
+function formatPeriod(w={}){if(!w.start_date&&!w.end_date)return'';return `${formatDate(w.start_date)} 〜 ${formatDate(w.end_date)}`;}
+function formatDate(v){if(!v)return'—';const m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}/${m[2]}/${m[3]}`:String(v);}
+function formatDateTime(v){try{return new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Tokyo'}).format(new Date(v));}catch{return String(v);}}
 
 function bindExecutionDays(panel,data){
   panel.querySelectorAll('.execution-day').forEach(card=>{
