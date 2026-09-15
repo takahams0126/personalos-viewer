@@ -1,0 +1,20 @@
+/* Formal Leisure Presentation stylesheet entrypoint.
+   index.html loads only this file for Presentation-specific styling. */
+@import url('./modules/home-explorer.css');
+@import url('./modules/execution-demo.css');
+@import url('./modules/execution-meta-poc.css');
+@import url('./modules/execution-detail-poc.css');
+@import url('./modules/execution-feasibility-poc.css');
+@import url('./modules/execution-fuel-poc.css');
+@import url('./modules/execution-weather-poc.css');
+@import url('./modules/spot-demo.css');
+@import url('./modules/spot-editorial.css');
+@import url('./modules/spot-card-groups.css');
+@import url('./modules/route-demo.css');
+@import url('./modules/route-metrics.css');
+@import url('./modules/plan-demo.css');
+@import url('./modules/plan-flow-hierarchy.css');
+@import url('./modules/plan-flow-icons.css');
+@import url('./modules/light-contrast.css');
+@import url('./modules/mode-switch-compact.css');
+@import url('./modules/day-decision-demo.css');
