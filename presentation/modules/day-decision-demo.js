@@ -7,7 +7,7 @@ async function initDayDecisionDemo(){
   let extra, planData;
   try{
     const [r,p] = await Promise.all([
-      fetch('./data/plan-demo.json',{cache:'no-store'}),
+      fetch('./presentation/fixtures/plan-demo.json',{cache:'no-store'}),
       fetch('./data/plans/P001.json',{cache:'no-store'})
     ]);
     if(!r.ok || !p.ok) return;
