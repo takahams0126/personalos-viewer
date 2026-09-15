@@ -13,6 +13,39 @@ if (planType === 'plan' && planId) initPlanView();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 
+function planInternalChevron(){
+  return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
+}
+
+function planMainRouteCard(ref,published){
+  const key=`${ref?.type||'route'}:${ref?.id||''}`;
+  const content=`<span class="plan-main-route-kind">主役Route</span><strong>${escPlan(ref?.label||ref?.id||'')}</strong>${planInternalChevron()}`;
+  return published.has(key)
+    ? `<a class="plan-main-route-card" href="?type=${encodeURIComponent(ref?.type||'route')}&id=${encodeURIComponent(ref?.id||'')}">${content}</a>`
+    : `<span class="plan-main-route-card is-disabled">${content}</span>`;
+}
+
+function enhanceTripValue(section,value={}){
+  if(!section) return;
+  const heading=section.querySelector(':scope > h2');
+  if(!heading) return;
+
+  const highlights=Array.isArray(value.highlights)?value.highlights:[];
+  const keyRows=[
+    ['旅の流れ',value.flow],
+    ['体験の幅',value.diversity],
+    ['移動効率',value.travel_efficiency],
+    ['トレードオフ',Array.isArray(value.tradeoffs)?value.tradeoffs.join(' / '):value.tradeoffs]
+  ].filter(([,text])=>text);
+
+  [...section.children].filter(node=>node!==heading).forEach(node=>node.remove());
+  section.insertAdjacentHTML('beforeend',`
+    ${value.summary?`<p class="plan-value-summary">${escPlan(value.summary)}</p>`:''}
+    ${highlights.length?`<div class="plan-value-highlights">${highlights.map(text=>`<article>${escPlan(text)}</article>`).join('')}</div>`:''}
+    ${keyRows.length?`<div class="plan-value-key-wrap"><h3>旅の要点</h3><div class="plan-value-key-grid">${keyRows.map(([label,text])=>`<article><span>${escPlan(label)}</span><p>${escPlan(text)}</p></article>`).join('')}</div></div>`:''}
+  `);
+}
+
 function routeStopsHtml(refs=[],published){
   if(!refs.length) return '<div class="plan-route-empty">立ち寄り順はRouteページで確認できます。</div>';
   const refHtml=(ref)=>{
@@ -171,6 +204,15 @@ function enhancePlan(planData,app,routeData,published){
 
   const value=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
   const stars=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
+
+  enhanceTripValue(value,planData.plan?.trip_value||{});
+  if(stars && (planData.hero_refs||[]).length){
+    const oldCards=stars.querySelector('.cards');
+    const html=`<div class="plan-main-route-grid">${planData.hero_refs.map(ref=>planMainRouteCard(ref,published)).join('')}</div>`;
+    if(oldCards) oldCards.outerHTML=html;
+    else stars.insertAdjacentHTML('beforeend',html);
+  }
+
   makePlanCollapsible(value,false);
   makePlanCollapsible(stars,true);
   makePlanCollapsible(itinerary,true);
