@@ -2,7 +2,7 @@ const qsRoute = new URLSearchParams(location.search);
 const routeType = qsRoute.get('type');
 const routeId = qsRoute.get('id');
 
-if (routeType === 'route' && routeId === 'R011') initRouteDemo();
+if (routeType === 'route' && routeId) initRouteDemo();
 
 const escRoute = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 const roleRoute = (v='') => ({
