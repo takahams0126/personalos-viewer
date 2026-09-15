@@ -8,7 +8,6 @@ async function initDayDecisionDemo(){
     if(!r.ok) return;
     extra = await r.json();
   }catch{return;}
-
   const decisions = extra.day_decisions || {};
   const app = document.querySelector('#app');
 
@@ -18,16 +17,6 @@ async function initDayDecisionDemo(){
     const title = header.querySelector('h3');
     if(!title) return;
     title.insertAdjacentHTML('beforeend',` <span class="day-route-id-badge" title="基本Route">${escDayDecision(route.id)}</span>`);
-  };
-
-  const addSupplementalOverviewBadges = (host, decision) => {
-    const badges = decision?.additional_overview_badges || [];
-    if(!badges.length || !host || host.dataset.dayDecisionBadgesAttached === '1') return;
-    host.dataset.dayDecisionBadgesAttached = '1';
-    const wrap = document.createElement('div');
-    wrap.className = 'day-decision-overview-badges plan';
-    wrap.innerHTML = badges.map(x=>`<span>${escDayDecision(x)}</span>`).join('');
-    host.appendChild(wrap);
   };
 
   const syncPlanRouteTabs = (card, decision) => {
@@ -67,56 +56,19 @@ async function initDayDecisionDemo(){
       if(!m) return;
       const decision = decisions[m[1]];
       if(!decision) return;
-
       addRouteBadgeToTitle(card.querySelector('.day-head'),decision);
       const body = card.querySelector('.plan-day-body');
       if(!body) return;
-      const overview = body.querySelector('.plan-day-overview');
-      addSupplementalOverviewBadges(overview,decision);
       syncPlanRouteTabs(card,decision);
-
       if(card.dataset.dayDecisionAttached) return;
       const block = dayDecisionBlock(decision,'plan');
+      const overview = body.querySelector('.plan-day-overview');
       if(overview) overview.insertAdjacentHTML('afterend',block);
       else body.insertAdjacentHTML('afterbegin',block);
       card.dataset.dayDecisionAttached='1';
     });
-
     const riskSection=[...app?.querySelectorAll('#plan-mode-panel .section')||[]].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');
     if(riskSection) riskSection.hidden = true;
-  };
-
-  const ensureExecutionOverview = (card, dayNo) => {
-    const body = card.querySelector('.exec-day-body');
-    const summary = card.querySelector('.exec-day-summary');
-    if(!body || !summary) return null;
-
-    let overview = body.querySelector('.exec-day-overview');
-    if(!overview){
-      overview = document.createElement('section');
-      overview.className = 'plan-day-overview exec-day-overview';
-      summary.before(overview);
-      overview.insertAdjacentHTML('afterbegin','<div class="plan-day-subhead">1日の概要</div>');
-      overview.appendChild(summary);
-    }
-
-    overview.querySelector('.exec-plan-overview-mirror')?.remove();
-    const planCard=[...app.querySelectorAll('#plan-mode-panel .day-card')].find(x=>{
-      const t=x.querySelector('.day-number')?.textContent||'';
-      return Number((t.match(/(\d+)/)||[])[1])===Number(dayNo);
-    });
-    const sourceOverview=planCard?.querySelector('.plan-day-overview');
-    if(sourceOverview){
-      const mirror=document.createElement('div');
-      mirror.className='exec-plan-overview-mirror';
-      [...sourceOverview.children].forEach(child=>{
-        if(child.classList.contains('plan-day-subhead')) return;
-        if(!child.querySelector?.('span')) return;
-        mirror.appendChild(child.cloneNode(true));
-      });
-      if(mirror.childElementCount) overview.appendChild(mirror);
-    }
-    return overview;
   };
 
   const renderExecution = () => {
@@ -124,13 +76,11 @@ async function initDayDecisionDemo(){
       const dayNo = card.dataset.day;
       const decision = decisions[dayNo];
       if(!decision) return;
-
       addRouteBadgeToTitle(card.querySelector('.execution-day-header'),decision);
-      const overview = ensureExecutionOverview(card,dayNo);
       syncExecutionVariantTabs(card,decision);
-
       if(card.dataset.dayDecisionAttached) return;
       const block = dayDecisionBlock(decision,'execution');
+      const overview = card.querySelector('.exec-day-overview');
       if(overview) overview.insertAdjacentHTML('afterend',block);
       else card.querySelector('.exec-day-body')?.insertAdjacentHTML('afterbegin',block);
       card.dataset.dayDecisionAttached='1';
