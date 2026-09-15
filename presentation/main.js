@@ -4,6 +4,7 @@
 
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
+const PRESENTATION_VERSION = '20260916-presentation-2';
 
 function waitFor(selector, timeout = 5000) {
   return new Promise((resolve) => {
@@ -21,8 +22,9 @@ function waitFor(selector, timeout = 5000) {
 }
 
 async function load(path) {
-  try { await import(path); }
-  catch (error) { console.error(`[presentation] failed: ${path}`, error); }
+  const versionedPath = `${path}${path.includes('?') ? '&' : '?'}v=${encodeURIComponent(PRESENTATION_VERSION)}`;
+  try { await import(versionedPath); }
+  catch (error) { console.error(`[presentation] failed: ${versionedPath}`, error); }
 }
 
 // Spot is already a validated, self-contained Presentation renderer.
