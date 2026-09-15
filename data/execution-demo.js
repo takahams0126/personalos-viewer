@@ -1,4 +1,5 @@
 import { renderTablerIcon, resolveDestinationIcon, resolveTransferIcon } from './icon-registry.js?v=20260915-16';
+import { buildPlanDayViewModel, overlayConcreteDay, renderDayOverview, escapeDayHtml } from './day-viewmodel.js?v=20260915-29';
 
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
@@ -49,12 +50,9 @@ async function initConcreteDemo(){
   observer.observe(app,{childList:true,subtree:true});
 }
 
-function e(v=''){return String(v).replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));}
+const e=escapeDayHtml;
 const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'}};
 const l=(g,v)=>labels[g]?.[v]||String(v||'').replaceAll('_',' ');
-const budgetTotalLabel=v=>({'1day':'終日',long_day:'長時間',full_day:'終日'}[v]||String(v||'').replace('-','〜'));
-const budgetStartLabel=v=>({morning:'朝出発',early_morning:'早朝出発',afternoon:'午後開始',evening:'夕方開始'}[v]||String(v||'').replaceAll('_',' '));
-
 const destinationIcon=ref=>renderTablerIcon(resolveDestinationIcon(ref.type==='travel_point'?{pointType:ref.point_type}:{category:ref.category,role:ref.role}),'exec-destination-svg');
 const transferIcon=mode=>renderTablerIcon(resolveTransferIcon(mode),'exec-transfer-svg');
 
@@ -75,19 +73,6 @@ function summaryHtml(s={}){
   const rows=[['合計時間',s.total_time],['移動距離',s.travel_distance],['移動時間',s.travel_time],['手続時間',s.procedure_time],['観光・食事',s.experience_time]];
   return `<div class="exec-summary-grid">${rows.map(([k,v])=>`<div><span>${e(k)}</span><strong>${e(v||'—')}</strong></div>`).join('')}</div>`;
 }
-function planOverviewHtml(planDay={},summary={}){
-  const tb=planDay.time_budget||{};
-  const topBadges=[tb.expected_total?budgetTotalLabel(tb.expected_total):'',tb.preferred_start?budgetStartLabel(tb.preferred_start):''].filter(Boolean);
-  const constraints=tb.constraints||[];
-  const dayText=planDay.summary||planDay.appeal||'';
-  return `<section class="exec-day-overview">
-    <div class="plan-day-subhead">1日の概要</div>
-    ${topBadges.length?`<div class="plan-day-overview-badges">${topBadges.map(x=>`<span>${e(x)}</span>`).join('')}</div>`:''}
-    ${dayText?`<p>${e(dayText)}</p>`:''}
-    ${constraints.length?`<div class="plan-day-constraints">${constraints.map(x=>`<span>${e(x)}</span>`).join('')}</div>`:''}
-    <div class="exec-day-summary">${summaryHtml(summary)}</div>
-  </section>`;
-}
 function activityHtml(a){return `<div class="exec-activity"><span>${e(a.label||'')}</span>${a.duration?`<strong>${e(a.duration)}</strong>`:''}</div>`;}
 function destinationHtml(i){
   const r=i.ref||{},acts=(i.activities||[]).map(activityHtml).join(''),acc=(i.accessories||[]).map(a=>`<span class="exec-accessory">${e(a.label||'')}</span>`).join(''),stay=i.stay_duration?`<span class="exec-stay">滞在 ${e(i.stay_duration)}</span>`:'';
@@ -106,12 +91,13 @@ function viewTabs(){return '<div class="exec-view-tabs" role="tablist"><button c
 function mapLegendHtml(spec={}){const modes=[...new Set((spec.segments||[]).map(s=>s.mode).filter(Boolean))];if(!modes.length)return'';return `<div class="exec-map-legend">${modes.map(mode=>`<span><i class="mode-${e(mode)}"></i>${e(l('mode',mode))}</span>`).join('')}</div>`;}
 
 function executionDay(day,planDay={}){
-  const first=(day.variants||[])[0]||{summary:{},flow:[]};
+  const planVM=buildPlanDayViewModel(planDay);
+  const vm=overlayConcreteDay(planVM,day);
+  const active=vm.execution.activeVariant;
   const f=day.feasibility?`<span class="exec-status ${e(day.feasibility)}">${e(l('feasibility',day.feasibility))}</span>`:'';
-  const title=planDay.purpose||day.purpose||'';
-  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(first.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><h3>${e(title)}</h3>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${planOverviewHtml(planDay,first.summary)}${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(first.flow)}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(first.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(first.map?.note||'')}</p></div></div></article>`;
+  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(active.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><h3>${e(vm.title||day.purpose||'')}</h3>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary">${summaryHtml(active.summary||{})}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
 }
-function executionHtml(data,planDays={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">仮想データ</span></div><p>${e(data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>DailyTitleを開くと1日の概要・代替条件・行動順・Mapをまとめて確認できます。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>計画と同じDayを展開し、Canonical由来の概要条件に実行Summaryを重ねます。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
+function executionHtml(data,planDays={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">仮想データ</span></div><p>${e(data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>DailyTitleを開くと1日の概要・代替条件・実行Summary・行動順・Mapを確認できます。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>計画Day ViewModelへConcrete差分だけを重ねて表示します。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
 
 function bindExecutionDays(panel,data){
   panel.querySelectorAll('.execution-day').forEach(card=>{
