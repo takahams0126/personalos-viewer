@@ -33,6 +33,8 @@ jobs:
           rm -rf _site
           mkdir _site
           cp -R index.html app.js style.css manifest.json data maps _site/
+          mkdir -p _site/_prototype
+          cp -R _prototype/poc _site/_prototype/
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
           touch _site/.nojekyll
 
