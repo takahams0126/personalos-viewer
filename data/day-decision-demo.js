@@ -16,22 +16,45 @@ async function initDayDecisionDemo(){
     if(!header || !route?.id || header.querySelector('.day-route-id-badge')) return;
     const title = header.querySelector('h3');
     if(!title) return;
-    title.insertAdjacentHTML('afterend',`<span class="day-route-id-badge" title="基本Route">${escDayDecision(route.id)}</span>`);
+    title.insertAdjacentHTML('beforeend',` <span class="day-route-id-badge" title="基本Route">${escDayDecision(route.id)}</span>`);
   };
 
   const addOverviewBadges = (host, decision, mode) => {
     const badges = decision?.overview_badges || [];
     if(!badges.length || !host || host.querySelector('.day-decision-overview-badges')) return;
     const wrap = document.createElement('div');
-    wrap.className = 'day-decision-overview-badges';
+    wrap.className = `day-decision-overview-badges ${mode}`;
     wrap.innerHTML = badges.map(x=>`<span>${escDayDecision(x)}</span>`).join('');
-    if(mode==='plan'){
-      const existing = host.querySelector('.plan-day-overview-badges');
-      if(existing) existing.append(...wrap.children);
-      else host.appendChild(wrap);
-    }else{
-      host.insertAdjacentElement('afterend',wrap);
-    }
+    if(mode==='plan') host.appendChild(wrap);
+    else host.insertAdjacentElement('afterend',wrap);
+  };
+
+  const syncPlanRouteTabs = (card, decision) => {
+    const tabs = [...card.querySelectorAll('.plan-route-tab')];
+    if(!tabs.length) return;
+    const routeAlt = (decision.alternatives||[]).filter(x=>x.kind==='route_switch');
+    tabs.forEach((tab,index)=>{
+      if(index===0 && decision.base_route){
+        tab.textContent=`基本 [${decision.base_route.id}] ${decision.base_route.label}`;
+      }else{
+        const alt=routeAlt[index-1];
+        if(alt?.target_route_id) tab.textContent=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
+      }
+    });
+  };
+
+  const syncExecutionVariantTabs = (card, decision) => {
+    const tabs = [...card.querySelectorAll('.exec-variant-tab')];
+    if(!tabs.length) return;
+    const routeAlt = (decision.alternatives||[]).filter(x=>x.kind==='route_switch');
+    tabs.forEach((tab,index)=>{
+      if(index===0 && decision.base_route){
+        tab.textContent=`標準 [${decision.base_route.id}] ${decision.base_route.label}`;
+      }else{
+        const alt=routeAlt[index-1];
+        if(alt?.target_route_id) tab.textContent=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
+      }
+    });
   };
 
   const renderPlan = () => {
@@ -46,6 +69,7 @@ async function initDayDecisionDemo(){
       if(!body) return;
       const overview = body.querySelector('.plan-day-overview');
       addOverviewBadges(overview,decision,'plan');
+      syncPlanRouteTabs(card,decision);
       if(card.dataset.dayDecisionAttached) return;
       const block = dayDecisionBlock(decision,'plan');
       if(overview) overview.insertAdjacentHTML('afterend',block);
@@ -64,6 +88,7 @@ async function initDayDecisionDemo(){
       addRouteBadgeToTitle(card.querySelector('.execution-day-header'),decision);
       const summary = card.querySelector('.exec-day-summary');
       addOverviewBadges(summary,decision,'execution');
+      syncExecutionVariantTabs(card,decision);
       if(card.dataset.dayDecisionAttached) return;
       const block = dayDecisionBlock(decision,'execution');
       if(summary) summary.insertAdjacentHTML('afterend',block);
