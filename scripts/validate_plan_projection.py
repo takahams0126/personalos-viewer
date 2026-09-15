@@ -10,6 +10,7 @@ PLAN_DIR = ROOT / "data" / "plans"
 APP = ROOT / "app.js"
 DAY_VM = ROOT / "data" / "day-viewmodel.js"
 PLAN_VIEW = ROOT / "data" / "plan-demo.js"
+PROTOTYPE_PLAN_DATA = ROOT / "data" / "plan-demo.json"
 
 ALLOWED_FLOW_TYPES = {"transfer", "destination", "route", "free_time"}
 LEGACY_TOKENS = ("route_endpoint",)
@@ -126,13 +127,15 @@ def main() -> int:
     validate_base_renderer(errors)
     validate_day_viewmodel(errors)
     validate_plan_enhancement(errors)
+    if PROTOTYPE_PLAN_DATA.exists():
+        fail(errors, PROTOTYPE_PLAN_DATA.relative_to(ROOT), "$prototype", "prototype-only Plan semantic data must not remain outside the standard public projection")
     print(f"Plan public projection validation: plans={len(files)}")
     if errors:
         print(f"FAILED: {len(errors)} error(s)")
         for error in errors:
             print("-", error)
         return 1
-    print("OK: Plan public JSON, base renderer, shared Day ViewModel, and Plan enhancement use current projection semantics")
+    print("OK: Plan public JSON and rendering layers use current projection semantics without prototype-only Plan data")
     return 0
 
 
