@@ -13,6 +13,9 @@ if (planType === 'plan' && planId) initPlanView();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
+const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopover:'立ち寄り',lodging:'宿泊',dinner:'夕食',onsen:'温泉',optional:'任意',support:'補助',high_priority:'高優先',main_lunch:'昼食',condition_high:'条件付き',fallback_onsen:'代替温泉',transfer:'乗換・移動',end:'終点'}[v] || String(v).replaceAll('_',' '));
+const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低',optional:'任意'}[v] || String(v).replaceAll('_',' '));
+const pointTypePlan = (v='') => ({home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',other:'その他'}[v] || String(v).replaceAll('_',' '));
 
 function planInternalChevron(){
   return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
@@ -47,16 +50,27 @@ function enhanceTripValue(section,value={}){
   `);
 }
 
+function refPlan(ref,published){
+  const label=escPlan(ref?.label||ref?.id||'');
+  const key=`${ref?.type||'spot'}:${ref?.id||''}`;
+  return published.has(key)
+    ? `<a href="?type=${encodeURIComponent(ref?.type||'spot')}&id=${encodeURIComponent(ref?.id||'')}">${label}</a>`
+    : label;
+}
+
+function endpointKey(ref){
+  return ref ? `${ref.type||''}:${ref.id||''}` : '';
+}
+
+function axisEndpointItem(ref,label,published,cls=''){
+  if(!ref) return '';
+  const pointType=ref.point_type?`<span class="plan-axis-type">${escPlan(pointTypePlan(ref.point_type))}</span>`:'';
+  return `<li class="flow-item plan-axis-point plan-axis-destination ${cls}"><div class="flow-icon">●</div><div><div class="flow-title"><span class="plan-axis-kicker">${escPlan(label)}</span>${refPlan(ref,published)} ${pointType}</div></div></li>`;
+}
+
 function routeStopsHtml(refs=[],published){
   if(!refs.length) return '<div class="plan-route-empty">立ち寄り順はRouteページで確認できます。</div>';
-  const refHtml=(ref)=>{
-    const key=`${ref?.type||'spot'}:${ref?.id||''}`;
-    const label=escPlan(ref?.label||ref?.id||'');
-    return published.has(key)
-      ? `<a href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${label}</a>`
-      : label;
-  };
-  return `<div class="route-stops vertical plan-route-stops">${refs.map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span><span class="plan-route-stop-main">${refHtml(x)}</span></span>`).join('')}</div>`;
+  return `<div class="route-stops vertical plan-route-stops">${refs.map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span><span class="plan-route-stop-main">${refPlan(x,published)}</span></span>`).join('')}</div>`;
 }
 
 function routeSequence(routeData,routeId,fallback=[]){
@@ -98,6 +112,10 @@ function makeDayToggle(card){
   const header=card.querySelector(':scope > .day-head');
   if(!header || card.dataset.dayToggle==='1') return;
   card.dataset.dayToggle='1';
+
+  // The collapsed Day header is Day number + title only. The description belongs in the body overview.
+  const headerDetail=header.querySelector(':scope > div > p') || header.querySelector(':scope > p');
+  headerDetail?.remove();
 
   const body=document.createElement('div');
   body.className='plan-day-body';
@@ -166,6 +184,49 @@ function addRouteSwitcher(flow,item,routeData,published){
   existingStops.replaceWith(host);
 }
 
+function localizeDestinationBadges(item,flow){
+  const title=item.querySelector('.flow-title');
+  if(!title) return;
+  const subtle=title.querySelector('.badge.subtle');
+  if(subtle && flow.destination_ref?.point_type) subtle.textContent=pointTypePlan(flow.destination_ref.point_type);
+  const badges=[...title.querySelectorAll('.badge:not(.subtle)')];
+  let index=0;
+  if(flow.role && badges[index]) badges[index++].textContent=rolePlan(flow.role);
+  if(flow.priority && badges[index]) badges[index++].textContent=priorityPlan(flow.priority);
+}
+
+function decorateDayAxis(body,day,published){
+  const list=body.querySelector(':scope > .flow-list');
+  if(!list || list.dataset.planAxis==='1') return;
+  list.dataset.planAxis='1';
+  list.classList.add('plan-axis');
+  list.insertAdjacentHTML('beforebegin','<div class="plan-day-flow-heading"><span>1日のFlow</span></div>');
+
+  list.insertAdjacentHTML('afterbegin',axisEndpointItem(day.start,'始点',published,'plan-axis-start'));
+  const items=[...list.querySelectorAll(':scope > .flow-item:not(.plan-axis-point)')];
+  (day.flow||[]).forEach((flow,index)=>{
+    const item=items[index];
+    if(!item) return;
+    item.dataset.flowId=flow.flow_id||'';
+    item.dataset.flowType=flow.type||'';
+    if(flow.type==='transfer') item.classList.add('plan-axis-transfer');
+    else if(flow.type==='destination'){
+      item.classList.add('plan-axis-point','plan-axis-destination');
+      localizeDestinationBadges(item,flow);
+    }else if(flow.type==='route') item.classList.add('plan-axis-route');
+    else if(flow.type==='free_time') item.classList.add('plan-axis-activity');
+  });
+
+  const lastFlow=(day.flow||[]).at(-1);
+  const lastItem=items.at(-1);
+  const lastRef=lastFlow?.type==='destination' ? lastFlow.destination_ref : null;
+  if(lastItem && lastRef && endpointKey(lastRef)===endpointKey(day.end)){
+    lastItem.classList.add('plan-axis-end');
+  }else{
+    list.insertAdjacentHTML('beforeend',axisEndpointItem(day.end,'終点',published,'plan-axis-end'));
+  }
+}
+
 function enhanceDay(card,day,routeData,published){
   makeDayToggle(card);
   const body=card.querySelector('.plan-day-body');
@@ -185,12 +246,11 @@ function enhanceDay(card,day,routeData,published){
   }
 
   addBaseRouteBadge(card.querySelector('.day-head'),vm);
-  const items=[...body.querySelectorAll(':scope > .flow-list > .flow-item')];
+  decorateDayAxis(body,day,published);
+  const items=[...body.querySelectorAll(':scope > .flow-list > .flow-item:not(.plan-axis-start):not(.plan-axis-end)')];
   (day.flow||[]).forEach((flow,index)=>{
     const item=items[index];
     if(!item) return;
-    item.dataset.flowId=flow.flow_id||'';
-    item.dataset.flowType=flow.type||'';
     if(flow.type==='route') addRouteSwitcher(flow,item,routeData,published);
   });
   syncRouteTabs(card,vm,'plan');
@@ -223,6 +283,8 @@ function enhancePlan(planData,app,routeData,published){
   const itinerary=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='日ごとの旅程');
   if(!hero || !itinerary) return;
   app.dataset.planViewAttached='1';
+  hero.classList.add('plan-demo-hero');
+  itinerary.classList.add('plan-demo-itinerary');
 
   const value=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
   const stars=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
