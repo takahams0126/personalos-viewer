@@ -1,0 +1,21 @@
+name: Route Public Projection Validation
+
+on:
+  push:
+    paths:
+      - 'data/routes/**'
+      - 'data/route-demo.js'
+      - 'app.js'
+      - 'scripts/validate_route_projection.py'
+      - '.github/workflows/route-public-projection-validation.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_route_projection.py
