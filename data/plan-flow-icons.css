@@ -1,4 +1,4 @@
-/* Semantic Plan Flow icon layer. Destination = primary node, transfer = indented connector. */
+/* Semantic Plan Flow icon layer. Destination = primary node, transfer = connector on the same spine. */
 .plan-axis{position:relative!important}
 /* One continuous spine avoids per-row zig-zag seams. */
 .plan-axis::before{
@@ -51,20 +51,20 @@
 .plan-axis .plan-axis-point .flow-title,
 .plan-axis .plan-axis-destination .flow-title{font-size:1.03rem!important;font-weight:780!important;line-height:1.45!important}
 
-/* Transfers are visibly subordinate connector rows, with extra indentation. */
+/* Transfers are subordinate connector rows, but share the same axis as destinations. */
 .plan-axis .flow-item.plan-axis-transfer{
-  margin-left:28px!important;
+  margin-left:0!important;
   min-height:30px!important;
   padding:4px 0!important;
-  grid-template-columns:20px minmax(0,1fr)!important;
-  column-gap:8px!important;
+  grid-template-columns:36px minmax(0,1fr)!important;
+  column-gap:12px!important;
   position:relative;
   z-index:1;
 }
 .plan-axis .flow-item.plan-axis-transfer>.flow-icon{
   width:18px!important;
   height:18px!important;
-  margin:0!important;
+  margin:0 0 0 9px!important;
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
@@ -100,7 +100,8 @@
   .plan-axis .plan-axis-start>.flow-icon,
   .plan-axis .plan-axis-end>.flow-icon{width:34px!important;height:34px!important}
   .plan-tabler-icon{width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important}
-  .plan-axis .flow-item.plan-axis-transfer{margin-left:27px!important}
+  .plan-axis .flow-item.plan-axis-transfer{margin-left:0!important;grid-template-columns:34px minmax(0,1fr)!important;column-gap:10px!important}
+  .plan-axis .flow-item.plan-axis-transfer>.flow-icon{margin-left:8px!important}
   .plan-axis .flow-item.plan-axis-transfer .badge,
   .plan-axis .flow-item.plan-axis-transfer .plan-axis-duration{font-size:.78rem!important}
 }
