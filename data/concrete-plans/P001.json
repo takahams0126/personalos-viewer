@@ -1,24 +1,62 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "view_type": "concrete_plan_demo",
   "source_plan_id": "P001",
   "demo": true,
   "title": "屋久島 4泊5日 実施プラン表示デモ",
-  "notice": "表示仕様確認用の仮想データです。時刻・便・駐車場・経路は確定情報ではありません。",
+  "notice": "表示仕様確認用の仮想データです。時刻・便・距離・経路は確定情報ではありません。",
   "days": [
     {
       "day": 1,
       "date_label": "実施日 1日目",
-      "purpose": "自宅から屋久島へ移動し、レンタカーを受け取って宿へ入る",
+      "purpose": "自宅から屋久島へ移動し、レンタカーを受け取って生活拠点へ入る",
       "feasibility": "viable",
-      "steps": [
-        {"time":"06:20","end_time":"06:35","type":"transfer","mode":"walk","label":"自宅から最寄り駅へ","from":{"type":"travel_point","id":"T0001","label":"自宅","point_type":"home"},"to":{"type":"travel_point","id":"T0101","label":"武蔵小金井駅","point_type":"station"},"source_flow_id":"F1-01"},
-        {"time":"06:35","end_time":"08:05","type":"transfer","mode":"train","label":"空港へ移動","from":{"type":"travel_point","id":"T0101","label":"武蔵小金井駅","point_type":"station"},"to":{"type":"travel_point","id":"T0002","label":"羽田空港","point_type":"airport"},"source_flow_id":"F1-01","detail":"乗換・空港内移動を含む想定"},
-        {"time":"08:05","end_time":"09:00","type":"operation","label":"搭乗手続き・保安検査","at":{"type":"travel_point","id":"T0002","label":"羽田空港","point_type":"airport"},"source_flow_id":"F1-02"},
-        {"time":"09:00","end_time":"11:20","type":"transfer","mode":"air","label":"屋久島へ移動","from":{"type":"travel_point","id":"T0002","label":"羽田空港","point_type":"airport"},"to":{"type":"travel_point","id":"T0003","label":"屋久島空港","point_type":"airport"},"source_flow_id":"F1-02","detail":"便・乗継は未確定の表示デモ"},
-        {"time":"11:30","end_time":"12:00","type":"operation","label":"レンタカー受取","at":{"type":"travel_point","id":"T0102","label":"屋久島空港レンタカー受取地点","point_type":"rental_car_office"},"source_flow_id":"F1-03"},
-        {"time":"12:00","end_time":"12:25","type":"transfer","mode":"rental_car","label":"宿へ移動","from":{"type":"travel_point","id":"T0102","label":"屋久島空港レンタカー受取地点","point_type":"rental_car_office"},"to":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"source_flow_id":"F1-04"},
-        {"time":"12:25","end_time":"12:35","type":"operation","label":"宿の付帯駐車場へ駐車","at":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"source_flow_id":"F1-04","detail":"宿付帯駐車場はSpot属性として扱う想定"}
+      "variants": [
+        {
+          "id": "standard",
+          "label": "標準",
+          "summary": {
+            "travel_distance": "未算定",
+            "travel_time": "約5時間",
+            "procedure_time": "約1時間35分",
+            "experience_time": "約50分"
+          },
+          "flow": [
+            {"type":"destination","time":"06:20","ref":{"type":"travel_point","id":"T0001","label":"自宅","point_type":"home"}},
+            {"type":"transfer","mode":"walk","duration":"15分"},
+            {"type":"destination","time":"06:35","ref":{"type":"travel_point","id":"T0006","label":"武蔵小金井駅","point_type":"station"}},
+            {"type":"transfer","mode":"train","duration":"1時間30分"},
+            {"type":"destination","time":"08:05","ref":{"type":"travel_point","id":"T0002","label":"羽田空港","point_type":"airport"},"activities":[{"label":"搭乗手続き","duration":"30分"},{"label":"保安検査・搭乗準備","duration":"25分"}]},
+            {"type":"transfer","mode":"air","duration":"2時間20分"},
+            {"type":"destination","time":"11:20","ref":{"type":"travel_point","id":"T0003","label":"屋久島空港","point_type":"airport"}},
+            {"type":"transfer","mode":"walk","duration":"10分"},
+            {"type":"destination","time":"11:30","ref":{"type":"travel_point","id":"T0005","label":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office"},"activities":[{"label":"レンタカー受取手続き","duration":"30分"}]},
+            {"type":"transfer","mode":"rental_car","duration":"25分"},
+            {"type":"destination","time":"12:25","ref":{"type":"spot","id":"S0050","label":"お食事処 樹","category":"food"},"stay_duration":"50分"},
+            {"type":"transfer","mode":"rental_car","duration":"20分"},
+            {"type":"destination","time":"13:35","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"},"activities":[{"label":"チェックイン","duration":"10分"}],"accessories":[{"label":"付帯駐車場","kind":"parking"}]}
+          ],
+          "map": {
+            "note": "1日目の実施Flow。地点間の道路・鉄道・航空経路はConcrete buildで実経路artifactへ置換します。",
+            "points": [
+              {"id":"T0001","entity_type":"travel_point","name":"自宅","point_type":"home","lat":35.699,"lon":139.504,"order":1},
+              {"id":"T0006","entity_type":"travel_point","name":"武蔵小金井駅","point_type":"station","lat":35.7019,"lon":139.5061,"order":2},
+              {"id":"T0002","entity_type":"travel_point","name":"羽田空港","point_type":"airport","lat":35.5494,"lon":139.7798,"order":3},
+              {"id":"T0003","entity_type":"travel_point","name":"屋久島空港","point_type":"airport","lat":30.3856,"lon":130.6590,"order":4},
+              {"id":"T0005","entity_type":"travel_point","name":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office","lat":30.3848,"lon":130.6580,"order":5},
+              {"id":"S0050","entity_type":"spot","name":"お食事処 樹","lat":30.39,"lon":130.64,"order":6},
+              {"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":7}
+            ],
+            "segments": [
+              {"mode":"walk","from":"T0001","to":"T0006"},
+              {"mode":"train","from":"T0006","to":"T0002"},
+              {"mode":"air","from":"T0002","to":"T0003"},
+              {"mode":"walk","from":"T0003","to":"T0005"},
+              {"mode":"rental_car","from":"T0005","to":"S0050"},
+              {"mode":"rental_car","from":"S0050","to":"S0025"}
+            ]
+          }
+        }
       ]
     },
     {
@@ -26,43 +64,52 @@
       "date_label": "実施日 3日目",
       "purpose": "屋久島一周ドライブを実道路・駐車・徒歩アクセスまで含めて実行する",
       "feasibility": "conditional",
-      "steps": [
-        {"time":"08:00","end_time":"08:10","type":"operation","label":"宿を出発・車両準備","at":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"source_flow_id":"F3-01"},
-        {"time":"08:10","end_time":"09:00","type":"transfer","mode":"rental_car","label":"永田いなか浜へ","from":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"to":{"type":"spot","id":"S0038","label":"永田いなか浜"},"source_flow_id":"F3-01"},
-        {"time":"09:00","end_time":"09:25","type":"spot","label":"永田いなか浜","spot_ref":{"type":"spot","id":"S0038","label":"永田いなか浜"},"source_flow_id":"F3-01"},
-        {"time":"09:25","end_time":"10:35","type":"transfer","mode":"rental_car","label":"西部林道を南下","from":{"type":"spot","id":"S0038","label":"永田いなか浜"},"to":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"source_flow_id":"F3-01","detail":"野生動物・対向車に注意"},
-        {"time":"10:35","end_time":"10:40","type":"operation","label":"大川の滝 駐車地点へ駐車","at":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"source_flow_id":"F3-01","detail":"観光Spotとは分離したTravelPoint"},
-        {"time":"10:40","end_time":"10:43","type":"transfer","mode":"walk","label":"駐車地点から滝へ徒歩","from":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"to":{"type":"spot","id":"S0036","label":"大川の滝"},"source_flow_id":"F3-01"},
-        {"time":"10:43","end_time":"11:20","type":"spot","label":"大川の滝","spot_ref":{"type":"spot","id":"S0036","label":"大川の滝"},"source_flow_id":"F3-01"},
-        {"time":"11:20","end_time":"11:23","type":"transfer","mode":"walk","label":"駐車地点へ戻る","from":{"type":"spot","id":"S0036","label":"大川の滝"},"to":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"source_flow_id":"F3-01"},
-        {"time":"11:25","end_time":"12:00","type":"transfer","mode":"rental_car","label":"栗生方面へ移動","from":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"to":{"type":"spot","id":"S0045","label":"手打ちそば 松竹"},"source_flow_id":"F3-01"},
-        {"time":"12:00","end_time":"12:50","type":"spot","label":"昼食","spot_ref":{"type":"spot","id":"S0045","label":"手打ちそば 松竹"},"source_flow_id":"F3-01"},
-        {"time":"13:00","end_time":"17:30","type":"route","label":"南部の滝・景勝地を巡って宿へ戻る","route_ref":{"type":"route","id":"R011","label":"屋久島一周ドライブ"},"source_flow_id":"F3-01","detail":"千尋の滝・トローキの滝などを経由する想定"}
+      "variants": [
+        {
+          "id": "standard",
+          "label": "標準",
+          "route_id": "R011",
+          "summary": {
+            "travel_distance": "未算定",
+            "travel_time": "未算定",
+            "procedure_time": "約10分",
+            "experience_time": "約2時間"
+          },
+          "flow": [
+            {"type":"destination","time":"08:00","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}},
+            {"type":"transfer","mode":"rental_car","duration":"50分"},
+            {"type":"destination","time":"08:50","ref":{"type":"spot","id":"S0038","label":"永田いなか浜"},"stay_duration":"25分"},
+            {"type":"transfer","mode":"rental_car","duration":"1時間10分"},
+            {"type":"destination","time":"10:25","ref":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"activities":[{"label":"駐車・徒歩準備","duration":"5分"}]},
+            {"type":"transfer","mode":"walk","duration":"3分"},
+            {"type":"destination","time":"10:33","ref":{"type":"spot","id":"S0036","label":"大川の滝"},"stay_duration":"37分"},
+            {"type":"transfer","mode":"walk","duration":"3分"},
+            {"type":"destination","time":"11:13","ref":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"}},
+            {"type":"transfer","mode":"rental_car","duration":"35分"},
+            {"type":"destination","time":"11:48","ref":{"type":"spot","id":"S0045","label":"手打ちそば 松竹","category":"food"},"stay_duration":"50分"},
+            {"type":"transfer","mode":"rental_car","duration":"4時間52分"},
+            {"type":"destination","time":"17:30","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}}
+          ],
+          "map": {
+            "note": "標準案の日別Map。実道路geometryはConcrete buildでGoogle Routes artifactを使用します。",
+            "points": [
+              {"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":1},
+              {"id":"S0038","entity_type":"spot","name":"永田いなか浜","lat":30.4080,"lon":130.4310,"order":2},
+              {"id":"T0103","entity_type":"travel_point","name":"大川の滝 駐車地点","point_type":"parking","lat":30.2638,"lon":130.4135,"order":3},
+              {"id":"S0036","entity_type":"spot","name":"大川の滝","lat":30.2630,"lon":130.4125,"order":4},
+              {"id":"S0045","entity_type":"spot","name":"手打ちそば 松竹","lat":30.2740,"lon":130.4210,"order":5}
+            ],
+            "segments": [
+              {"mode":"rental_car","from":"S0025","to":"S0038"},
+              {"mode":"rental_car","from":"S0038","to":"T0103"},
+              {"mode":"walk","from":"T0103","to":"S0036"},
+              {"mode":"walk","from":"S0036","to":"T0103"},
+              {"mode":"rental_car","from":"T0103","to":"S0045"},
+              {"mode":"rental_car","from":"S0045","to":"S0025"}
+            ]
+          }
+        }
       ]
     }
-  ],
-  "map": {
-    "note": "表示仕様確認用。TravelPoint・Spot・移動区間を時系列で表示しています。線はデモ用概略線です。",
-    "points": [
-      {"id":"T0101","entity_type":"travel_point","name":"武蔵小金井駅","point_type":"station","lat":35.7019,"lon":139.5061,"order":1},
-      {"id":"T0002","entity_type":"travel_point","name":"羽田空港","point_type":"airport","lat":35.5494,"lon":139.7798,"order":2},
-      {"id":"T0003","entity_type":"travel_point","name":"屋久島空港","point_type":"airport","lat":30.3856,"lon":130.6590,"order":3},
-      {"id":"T0102","entity_type":"travel_point","name":"レンタカー受取地点","point_type":"rental_car_office","lat":30.3848,"lon":130.6580,"order":4},
-      {"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":5},
-      {"id":"S0038","entity_type":"spot","name":"永田いなか浜","lat":30.4080,"lon":130.4310,"order":6},
-      {"id":"T0103","entity_type":"travel_point","name":"大川の滝 駐車地点","point_type":"parking","lat":30.2638,"lon":130.4135,"order":7},
-      {"id":"S0036","entity_type":"spot","name":"大川の滝","lat":30.2630,"lon":130.4125,"order":8},
-      {"id":"S0045","entity_type":"spot","name":"手打ちそば 松竹","lat":30.2740,"lon":130.4210,"order":9}
-    ],
-    "segments": [
-      {"mode":"train","from":"T0101","to":"T0002"},
-      {"mode":"air","from":"T0002","to":"T0003"},
-      {"mode":"walk","from":"T0003","to":"T0102"},
-      {"mode":"rental_car","from":"T0102","to":"S0025"},
-      {"mode":"rental_car","from":"S0025","to":"S0038"},
-      {"mode":"rental_car","from":"S0038","to":"T0103"},
-      {"mode":"walk","from":"T0103","to":"S0036"},
-      {"mode":"rental_car","from":"T0103","to":"S0045"}
-    ]
-  }
+  ]
 }
