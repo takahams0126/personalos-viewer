@@ -26,11 +26,15 @@
   ],
   "parent_refs": [],
   "plan": {
+    "transport": {
+      "primary": "air_and_rental_car",
+      "alternatives": []
+    },
     "days": [
       {
         "day": 1,
-        "purpose": "屋久島へ移動し、宮之浦の生活拠点を立ち上げる",
-        "appeal": "翌日からの山行を無理なく始めるため、移動・買い出し・準備へ集中する到着日",
+        "purpose": "屋久島へ移動し、宮之浦に4泊の生活拠点を作る",
+        "summary": "到着日に予定を詰め込まず、夕食・チェックイン・買い出し・登山準備までを整えて、翌日の長い山行を気持ちよく始められる状態にする",
         "start": {
           "type": "travel_point",
           "id": "T0001",
@@ -53,116 +57,118 @@
           {
             "flow_id": "F1-01",
             "type": "transfer",
-            "mode": "train",
-            "from": {
-              "type": "travel_point",
-              "id": "T0001",
-              "label": "自宅",
-              "point_type": "home"
-            },
-            "to": {
-              "type": "travel_point",
-              "id": "T0002",
-              "label": "羽田空港",
-              "point_type": "airport"
-            },
-            "notes": []
+            "mode": "train"
           },
           {
             "flow_id": "F1-02",
-            "type": "transfer",
-            "mode": "air",
-            "from": {
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
               "id": "T0002",
               "label": "羽田空港",
               "point_type": "airport"
             },
-            "to": {
-              "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
-            },
+            "role": "transfer",
+            "activities": [],
             "notes": []
           },
           {
             "flow_id": "F1-03",
-            "type": "activity",
-            "activity": "rental_car_pickup",
-            "label": "rental_car_pickup",
-            "from": {
-              "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
-            },
-            "to": {
-              "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
-            },
-            "notes": []
+            "type": "transfer",
+            "mode": "air"
           },
           {
             "flow_id": "F1-04",
-            "type": "transfer",
-            "mode": "rental_car",
-            "from": {
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
               "id": "T0003",
               "label": "屋久島空港",
               "point_type": "airport"
             },
-            "to": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど"
-            },
+            "role": "transfer",
+            "activities": [],
             "notes": []
           },
           {
             "flow_id": "F1-05",
-            "type": "activity",
-            "activity": "shopping_and_hiking_preparation",
-            "label": "shopping_and_hiking_preparation",
-            "notes": []
+            "type": "transfer",
+            "mode": "walk"
           },
           {
             "flow_id": "F1-06",
-            "type": "spot",
-            "spot_ref": {
-              "type": "spot",
-              "id": "S0050",
-              "label": "お食事処 樹",
-              "role": "dinner",
-              "priority": "optional"
+            "type": "destination",
+            "destination_ref": {
+              "type": "travel_point",
+              "id": "T0005",
+              "label": "屋久島空港周辺レンタカー営業所",
+              "point_type": "rental_car_office"
             },
-            "fallback_spot_refs": [],
-            "notes": [
-              "疲れていれば自炊・軽食へ切替"
-            ]
+            "role": "transfer",
+            "activities": [
+              {
+                "activity": "rental_car_pickup",
+                "label": "レンタカー受取",
+                "duration_estimate": null
+              }
+            ],
+            "notes": []
           },
           {
             "flow_id": "F1-07",
-            "type": "spot",
-            "spot_ref": {
+            "type": "transfer",
+            "mode": "rental_car"
+          },
+          {
+            "flow_id": "F1-08",
+            "type": "destination",
+            "destination_ref": {
+              "type": "spot",
+              "id": "S0050",
+              "label": "お食事処 樹"
+            },
+            "role": "dinner",
+            "priority": "optional",
+            "activities": [],
+            "notes": [
+              "移動で疲れていれば外食にこだわらず、自炊・軽食へ切り替えて翌日に備える"
+            ]
+          },
+          {
+            "flow_id": "F1-09",
+            "type": "transfer",
+            "mode": "rental_car"
+          },
+          {
+            "flow_id": "F1-10",
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0025",
-              "label": "素泊民宿 ふれんど",
-              "role": "lodging",
-              "priority": "primary"
+              "label": "素泊民宿 ふれんど"
             },
-            "fallback_spot_refs": [],
+            "role": "lodging",
+            "priority": "primary",
+            "activities": [
+              {
+                "activity": "check_in",
+                "label": "チェックイン",
+                "duration_estimate": null
+              },
+              {
+                "activity": "shopping_and_hiking_preparation",
+                "label": "買い出し・登山準備",
+                "duration_estimate": null
+              }
+            ],
             "notes": []
           }
         ]
       },
       {
         "day": 2,
-        "purpose": "屋久島を象徴する縄文杉へ長距離を歩いて到達する",
-        "appeal": "小杉谷の林業史と巨木群をたどり、長距離を歩き切る達成体験を旅行最大の山場にする",
+        "purpose": "屋久島旅行最大の山場として、長い一日を歩き切って【縄文杉】へ到達する",
+        "summary": "トロッコ道、小杉谷の林業史、巨木の森を順にたどり、最後に【縄文杉】へ着くまでの全行程を一つの達成体験にする",
         "start": {
           "type": "spot",
           "id": "S0025",
@@ -185,22 +191,7 @@
           {
             "flow_id": "F2-01",
             "type": "transfer",
-            "mode": "rental_car_and_mountain_access",
-            "from": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど"
-            },
-            "to": {
-              "type": "route_endpoint",
-              "route_ref": {
-                "type": "route",
-                "id": "R005",
-                "label": "縄文杉ルート・縄文杉往復"
-              },
-              "endpoint": "start"
-            },
-            "notes": []
+            "mode": "rental_car_and_mountain_access"
           },
           {
             "flow_id": "F2-02",
@@ -246,47 +237,32 @@
               }
             ],
             "adjustments": [
-              "天候・体調・進行遅延時はR007へ短縮"
+              "天候・体調・進行遅れで縄文杉までの完遂が厳しい場合は、R007へ切り替えて森と巨木の体験を残す"
             ]
           },
           {
             "flow_id": "F2-03",
             "type": "transfer",
-            "mode": "rental_car_and_mountain_access",
-            "from": {
-              "type": "route_endpoint",
-              "route_ref": {
-                "type": "route",
-                "id": "R005",
-                "label": "縄文杉ルート・縄文杉往復"
-              },
-              "endpoint": "end"
-            },
-            "to": {
+            "mode": "rental_car_and_mountain_access"
+          },
+          {
+            "flow_id": "F2-04",
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0025",
               "label": "素泊民宿 ふれんど"
             },
-            "notes": []
-          },
-          {
-            "flow_id": "F2-04",
-            "type": "spot",
-            "spot_ref": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど",
-              "role": "lodging"
-            },
-            "fallback_spot_refs": [],
+            "role": "lodging",
+            "activities": [],
             "notes": []
           }
         ]
       },
       {
         "day": 3,
-        "purpose": "山岳Routeと異なる海・滝・西部林道の屋久島を体験し、山行予備日も兼ねる",
-        "appeal": "島の西〜南側をつなぎ、山以外の屋久島の景観変化を一日で楽しむ",
+        "purpose": "前日の長い登山から身体を切り替え、海・滝・西部林道をつないで「山だけではない屋久島」を楽しむ。同時に山行日の天候調整にも使える一日にする",
+        "summary": "車で島を巡りながら、【永田いなか浜】の海、【西部林道】の深い森、【大川の滝】の迫力へ景色を大きく変えていく。登山とは違う屋久島の振れ幅を楽しみつつ、山の天候が悪い日はDay2・Day4との入替余地を残す",
         "start": {
           "type": "spot",
           "id": "S0025",
@@ -315,7 +291,6 @@
               "role": "primary"
             },
             "traversal_id": "miyanoura_counterclockwise",
-            "direction": "counterclockwise",
             "ordered_spot_refs": [
               {
                 "type": "spot",
@@ -368,28 +343,30 @@
               }
             ],
             "adjustments": [
-              "山行日の天候不良時はDay2またはDay4と入替可能",
-              "豪雨・強風時はR010へ切替"
-            ]
+              "宮之浦泊では西部林道を明るい時間帯に通りやすい反時計回りを基本とする",
+              "山行日の天候が悪い場合はDay2またはDay4と入替可能",
+              "豪雨・強風時はR010へ切り替える"
+            ],
+            "direction": "counterclockwise"
           },
           {
             "flow_id": "F3-02",
-            "type": "spot",
-            "spot_ref": {
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0025",
-              "label": "素泊民宿 ふれんど",
-              "role": "lodging"
+              "label": "素泊民宿 ふれんど"
             },
-            "fallback_spot_refs": [],
+            "role": "lodging",
+            "activities": [],
             "notes": []
           }
         ]
       },
       {
         "day": 4,
-        "purpose": "白谷雲水峡の苔・渓流・原生林から太鼓岩の展望まで景観変化を楽しむ",
-        "appeal": "縄文杉とは異なる中負荷の王道ハイクを旅行後半の主役にする",
+        "purpose": "旅行後半のもう一つの主役として、白谷の水と苔の森から太鼓岩の大展望まで、景観が大きく変わるハイクを楽しむ",
+        "summary": "縄文杉の長距離山行とは違い、半日程度で【白谷雲水峡】の清流、【苔むす森】の深い緑、【太鼓岩】の大展望を一続きで味わう。下山後は【楠川温泉】で回復し、【PANORAMA】で旅行最後の夜を楽しむ",
         "start": {
           "type": "spot",
           "id": "S0025",
@@ -411,22 +388,7 @@
           {
             "flow_id": "F4-01",
             "type": "transfer",
-            "mode": "rental_car",
-            "from": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど"
-            },
-            "to": {
-              "type": "route_endpoint",
-              "route_ref": {
-                "type": "route",
-                "id": "R004",
-                "label": "白谷雲水峡ルート・太鼓岩往復"
-              },
-              "endpoint": "start"
-            },
-            "notes": []
+            "mode": "rental_car"
           },
           {
             "flow_id": "F4-02",
@@ -464,99 +426,62 @@
           {
             "flow_id": "F4-03",
             "type": "transfer",
-            "mode": "rental_car",
-            "from": {
-              "type": "route_endpoint",
-              "route_ref": {
-                "type": "route",
-                "id": "R004",
-                "label": "白谷雲水峡ルート・太鼓岩往復"
-              },
-              "endpoint": "end"
-            },
-            "to": {
+            "mode": "rental_car"
+          },
+          {
+            "flow_id": "F4-04",
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0030",
               "label": "楠川温泉"
             },
-            "notes": []
-          },
-          {
-            "flow_id": "F4-04",
-            "type": "spot",
-            "spot_ref": {
-              "type": "spot",
-              "id": "S0030",
-              "label": "楠川温泉",
-              "role": "onsen",
-              "priority": "primary"
-            },
-            "fallback_spot_refs": [],
+            "role": "onsen",
+            "priority": "primary",
+            "activities": [],
             "notes": []
           },
           {
             "flow_id": "F4-05",
             "type": "transfer",
-            "mode": "rental_car",
-            "from": {
-              "type": "spot",
-              "id": "S0030",
-              "label": "楠川温泉"
-            },
-            "to": {
+            "mode": "rental_car"
+          },
+          {
+            "flow_id": "F4-06",
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0046",
               "label": "PANORAMA"
             },
-            "notes": []
-          },
-          {
-            "flow_id": "F4-06",
-            "type": "spot",
-            "spot_ref": {
-              "type": "spot",
-              "id": "S0046",
-              "label": "PANORAMA",
-              "role": "dinner",
-              "priority": "primary"
-            },
-            "fallback_spot_refs": [],
+            "role": "dinner",
+            "priority": "primary",
+            "activities": [],
             "notes": []
           },
           {
             "flow_id": "F4-07",
             "type": "transfer",
-            "mode": "rental_car",
-            "from": {
-              "type": "spot",
-              "id": "S0046",
-              "label": "PANORAMA"
-            },
-            "to": {
+            "mode": "rental_car"
+          },
+          {
+            "flow_id": "F4-08",
+            "type": "destination",
+            "destination_ref": {
               "type": "spot",
               "id": "S0025",
               "label": "素泊民宿 ふれんど"
             },
-            "notes": []
-          },
-          {
-            "flow_id": "F4-08",
-            "type": "spot",
-            "spot_ref": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど",
-              "role": "lodging"
-            },
-            "fallback_spot_refs": [],
+            "role": "lodging",
+            "activities": [],
             "notes": []
           }
         ]
       },
       {
         "day": 5,
-        "purpose": "余白を残して旅を締めくくり、安全に帰宅する",
-        "appeal": "疲労・天候・買い忘れを吸収し、帰路を崩さない最終日",
+        "purpose": "最終日は観光量を稼がず、旅の疲労や買い忘れを吸収する余白を残して、安全に帰宅する",
+        "summary": "最後まで予定を詰め込まないことで、4日間の疲れや天候変化を吸収し、レンタカー返却と空港移動を慌てず終える。余裕があれば近場の散策や買い物を楽しむ程度にとどめる",
         "start": {
           "type": "spot",
           "id": "S0025",
@@ -578,147 +503,95 @@
         "flow": [
           {
             "flow_id": "F5-01",
-            "type": "activity",
-            "activity": "optional_local_time",
-            "label": "optional_local_time",
+            "type": "free_time",
+            "label": "自由時間・予備枠",
+            "duration_estimate": null,
+            "preferred_window": null,
             "notes": [
-              "大きなRouteは置かない"
+              "大きなRouteは置かず、帰路の余裕を優先する"
             ]
           },
           {
             "flow_id": "F5-02",
             "type": "transfer",
-            "mode": "rental_car",
-            "from": {
-              "type": "spot",
-              "id": "S0025",
-              "label": "素泊民宿 ふれんど"
-            },
-            "to": {
-              "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
-            },
-            "notes": []
+            "mode": "rental_car"
           },
           {
             "flow_id": "F5-03",
-            "type": "activity",
-            "activity": "rental_car_return",
-            "label": "rental_car_return",
-            "from": {
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
+              "id": "T0005",
+              "label": "屋久島空港周辺レンタカー営業所",
+              "point_type": "rental_car_office"
             },
-            "to": {
-              "type": "travel_point",
-              "id": "T0003",
-              "label": "屋久島空港",
-              "point_type": "airport"
-            },
+            "role": "transfer",
+            "activities": [
+              {
+                "activity": "rental_car_return",
+                "label": "レンタカー返却",
+                "duration_estimate": null
+              }
+            ],
             "notes": []
           },
           {
             "flow_id": "F5-04",
             "type": "transfer",
-            "mode": "air",
-            "from": {
+            "mode": "walk"
+          },
+          {
+            "flow_id": "F5-05",
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
               "id": "T0003",
               "label": "屋久島空港",
               "point_type": "airport"
             },
-            "to": {
-              "type": "travel_point",
-              "id": "T0002",
-              "label": "羽田空港",
-              "point_type": "airport"
-            },
+            "role": "transfer",
+            "activities": [],
             "notes": []
           },
           {
-            "flow_id": "F5-05",
+            "flow_id": "F5-06",
             "type": "transfer",
-            "mode": "train",
-            "from": {
+            "mode": "air"
+          },
+          {
+            "flow_id": "F5-07",
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
               "id": "T0002",
               "label": "羽田空港",
               "point_type": "airport"
             },
-            "to": {
+            "role": "transfer",
+            "activities": [],
+            "notes": []
+          },
+          {
+            "flow_id": "F5-08",
+            "type": "transfer",
+            "mode": "train"
+          },
+          {
+            "flow_id": "F5-09",
+            "type": "destination",
+            "destination_ref": {
               "type": "travel_point",
               "id": "T0001",
               "label": "自宅",
               "point_type": "home"
             },
+            "role": "end",
+            "activities": [],
             "notes": []
           }
         ]
       }
     ],
-    "primary_route_refs": [
-      {
-        "type": "route",
-        "id": "R005",
-        "label": "縄文杉ルート・縄文杉往復",
-        "role": "primary"
-      },
-      {
-        "type": "route",
-        "id": "R011",
-        "label": "屋久島一周ドライブ",
-        "role": "primary"
-      },
-      {
-        "type": "route",
-        "id": "R004",
-        "label": "白谷雲水峡ルート・太鼓岩往復",
-        "role": "primary"
-      }
-    ],
-    "primary_spot_refs": [
-      {
-        "type": "spot",
-        "id": "S0025",
-        "label": "素泊民宿 ふれんど",
-        "role": "lodging",
-        "priority": "primary"
-      },
-      {
-        "type": "spot",
-        "id": "S0030",
-        "label": "楠川温泉",
-        "role": "onsen",
-        "priority": "primary"
-      },
-      {
-        "type": "spot",
-        "id": "S0046",
-        "label": "PANORAMA",
-        "role": "dinner",
-        "priority": "primary"
-      }
-    ],
-    "strategies": {
-      "stay": {
-        "summary": "宮之浦4連泊を固定拠点にし、宿替えをなくして登山旅行の回復と準備を安定させる",
-        "living_base": [
-          "共用キッチンで早朝食・登山食・軽食を調整",
-          "洗濯設備を使い登山ウェアを回す",
-          "到着日に買い出し"
-        ]
-      },
-      "meal": {
-        "summary": "毎食外食にせず、屋久島らしい外食へ集中し、登山日と疲労日は自炊・携行食で柔軟にする"
-      },
-      "onsen": {
-        "summary": "毎日入れることよりRouteとの相性と体験価値を優先する"
-      }
-    },
     "trip_value": {
       "summary": "縄文杉、白谷雲水峡、島一周の海・滝・西部林道・温泉を4泊5日で重複少なく組み合わせる",
       "diversity": "山岳トレッキング、苔の森、展望、海岸、滝、西部林道、温泉、島食材を分散して体験する",
@@ -732,6 +605,17 @@
       ],
       "tradeoffs": [
         "宮之浦4連泊は生活利便性に強い一方で縄文杉側の移動が増える"
+      ]
+    },
+    "estimated_cost": {
+      "total": null,
+      "breakdown": [
+        "航空・宿泊",
+        "レンタカー・燃料",
+        "山岳アクセス",
+        "協力金",
+        "温泉",
+        "食事・自炊・行動食"
       ]
     },
     "risks": [
@@ -755,27 +639,6 @@
         "impact": "medium",
         "mitigation": "optionalを削りcoreを優先"
       }
-    ],
-    "unresolved_items": [
-      "登山バス時刻・購入方法・料金",
-      "協力金等の最新条件",
-      "携帯トイレ運用",
-      "温泉・飲食店の営業条件",
-      "道路・登山道の最新状態",
-      "実施旅行ごとの詳細費用"
-    ],
-    "estimated_cost": {
-      "total": null,
-      "breakdown": [
-        "航空・宿泊",
-        "レンタカー・燃料",
-        "山岳アクセス",
-        "協力金",
-        "温泉",
-        "食事・自炊・行動食"
-      ]
-    },
-    "derived_from_plan_ref": null,
-    "concrete_plan_ref": null
+    ]
   }
 }

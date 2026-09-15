@@ -44,11 +44,6 @@ function refCard(ref) {
 
 function endpointInline(endpoint) {
   if (!endpoint) return '';
-  if (endpoint.type === 'route_endpoint') {
-    const route = refInline(endpoint.route_ref || {});
-    const side = endpoint.endpoint === 'start' ? '開始地点' : endpoint.endpoint === 'end' ? '終了地点' : endpoint.endpoint || '';
-    return `${route}${side ? ` <span class="muted">${esc(side)}</span>` : ''}`;
-  }
   if (endpoint.type === 'travel_point') {
     const kind = endpoint.point_type ? `<span class="badge subtle">${esc(pointTypeLabel(endpoint.point_type))}</span>` : '';
     return `${esc(endpoint.label || endpoint.id || '')}${kind}`;
@@ -66,8 +61,8 @@ function routeStops(item) {
 function flowItemHtml(item) {
   if (!item) return '';
   if (item.type === 'transfer') {
-    const from = endpointInline(item.from), to = endpointInline(item.to);
-    return `<li class="flow-item transfer"><div class="flow-icon">↔</div><div><div class="flow-title">移動 <span class="badge">${esc(modeLabel(item.mode||''))}</span></div><div class="flow-detail">${from}${from&&to?' → ':''}${to}</div></div></li>`;
+    const details = [item.duration_estimate, item.preferred_window].filter(Boolean).map(esc).join(' · ');
+    return `<li class="flow-item transfer"><div class="flow-icon">↔</div><div><div class="flow-title">移動 <span class="badge">${esc(modeLabel(item.mode||''))}</span></div>${details?`<div class="flow-detail">${details}</div>`:''}</div></li>`;
   }
   if (item.type === 'route') {
     const traversalValue = item.direction || item.traversal_id;
@@ -76,17 +71,18 @@ function flowItemHtml(item) {
     const adjust = (item.adjustments||[]).length ? `<div class="flow-note">${item.adjustments.map(esc).join(' / ')}</div>` : '';
     return `<li class="flow-item route"><div class="flow-icon">★</div><div><div class="flow-title">${refInline(item.route_ref||{})} ${traversal}</div>${routeStops(item)}${alt}${adjust}</div></li>`;
   }
-  if (item.type === 'spot') {
-    const ref = item.spot_ref || {};
-    const role = ref.role ? `<span class="badge">${esc(roleLabel(ref.role))}</span>` : '';
+  if (item.type === 'destination') {
+    const ref = item.destination_ref || {};
+    const role = item.role ? `<span class="badge">${esc(roleLabel(item.role))}</span>` : '';
+    const priority = item.priority ? `<span class="badge">${esc(priorityLabel(item.priority))}</span>` : '';
+    const activities = (item.activities||[]).length ? `<div class="flow-note">${item.activities.map(x=>esc(x.label || activityLabel(x.activity||''))).join(' / ')}</div>` : '';
     const fallback = (item.fallback_spot_refs||[]).length ? `<div class="flow-note">代替: ${item.fallback_spot_refs.map(refInline).join(' / ')}</div>` : '';
-    return `<li class="flow-item spot"><div class="flow-icon">●</div><div><div class="flow-title">${refInline(ref)} ${role}</div>${fallback}${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
+    return `<li class="flow-item destination"><div class="flow-icon">●</div><div><div class="flow-title">${endpointInline(ref)} ${role}${priority}</div>${activities}${fallback}${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
   }
-  if (item.type === 'activity') {
-    const from = endpointInline(item.from), to = endpointInline(item.to);
-    return `<li class="flow-item activity"><div class="flow-icon">✓</div><div><div class="flow-title">${esc(activityLabel(item.label || item.activity || 'Activity'))}</div>${from||to?`<div class="flow-detail">${from}${from&&to?' → ':''}${to}</div>`:''}${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
+  if (item.type === 'free_time') {
+    return `<li class="flow-item free-time"><div class="flow-icon">○</div><div><div class="flow-title">${esc(item.label || '自由時間')}</div>${(item.notes||[]).map(x=>`<div class="flow-note">${esc(x)}</div>`).join('')}</div></li>`;
   }
-  return `<li class="flow-item"><div class="flow-icon">•</div><div>${esc(item.label || item.type || '')}</div></li>`;
+  return '';
 }
 
 function timeBudgetHtml(tb) {
@@ -100,7 +96,7 @@ function dayHtml(day) {
   const flow = day.flow || [];
   const endpoints = day.start || day.end ? `<div class="day-endpoints">${endpointInline(day.start)}<span>→</span>${endpointInline(day.end)}</div>` : '';
   return `<article class="day-card">
-    <header class="day-head"><div class="day-number">${esc(day.day)}日目</div><div><h3>${esc(day.purpose||'')}</h3>${day.appeal?`<p>${esc(day.appeal)}</p>`:''}</div></header>
+    <header class="day-head"><div class="day-number">${esc(day.day)}日目</div><div><h3>${esc(day.purpose||'')}</h3>${day.summary?`<p>${esc(day.summary)}</p>`:''}</div></header>
     ${timeBudgetHtml(day.time_budget)}${endpoints}
     ${flow.length?`<ol class="flow-list">${flow.map(flowItemHtml).join('')}</ol>`:''}
   </article>`;
@@ -125,15 +121,12 @@ function renderHome(manifest) {
 }
 
 function renderPlan(data) {
-  const p=data.plan||{},m=data.map||null; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
-  app.innerHTML=`<section class="hero"><div class="kicker">旅のプラン · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p></section>
+  const p=data.plan||{}; breadcrumb.innerHTML=`<a href="./">Home</a><span>›</span><span>${esc(data.id)}</span>`;
+  const transport=p.transport?.primary ? `<span class="badge">${esc(modeLabel(p.transport.primary))}</span>` : '';
+  app.innerHTML=`<section class="hero"><div class="kicker">旅のプラン · ${esc(data.id)}</div><h1>${esc(data.title)}</h1><p class="summary">${esc(data.summary||'')}</p>${transport?`<div class="hero-meta">${transport}</div>`:''}</section>
     ${tripValueHtml(p.trip_value||{})}
     ${(data.hero_refs||[]).length?`<section class="section"><h2>この旅の主役</h2><div class="cards">${data.hero_refs.map(refCard).join('')}</div></section>`:''}
-    <section class="section itinerary"><div class="section-heading"><div><h2>日ごとの旅程</h2><p>その日の魅力と、旅を成立させる移動・宿泊・準備を順番に見られます。</p></div></div>${(p.days||[]).map(dayHtml).join('')}</section>
-    ${m?`<section class="section"><h2>旅全体の地図</h2><div class="map-wrap"><div id="map"></div><div id="map-message" class="map-message"></div></div><p class="note">${esc(m.note||'旅程上の主要地点を表示します。')}</p></section>`:''}
-    ${(p.strategies?.stay?.summary||p.strategies?.meal?.summary||p.strategies?.onsen?.summary)?`<section class="section"><h2>旅を成立させる設計</h2><div class="strategy-grid">${p.strategies?.stay?.summary?`<article class="card"><h3>宿泊</h3><p>${esc(p.strategies.stay.summary)}</p></article>`:''}${p.strategies?.meal?.summary?`<article class="card"><h3>食事</h3><p>${esc(p.strategies.meal.summary)}</p></article>`:''}${p.strategies?.onsen?.summary?`<article class="card"><h3>温泉</h3><p>${esc(p.strategies.onsen.summary)}</p></article>`:''}</div></section>`:''}
-    ${(p.risks||[]).length?`<section class="section"><h2>変動要素・リスク</h2><ul class="list">${p.risks.map(x=>`<li><strong>${esc(x.risk||x)}</strong>${x.mitigation?` — ${esc(x.mitigation)}`:''}</li>`).join('')}</ul></section>`:''}`;
-  if(m) loadGoogleMap(m,{},'conceptual');
+    <section class="section itinerary"><div class="section-heading"><div><h2>日ごとの旅程</h2><p>その日の魅力と、旅を成立させる移動・宿泊・準備を順番に見られます。</p></div></div>${(p.days||[]).map(dayHtml).join('')}</section>`;
 }
 
 function renderRoute(data) {
