@@ -1,0 +1,83 @@
+{
+  "poc_version": 1,
+  "status": "prototype",
+  "canonical": false,
+  "source_plan": {
+    "plan_id": "P001",
+    "day": 2,
+    "source_flow_id": "F2-02",
+    "route_id": "R005",
+    "route_label": "縄文杉ルート・縄文杉往復",
+    "route_intent": "トロッコ道、小杉谷の林業史、巨木の森をたどり、縄文杉へ往復する"
+  },
+  "resolution": {
+    "provider": "yamap",
+    "source_type": "public_model_course",
+    "model_course_id": "25891",
+    "title": "荒川登山口-ウィルソン株-縄文杉 往復コース",
+    "url": "https://yamap.com/model-courses/25891",
+    "checked_at": "2026-09-16",
+    "match": {
+      "direction": "round_trip",
+      "major_spots": [
+        {"label": "ウィルソン株", "matched": true},
+        {"label": "大王杉", "matched": true},
+        {"label": "縄文杉", "matched": true}
+      ],
+      "note": "P001/R005の主要体験点と往復意図が公開モデルコースに一致する。小杉谷集落跡は公開checkpoint名では小杉谷休憩舎として表現されるため、同一地点とは自動断定しない。"
+    }
+  },
+  "source_metrics": {
+    "standard_duration_min": 628,
+    "standard_duration_label": "10:28",
+    "distance_km": 19.8,
+    "ascent_m": 1171,
+    "descent_m": 1171,
+    "source_start_time": "06:00",
+    "source_end_time": "16:28",
+    "source_break_min": 0
+  },
+  "poc_execution": {
+    "assumed_start_time": "08:00",
+    "expected_end_time": "18:28",
+    "pace_basis": "YAMAP public model course standard time",
+    "breaks_applied": false,
+    "weather_applied": false,
+    "access_applied": false,
+    "waypoints": [
+      {"seq":1,"time":"08:00","elapsed_min":0,"label":"荒川登山口","kind":"trailhead","direction":"outbound"},
+      {"seq":2,"time":"08:25","elapsed_min":25,"label":"橋","kind":"checkpoint","direction":"outbound"},
+      {"seq":3,"time":"08:50","elapsed_min":50,"label":"小杉谷休憩舎","kind":"checkpoint","direction":"outbound"},
+      {"seq":4,"time":"09:40","elapsed_min":100,"label":"楠川分れ","kind":"junction","direction":"outbound"},
+      {"seq":5,"time":"09:55","elapsed_min":115,"label":"分岐","kind":"junction","direction":"outbound"},
+      {"seq":6,"time":"09:58","elapsed_min":118,"label":"分岐","kind":"junction","direction":"outbound"},
+      {"seq":7,"time":"10:48","elapsed_min":168,"label":"仁王杉","kind":"checkpoint","direction":"outbound"},
+      {"seq":8,"time":"11:18","elapsed_min":198,"label":"大株歩道入口","kind":"checkpoint","direction":"outbound"},
+      {"seq":9,"time":"11:20","elapsed_min":200,"label":"トロッコ道終点トイレ","kind":"facility","direction":"outbound"},
+      {"seq":10,"time":"11:22","elapsed_min":202,"label":"大株歩道入口","kind":"checkpoint","direction":"outbound"},
+      {"seq":11,"time":"11:47","elapsed_min":227,"label":"ウィルソン株","kind":"major_spot","direction":"outbound"},
+      {"seq":12,"time":"12:37","elapsed_min":277,"label":"水場","kind":"water","direction":"outbound"},
+      {"seq":13,"time":"12:45","elapsed_min":285,"label":"大王杉","kind":"major_spot","direction":"outbound"},
+      {"seq":14,"time":"13:30","elapsed_min":330,"label":"縄文杉","kind":"turnaround","direction":"turnaround"},
+      {"seq":15,"time":"14:10","elapsed_min":370,"label":"大王杉","kind":"major_spot","direction":"return"},
+      {"seq":16,"time":"14:16","elapsed_min":376,"label":"水場","kind":"water","direction":"return"},
+      {"seq":17,"time":"15:01","elapsed_min":421,"label":"ウィルソン株","kind":"major_spot","direction":"return"},
+      {"seq":18,"time":"15:21","elapsed_min":441,"label":"大株歩道入口","kind":"checkpoint","direction":"return"},
+      {"seq":19,"time":"15:23","elapsed_min":443,"label":"トロッコ道終点トイレ","kind":"facility","direction":"return"},
+      {"seq":20,"time":"15:25","elapsed_min":445,"label":"大株歩道入口","kind":"checkpoint","direction":"return"},
+      {"seq":21,"time":"15:50","elapsed_min":470,"label":"仁王杉","kind":"checkpoint","direction":"return"},
+      {"seq":22,"time":"16:35","elapsed_min":515,"label":"分岐","kind":"junction","direction":"return"},
+      {"seq":23,"time":"16:38","elapsed_min":518,"label":"分岐","kind":"junction","direction":"return"},
+      {"seq":24,"time":"16:53","elapsed_min":533,"label":"楠川分れ","kind":"junction","direction":"return"},
+      {"seq":25,"time":"17:41","elapsed_min":581,"label":"小杉谷休憩舎","kind":"checkpoint","direction":"return"},
+      {"seq":26,"time":"18:05","elapsed_min":605,"label":"橋","kind":"checkpoint","direction":"return"},
+      {"seq":27,"time":"18:28","elapsed_min":628,"label":"荒川登山口","kind":"trailhead","direction":"finish"}
+    ]
+  },
+  "prototype_notes": [
+    "仮の08:00開始。実際の屋久島実施時刻ではない。",
+    "休憩・混雑・天候・体調・バス/駐車アクセスは未反映。",
+    "YAMAP地図geometryは取得せず、checkpointと標準時間だけを検証する。",
+    "このファイルはConcrete Plan Schema案ではなく、route execution生成可能性を試す中間表現。"
+  ]
+}
