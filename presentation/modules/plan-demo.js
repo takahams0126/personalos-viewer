@@ -12,6 +12,7 @@ const planId = qsPlan.get('id');
 if (planType === 'plan' && planId) initPlanView();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
+const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
 
 function planInternalChevron(){
   return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
@@ -195,6 +196,27 @@ function enhanceDay(card,day,routeData,published){
   syncRouteTabs(card,vm,'plan');
 }
 
+function addPlanTailSections(plan,app,itinerary){
+  const breakdown=plan.estimated_cost?.breakdown||[];
+  let costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');
+  if(breakdown.length && !costSection){
+    itinerary.insertAdjacentHTML('afterend',`<section class="section plan-demo-section plan-cost"><h2>費用の内訳</h2><div class="plan-cost-grid">${breakdown.map(x=>`<div>${escPlan(x)}</div>`).join('')}</div></section>`);
+    costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');
+  }
+
+  const risks=plan.risks||[];
+  let riskSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');
+  if(risks.length && !riskSection){
+    const rows=risks.map(risk=>`<li><span class="plan-impact impact-${escPlan(risk.impact||'medium')}">${escPlan(impactPlan(risk.impact||''))}</span><strong>${escPlan(risk.risk||'')}</strong>${risk.mitigation?`<div class="flow-note">対策: ${escPlan(risk.mitigation)}</div>`:''}</li>`).join('');
+    const anchor=costSection||itinerary;
+    anchor.insertAdjacentHTML('afterend',`<section class="section plan-demo-section plan-risk"><h2>変動要素・リスク</h2><ul class="list">${rows}</ul></section>`);
+    riskSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');
+  }
+
+  makePlanCollapsible(costSection,false);
+  makePlanCollapsible(riskSection,false);
+}
+
 function enhancePlan(planData,app,routeData,published){
   if(app.dataset.planViewAttached==='1') return;
   const hero=app.querySelector('.hero');
@@ -222,6 +244,8 @@ function enhancePlan(planData,app,routeData,published){
     const card=cards[index];
     if(card) enhanceDay(card,day,routeData,published);
   });
+
+  addPlanTailSections(planData.plan||{},app,itinerary);
 }
 
 async function initPlanView(){
