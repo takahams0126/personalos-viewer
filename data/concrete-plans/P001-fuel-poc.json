@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "poc": true,
   "source_plan_id": "P001",
-  "purpose": "Concrete Planでの給油候補TravelPoint・給油日・返却前給油・燃料費算定の表示仕様を検証する一時PoC。正式Canonical schemaではない。",
-  "source_policy": "station情報は公開情報をPoC入力として使用。planned_refuelsの時刻・採用判断はplanning_assumption。正式化前に再確認する。",
+  "purpose": "Concrete Planでの給油候補TravelPoint・給油日・返却前給油・燃料費算定・代替案費用差分の表示仕様を検証する一時PoC。正式Canonical schemaではない。",
+  "source_policy": "station情報は公開情報をPoC入力として使用。planned_refuelsの時刻・採用判断・費用差分はplanning_assumption。正式化前に再確認する。",
   "travel_point_candidates": [
     {
       "poc_id": "FUEL-MIYANOURA-ARATA",
@@ -64,10 +64,59 @@
       "constraint": {
         "label": "レンタカー返却",
         "at": "14:00",
-        "planned_refuel_at": "未確定",
-        "slack": "未算定"
+        "planned_refuel_at": "13:10",
+        "planned_refuel_end_at": "13:25",
+        "slack": "35分（返却店舗までの移動時間を除く仮値）"
       },
       "checks": ["営業中であること", "給油後に14:00返却へ間に合うこと", "レシート等の返却条件確認"]
+    }
+  ],
+  "day5_flow_patch": {
+    "free_time": {
+      "time": "午前",
+      "label": "自由時間",
+      "note": "Planの自由時間枠を保持。買い物・散策・休憩など当日判断。"
+    },
+    "refuel": {
+      "time": "13:10",
+      "station_poc_id": "FUEL-KOSEDA-AIRPORT",
+      "activity": "返却前給油",
+      "duration": "約15分",
+      "required": true
+    },
+    "rental_return": {
+      "time": "14:00",
+      "label": "タイムズレンタカー",
+      "activity": "レンタカー返却"
+    }
+  },
+  "cost_policy": {
+    "baseline": "standard_variants",
+    "display_rule": "旅行全体は標準案を基準総額として表示し、代替案は原則として基準との差額を表示する。大きく構造が変わる代替のみ総額再計算対象。"
+  },
+  "alternative_cost_impacts": [
+    {
+      "day": 2,
+      "variant_id": "short",
+      "label": "R007 ウィルソン株往復へ短縮",
+      "delta_yen": -600,
+      "test": true,
+      "note": "PoC表示確認用の仮値"
+    },
+    {
+      "day": 3,
+      "variant_id": "alternative",
+      "label": "R010 屋久島南部雨天ドライブへ変更",
+      "delta_yen": -1200,
+      "test": true,
+      "note": "PoC表示確認用の仮値"
+    },
+    {
+      "day": 3,
+      "variant_id": "standard",
+      "label": "標準案",
+      "delta_yen": 0,
+      "test": true
     }
   ]
 }
