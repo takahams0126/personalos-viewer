@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "poc": true,
+  "source_plan_id": "P001",
+  "purpose": "時間制約・安心ライン・余裕時間を中心にConcrete Planの実行可能性表示を検証する一時overlay。正式Canonical schemaではない。",
+  "source_policy": "confirmed_sourceは添付資料で確認できた値、user_providedはユーザー提示値、planning_assumptionは実施計画上の仮定として区別する。",
+  "days": {
+    "1": {
+      "execution_checks": [
+        {
+          "id": "limousine_departure",
+          "label": "リムジンバスに間に合う",
+          "status": "attention",
+          "planned_at": "06:25",
+          "constraint_at": "06:25",
+          "slack": "0分",
+          "basis": "user_provided",
+          "note": "自宅06:00発からバス発車までの移動余裕を別途確認する"
+        },
+        {
+          "id": "haneda_security",
+          "label": "羽田の保安検査に間に合う",
+          "status": "good",
+          "arrival_at": "08:50",
+          "constraint_at": "09:40",
+          "constraint_label": "JAL645 保安検査締切",
+          "event_at": "10:00",
+          "slack": "50分",
+          "basis": "confirmed_source"
+        },
+        {
+          "id": "kagoshima_connection",
+          "label": "鹿児島乗継に間に合う",
+          "status": "good",
+          "arrival_at": "11:45",
+          "event_at": "13:25",
+          "constraint_label": "JAL3745 出発",
+          "slack": "1時間40分",
+          "basis": "confirmed_source"
+        },
+        {
+          "id": "rental_pickup",
+          "label": "レンタカー15:00受取に間に合う",
+          "status": "attention",
+          "arrival_at": "14:05",
+          "constraint_at": "15:00",
+          "constraint_label": "タイムズレンタカー予約時刻",
+          "slack": "55分（名目）",
+          "basis": "confirmed_source",
+          "note": "手荷物受取・登山バス券購入・店舗移動時間を差し引く前の余裕"
+        },
+        {
+          "id": "meal_open",
+          "label": "予定している食事店の営業時間に間に合う",
+          "status": "unknown",
+          "constraint_label": "営業時間 / LO",
+          "basis": "needs_verification"
+        },
+        {
+          "id": "lodging_checkin",
+          "label": "民宿18:00チェックインに間に合う",
+          "status": "attention",
+          "constraint_at": "18:00",
+          "constraint_label": "民宿ふれんど チェックイン期限",
+          "basis": "confirmed_source",
+          "note": "食事・買い出しを含めて到着見込みを計算する"
+        }
+      ],
+      "variants": {
+        "standard": {
+          "replace_flow": [
+            {"type":"destination","time":"06:00","ref":{"type":"travel_point","id":"T0001","label":"自宅","point_type":"home"}},
+            {"type":"transfer","mode":"walk","duration":"約25分","schedule":{"depart_at":"06:00","arrive_at":"06:25"},"deadline":{"label":"リムジンバス発","at":"06:25","slack":"0分","status":"attention"}},
+            {"type":"destination","time":"06:25","ref":{"type":"travel_point","id":"T0006","label":"武蔵小金井","point_type":"station"}},
+            {"type":"transfer","mode":"bus","duration":"2時間25分","service":{"kind":"bus","service_name":"羽田空港リムジンバス","source_status":"user_provided"},"schedule":{"depart_at":"06:25","arrive_at":"08:50"},"deadline":{"label":"JAL645 保安検査締切","at":"09:40","slack":"50分","status":"good"}},
+            {"type":"destination","time":"08:50","ref":{"type":"travel_point","id":"T0002","label":"羽田空港 第1ターミナル","point_type":"airport"},"activities":[{"label":"保安検査","deadline":"09:40"},{"label":"搭乗口","deadline":"09:50"}]},
+            {"type":"transfer","mode":"air","duration":"1時間45分","service":{"kind":"flight","operator":"JAL","service_name":"羽田→鹿児島","service_number":"JAL645","source_status":"confirmed_source"},"schedule":{"depart_at":"10:00","arrive_at":"11:45"},"deadline":{"label":"JAL3745 出発","at":"13:25","slack":"1時間40分","status":"good"}},
+            {"type":"destination","time":"11:45","ref":{"type":"travel_point","label":"鹿児島空港","point_type":"airport"}},
+            {"type":"transfer","mode":"air","duration":"40分","service":{"kind":"flight","operator":"JAL/JAC","service_name":"鹿児島→屋久島","service_number":"JAL3745","source_status":"confirmed_source"},"schedule":{"depart_at":"13:25","arrive_at":"14:05"},"deadline":{"label":"レンタカー予約","at":"15:00","slack":"55分（名目）","status":"attention"}},
+            {"type":"destination","time":"14:05","ref":{"type":"travel_point","id":"T0003","label":"屋久島空港","point_type":"airport"},"activities":[{"label":"手荷物受取","duration":"未算定"},{"label":"荒川登山バス券購入","duration":"未算定"}]},
+            {"type":"transfer","mode":"walk","duration":"未算定"},
+            {"type":"destination","time":"15:00","ref":{"type":"travel_point","id":"T0005","label":"タイムズレンタカー 屋久島空港","point_type":"rental_car_office"},"activities":[{"label":"レンタカー受取手続き","duration":"未算定"}],"conditions":{"reservation":"15:00予約・スタッフは予約時刻に合わせて対応"}},
+            {"type":"transfer","mode":"rental_car","duration":"未算定"},
+            {"type":"destination","time":"未定","ref":{"type":"spot","id":"S0050","label":"お食事処 樹","category":"food"},"stay_duration":"未算定","deadline":{"label":"営業時間 / LO","at":"未確認","status":"unknown"}},
+            {"type":"transfer","mode":"rental_car","duration":"未算定"},
+            {"type":"destination","time":"未定","ref":{"type":"spot","id":"S0025","label":"民宿ふれんど","category":"lodging"},"activities":[{"label":"チェックイン","deadline":"18:00"},{"label":"宮之浦で食料調達","duration":"未算定"}],"deadline":{"label":"チェックイン期限","at":"18:00","status":"attention"}}
+          ]
+        }
+      }
+    },
+    "2": {
+      "execution_checks": [
+        {"id":"mountain_weather","label":"山岳天候・登山道を確認","status":"unknown","basis":"needs_verification"},
+        {"id":"outbound_bus","label":"荒川登山バス往路を確保","status":"good","target_at":"05:00","latest_safe_at":"05:20","next_at":"05:40","basis":"confirmed_source+planning_assumption","note":"5:00/5:20/5:40発は時刻表確認済み。latest_safeはPoC上の計画判断。"},
+        {"id":"return_bus","label":"復路バスに間に合う","status":"attention","target_at":"15:00","fallback_at":"16:00","later_options":["16:30","17:00","17:45"],"basis":"confirmed_source"},
+        {"id":"toilet_gap","label":"長時間トイレなし区間を避ける","status":"attention","basis":"planning_assumption"}
+      ],
+      "variants": {
+        "long": {
+          "prototype": true,
+          "label": "ロング",
+          "route_id": "R005",
+          "summary_extra": {"estimated_cost":"環境保全協力金1,000円＋登山バス等"},
+          "replace_flow": [
+            {"type":"destination","time":"04:00","ref":{"type":"spot","id":"S0025","label":"民宿ふれんど","category":"lodging"}},
+            {"type":"transfer","mode":"rental_car","duration":"45分","schedule":{"depart_at":"04:00","arrive_at":"04:45"},"deadline":{"label":"ターゲットバス","at":"05:00","slack":"15分","status":"attention"}},
+            {"type":"destination","time":"04:45","ref":{"type":"travel_point","label":"屋久杉自然館","point_type":"facility"},"activities":[{"label":"付帯駐車場へ駐車","duration":"未算定"}],"facilities":{"toilet":"available"}},
+            {"type":"destination","time":"04:45","ref":{"type":"travel_point","label":"屋久杉自然館 バス停","point_type":"bus_stop"},"timetable":{"target":{"depart_at":"05:00","arrive_at":"05:35"},"latest_safe":{"depart_at":"05:20","arrive_at":"05:55","basis":"planning_assumption"},"next":{"depart_at":"05:40","arrive_at":"06:15"}}},
+            {"type":"transfer","mode":"bus","duration":"35分","service":{"kind":"bus","service_name":"荒川登山バス","source_status":"confirmed_source"},"schedule":{"depart_at":"05:00","arrive_at":"05:35"}},
+            {"type":"destination","time":"05:35","ref":{"type":"travel_point","label":"荒川登山口","point_type":"trailhead"},"facilities":{"toilet":"available"}},
+            {"type":"destination","time":"06:35","ref":{"type":"travel_point","label":"小杉谷集落跡","point_type":"sightseeing_point"},"facilities":{"toilet":"available"}},
+            {"type":"destination","time":"08:25","ref":{"type":"travel_point","label":"大株歩道入口","point_type":"trailhead"},"facilities":{"toilet":"available"}},
+            {"type":"route","time":"08:25","route_id":"R005","label":"縄文杉ルート・縄文杉往復","route_execution":{"expanded":true,"points":[{"time":"09:55","label":"大王杉","kind":"sightseeing","toilet":"portable_booth"},{"time":"10:30","label":"縄文杉","kind":"sightseeing"},{"time":"14:30〜15:30","label":"荒川登山口 帰着目安","kind":"deadline_anchor"}]},"conditions":{"turnaround_rule":"進行遅れ・天候悪化時は短縮を検討"}},
+            {"type":"destination","time":"14:30〜15:30","ref":{"type":"travel_point","label":"荒川登山口","point_type":"trailhead"},"timetable":{"target":{"depart_at":"15:00","arrive_at":"15:35"},"fallback":{"depart_at":"16:00","arrive_at":"16:35"},"later":[{"depart_at":"16:30","arrive_at":"17:05"},{"depart_at":"17:00","arrive_at":"17:35"},{"depart_at":"17:45","arrive_at":"18:20"}]},"facilities":{"toilet":"available"}},
+            {"type":"transfer","mode":"bus","duration":"35分","service":{"kind":"bus","service_name":"荒川登山バス 復路","source_status":"confirmed_source"},"schedule":{"depart_at":"15:00 / 16:00","arrive_at":"15:35 / 16:35"}},
+            {"type":"destination","time":"15:35〜16:35","ref":{"type":"travel_point","label":"屋久杉自然館","point_type":"facility"},"facilities":{"toilet":"available"}},
+            {"type":"transfer","mode":"rental_car","duration":"約45分"},
+            {"type":"destination","time":"夕方","ref":{"type":"spot","id":"S0025","label":"民宿ふれんど","category":"lodging"}}
+          ]
+        },
+        "short": {
+          "execution_patch": {
+            "outbound_bus_target":"05:40",
+            "outbound_bus_arrival":"06:15",
+            "return_bus_target":"15:00",
+            "planned_trailhead_return":"14:40"
+          }
+        }
+      }
+    }
+  }
+}
