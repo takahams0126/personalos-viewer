@@ -2,25 +2,60 @@
 
 This directory is the single production Presentation layer for the Leisure Viewer.
 
-## Boundary
+## Responsibility
 
-- `app.js` renders the base DOM from Public Projection JSON.
-- `presentation/main.js` is the only Presentation script loaded by `index.html`.
-- `presentation/main.css` is the only Presentation stylesheet loaded by `index.html`.
-- `presentation/modules/` contains internal Presentation modules only.
-- `data/` is reserved for public JSON/data artifacts. Presentation code must not live there.
-- `_prototype/` is validation history and must not be loaded by the production Viewer.
+Presentation converts already-generated Public Projection JSON + referenced Map Artifacts into deterministic DOM/UI.
 
-## Deterministic order
+It owns only:
 
-For Plan pages, `main.js` applies the approved UI in this fixed order:
+- DOM composition
+- layout/style
+- generic UI interaction
+- generic labels/localization
+- semantic icon selection
+- Home / Plan / ConcretePlan / Route / Spot rendering rules
 
-1. Plan day structure / collapsible UI
-2. semantic SVG flow icons
-3. day alternatives / switch conditions
-4. Concrete execution overlay using the shared Plan day structure
-5. feasibility / fuel / weather supplements
+It does not own Leisure data semantics.
 
-Route, Spot and Home each have one explicit branch in `main.js`.
+## Production boundary
 
-The modules under `modules/` retain some historical filenames (`*-demo`, `*-poc`) only because their code is the approved presentation implementation recovered from the validated UI history. They are no longer independently loaded and do not represent separate runtime paths.
+- `app.js` loads published data and boots the Viewer shell.
+- `presentation/main.js` is the single production Presentation entry point.
+- `presentation/main.css` is the single production Presentation stylesheet entry point.
+- `presentation/` may contain internal modules/components, but they must be generic and data-independent.
+- `data/` contains published entity data.
+- `maps/` contains generated map artifacts.
+- `_prototype/` is validation history and must never be loaded by production Presentation.
+
+## Forbidden in final production Presentation
+
+- hard-coded entity IDs such as `P001`, `R005`, `S0036`
+- entity-specific names/text such as Yakushima or Jomonsugi
+- fetches from `presentation/fixtures/`
+- runtime `*-demo.json` / `*-poc.json` dependencies
+- semantic merge of auxiliary JSON in JavaScript
+- route/decision/feasibility/weather/fuel facts embedded in JavaScript
+- map path construction based on guessed filename conventions
+- schema migration or compatibility rescue
+
+All of those belong to generated Public Projection / Map Artifact data or upstream runtime logic.
+
+## Plan / ConcretePlan invariant
+
+```text
+Plan Day ⊂ ConcretePlan Day
+```
+
+The common Plan Day presentation is shared. ConcretePlan adds execution-only information; it does not reimplement an unrelated Day structure.
+
+## Determinism
+
+For the same Viewer version, Public Projection JSON and referenced Map Artifacts, Presentation must produce the same DOM/behavior.
+
+No result may depend on mutation timing, module load races, entity-specific branches, hidden prototype files or side-loaded fixture data.
+
+## Current normalization state
+
+Some internal files still retain historical `demo` / `poc` names and temporary fixture dependencies because they were recovered from validated UI history. They are migration debt, not accepted end-state architecture.
+
+The visual/behavioral regression reference is `../BASELINE.md`. The target architecture is `../VIEWER_ARCHITECTURE.md`.
