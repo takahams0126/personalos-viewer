@@ -21,6 +21,22 @@ export const iconPaths = {
     '<path d="M13 11v-4.5" />',
     '<path d="M3 19h18" />'
   ],
+  track: [
+    '<path d="M6 3l2 18" />',
+    '<path d="M18 3l-2 18" />',
+    '<path d="M7 7h10" />',
+    '<path d="M7.5 11h9" />',
+    '<path d="M8 15h8" />',
+    '<path d="M8.5 19h7" />'
+  ],
+  bus: [
+    '<path d="M6 17h12" />',
+    '<path d="M5 13h14" />',
+    '<path d="M6 5h12a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />',
+    '<path d="M7 18v2" />',
+    '<path d="M17 18v2" />',
+    '<path d="M7 9h10" />'
+  ],
   car: [
     '<path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
     '<path d="M15 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
@@ -85,7 +101,7 @@ export const leisureIconMap = {
     home: 'home',
     airport: 'building-airport',
     rental_car_office: 'building-store',
-    station: 'train',
+    station: 'track',
     default: 'map-pin'
   },
   spotCategory: {
@@ -106,6 +122,7 @@ export const leisureIconMap = {
     air: 'plane',
     airplane: 'plane',
     train: 'train',
+    bus: 'bus',
     rental_car: 'car',
     car: 'car',
     motorbike: 'motorbike',
