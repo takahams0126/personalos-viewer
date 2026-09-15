@@ -6,19 +6,20 @@ const id = qs.get('id');
 if (type === 'plan' && id) initConcreteDemo();
 
 async function initConcreteDemo(){
-  let concrete;
+  let concrete, planData;
   try {
-    const r=await fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});
-    if(!r.ok)return;
-    concrete=await r.json();
+    const [c,p]=await Promise.all([
+      fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
+      fetch(`./data/plans/${encodeURIComponent(id)}.json`,{cache:'no-store'})
+    ]);
+    if(!c.ok||!p.ok)return;
+    [concrete,planData]=await Promise.all([c.json(),p.json()]);
   } catch { return; }
 
+  const planDaysByNumber=Object.fromEntries((planData.plan?.days||[]).map(d=>[Number(d.day),d]));
   const app=document.querySelector('#app');
   const attach=()=>{
     const hero=app?.querySelector('.hero');
-    // Plan and Concrete share the same Day skeleton. Never wrap the raw/base Plan UI.
-    // Wait until plan-demo has finished its enhancement, otherwise execution-mode can
-    // move the DOM first and leave the Plan side looking like the old renderer.
     const planReady=app?.querySelector('.plan-day-overview') || app?.querySelector('.plan-demo-itinerary');
     if(!hero || !planReady || app.dataset.concreteDemoAttached) return false;
 
@@ -28,12 +29,11 @@ async function initConcreteDemo(){
     planPanel.className='mode-panel active';
     [...app.children].filter(x=>x!==hero).forEach(x=>planPanel.appendChild(x));
 
-    const planDayTitles=collectPlanDayTitles(planPanel);
     const executionPanel=document.createElement('div');
     executionPanel.id='execution-mode-panel';
     executionPanel.className='mode-panel';
     executionPanel.hidden=true;
-    executionPanel.innerHTML=executionHtml(concrete,planDayTitles);
+    executionPanel.innerHTML=executionHtml(concrete,planDaysByNumber);
 
     const switcher=document.createElement('div');
     switcher.className='plan-mode-switch';
@@ -52,17 +52,8 @@ async function initConcreteDemo(){
 function e(v=''){return String(v).replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));}
 const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レンタカー',bus:'バス',motorbike:'バイク'},feasibility:{viable:'実施可能',conditional:'条件付き',confirmed:'確認済み',unknown:'未確認'}};
 const l=(g,v)=>labels[g]?.[v]||String(v||'').replaceAll('_',' ');
-
-function collectPlanDayTitles(panel){
-  const titles={};
-  panel.querySelectorAll('.day-card').forEach(card=>{
-    const txt=card.querySelector('.day-number')?.textContent||'';
-    const m=txt.match(/(\d+)/);
-    const title=card.querySelector('.day-head h3')?.textContent?.trim();
-    if(m&&title)titles[Number(m[1])]=title;
-  });
-  return titles;
-}
+const budgetTotalLabel=v=>({'1day':'終日',long_day:'長時間',full_day:'終日'}[v]||String(v||'').replace('-','〜'));
+const budgetStartLabel=v=>({morning:'朝出発',early_morning:'早朝出発',afternoon:'午後開始',evening:'夕方開始'}[v]||String(v||'').replaceAll('_',' '));
 
 const destinationIcon=ref=>renderTablerIcon(resolveDestinationIcon(ref.type==='travel_point'?{pointType:ref.point_type}:{category:ref.category,role:ref.role}),'exec-destination-svg');
 const transferIcon=mode=>renderTablerIcon(resolveTransferIcon(mode),'exec-transfer-svg');
@@ -84,6 +75,19 @@ function summaryHtml(s={}){
   const rows=[['合計時間',s.total_time],['移動距離',s.travel_distance],['移動時間',s.travel_time],['手続時間',s.procedure_time],['観光・食事',s.experience_time]];
   return `<div class="exec-summary-grid">${rows.map(([k,v])=>`<div><span>${e(k)}</span><strong>${e(v||'—')}</strong></div>`).join('')}</div>`;
 }
+function planOverviewHtml(planDay={},summary={}){
+  const tb=planDay.time_budget||{};
+  const topBadges=[tb.expected_total?budgetTotalLabel(tb.expected_total):'',tb.preferred_start?budgetStartLabel(tb.preferred_start):''].filter(Boolean);
+  const constraints=tb.constraints||[];
+  const dayText=planDay.summary||planDay.appeal||'';
+  return `<section class="exec-day-overview">
+    <div class="plan-day-subhead">1日の概要</div>
+    ${topBadges.length?`<div class="plan-day-overview-badges">${topBadges.map(x=>`<span>${e(x)}</span>`).join('')}</div>`:''}
+    ${dayText?`<p>${e(dayText)}</p>`:''}
+    ${constraints.length?`<div class="plan-day-constraints">${constraints.map(x=>`<span>${e(x)}</span>`).join('')}</div>`:''}
+    <div class="exec-day-summary">${summaryHtml(summary)}</div>
+  </section>`;
+}
 function activityHtml(a){return `<div class="exec-activity"><span>${e(a.label||'')}</span>${a.duration?`<strong>${e(a.duration)}</strong>`:''}</div>`;}
 function destinationHtml(i){
   const r=i.ref||{},acts=(i.activities||[]).map(activityHtml).join(''),acc=(i.accessories||[]).map(a=>`<span class="exec-accessory">${e(a.label||'')}</span>`).join(''),stay=i.stay_duration?`<span class="exec-stay">滞在 ${e(i.stay_duration)}</span>`:'';
@@ -101,12 +105,13 @@ function variantTabs(day){
 function viewTabs(){return '<div class="exec-view-tabs" role="tablist"><button class="exec-view-tab active" data-view="flow">行動順</button><button class="exec-view-tab" data-view="map">マップ</button></div>';}
 function mapLegendHtml(spec={}){const modes=[...new Set((spec.segments||[]).map(s=>s.mode).filter(Boolean))];if(!modes.length)return'';return `<div class="exec-map-legend">${modes.map(mode=>`<span><i class="mode-${e(mode)}"></i>${e(l('mode',mode))}</span>`).join('')}</div>`;}
 
-function executionDay(day,title){
+function executionDay(day,planDay={}){
   const first=(day.variants||[])[0]||{summary:{},flow:[]};
   const f=day.feasibility?`<span class="exec-status ${e(day.feasibility)}">${e(l('feasibility',day.feasibility))}</span>`:'';
-  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(first.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><h3>${e(title||day.purpose||'')}</h3>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden><div class="exec-day-summary">${summaryHtml(first.summary)}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(first.flow)}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(first.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(first.map?.note||'')}</p></div></div></article>`;
+  const title=planDay.purpose||day.purpose||'';
+  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(first.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><h3>${e(title)}</h3>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${planOverviewHtml(planDay,first.summary)}${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(first.flow)}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(first.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(first.map?.note||'')}</p></div></div></article>`;
 }
-function executionHtml(data,titles={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">仮想データ</span></div><p>${e(data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>DailyTitleを開くとSummary・行動順・Mapをまとめて確認できます。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>計画と同じDayを展開し、Summary・行動順・Mapを確認します。</p></div>${(data.days||[]).map(d=>executionDay(d,titles[Number(d.day)])).join('')}</section>`;}
+function executionHtml(data,planDays={}){return `<section class="section execution-intro"><div class="execution-title-row"><div><div class="kicker">実施プラン</div><h2>実施日の行動計画</h2></div><span class="demo-chip warn">仮想データ</span></div><p>${e(data.notice||'')}</p><div class="execution-principle"><strong>計画のDay骨格を保ち、実行情報だけを重ねる</strong><span>DailyTitleを開くと1日の概要・代替条件・行動順・Mapをまとめて確認できます。</span></div></section><section class="section execution-days"><div class="section-heading"><h2>日ごとの実施計画</h2><p>計画と同じDayを展開し、Canonical由来の概要条件に実行Summaryを重ねます。</p></div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;}
 
 function bindExecutionDays(panel,data){
   panel.querySelectorAll('.execution-day').forEach(card=>{
@@ -125,7 +130,7 @@ function bindExecutionDays(panel,data){
   });
 }
 function activeVariant(day,card){return (day.variants||[]).find(v=>v.id===card.dataset.activeVariant)||(day.variants||[])[0];}
-function renderVariant(card,day,id){const v=(day.variants||[]).find(x=>x.id===id);if(!v)return;card.querySelector('.exec-day-summary').innerHTML=summaryHtml(v.summary);const fp=card.querySelector('[data-view-panel="flow"]');if(fp)fp.innerHTML=flowHtml(v.flow);const lh=card.querySelector('.exec-map-legend-host');if(lh)lh.innerHTML=mapLegendHtml(v.map);const n=card.querySelector('.exec-map-note');if(n)n.textContent=v.map?.note||'';const m=card.querySelector('.exec-day-map');if(m){m.innerHTML='';delete m.dataset.loadedVariant;}if(card.querySelector('.exec-view-tab.active')?.dataset.view==='map')renderDayMap(card,day);}
+function renderVariant(card,day,id){const v=(day.variants||[]).find(x=>x.id===id);if(!v)return;const summaryHost=card.querySelector('.exec-day-summary');if(summaryHost)summaryHost.innerHTML=summaryHtml(v.summary);const fp=card.querySelector('[data-view-panel="flow"]');if(fp)fp.innerHTML=flowHtml(v.flow);const lh=card.querySelector('.exec-map-legend-host');if(lh)lh.innerHTML=mapLegendHtml(v.map);const n=card.querySelector('.exec-map-note');if(n)n.textContent=v.map?.note||'';const m=card.querySelector('.exec-day-map');if(m){m.innerHTML='';delete m.dataset.loadedVariant;}if(card.querySelector('.exec-view-tab.active')?.dataset.view==='map')renderDayMap(card,day);}
 function personalOsEntityUrl(p){return p.entity_type==='spot'?`./?type=spot&id=${encodeURIComponent(p.id)}`:null;}
 function mapPopupHtml(p){const personal=personalOsEntityUrl(p),gm=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${p.lat},${p.lon}`)}`;return `<div class="exec-map-popup"><div class="exec-map-popup-title">${e(p.name)}</div><div class="exec-map-popup-links">${personal?`<a class="exec-map-popup-link" href="${personal}">PersonalOS</a>`:'<span class="exec-map-popup-link is-disabled" title="TravelPoint詳細ページは未実装">PersonalOS</span>'}<a class="exec-map-popup-link" href="${gm}" target="_blank" rel="noopener">Google Maps ↗</a></div></div>`;}
 function showMapError(card,err){const m=card.querySelector('.exec-day-map'),x=card.querySelector('.exec-map-message');if(m)m.style.display='none';if(x)x.textContent=`地図の読み込みに失敗しました: ${err.message}`;}
