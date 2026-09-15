@@ -35,12 +35,13 @@ async function initDayDecisionDemo(){
     if(!tabs.length) return;
     const routeAlt = (decision.alternatives||[]).filter(x=>x.kind==='route_switch');
     tabs.forEach((tab,index)=>{
-      if(index===0 && decision.base_route){
-        tab.textContent=`基本 [${decision.base_route.id}] ${decision.base_route.label}`;
-      }else{
+      let next='';
+      if(index===0 && decision.base_route) next=`基本 [${decision.base_route.id}] ${decision.base_route.label}`;
+      else {
         const alt=routeAlt[index-1];
-        if(alt?.target_route_id) tab.textContent=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
+        if(alt?.target_route_id) next=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
       }
+      if(next && tab.textContent!==next) tab.textContent=next;
     });
   };
 
@@ -49,12 +50,13 @@ async function initDayDecisionDemo(){
     if(!tabs.length) return;
     const routeAlt = (decision.alternatives||[]).filter(x=>x.kind==='route_switch');
     tabs.forEach((tab,index)=>{
-      if(index===0 && decision.base_route){
-        tab.textContent=`標準 [${decision.base_route.id}] ${decision.base_route.label}`;
-      }else{
+      let next='';
+      if(index===0 && decision.base_route) next=`標準 [${decision.base_route.id}] ${decision.base_route.label}`;
+      else {
         const alt=routeAlt[index-1];
-        if(alt?.target_route_id) tab.textContent=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
+        if(alt?.target_route_id) next=`代替 [${alt.target_route_id}] ${alt.target_route_label||alt.target_route_id}`;
       }
+      if(next && tab.textContent!==next) tab.textContent=next;
     });
   };
 
@@ -98,15 +100,20 @@ async function initDayDecisionDemo(){
     });
   };
 
-  let applying = false;
-  const apply = () => {
-    if(applying) return;
-    applying = true;
-    try { renderPlan(); renderExecution(); }
-    finally { applying = false; }
+  const applyWhenReady = () => {
+    const planPanel = app?.querySelector('#plan-mode-panel');
+    const executionPanel = app?.querySelector('#execution-mode-panel');
+    if(!planPanel || !executionPanel) return false;
+    renderPlan();
+    renderExecution();
+    app.dataset.dayDecisionReady='1';
+    return true;
   };
-  apply();
-  const observer = new MutationObserver(apply);
+
+  if(applyWhenReady()) return;
+  const observer = new MutationObserver(()=>{
+    if(applyWhenReady()) observer.disconnect();
+  });
   observer.observe(app,{childList:true,subtree:true});
 }
 
