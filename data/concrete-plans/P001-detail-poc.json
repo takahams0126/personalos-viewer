@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "poc": true,
+  "source_plan_id": "P001",
+  "purpose": "Concrete Planの詳細項目と表示仕様を検証する一時overlay。正式Canonical schemaではない。",
+  "notice": "すべて表示検討用の仮想値。実予約・実時刻・実料金・実営業時間・実運行情報ではない。",
+  "execution_window": {
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-23",
+    "timezone": "Asia/Tokyo"
+  },
+  "booking_connections": [
+    {"kind":"flight","booking_id":null,"status":"not_connected","label":"航空券"},
+    {"kind":"lodging","booking_id":null,"status":"not_connected","label":"宿泊"},
+    {"kind":"rental_car","booking_id":null,"status":"not_connected","label":"レンタカー"}
+  ],
+  "days": {
+    "1": {
+      "date": "2026-10-19",
+      "day_of_checks": [
+        {"kind":"flight","label":"航空便の運航・搭乗口","status":"unconfirmed"},
+        {"kind":"rental_car","label":"レンタカー受取条件","status":"unconfirmed"},
+        {"kind":"opening_hours","label":"食事候補の営業・LO","status":"unconfirmed"}
+      ],
+      "variants": {
+        "standard": {
+          "summary_extra": {"estimated_cost":"約18,600円（試作）"},
+          "flow_details": {
+            "1": {"distance":"約1.2km","schedule":{"depart_at":"06:20","arrive_at":"06:35"},"buffer_after":"5分"},
+            "2": {"conditions":{"reservation":"不要"}},
+            "3": {"service":{"kind":"train","operator":"鉄道各社","service_name":"空港アクセス経路（試作）","reservation":"不要"},"schedule":{"depart_at":"06:40","arrive_at":"08:10"},"buffer_after":"45分","cost":{"amount":1200,"currency":"JPY","basis":"sample"}},
+            "4": {"conditions":{"reservation":"航空券予約と接続予定","operating_hours":"ターミナル運用時間内"}},
+            "5": {"service":{"kind":"flight","operator":"航空会社（試作）","service_name":"羽田→屋久島（試作便）","service_number":"DEMO-FLIGHT","reservation":"要予約","booking_ref":null},"schedule":{"depart_at":"09:00","arrive_at":"11:20"},"buffer_before":"50分","cost":{"amount":14500,"currency":"JPY","basis":"sample"}},
+            "7": {"distance":"約0.7km","schedule":{"depart_at":"11:20","arrive_at":"11:30"}},
+            "8": {"conditions":{"reservation":"予約接続予定","operating_hours":"08:00–18:00（試作）"}},
+            "9": {"distance":"約14km（試作）","schedule":{"depart_at":"12:00","arrive_at":"12:25"},"navigation":{"artifact":"pending"}},
+            "10": {"conditions":{"operating_hours":"11:00–14:00（試作）","last_order_at":"13:30（試作）","reservation":"予約なし想定"},"cost":{"amount":1500,"currency":"JPY","basis":"sample"}},
+            "11": {"distance":"約10km（試作）","schedule":{"depart_at":"13:15","arrive_at":"13:35"},"navigation":{"artifact":"pending"}},
+            "12": {"conditions":{"reservation":"宿泊予約接続予定","check_in":"15:00以降（試作）"}}
+          }
+        }
+      }
+    },
+    "2": {
+      "date": "2026-10-20",
+      "day_of_checks": [
+        {"kind":"weather","label":"山岳天候・降水・風","status":"unconfirmed"},
+        {"kind":"trail","label":"登山道・増水・通行情報","status":"unconfirmed"},
+        {"kind":"bus","label":"登山バス運行・最終便","status":"unconfirmed"}
+      ],
+      "prototype_variant": {
+        "id":"standard",
+        "label":"標準",
+        "route_id":"R005",
+        "summary":{"total_time":"約13時間30分","travel_distance":"未算定","travel_time":"約2時間10分","procedure_time":"約20分","experience_time":"約11時間","estimated_cost":"約3,600円（試作）"},
+        "flow":[
+          {"type":"destination","time":"04:30","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"},"activities":[{"label":"出発準備","duration":"15分"}]},
+          {"type":"transfer","mode":"rental_car","duration":"35分","distance":"約20km（試作）","schedule":{"depart_at":"04:45","arrive_at":"05:20"}},
+          {"type":"destination","time":"05:20","ref":{"type":"travel_point","label":"登山バス乗車地点（試作）","point_type":"bus_stop"},"activities":[{"label":"駐車・バス乗車準備","duration":"15分"}],"conditions":{"parking":"利用条件確認対象","bus_operation":"運行日確認対象"}},
+          {"type":"transfer","mode":"bus","duration":"45分","service":{"kind":"bus","operator":"登山バス（試作）","service_name":"荒川登山口方面（試作）","service_number":"DEMO-BUS"},"schedule":{"depart_at":"05:40","arrive_at":"06:25","last_return_at":"17:30（試作）"},"cost":{"amount":2000,"currency":"JPY","basis":"sample"},"buffer_after":"10分"},
+          {"type":"destination","time":"06:25","ref":{"type":"travel_point","label":"荒川登山口（試作）","point_type":"trailhead"},"conditions":{"trail":"通行可否確認対象","weather":"山岳天候確認対象"}},
+          {"type":"route","time":"06:35","route_id":"R005","label":"縄文杉ルート・縄文杉往復","duration":"約10時間30分","conditions":{"weather":"当日判定対象","trail":"通行情報確認対象","turnaround_rule":"進行遅延時はR007へ短縮"}},
+          {"type":"destination","time":"17:05","ref":{"type":"travel_point","label":"荒川登山口（試作）","point_type":"trailhead"}},
+          {"type":"transfer","mode":"bus","duration":"45分","service":{"kind":"bus","operator":"登山バス（試作）","service_name":"復路（試作）","service_number":"DEMO-BUS-RET"},"schedule":{"depart_at":"17:15","arrive_at":"18:00","last_return_at":"17:30（試作）"}},
+          {"type":"destination","time":"18:00","ref":{"type":"travel_point","label":"登山バス乗車地点（試作）","point_type":"bus_stop"}},
+          {"type":"transfer","mode":"rental_car","duration":"35分","schedule":{"depart_at":"18:05","arrive_at":"18:40"}},
+          {"type":"destination","time":"18:40","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"},"activities":[{"label":"回復・夕食","duration":"60分"}]}
+        ]
+      }
+    },
+    "3": {
+      "date": "2026-10-21",
+      "day_of_checks": [
+        {"kind":"weather","label":"降雨・強風","status":"unconfirmed"},
+        {"kind":"road","label":"西部林道の通行条件","status":"unconfirmed"},
+        {"kind":"opening_hours","label":"昼食・立寄り施設の営業","status":"unconfirmed"}
+      ],
+      "variants": {
+        "standard": {
+          "summary_extra":{"estimated_cost":"約4,800円（試作）"},
+          "flow_details": {
+            "1":{"distance":"約34km（試作）","schedule":{"depart_at":"08:00","arrive_at":"08:50"}},
+            "2":{"conditions":{"opening_hours":"終日","weather":"強風時は滞在短縮"}},
+            "3":{"distance":"約33km（試作）","schedule":{"depart_at":"09:15","arrive_at":"10:25"},"conditions":{"road":"西部林道通行条件確認対象"}},
+            "4":{"conditions":{"parking":"利用可能想定","fee":"無料想定"}},
+            "5":{"distance":"約0.2km","schedule":{"depart_at":"10:30","arrive_at":"10:33"}},
+            "6":{"conditions":{"opening_hours":"終日","weather":"豪雨時は安全優先"}},
+            "9":{"distance":"約20km（試作）","schedule":{"depart_at":"11:13","arrive_at":"11:48"}},
+            "10":{"conditions":{"operating_hours":"11:00–15:00（試作）","last_order_at":"14:30（試作）","reservation":"予約なし想定"},"cost":{"amount":1500,"currency":"JPY","basis":"sample"}},
+            "11":{"distance":"約73km（試作）","schedule":{"depart_at":"12:38","arrive_at":"17:30"},"conditions":{"road":"西部林道を暗くなる前に通過"}}
+          }
+        },
+        "alternative": {
+          "summary_extra":{"estimated_cost":"約4,100円（試作）"},
+          "flow_details": {
+            "1":{"distance":"約45km（試作）","schedule":{"depart_at":"09:00","arrive_at":"10:05"}},
+            "2":{"conditions":{"parking":"利用可能想定"}},
+            "4":{"conditions":{"weather":"豪雨時は安全優先"}},
+            "8":{"conditions":{"operating_hours":"11:00–15:00（試作）","last_order_at":"14:30（試作）"},"cost":{"amount":1500,"currency":"JPY","basis":"sample"}}
+          }
+        }
+      }
+    }
+  }
+}
