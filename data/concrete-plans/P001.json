@@ -15,13 +15,7 @@
         {
           "id": "standard",
           "label": "標準",
-          "summary": {
-            "total_time": "約7時間25分",
-            "travel_distance": "未算定",
-            "travel_time": "約5時間",
-            "procedure_time": "約1時間35分",
-            "experience_time": "約50分"
-          },
+          "summary": {"total_time":"約7時間25分","travel_distance":"未算定","travel_time":"約5時間","procedure_time":"約1時間35分","experience_time":"約50分"},
           "flow": [
             {"type":"destination","time":"06:20","ref":{"type":"travel_point","id":"T0001","label":"自宅","point_type":"home"}},
             {"type":"transfer","mode":"walk","duration":"15分"},
@@ -38,8 +32,8 @@
             {"type":"destination","time":"13:35","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"},"activities":[{"label":"チェックイン","duration":"10分"}],"accessories":[{"label":"付帯駐車場","kind":"parking"}]}
           ],
           "map": {
-            "note": "1日目の実施Flow。地点間の道路・鉄道・航空経路はConcrete buildで実経路artifactへ置換します。",
-            "points": [
+            "note":"1日目の実施Flow。地点間の道路・鉄道・航空経路はConcrete buildで実経路artifactへ置換します。",
+            "points":[
               {"id":"T0001","entity_type":"travel_point","name":"自宅","point_type":"home","lat":35.699,"lon":139.504,"order":1},
               {"id":"T0006","entity_type":"travel_point","name":"武蔵小金井駅","point_type":"station","lat":35.7019,"lon":139.5061,"order":2},
               {"id":"T0002","entity_type":"travel_point","name":"羽田空港","point_type":"airport","lat":35.5494,"lon":139.7798,"order":3},
@@ -48,13 +42,8 @@
               {"id":"S0050","entity_type":"spot","name":"お食事処 樹","lat":30.39,"lon":130.64,"order":6},
               {"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":7}
             ],
-            "segments": [
-              {"mode":"walk","from":"T0001","to":"T0006"},
-              {"mode":"train","from":"T0006","to":"T0002"},
-              {"mode":"air","from":"T0002","to":"T0003"},
-              {"mode":"walk","from":"T0003","to":"T0005"},
-              {"mode":"rental_car","from":"T0005","to":"S0050"},
-              {"mode":"rental_car","from":"S0050","to":"S0025"}
+            "segments":[
+              {"mode":"walk","from":"T0001","to":"T0006"},{"mode":"train","from":"T0006","to":"T0002"},{"mode":"air","from":"T0002","to":"T0003"},{"mode":"walk","from":"T0003","to":"T0005"},{"mode":"rental_car","from":"T0005","to":"S0050"},{"mode":"rental_car","from":"S0050","to":"S0025"}
             ]
           }
         }
@@ -67,17 +56,9 @@
       "feasibility": "conditional",
       "variants": [
         {
-          "id": "standard",
-          "label": "標準",
-          "route_id": "R011",
-          "summary": {
-            "total_time": "約9時間30分",
-            "travel_distance": "未算定",
-            "travel_time": "約7時間33分",
-            "procedure_time": "約5分",
-            "experience_time": "約1時間52分"
-          },
-          "flow": [
+          "id":"standard","label":"標準","route_id":"R011",
+          "summary":{"total_time":"約9時間30分","travel_distance":"未算定","travel_time":"約7時間33分","procedure_time":"約5分","experience_time":"約1時間52分"},
+          "flow":[
             {"type":"destination","time":"08:00","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}},
             {"type":"transfer","mode":"rental_car","duration":"50分"},
             {"type":"destination","time":"08:50","ref":{"type":"spot","id":"S0038","label":"永田いなか浜"},"stay_duration":"25分"},
@@ -92,24 +73,25 @@
             {"type":"transfer","mode":"rental_car","duration":"4時間52分"},
             {"type":"destination","time":"17:30","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}}
           ],
-          "map": {
-            "note": "標準案の日別Map。実道路geometryはConcrete buildでGoogle Routes artifactを使用します。",
-            "points": [
-              {"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":1},
-              {"id":"S0038","entity_type":"spot","name":"永田いなか浜","lat":30.4080,"lon":130.4310,"order":2},
-              {"id":"T0103","entity_type":"travel_point","name":"大川の滝 駐車地点","point_type":"parking","lat":30.2638,"lon":130.4135,"order":3},
-              {"id":"S0036","entity_type":"spot","name":"大川の滝","lat":30.2630,"lon":130.4125,"order":4},
-              {"id":"S0045","entity_type":"spot","name":"手打ちそば 松竹","lat":30.2740,"lon":130.4210,"order":5}
-            ],
-            "segments": [
-              {"mode":"rental_car","from":"S0025","to":"S0038"},
-              {"mode":"rental_car","from":"S0038","to":"T0103"},
-              {"mode":"walk","from":"T0103","to":"S0036"},
-              {"mode":"walk","from":"S0036","to":"T0103"},
-              {"mode":"rental_car","from":"T0103","to":"S0045"},
-              {"mode":"rental_car","from":"S0045","to":"S0025"}
-            ]
-          }
+          "map":{"note":"標準案の日別Map。実道路geometryはConcrete buildでGoogle Routes artifactを使用します。","points":[{"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":1},{"id":"S0038","entity_type":"spot","name":"永田いなか浜","lat":30.4080,"lon":130.4310,"order":2},{"id":"T0103","entity_type":"travel_point","name":"大川の滝 駐車地点","point_type":"parking","lat":30.2638,"lon":130.4135,"order":3},{"id":"S0036","entity_type":"spot","name":"大川の滝","lat":30.2630,"lon":130.4125,"order":4},{"id":"S0045","entity_type":"spot","name":"手打ちそば 松竹","lat":30.2740,"lon":130.4210,"order":5}],"segments":[{"mode":"rental_car","from":"S0025","to":"S0038"},{"mode":"rental_car","from":"S0038","to":"T0103"},{"mode":"walk","from":"T0103","to":"S0036"},{"mode":"walk","from":"S0036","to":"T0103"},{"mode":"rental_car","from":"T0103","to":"S0045"},{"mode":"rental_car","from":"S0045","to":"S0025"}]}
+        },
+        {
+          "id":"alternative","label":"代替","route_id":"R010",
+          "summary":{"total_time":"約7時間10分","travel_distance":"未算定","travel_time":"約4時間55分","procedure_time":"約5分","experience_time":"約2時間10分"},
+          "flow":[
+            {"type":"destination","time":"09:00","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}},
+            {"type":"transfer","mode":"rental_car","duration":"1時間05分"},
+            {"type":"destination","time":"10:05","ref":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"},"activities":[{"label":"駐車・徒歩準備","duration":"5分"}]},
+            {"type":"transfer","mode":"walk","duration":"3分"},
+            {"type":"destination","time":"10:13","ref":{"type":"spot","id":"S0036","label":"大川の滝"},"stay_duration":"45分"},
+            {"type":"transfer","mode":"walk","duration":"3分"},
+            {"type":"destination","time":"11:01","ref":{"type":"travel_point","id":"T0103","label":"大川の滝 駐車地点","point_type":"parking"}},
+            {"type":"transfer","mode":"rental_car","duration":"35分"},
+            {"type":"destination","time":"11:36","ref":{"type":"spot","id":"S0045","label":"手打ちそば 松竹","category":"food"},"stay_duration":"55分"},
+            {"type":"transfer","mode":"rental_car","duration":"3時間12分"},
+            {"type":"destination","time":"15:43","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど","category":"lodging"}}
+          ],
+          "map":{"note":"代替案の日別Map。比較UI確認用の仮想データです。","points":[{"id":"S0025","entity_type":"spot","name":"素泊民宿 ふれんど","lat":30.4210,"lon":130.5710,"order":1},{"id":"T0103","entity_type":"travel_point","name":"大川の滝 駐車地点","point_type":"parking","lat":30.2638,"lon":130.4135,"order":2},{"id":"S0036","entity_type":"spot","name":"大川の滝","lat":30.2630,"lon":130.4125,"order":3},{"id":"S0045","entity_type":"spot","name":"手打ちそば 松竹","lat":30.2740,"lon":130.4210,"order":4}],"segments":[{"mode":"rental_car","from":"S0025","to":"T0103"},{"mode":"walk","from":"T0103","to":"S0036"},{"mode":"walk","from":"S0036","to":"T0103"},{"mode":"rental_car","from":"T0103","to":"S0045"},{"mode":"rental_car","from":"S0045","to":"S0025"}]}
         }
       ]
     }
