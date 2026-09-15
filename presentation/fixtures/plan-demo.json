@@ -1,0 +1,95 @@
+{
+  "plan_id": "P001",
+  "transport": {
+    "primary": "air_and_rental_car",
+    "alternatives": []
+  },
+  "day_flow_overrides": {
+    "1": [
+      {"type":"start","label":"自宅","point_type":"home"},
+      {"type":"transfer","mode":"train"},
+      {"type":"destination","label":"羽田空港","point_type":"airport"},
+      {"type":"transfer","mode":"air"},
+      {"type":"destination","label":"屋久島空港","point_type":"airport"},
+      {"type":"transfer","mode":"徒歩"},
+      {"type":"destination","label":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office","activities":["レンタカー受取"]},
+      {"type":"transfer","mode":"rental_car"},
+      {"type":"destination","ref":{"type":"spot","id":"S0050","label":"お食事処 樹"},"role":"dinner","priority":"optional","notes":["疲れていれば自炊・軽食へ切替"]},
+      {"type":"transfer","mode":"rental_car"},
+      {"type":"end","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"},"role":"lodging","priority":"primary","activities":["チェックイン","買い出し・登山準備"]}
+    ],
+    "5": [
+      {"type":"start","ref":{"type":"spot","id":"S0025","label":"素泊民宿 ふれんど"}},
+      {"type":"free_time","label":"自由時間・予備枠","notes":["大きなRouteは置かず、帰路の余裕を優先"]},
+      {"type":"transfer","mode":"rental_car"},
+      {"type":"destination","label":"屋久島空港周辺レンタカー営業所","point_type":"rental_car_office","activities":["レンタカー返却"]},
+      {"type":"transfer","mode":"徒歩"},
+      {"type":"destination","label":"屋久島空港","point_type":"airport"},
+      {"type":"transfer","mode":"air"},
+      {"type":"destination","label":"羽田空港","point_type":"airport"},
+      {"type":"transfer","mode":"train"},
+      {"type":"end","label":"自宅","point_type":"home"}
+    ]
+  },
+  "day_notes": {
+    "3": [
+      "昼食の手打ちそば 松竹、条件付きの平内海中温泉、代替の尾之間温泉はR011内で順序と役割を持つため、Planには重複配置しない"
+    ]
+  },
+  "day_decisions": {
+    "2": {
+      "detail": [
+        "日没前に山行を終えられる進行を優先する",
+        "下山後は回復を優先し、追加観光は入れない"
+      ],
+      "alternatives": [
+        {
+          "kind": "route_switch",
+          "label": "ウィルソン株往復へ短縮",
+          "target_route_id": "R007",
+          "switch_conditions": ["悪天候", "体調低下", "進行遅れで縄文杉までの完遂が厳しい"]
+        },
+        {
+          "kind": "day_swap",
+          "label": "島一周の日と入れ替える",
+          "target_day": 3,
+          "switch_conditions": ["縄文杉予定日の山岳天候が不適"]
+        }
+      ]
+    },
+    "3": {
+      "detail": [
+        "西部林道は明るい時間帯に通過できる進行を優先する",
+        "山行日の天候調整に使える予備日として扱う"
+      ],
+      "alternatives": [
+        {
+          "kind": "route_switch",
+          "label": "南部雨天ドライブへ切り替える",
+          "target_route_id": "R010",
+          "switch_conditions": ["豪雨・強風で島一周や西部林道の走行条件が不向き"]
+        },
+        {
+          "kind": "day_swap",
+          "label": "山行日と入れ替える",
+          "target_day": "2または4",
+          "switch_conditions": ["Day2またはDay4の山岳天候が悪く、Day3の道路条件は成立する"]
+        }
+      ]
+    },
+    "4": {
+      "detail": [
+        "増水時は白谷雲水峡の山行を無理に実施しない",
+        "下山後の温泉・夕食まで含めて余裕を残す"
+      ],
+      "alternatives": [
+        {
+          "kind": "day_swap",
+          "label": "島一周の日と入れ替える",
+          "target_day": 3,
+          "switch_conditions": ["白谷雲水峡の増水・悪天候で山行が不適"]
+        }
+      ]
+    }
+  }
+}
