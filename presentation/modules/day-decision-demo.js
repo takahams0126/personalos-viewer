@@ -36,11 +36,17 @@ async function initDayDecisionDemo(){
       const overview = body.querySelector('.plan-day-overview');
       if(overview) overview.innerHTML=renderDayOverviewInner(vm);
 
+      // Plan owns the canonical day decision presentation here.
+      // Replace any earlier simplified alternative block produced from route refs only,
+      // so switch_conditions from the validated decision fixture are always visible.
       const existing=card.querySelector('.day-decision-block');
       const block=renderDayAlternatives(vm,'plan');
-      if(block && !existing){
+      if(block){
+        existing?.remove();
         if(overview) overview.insertAdjacentHTML('afterend',block);
         else body.insertAdjacentHTML('afterbegin',block);
+      }else{
+        existing?.remove();
       }
       card.dataset.dayDecisionAttached='1';
     });
