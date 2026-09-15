@@ -6,6 +6,7 @@ on:
       - 'data/plans/**'
       - 'data/day-viewmodel.js'
       - 'data/plan-demo.js'
+      - 'data/plan-demo.json'
       - 'app.js'
       - 'scripts/validate_plan_projection.py'
       - '.github/workflows/plan-public-projection-validation.yml'
