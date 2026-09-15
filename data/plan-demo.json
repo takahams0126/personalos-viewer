@@ -39,7 +39,7 @@
   "day_decisions": {
     "2": {
       "base_route": {"id":"R005","label":"縄文杉ルート・縄文杉往復"},
-      "overview_badges": ["日没前に山行終了","下山後は回復優先","追加観光は入れない"],
+      "additional_overview_badges": ["追加観光は入れない"],
       "alternatives": [
         {
           "kind": "route_switch",
@@ -60,7 +60,7 @@
     },
     "3": {
       "base_route": {"id":"R011","label":"屋久島一周ドライブ"},
-      "overview_badges": ["西部林道は明るい時間帯","山行日の予備日"],
+      "additional_overview_badges": ["山行日の予備日"],
       "alternatives": [
         {
           "kind": "route_switch",
@@ -83,7 +83,7 @@
     },
     "4": {
       "base_route": {"id":"R004","label":"白谷雲水峡ルート・太鼓岩往復"},
-      "overview_badges": ["増水時は山行見直し","下山後の回復時間を確保"],
+      "additional_overview_badges": ["下山後の回復時間を確保"],
       "alternatives": [
         {
           "kind": "day_swap",
