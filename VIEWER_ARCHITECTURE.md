@@ -110,8 +110,6 @@ All such information must arrive through published data JSON or published map ar
   .github/workflows/pages.yml
 ```
 
-GeoJSON is not part of the target production Viewer contract.
-
 ## Publication catalog (`manifest.json`)
 
 `manifest.json` is the generated index for everything published by the Leisure pipeline. It is not entity content.
@@ -220,7 +218,6 @@ Production Presentation must have:
 - no semantic merge of auxiliary data in JavaScript
 - no hidden dependency on `_prototype/`
 - no Google Places/Routes build logic
-- no GeoJSON dependency
 
 Temporary validation JSON is allowed during normalization, but it must live on the data side of the boundary and match the intended normal-pipeline output shape.
 
@@ -235,7 +232,7 @@ Temporary validation JSON is allowed during normalization, but it must live on t
 7. Reconcile the temporary complete JSON with the formal current Public Projection / Map Artifact schemas.
 8. Verify that the normal Canonical -> ViewModel -> Public Projection/Map pipeline emits equivalent data.
 9. Replace temporary JSON with generated artifacts without changing Presentation.
-10. Only after equivalence is proven, remove obsolete validation-era production files, including GeoJSON-era residue.
+10. Only after equivalence is proven, remove obsolete validation-era production files.
 
 ## Completion criteria
 
