@@ -32,7 +32,7 @@ export function buildPlanDayViewModel(planDay={},decision=null){
     title:planDay.purpose||'',
     overview:{
       badges:topBadges,
-      description:planDay.summary||planDay.appeal||'',
+      description:planDay.summary||'',
       constraints:Array.isArray(tb.constraints)?tb.constraints:[]
     },
     baseRoute,
@@ -43,11 +43,12 @@ export function buildPlanDayViewModel(planDay={},decision=null){
 
 export function overlayConcreteDay(planVM,concreteDay={},variantId=null){
   const variants=Array.isArray(concreteDay.variants)?concreteDay.variants:[];
-  const active=variants.find(v=>v.id===variantId)||variants[0]||{id:'standard',summary:{},flow:[],map:null};
+  const active=variants.find(v=>v.variant_id===variantId)||variants[0]||{variant_id:'standard',summary:{},flow:[],map:null};
   return {
     ...planVM,
     execution:{
-      feasibility:concreteDay.feasibility||'unknown',
+      feasibility:concreteDay.feasibility||{status:'unknown'},
+      weatherAssessment:concreteDay.weather_assessment||null,
       variants,
       activeVariant:active,
       summary:active.summary||{},

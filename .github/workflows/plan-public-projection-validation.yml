@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'data/plans/**'
+      - 'data/day-viewmodel.js'
       - 'app.js'
       - 'scripts/validate_plan_projection.py'
       - '.github/workflows/plan-public-projection-validation.yml'

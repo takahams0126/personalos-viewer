@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLAN_DIR = ROOT / "data" / "plans"
 APP = ROOT / "app.js"
+DAY_VM = ROOT / "data" / "day-viewmodel.js"
 
 ALLOWED_FLOW_TYPES = {"transfer", "destination", "route", "free_time"}
 LEGACY_TOKENS = ("route_endpoint",)
@@ -84,19 +85,35 @@ def validate_base_renderer(errors: list[str]):
             fail(errors, rel, "$renderer", f"legacy Plan renderer behavior remains: {token}")
 
 
+def validate_day_viewmodel(errors: list[str]):
+    rel = DAY_VM.relative_to(ROOT)
+    text = DAY_VM.read_text(encoding="utf-8")
+    legacy = (
+        "planDay.summary||planDay.appeal",
+        "v.id===variantId",
+        "{id:'standard'",
+    )
+    for token in legacy:
+        if token in text:
+            fail(errors, rel, "$viewmodel", f"legacy Day ViewModel behavior remains: {token}")
+    if "v.variant_id===variantId" not in text:
+        fail(errors, rel, "$viewmodel", "Concrete variant selection must use variant_id")
+
+
 def main() -> int:
     errors: list[str] = []
     files = sorted(PLAN_DIR.glob("*.json")) if PLAN_DIR.exists() else []
     for path in files:
         validate_plan(path, errors)
     validate_base_renderer(errors)
+    validate_day_viewmodel(errors)
     print(f"Plan public projection validation: plans={len(files)}")
     if errors:
         print(f"FAILED: {len(errors)} error(s)")
         for error in errors:
             print("-", error)
         return 1
-    print("OK: Plan public JSON and base renderer use the current projection semantics")
+    print("OK: Plan public JSON, base renderer, and shared Day ViewModel use current projection semantics")
     return 0
 
 
