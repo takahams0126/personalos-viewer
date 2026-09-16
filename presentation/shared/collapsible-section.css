@@ -50,11 +50,19 @@
 .ui-collapsible>.ui-collapsible-body[hidden]{
   display:none!important;
 }
+.ui-collapsible-description{
+  margin:0 0 16px;
+  color:var(--text-soft,#5f6368);
+  font-size:.86rem;
+  line-height:1.6;
+}
 @media(max-width:520px){
   .ui-collapsible,.ui-collapsible.is-collapsed{padding:18px}
   .ui-collapsible>.ui-collapsible-heading{font-size:1.08rem;padding-right:34px}
+  .ui-collapsible-description{font-size:.82rem;margin-bottom:14px}
 }
 @media(prefers-color-scheme:dark){
   .ui-collapsible{background:#202124;border-color:#3c4043}
   .ui-collapsible>.ui-collapsible-heading::before{border-color:#9aa0a6}
+  .ui-collapsible-description{color:#bdc1c6}
 }
