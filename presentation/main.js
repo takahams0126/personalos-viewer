@@ -4,7 +4,7 @@
 
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
-const PRESENTATION_VERSION = '20260916-presentation-2';
+const PRESENTATION_VERSION = '20260916-presentation-3';
 
 function waitFor(selector, timeout = 5000) {
   return new Promise((resolve) => {
