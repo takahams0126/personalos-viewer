@@ -31,7 +31,7 @@ async function initHomeExplorer(){
           <label>検索<input id="home-search" type="search" placeholder="名前・特徴・タグで検索"></label>
         </div>
       </div>
-      <div class="home-summary-row"><div id="home-count" class="home-count"></div><div id="home-area-chips" class="home-area-chips"></div></div>
+      <div class="home-summary-row"><div id="home-count" class="home-count"></div></div>
       <div id="explorer-grid" class="explorer-grid"></div>`;
     hero.after(wrap);
 
@@ -41,7 +41,6 @@ async function initHomeExplorer(){
     const search=document.querySelector('#home-search');
     const grid=document.querySelector('#explorer-grid');
     const count=document.querySelector('#home-count');
-    const chips=document.querySelector('#home-area-chips');
 
     const categories=()=>[...new Set((catalog.items||[]).filter(x=>x.type===state.type).map(x=>x.category).filter(Boolean))].sort();
     const rebuildCategory=()=>{
@@ -55,7 +54,6 @@ async function initHomeExplorer(){
         .filter(x=>!state.category||x.category===state.category)
         .filter(x=>!q||[x.title,x.summary,...(x.tags||[])].filter(Boolean).join(' ').toLowerCase().includes(q));
       count.textContent=`${typeLabel(state.type)} ${rows.length}件`;
-      chips.innerHTML=(catalog.areas||[]).map(a=>`<button class="area-chip ${state.area===a.id?'active':''}" data-area="${esc(a.id)}">${esc(a.label)}</button>`).join('');
       grid.innerHTML=rows.length?rows.map(cardHtml).join(''):'<div class="home-empty">条件に合う項目がありません。</div>';
     };
 
@@ -67,7 +65,6 @@ async function initHomeExplorer(){
     area.addEventListener('change',()=>{state.area=area.value;render();});
     category.addEventListener('change',()=>{state.category=category.value;render();});
     search.addEventListener('input',()=>{state.q=search.value;render();});
-    chips.addEventListener('click',e=>{const b=e.target.closest('.area-chip');if(!b)return;state.area=state.area===b.dataset.area?'':b.dataset.area;area.value=state.area;render();});
     rebuildCategory();render();
     return true;
   };
