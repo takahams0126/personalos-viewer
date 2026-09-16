@@ -30,13 +30,20 @@
   font-size:.88rem;
 }
 :where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron,.spot-link-icon.internal){
-  grid-area:icon;
   width:30px;
   height:16px;
   stroke-width:3;
   stroke-linecap:round;
   stroke-linejoin:round;
   transition:transform .16s ease;
+}
+:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron){grid-area:icon}
+.spot-hero-related-card>.spot-related-arrow{
+  grid-area:icon;
+  display:grid;
+  place-items:center;
+  margin:0;
+  color:inherit;
 }
 :where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron) path:nth-child(1),
 .spot-link-icon.internal .chev-1{stroke:#c8dcfa}
