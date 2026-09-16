@@ -8,6 +8,7 @@
 /* Shared components. */
 @import url('./shared/collapsible-section.css');
 @import url('./shared/entity-reference.css');
+@import url('./shared/hero-copy.css');
 @import url('./shared/hero-facts.css');
 @import url('./shared/flow-icons.css');
 
