@@ -2,13 +2,15 @@ const qs=new URLSearchParams(location.search);
 if(qs.get('type')==='plan'&&qs.get('id')) initWeatherPoc();
 
 async function initWeatherPoc(){
-  const id=qs.get('id'); let spec;
-  try{const r=await fetch(`./data/concrete-plans/${encodeURIComponent(id)}-weather-poc.json`,{cache:'no-store'});if(!r.ok)return;spec=await r.json();}catch{return;}
+  const id=qs.get('id'); let payload;
+  try{const r=await fetch(`./data/_staging/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;payload=await r.json();}catch{return;}
+  const days=(payload.days||[]).filter(day=>day.weather_assessment);
   const attach=()=>{
     const panel=document.querySelector('#execution-mode-panel');
     if(!panel||panel.dataset.weatherPocAttached)return false;
     let attached=0;
-    for(const [dayKey,daySpec] of Object.entries(spec.days||{})){
+    for(const daySpec of days){
+      const dayKey=String(daySpec.day);
       const card=panel.querySelector(`.execution-day[data-day="${dayKey}"]`);
       if(!card)continue;
       const body=card.querySelector('.exec-day-body');
@@ -28,7 +30,7 @@ async function initWeatherPoc(){
   ob.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 }
 
-const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 
 function weatherHtml(w={}){
   const status=w.status||'unknown';
