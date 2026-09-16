@@ -1,5 +1,5 @@
 /* Formal Leisure Presentation stylesheet entrypoint.
-   Import order is intentional: base -> shared -> page-specific modules. */
+   Import order is intentional: base -> shared -> features -> page-specific modules. */
 
 /* Base: page-agnostic tokens, shell and primitives. */
 @import url('./base/tokens.css');
@@ -17,6 +17,12 @@
 @import url('./shared/hero-facts.css');
 @import url('./shared/content-layout.css');
 @import url('./shared/flow-icons.css');
+
+/* Cross-page presentation features. */
+@import url('./features/day.css');
+@import url('./features/flow.css');
+@import url('./features/route-stops.css');
+@import url('./features/map.css');
 
 /* Page / feature presentation. */
 @import url('./modules/home-explorer.css');
