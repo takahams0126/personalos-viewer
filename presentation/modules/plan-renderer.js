@@ -9,7 +9,6 @@ import {
 const qsPlan = new URLSearchParams(location.search);
 const planType = qsPlan.get('type');
 const planId = qsPlan.get('id');
-if (planType === 'plan' && planId) initPlanView();
 
 const escPlan = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 const impactPlan = (v='') => ({high:'高',medium:'中',low:'低'}[v] || v);
@@ -18,15 +17,15 @@ const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',
 const pointTypePlan = (v='') => ({home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',other:'その他'}[v] || String(v).replaceAll('_',' '));
 
 function planInternalChevron(){
-  return `<svg class="plan-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
+  return `<svg class="plan-ref-chevron ui-entity-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
 
 function planMainRouteCard(ref,published){
   const key=`${ref?.type||'route'}:${ref?.id||''}`;
-  const content=`<span class="plan-main-route-kind">主役Route</span><strong>${escPlan(ref?.label||ref?.id||'')}</strong>${planInternalChevron()}`;
+  const content=`<span class="plan-main-route-kind ui-entity-ref-kind">主役Route</span><strong>${escPlan(ref?.label||ref?.id||'')}</strong>${planInternalChevron()}`;
   return published.has(key)
-    ? `<a class="plan-main-route-card" href="?type=${encodeURIComponent(ref?.type||'route')}&id=${encodeURIComponent(ref?.id||'')}">${content}</a>`
-    : `<span class="plan-main-route-card is-disabled">${content}</span>`;
+    ? `<a class="plan-main-route-card ui-entity-ref-card" href="?type=${encodeURIComponent(ref?.type||'route')}&id=${encodeURIComponent(ref?.id||'')}">${content}</a>`
+    : `<span class="plan-main-route-card ui-entity-ref-card is-disabled">${content}</span>`;
 }
 
 function enhanceTripValue(section,value={}){
@@ -61,11 +60,20 @@ function makePlanCollapsible(section,open=true){
   const headingHost=section.querySelector(':scope > h2') || section.querySelector(':scope > .section-heading');
   const title=headingHost?.matches('h2') ? headingHost : headingHost?.querySelector('h2');
   if(!headingHost || !title) return;
-  section.dataset.planCollapsible='1';section.classList.add('plan-collapsible');
-  const body=document.createElement('div');body.className='plan-collapsible-body';[...section.children].filter(x=>x!==headingHost).forEach(x=>body.appendChild(x));section.appendChild(body);
-  headingHost.classList.add('plan-toggle-heading');headingHost.setAttribute('role','button');headingHost.setAttribute('tabindex','0');
+  section.dataset.planCollapsible='1';
+  section.classList.add('plan-collapsible','ui-collapsible');
+  const body=document.createElement('div');
+  body.className='plan-collapsible-body ui-collapsible-body';
+  [...section.children].filter(x=>x!==headingHost).forEach(x=>body.appendChild(x));
+  section.appendChild(body);
+  headingHost.classList.add('plan-toggle-heading','ui-collapsible-heading');
+  headingHost.setAttribute('role','button');
+  headingHost.setAttribute('tabindex','0');
   const apply=(nextOpen)=>{section.classList.toggle('is-collapsed',!nextOpen);body.hidden=!nextOpen;headingHost.setAttribute('aria-expanded',nextOpen?'true':'false');};
-  const toggle=()=>apply(headingHost.getAttribute('aria-expanded')!=='true');headingHost.addEventListener('click',toggle);headingHost.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});apply(open);
+  const toggle=()=>apply(headingHost.getAttribute('aria-expanded')!=='true');
+  headingHost.addEventListener('click',toggle);
+  headingHost.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  apply(open);
 }
 
 function makeDayToggle(card){
@@ -105,13 +113,58 @@ function addPlanTailSections(plan,app,itinerary){
 }
 
 function enhancePlan(planData,app,routeData,published){
-  if(app.dataset.planViewAttached==='1') return;const hero=app.querySelector('.hero');const itinerary=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='日ごとの旅程');if(!hero || !itinerary) return;app.dataset.planViewAttached='1';hero.classList.add('plan-demo-hero');itinerary.classList.add('plan-demo-itinerary');
-  const value=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');const stars=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');enhanceTripValue(value,planData.plan?.trip_value||{});if(stars && (planData.hero_refs||[]).length){const oldCards=stars.querySelector('.cards');const html=`<div class="plan-main-route-grid">${planData.hero_refs.map(ref=>planMainRouteCard(ref,published)).join('')}</div>`;if(oldCards) oldCards.outerHTML=html;else stars.insertAdjacentHTML('beforeend',html);}makePlanCollapsible(value,false);makePlanCollapsible(stars,true);makePlanCollapsible(itinerary,true);const cards=[...itinerary.querySelectorAll('.day-card')];(planData.plan?.days||[]).forEach((day,index)=>{const card=cards[index];if(card) enhanceDay(card,day,routeData,published);});addPlanTailSections(planData.plan||{},app,itinerary);
+  if(app.dataset.planViewAttached==='1') return;
+  const hero=app.querySelector('.hero');
+  const itinerary=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='日ごとの旅程');
+  if(!hero || !itinerary) return;
+  app.dataset.planViewAttached='1';
+  hero.classList.add('plan-demo-hero');
+  hero.querySelector(':scope > .summary')?.classList.add('ui-hero-copy','is-summary');
+  itinerary.classList.add('plan-demo-itinerary');
+  const value=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の価値');
+  const stars=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
+  enhanceTripValue(value,planData.plan?.trip_value||{});
+  if(stars && (planData.hero_refs||[]).length){const oldCards=stars.querySelector('.cards');const html=`<div class="plan-main-route-grid">${planData.hero_refs.map(ref=>planMainRouteCard(ref,published)).join('')}</div>`;if(oldCards) oldCards.outerHTML=html;else stars.insertAdjacentHTML('beforeend',html);}
+  makePlanCollapsible(value,false);makePlanCollapsible(stars,true);makePlanCollapsible(itinerary,true);
+  const cards=[...itinerary.querySelectorAll('.day-card')];
+  (planData.plan?.days||[]).forEach((day,index)=>{const card=cards[index];if(card) enhanceDay(card,day,routeData,published);});
+  addPlanTailSections(planData.plan||{},app,itinerary);
 }
 
 async function initPlanView(){
-  let planData,manifest;try{const [planResponse,manifestResponse]=await Promise.all([fetch(`./data/plans/${encodeURIComponent(planId)}.json`,{cache:'no-store'}),fetch('./manifest.json',{cache:'no-store'})]);if(!planResponse.ok) return;planData=await planResponse.json();manifest=manifestResponse.ok ? await manifestResponse.json() : {items:[]};}catch{return;}
-  const routeIds=new Set();for(const day of planData.plan?.days||[]){for(const flow of day.flow||[]){if(flow.type!=='route') continue;if(flow.route_ref?.id) routeIds.add(flow.route_ref.id);for(const alt of flow.alternative_route_refs||[]) if(alt.id) routeIds.add(alt.id);}}
-  const routeData=new Map();await Promise.all([...routeIds].map(async routeId=>{try{const response=await fetch(`./data/routes/${encodeURIComponent(routeId)}.json`,{cache:'no-store'});if(response.ok) routeData.set(routeId,await response.json());}catch{}}));
-  const published=new Set((manifest.items||[]).map(x=>`${x.type}:${x.id}`));const app=document.querySelector('#app');const attach=()=>{if(!app) return false;const itinerary=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='日ごとの旅程');if(!itinerary) return false;enhancePlan(planData,app,routeData,published);return true;};if(attach()) return;const observer=new MutationObserver(()=>{if(attach()) observer.disconnect();});observer.observe(app,{childList:true,subtree:true});
+  let planData,manifest;
+  try{
+    const [planResponse,manifestResponse]=await Promise.all([
+      fetch(`./data/plans/${encodeURIComponent(planId)}.json`,{cache:'no-store'}),
+      fetch('./manifest.json',{cache:'no-store'})
+    ]);
+    if(!planResponse.ok) return;
+    planData=await planResponse.json();
+    manifest=manifestResponse.ok ? await manifestResponse.json() : {items:[]};
+  }catch{return;}
+
+  const published=new Set((manifest.items||[]).map(x=>`${x.type}:${x.id}`));
+  const routeIds=new Set();
+  for(const day of planData.plan?.days||[]){
+    for(const flow of day.flow||[]){
+      if(flow.type!=='route') continue;
+      if(flow.route_ref?.id && published.has(`route:${flow.route_ref.id}`)) routeIds.add(flow.route_ref.id);
+      for(const alt of flow.alternative_route_refs||[]) if(alt.id && published.has(`route:${alt.id}`)) routeIds.add(alt.id);
+    }
+  }
+  const routeData=new Map();
+  await Promise.all([...routeIds].map(async routeId=>{
+    try{
+      const response=await fetch(`./data/routes/${encodeURIComponent(routeId)}.json`,{cache:'no-store'});
+      if(response.ok) routeData.set(routeId,await response.json());
+    }catch{}
+  }));
+
+  const app=document.querySelector('#app');
+  if(!app) return;
+  const itinerary=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='日ごとの旅程');
+  if(!itinerary) return;
+  enhancePlan(planData,app,routeData,published);
 }
+
+if (planType === 'plan' && planId) initPlanView();
