@@ -1,14 +1,15 @@
 import { buildPlanDayViewModel, renderDayOverviewInner, renderDayAlternatives, addBaseRouteBadge, syncRouteTabs } from './day-viewmodel.js?v=20260915-29';
 
 const qsDayDecision = new URLSearchParams(location.search);
-if (qsDayDecision.get('type') === 'plan' && qsDayDecision.get('id') === 'P001') initDayDecisionDemo();
+const planId = qsDayDecision.get('id');
+if (qsDayDecision.get('type') === 'plan' && planId) initDayDecision();
 
-async function initDayDecisionDemo(){
+async function initDayDecision(){
   let extra, planData;
   try{
     const [r,p] = await Promise.all([
-      fetch('./presentation/fixtures/plan-demo.json',{cache:'no-store'}),
-      fetch('./data/plans/P001.json',{cache:'no-store'})
+      fetch(`./data/plans/${encodeURIComponent(planId)}-decisions.json`,{cache:'no-store'}),
+      fetch(`./data/plans/${encodeURIComponent(planId)}.json`,{cache:'no-store'})
     ]);
     if(!r.ok || !p.ok) return;
     [extra,planData] = await Promise.all([r.json(),p.json()]);
@@ -36,9 +37,6 @@ async function initDayDecisionDemo(){
       const overview = body.querySelector('.plan-day-overview');
       if(overview) overview.innerHTML=renderDayOverviewInner(vm);
 
-      // Plan owns the canonical day decision presentation here.
-      // Replace any earlier simplified alternative block produced from route refs only,
-      // so switch_conditions from the validated decision fixture are always visible.
       const existing=card.querySelector('.day-decision-block');
       const block=renderDayAlternatives(vm,'plan');
       if(block){
