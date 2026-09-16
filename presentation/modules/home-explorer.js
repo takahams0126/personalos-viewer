@@ -80,6 +80,6 @@ function categoryLabel(v){return ({multi_day_trip:'複数日旅行',drive:'ド�
 function cardHtml(x){
   const href=`./?type=${encodeURIComponent(x.type)}&id=${encodeURIComponent(x.id)}`;
   const image=x.image_url?`<div class="explorer-thumb"><img src="${esc(x.image_url)}" alt="" loading="lazy" onerror="this.parentElement.remove()"></div>`:'';
-  const tags=(x.tags||[]).slice(0,5).map(t=>`<span>${esc(t)}</span>`).join('');
+  const tags=(x.tags||[]).slice(0,5).map(t=>`<span class="ui-badge is-tag" data-badge-kind="tag">${esc(t)}</span>`).join('');
   return `<article class="explorer-card">${image}<div class="explorer-body"><div class="explorer-meta"><span class="explorer-type">${esc(typeLabel(x.type))}</span><span class="explorer-id">${esc(x.id)}</span></div><h3><a href="${href}">${esc(x.title)}</a></h3>${x.summary?`<p>${esc(x.summary)}</p>`:''}${tags?`<div class="explorer-tags">${tags}</div>`:''}</div></article>`;
 }
