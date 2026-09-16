@@ -106,6 +106,41 @@ def strip_source_meta(value: dict) -> dict:
     return result
 
 
+def normalize_fuel_plan(value: dict) -> dict:
+    result = strip_source_meta(value)
+    for station in result.get("travel_point_candidates") or []:
+        if "poc_id" in station:
+            station["id"] = station.pop("poc_id")
+    for refuel in result.get("planned_refuels") or []:
+        if "station_poc_id" in refuel:
+            refuel["station_id"] = refuel.pop("station_poc_id")
+    patch = result.get("day5_flow_patch") or {}
+    refuel_patch = patch.get("refuel") or {}
+    if "station_poc_id" in refuel_patch:
+        refuel_patch["station_id"] = refuel_patch.pop("station_poc_id")
+    return result
+
+
+def normalize_cost_summary(value: dict) -> dict:
+    result = copy.deepcopy(value)
+    renames = {
+        "daily_costs_poc": "daily_costs",
+        "estimated_total_poc": "estimated_total",
+        "grand_total_poc": "grand_total",
+    }
+    for old, new in renames.items():
+        if old in result:
+            result[new] = result.pop(old)
+    return result
+
+
+def normalize_display(value: dict) -> dict:
+    result = copy.deepcopy(value)
+    if "poc_badge" in result:
+        result["badge"] = result.pop("poc_badge")
+    return result
+
+
 def build_concrete(base_path: Path) -> dict:
     entity_id = base_path.stem; base = load(base_path, {})
     detail = load(CONCRETE_AUX / f"{entity_id}-detail-poc.json", {})
@@ -119,7 +154,7 @@ def build_concrete(base_path: Path) -> dict:
         key = str(int(day.get("day") or 0))
         if key in weather_by_day: day["weather_assessment"] = copy.deepcopy(weather_by_day[key].get("weather_assessment"))
         if key in feasibility_by_day: day["execution_checks"] = copy.deepcopy(feasibility_by_day[key].get("execution_checks") or [])
-    return {"schema_version":0,"view_type":"concrete_plan","id":meta.get("concrete_plan_id") or entity_id,"source_plan_id":meta.get("source_plan_id") or base.get("source_plan_id") or entity_id,"title":meta.get("title") or base.get("title") or entity_id,"summary":meta.get("description") or base.get("notice"),"status":meta.get("status") or "conditional","last_verified_at":meta.get("last_verified_at"),"execution_window":copy.deepcopy(detail.get("execution_window") or {}),"booking_connections":copy.deepcopy(detail.get("booking_connections") or []),"shared_execution_info":copy.deepcopy(detail.get("shared_execution_info") or {}),"days":copy.deepcopy(concrete.get("days") or []),"fuel_plan":strip_source_meta(fuel),"cost_summary":copy.deepcopy(feasibility.get("trip_cost_summary") or {}),"display":copy.deepcopy(meta.get("display") or {})}
+    return {"schema_version":0,"view_type":"concrete_plan","id":meta.get("concrete_plan_id") or entity_id,"source_plan_id":meta.get("source_plan_id") or base.get("source_plan_id") or entity_id,"title":meta.get("title") or base.get("title") or entity_id,"summary":meta.get("description") or base.get("notice"),"status":meta.get("status") or "conditional","last_verified_at":meta.get("last_verified_at"),"execution_window":copy.deepcopy(detail.get("execution_window") or {}),"booking_connections":copy.deepcopy(detail.get("booking_connections") or []),"shared_execution_info":copy.deepcopy(detail.get("shared_execution_info") or {}),"days":copy.deepcopy(concrete.get("days") or []),"fuel_plan":normalize_fuel_plan(fuel),"cost_summary":normalize_cost_summary(feasibility.get("trip_cost_summary") or {}),"display":normalize_display(meta.get("display") or {})}
 
 
 def build_plan(base_path: Path) -> dict:
