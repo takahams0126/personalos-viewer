@@ -1,0 +1,24 @@
+/* Canonical Flow presentation feature. */
+.flow-list{list-style:none;padding:0;margin:4px 0 0}
+.flow-item{position:relative;display:grid;grid-template-columns:42px 1fr;gap:12px;padding:15px 0;border-bottom:1px solid #dce2e7}
+.flow-item:last-child{border-bottom:0}
+.flow-item:not(:last-child)::after{content:"";position:absolute;left:19px;top:46px;bottom:-8px;width:3px;border-radius:3px;background:linear-gradient(180deg,#fdd663,#f7e3a0)}
+.flow-icon{position:relative;z-index:2;display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:#e4eefc;color:var(--blue-dark);font-weight:900;box-shadow:0 2px 8px rgba(60,64,67,.13)}
+.flow-item.transfer .flow-icon{background:var(--yellow-soft);color:#8a5a00}
+.flow-item.route .flow-icon{background:linear-gradient(135deg,#ffe69a,#fbbc04);color:#5f4300}
+.flow-item.spot .flow-icon{background:#dff1e4;color:#137333}
+.flow-item.activity .flow-icon{background:#eee1f8;color:#7627bb}
+.flow-title{font-weight:800;font-size:1.01rem}
+.flow-detail{margin-top:4px;color:#3c4043}
+.flow-note{font-size:.84rem;color:var(--text-soft);margin-top:6px;padding-left:10px;border-left:2px solid #d2d9df}
+
+@media(max-width:640px){
+  .flow-item{grid-template-columns:38px 1fr}
+  .flow-item:not(:last-child)::after{left:17px}
+}
+
+@media(prefers-color-scheme:dark){
+  .flow-item{border-color:#3c4043}
+  .flow-detail{color:#e8eaed}
+  .flow-note{color:#bdc1c6}
+}
