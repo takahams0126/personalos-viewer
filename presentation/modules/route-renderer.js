@@ -14,6 +14,7 @@ const difficultyRoute = (v='') => ({
   medium_to_hard:'中程度〜難しい', hard:'難しい'
 }[v] || v);
 const variantRoute = (v='') => ({standard:'標準',full:'フル',short:'短縮'}[v] || String(v).replaceAll('_',' '));
+const routeSpotSummaryCache = new Map();
 
 function routeChipList(items=[]) {
   return items.length ? `<div class="route-demo-chips">${items.map(x=>`<span>${escRoute(x)}</span>`).join('')}</div>` : '';
@@ -68,6 +69,73 @@ function makeCollapsible(section, open=true) {
   apply(open);
 }
 
+async function loadRouteSpotSummary(id) {
+  if (!id) return '';
+  if (routeSpotSummaryCache.has(id)) return routeSpotSummaryCache.get(id);
+  const promise = fetch(`./data/spots/${encodeURIComponent(id)}.json`, {cache:'no-store'})
+    .then(r => r.ok ? r.json() : null)
+    .then(data => data?.summary || '')
+    .catch(() => '');
+  routeSpotSummaryCache.set(id, promise);
+  return promise;
+}
+
+async function enhanceRoutePopup(popup) {
+  if (!popup || popup.dataset.routePopupEnhanced === '1') return;
+  popup.dataset.routePopupEnhanced = '1';
+  popup.classList.add('route-popup-enhanced');
+
+  const title = popup.querySelector(':scope > strong');
+  if (title) title.classList.add('route-popup-title');
+
+  const links = popup.querySelector(':scope > .pin-links');
+  [...popup.children].forEach(child => {
+    if (child !== title && child !== links) child.remove();
+  });
+
+  if (!links) return;
+  links.classList.add('route-popup-actions');
+  const anchors = [...links.querySelectorAll('a')];
+  const personal = anchors.find(a => {
+    try { return new URL(a.href, location.href).searchParams.get('type') === 'spot'; }
+    catch { return false; }
+  });
+  const google = anchors.find(a => /google\.com\/maps/i.test(a.href));
+
+  if (personal) {
+    personal.textContent = 'PersonalOSで詳しく見る';
+    personal.classList.add('route-popup-action','is-primary');
+  }
+  if (google) {
+    google.textContent = 'Google Mapsで開く ↗';
+    google.classList.add('route-popup-action','is-secondary');
+  }
+
+  let spotId = '';
+  if (personal) {
+    try { spotId = new URL(personal.href, location.href).searchParams.get('id') || ''; }
+    catch { spotId = ''; }
+  }
+  const summary = await loadRouteSpotSummary(spotId);
+  if (!summary || !popup.isConnected || popup.querySelector('.route-popup-summary')) return;
+  const p = document.createElement('p');
+  p.className = 'route-popup-summary';
+  p.textContent = summary;
+  links.before(p);
+}
+
+function installRoutePopupEnhancer() {
+  const apply = root => {
+    if (root?.matches?.('.pin-popup')) enhanceRoutePopup(root);
+    root?.querySelectorAll?.('.pin-popup').forEach(enhanceRoutePopup);
+  };
+  apply(document);
+  const observer = new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
+    if (node.nodeType === Node.ELEMENT_NODE) apply(node);
+  })));
+  observer.observe(document.body,{childList:true,subtree:true});
+}
+
 async function initRouteRenderer() {
   let data, manifest;
   try {
@@ -80,6 +148,7 @@ async function initRouteRenderer() {
     manifest = m.ok ? await m.json() : {items:[]};
   } catch { return; }
 
+  installRoutePopupEnhancer();
   const app = document.querySelector('#app');
   const attach = () => {
     const hero = app?.querySelector('.hero');
@@ -124,6 +193,7 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   mapSection?.querySelector('.map-tabs')?.remove();
   mapSection?.querySelector('#route-summary')?.remove();
   mapSection?.querySelector('#map-mode-note')?.remove();
+  mapSection?.querySelector('.note')?.remove();
 
   findSection(app, 'このルートの魅力')?.remove();
   findSection(app, '巡り方')?.remove();
