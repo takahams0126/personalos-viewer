@@ -7,6 +7,17 @@ export function escapeHtml(value='') {
   }[c]));
 }
 
+const badgeKinds = new Set([
+  'tag','status','role','priority','type','season','impact','constraint'
+]);
+
+export function renderBadge({label='', kind='status', tone=''}={}) {
+  if (label == null || label === '') return '';
+  const semanticKind = badgeKinds.has(kind) ? kind : 'status';
+  const toneClass = tone ? ` is-${escapeHtml(tone)}` : '';
+  return `<span class="ui-badge is-${semanticKind}${toneClass}" data-badge-kind="${semanticKind}">${escapeHtml(label)}</span>`;
+}
+
 export function entityRefChevron() {
   return `<svg class="ui-entity-ref-icon" viewBox="0 0 54 24" fill="none" aria-hidden="true" focusable="false"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
