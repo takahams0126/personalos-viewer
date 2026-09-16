@@ -55,7 +55,6 @@ async function loadPlan() {
   await waitForBaseRender();
   await load('./modules/plan-renderer.js');
   await waitForBaseRender('.plan-demo-itinerary .plan-axis');
-  await load('./shared/collapsible-content.js');
   await load('./modules/day-decisions.js');
   await load('./modules/concrete-plan-renderer.js');
   await load('./shared/flow-icons.js');
