@@ -3,7 +3,6 @@ import { renderTablerIcon, resolveDestinationIcon, resolveTransferIcon } from '.
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const id = qs.get('id');
-if (type === 'plan' && id) initSharedFlowIcons();
 
 const sameRef = (a,b) => a && b && a.type === b.type && a.id === b.id;
 
@@ -18,6 +17,22 @@ function destinationSemantics(ref={}, role='') {
 
 function matchingDestination(day, endpoint) {
   return (day?.flow || []).find(x => x?.type === 'destination' && sameRef(x.destination_ref, endpoint));
+}
+
+function applyNodeIcon(node, iconName, nodeKind) {
+  if (!node || !iconName) return;
+  node.classList.add('ui-flow-node', `ui-flow-node-${nodeKind}`);
+
+  // MutationObserver watches the Flow tree. Rewriting identical SVG markup would
+  // trigger the observer again forever, so icon decoration must be idempotent.
+  if (node.dataset.uiFlowIcon === iconName && node.dataset.uiFlowKind === nodeKind && node.querySelector('svg')) return;
+
+  node.dataset.uiFlowIcon = iconName;
+  node.dataset.uiFlowKind = nodeKind;
+  node.innerHTML = renderTablerIcon(
+    iconName,
+    `ui-flow-icon ui-flow-icon-${nodeKind} icon-tabler-${iconName}`
+  );
 }
 
 function decoratePlanDay(card, day) {
@@ -37,11 +52,13 @@ function decoratePlanDay(card, day) {
     }
     if (!flow) return;
     if (flow.type === 'transfer') {
-      node.classList.add('ui-flow-node','ui-flow-node-transfer');
-      node.innerHTML = renderTablerIcon(resolveTransferIcon(flow.mode), 'ui-flow-icon ui-flow-icon-transfer');
+      applyNodeIcon(node, resolveTransferIcon(flow.mode), 'transfer');
     } else if (flow.type === 'destination') {
-      node.classList.add('ui-flow-node','ui-flow-node-destination');
-      node.innerHTML = renderTablerIcon(resolveDestinationIcon(destinationSemantics(flow.destination_ref || {}, flow.role)), 'ui-flow-icon ui-flow-icon-destination');
+      applyNodeIcon(
+        node,
+        resolveDestinationIcon(destinationSemantics(flow.destination_ref || {}, flow.role)),
+        'destination'
+      );
     }
   });
 }
@@ -58,13 +75,13 @@ function decorateExecutionDay(article, dayData) {
   (variant.flow || []).forEach((flow,index) => {
     const item = items[index]; if (!item) return;
     if (flow.type === 'transfer') {
-      const node = item.querySelector('.exec-transfer-node'); if (!node) return;
-      node.classList.add('ui-flow-node','ui-flow-node-transfer');
-      node.innerHTML = renderTablerIcon(resolveTransferIcon(flow.mode), 'ui-flow-icon ui-flow-icon-transfer');
+      applyNodeIcon(item.querySelector('.exec-transfer-node'), resolveTransferIcon(flow.mode), 'transfer');
     } else if (flow.type === 'destination') {
-      const node = item.querySelector('.exec-destination-node'); if (!node) return;
-      node.classList.add('ui-flow-node','ui-flow-node-destination');
-      node.innerHTML = renderTablerIcon(resolveDestinationIcon(destinationSemantics(flow.ref || {}, flow.role)), 'ui-flow-icon ui-flow-icon-destination');
+      applyNodeIcon(
+        item.querySelector('.exec-destination-node'),
+        resolveDestinationIcon(destinationSemantics(flow.ref || {}, flow.role)),
+        'destination'
+      );
     }
   });
 }
@@ -86,8 +103,16 @@ async function initSharedFlowIcons() {
     const concreteByDay = new Map((concrete?.days || []).map(day => [String(day.day),day]));
     document.querySelectorAll('.execution-day').forEach(article => decorateExecutionDay(article, concreteByDay.get(article.dataset.day)));
   };
+
   apply();
   const app = document.querySelector('#app');
   if (!app) return;
-  new MutationObserver(apply).observe(app,{childList:true,subtree:true,attributes:true,attributeFilter:['data-active-variant']});
+  new MutationObserver(apply).observe(app, {
+    childList:true,
+    subtree:true,
+    attributes:true,
+    attributeFilter:['data-active-variant']
+  });
 }
+
+if (type === 'plan' && id) initSharedFlowIcons();
