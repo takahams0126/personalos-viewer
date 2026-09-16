@@ -46,6 +46,9 @@ jobs:
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
           touch _site/.nojekyll
 
+      - name: Version Viewer assets
+        run: python tools/version_presentation_assets.py _site "$GITHUB_SHA"
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
