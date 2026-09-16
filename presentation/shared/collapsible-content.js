@@ -7,13 +7,21 @@ function normalizeCollapsibleDescriptions(root=document){
     const heading=section.querySelector(':scope > .ui-collapsible-heading.section-heading');
     const body=section.querySelector(':scope > .ui-collapsible-body');
     if(!heading || !body || section.dataset.uiCollapsibleContent==='1') return;
-    const descriptions=[...heading.children].filter(node=>node.matches?.('p'));
-    if(!descriptions.length){section.dataset.uiCollapsibleContent='1';return;}
-    const anchor=body.firstChild;
-    descriptions.forEach(node=>{
+
+    // section-heading may wrap its h2/p inside an inner div. Move any explanatory
+    // paragraph found inside the interactive heading, regardless of nesting depth.
+    const descriptions=[...heading.querySelectorAll('p')];
+    if(!descriptions.length){
+      section.dataset.uiCollapsibleContent='1';
+      return;
+    }
+
+    // Preserve original paragraph order at the start of the collapsible body.
+    [...descriptions].reverse().forEach(node=>{
       node.classList.add('ui-collapsible-description');
-      body.insertBefore(node,anchor);
+      body.insertBefore(node, body.firstChild);
     });
+
     section.dataset.uiCollapsibleContent='1';
   });
 }
