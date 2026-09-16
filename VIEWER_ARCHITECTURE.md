@@ -43,7 +43,7 @@ The same semantic information that temporarily appears in validation JSON must e
 - weather assessment results
 - fuel candidates or fuel decisions
 - dates, costs, reservation facts or travel facts
-- semantic merging of PoC/demo data
+- semantic merging of auxiliary validation data
 - migration between Public Projection schema versions
 - Place ID resolution
 - Google Routes calculation
@@ -55,20 +55,20 @@ All such information must arrive through published data JSON or published map ar
 
 ```text
 /
-  index.html                  # static Viewer shell
-  app.js                      # generic data loader/router and base application boot
-  style.css                   # global shell/base styles
-  config.js                   # deployment-generated runtime config only
+  index.html
+  app.js
+  style.css
+  config.js
 
-  manifest.json               # generated searchable publication catalog/index
+  manifest.json
 
   presentation/
-    main.js                   # single production Presentation entry point
-    main.css                  # single production Presentation stylesheet entry point
+    main.js
+    main.css
     shared/
-      icons.js                # semantic value -> SVG/icon mapping
-      labels.js               # generic localization only
-      ui.js                   # generic UI primitives
+      icons.js
+      labels.js
+      ui.js
     home/
       renderer.js
     plan/
@@ -104,8 +104,8 @@ All such information must arrive through published data JSON or published map ar
                 <element-id>.json
 
   _prototype/
-    poc/                       # intentionally isolated PoC pages
-    ui-validation/             # historical UI validation only; never production-loaded
+    poc/
+    ui-validation/
 
   .github/workflows/pages.yml
 ```
@@ -114,7 +114,7 @@ All such information must arrive through published data JSON or published map ar
 
 `manifest.json` is the generated index for everything published by the Leisure pipeline. It is not entity content.
 
-It must contain enough metadata for Home to search/filter without opening every entity JSON, for example:
+It contains the metadata Home needs for discovery/search without opening every entity JSON, including:
 
 - `type`
 - `id`
@@ -128,13 +128,24 @@ It must contain enough metadata for Home to search/filter without opening every 
 - optional thumbnail/image reference
 - canonical public data path
 
-Home must use this catalog as its source of discoverability. A separate hand-authored/demo `home-catalog.json` is not part of the target architecture.
+Home uses this catalog as its only discovery source. A separate Home catalog is not part of the runtime architecture.
 
 ## Published entity JSON
 
 Each file under `data/<type>/` is a generated Public Projection record. Presentation code must not infer missing entity semantics from filenames, IDs, or hard-coded knowledge.
 
-Entity JSON must explicitly reference any published map artifact it needs. Presentation must follow those references rather than construct map filenames heuristically.
+The active Viewer data contract is one public JSON per entity:
+
+```text
+data/plans/<id>.json
+data/concrete-plans/<id>.json
+data/routes/<id>.json
+data/spots/<id>.json
+```
+
+Presentation must not depend on staging aliases, decision sidecars or entity-specific PoC overlays.
+
+Entity JSON must explicitly reference any published map artifact it needs. Presentation follows those references rather than constructing map filenames heuristically.
 
 ## Map architecture
 
@@ -186,8 +197,6 @@ Rules:
 
 ## Plan / ConcretePlan invariant
 
-The presentation model follows:
-
 ```text
 Plan Day ⊂ ConcretePlan Day
 ```
@@ -213,37 +222,57 @@ For a given set of Public Projection JSON + referenced published Map Artifacts +
 Production Presentation must have:
 
 - no fetch of `presentation/fixtures/*`
-- no `*-demo.json` or `*-poc.json` runtime dependency
+- no sidecar `*-demo.json` / `*-poc.json` runtime dependency
+- no staging data path dependency
 - no conditional behavior for specific entity IDs
 - no semantic merge of auxiliary data in JavaScript
 - no hidden dependency on `_prototype/`
 - no Google Places/Routes build logic
 
-Temporary validation JSON is allowed during normalization, but it must live on the data side of the boundary and match the intended normal-pipeline output shape.
+## Normalization status
 
-## Migration strategy from the current baseline
+### Step 1 — ConcretePlan input separation: complete
 
-1. Freeze `BASELINE.md` visual behavior.
-2. Inventory all data embedded or merged in Presentation modules.
-3. Assemble temporary complete input JSON in the target Public Projection shape, including references to published Google Map Artifacts.
-4. Refactor Presentation to consume only that complete input JSON and map references.
-5. Verify visual/behavioral equivalence with the baseline.
-6. Remove fixture/demo/poc runtime dependencies and entity-specific branches.
-7. Reconcile the temporary complete JSON with the formal current Public Projection / Map Artifact schemas.
-8. Verify that the normal Canonical -> ViewModel -> Public Projection/Map pipeline emits equivalent data.
-9. Replace temporary JSON with generated artifacts without changing Presentation.
-10. Only after equivalence is proven, remove obsolete validation-era production files.
+- browser runtime reads one `data/concrete-plans/<id>.json`
+- detail/feasibility/fuel/weather/meta sidecars are not published runtime dependencies
+- semantic merge was removed from Presentation JS
+- `_staging` runtime alias was removed
 
-## Completion criteria
+### Step 2 — Plan input separation: complete
 
-Presentation normalization is complete when all of the following are true:
+- browser runtime reads one `data/plans/<id>.json`
+- decision sidecar is not published
+- alternatives, descriptions and switch conditions arrive through the complete Plan input
+- Home discovery was unified into `manifest.json`
 
-- Home discovers all published entities only from generated catalog metadata.
-- Adding a new valid Plan/ConcretePlan/Route/Spot JSON requires no HTML/CSS/JS change.
+### Step 3 — Presentation formalization: in progress
+
+Remaining work:
+
+- remove production `demo` / `poc` implementation names
+- converge modules into Home / Plan / ConcretePlan / Route / Spot / shared responsibilities
+- remove residual validation-era class/function/property names where they imply runtime semantics
+- centralize asset cache/release versioning
+- audit Presentation for entity-specific data or conditions
+- audit map rendering so it consumes only published map references
+- preserve the frozen visual baseline throughout
+
+### Step 4 — formal pipeline reconciliation: HOLD
+
+Do not start Canonical -> ViewModel -> Public Projection equivalence work without an explicit user instruction.
+
+The user intends to perform a broader cross-Viewer commonization pass after Step 3. Step 4 remains out of scope until explicitly released.
+
+## Completion criteria for Step 3
+
+Presentation formalization is complete when all of the following are true:
+
+- Home discovers all published entities only from `manifest.json` metadata.
+- Adding a new valid Plan/ConcretePlan/Route/Spot JSON requires no entity-specific HTML/CSS/JS change.
 - Presentation contains no entity-specific Leisure data.
-- Production code contains no runtime `demo`, `poc` or fixture dependency.
+- Production code contains no runtime `demo`, `poc` or fixture dependency/concept.
 - Plan and ConcretePlan share one Day presentation model.
-- All map data is referenced through generated Google Map Artifacts, not guessed paths.
+- All map data is referenced through published Google Map Artifacts, not guessed paths.
 - Generation-only cache/index files are not required by the Viewer.
-- A current-pipeline generated dataset can replace the temporary dataset without any Presentation modification.
-- The visible UI remains equivalent to the frozen baseline unless a UI change is explicitly approved.
+- asset cache invalidation is deterministic and centrally managed.
+- the visible UI remains equivalent to the frozen baseline unless a UI change is explicitly approved.
