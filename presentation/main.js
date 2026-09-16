@@ -40,6 +40,7 @@ async function loadHome() {
 }
 
 async function loadSpot() {
+  await waitForBaseRender();
   await load('./modules/spot-renderer.js');
 }
 
