@@ -1,5 +1,5 @@
-import { renderTablerIcon, resolveDestinationIcon, resolveTransferIcon } from './icon-registry.js?v=20260915-16';
-import { buildPlanDayViewModel, overlayConcreteDay, renderDayOverview, escapeDayHtml } from './day-viewmodel.js?v=20260915-29';
+import { renderTablerIcon, resolveDestinationIcon, resolveTransferIcon } from './icon-registry.js';
+import { buildPlanDayViewModel, overlayConcreteDay, renderDayOverview, escapeDayHtml } from './day-viewmodel.js';
 
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
@@ -34,7 +34,7 @@ async function initConcreteDemo(){
     executionPanel.id='execution-mode-panel';
     executionPanel.className='mode-panel';
     executionPanel.hidden=true;
-    executionPanel.innerHTML=executionHtml(concrete,planDaysByNumber);
+    executionPanel.innerHTML=executionHtml(concrete,planDaysByNumber,concrete);
 
     const switcher=document.createElement('div');
     switcher.className='plan-mode-switch';
@@ -55,7 +55,6 @@ const labels={mode:{walk:'徒歩',train:'電車',air:'飛行機',rental_car:'レ
 const l=(g,v)=>labels[g]?.[v]||String(v||'').replaceAll('_',' ');
 const destinationIcon=ref=>renderTablerIcon(resolveDestinationIcon(ref.type==='travel_point'?{pointType:ref.point_type}:{category:ref.category,role:ref.role}),'exec-destination-svg');
 const transferIcon=mode=>renderTablerIcon(resolveTransferIcon(mode),'exec-transfer-svg');
-const variantId=v=>v?.id||v?.variant_id||'standard';
 
 function bindModeSwitcher(s,p,x){
   s.addEventListener('click',ev=>{
@@ -110,7 +109,7 @@ function flowHtml(flow=[]){return `<ol class="exec-flow">${flow.map(i=>i.type===
 
 function variantTabs(day){
   const vs=day.variants||[]; if(vs.length<=1)return'';
-  return `<div class="exec-variant-tabs" role="tablist">${vs.map((v,n)=>`<button class="exec-variant-tab ${n===0?'active':''}" data-variant="${e(variantId(v))}">${e(v.label||variantId(v))}${v.route_id?` [${e(v.route_id)}]`:''}</button>`).join('')}</div>`;
+  return `<div class="exec-variant-tabs" role="tablist">${vs.map((v,n)=>`<button class="exec-variant-tab ${n===0?'active':''}" data-variant="${e(v.id)}">${e(v.label||v.id)}${v.route_id?` [${e(v.route_id)}]`:''}</button>`).join('')}</div>`;
 }
 function viewTabs(){return '<div class="exec-view-tabs" role="tablist"><button class="exec-view-tab active" data-view="flow">行動順</button><button class="exec-view-tab" data-view="map">マップ</button></div>';}
 function mapLegendHtml(spec={}){const modes=[...new Set((spec.segments||[]).map(s=>s.mode).filter(Boolean))];if(!modes.length)return'';return `<div class="exec-map-legend">${modes.map(mode=>`<span><i class="mode-${e(mode)}"></i>${e(l('mode',mode))}</span>`).join('')}</div>`;}
@@ -118,37 +117,37 @@ function mapLegendHtml(spec={}){const modes=[...new Set((spec.segments||[]).map(
 function executionDay(day,planDay={}){
   const planVM=buildPlanDayViewModel(planDay);
   const vm=overlayConcreteDay(planVM,day);
-  const active=(day.variants||[])[0]||{id:'standard',summary:{},flow:[]};
+  const active=vm.execution.activeVariant||{id:'standard',summary:{},flow:[]};
   const f=day.feasibility?`<span class="exec-status ${e(day.feasibility)}">${e(l('feasibility',day.feasibility))}</span>`:'';
   const date=day.date?`<span class="exec-day-date-inline">${e(day.date)}${day.weekday?`（${e(day.weekday)}）`:''}${day.wake_up_at?`・起床 ${e(day.wake_up_at)}`:''}</span>`:'';
   const title=day.purpose_override||vm.title||day.purpose||'';
-  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(variantId(active))}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><div><h3>${e(title)}</h3>${date}</div>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary"><div class="exec-summary-metrics">${summaryHtml(active.summary||{})}</div>${dayChecksHtml(day.day_of_checks||[])}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
+  return `<article class="execution-day" data-day="${e(day.day)}" data-active-variant="${e(active.id||'standard')}"><header class="execution-day-header" role="button" tabindex="0" aria-expanded="false"><div class="execution-day-no">${e(day.day)}日目</div><div><h3>${e(title)}</h3>${date}</div>${f}<i class="exec-day-toggle-icon" aria-hidden="true"></i></header><div class="exec-day-body" hidden>${renderDayOverview(vm,'exec-day-overview')}<div class="exec-day-summary"><div class="exec-summary-metrics">${summaryHtml(active.summary||{})}</div>${dayChecksHtml(day.day_of_checks||[])}</div>${variantTabs(day)}${viewTabs()}<div class="exec-view-body" data-view-panel="flow">${flowHtml(active.flow||[])}</div><div class="exec-view-body" data-view-panel="map" hidden><div class="exec-map-legend-host">${mapLegendHtml(active.map)}</div><div class="map-wrap exec-day-map-wrap"><div class="exec-day-map" id="execution-map-day-${e(day.day)}"></div><div class="exec-map-message"></div></div><p class="note exec-map-note">${e(active.map?.note||'')}</p></div></div></article>`;
 }
 
-function executionHtml(data,planDays={}){
-  const display=data.display||{};
-  const intro=renderExecutionIntro(data);
+function executionHtml(data,planDays={},meta={}){
+  const display=meta.display||{};
+  const intro=renderExecutionIntro(meta,data);
   const daysHeading=e(display.days_heading||'日ごとの実施計画');
   const daysDescription=e(display.days_description||'');
   return `${intro}<section class="section execution-days"><div class="section-heading"><h2>${daysHeading}</h2>${daysDescription?`<p>${daysDescription}</p>`:''}</div>${(data.days||[]).map(d=>executionDay(d,planDays[Number(d.day)]||{})).join('')}</section>`;
 }
 
-function renderExecutionIntro(data={}){
-  const display=data.display||{};
+function renderExecutionIntro(meta={},data={}){
+  const display=meta.display||{};
   const period=formatPeriod(data.execution_window);
   const transports=derivePrimaryTransports(data);
   const bookings=(data.booking_connections||[]).map(x=>x.label).filter(Boolean);
-  const verified=data.last_verified_at?formatDateTime(data.last_verified_at):'未確認';
+  const verified=meta.last_verified_at?formatDateTime(meta.last_verified_at):'未確認';
   const badge=display.poc_badge?`<span class="demo-chip warn">${e(display.poc_badge)}</span>`:'';
   const facts=[
     ['実施期間',period||'未設定'],
-    ['元Plan',data.source_plan_id||'—'],
+    ['元Plan',meta.source_plan_id||data.source_plan_id||'—'],
     ['主な移動',transports.length?transports.join('＋'):'未設定'],
     ['主要予約',bookings.length?bookings.join('・'):'未接続'],
-    ['状態',l('feasibility',data.status||'unknown')],
+    ['状態',l('feasibility',meta.status||'unknown')],
     ['最終確認',verified]
   ];
-  return `<section class="section execution-intro execution-intro-meta"><div class="execution-title-row"><div><div class="kicker">${e(display.kicker||'実施プラン')}${data.id?`・${e(data.id)}`:''}</div><h2>${e(display.heading||'実施日の行動計画')}</h2></div>${badge}</div><div class="exec-meta-title">${e(data.title||'')}</div><p>${e(data.summary||'')}</p><div class="exec-meta-facts">${facts.map(([k,v])=>`<div><span>${e(k)}</span><strong>${e(v)}</strong></div>`).join('')}</div></section>`;
+  return `<section class="section execution-intro execution-intro-meta"><div class="execution-title-row"><div><div class="kicker">${e(display.kicker||'実施プラン')}${meta.id?`・${e(meta.id)}`:''}</div><h2>${e(display.heading||'実施日の行動計画')}</h2></div>${badge}</div><div class="exec-meta-title">${e(meta.title||data.title||'')}</div><p>${e(meta.summary||data.summary||'')}</p><div class="exec-meta-facts">${facts.map(([k,v])=>`<div><span>${e(k)}</span><strong>${e(v)}</strong></div>`).join('')}</div></section>`;
 }
 function derivePrimaryTransports(data={}){
   const found=[];const add=x=>{if(x&&!found.includes(x))found.push(x);};
@@ -175,10 +174,10 @@ function bindExecutionDays(panel,data){
     });
   });
 }
-function activeVariant(day,card){return (day.variants||[]).find(v=>variantId(v)===card.dataset.activeVariant)||(day.variants||[])[0];}
-function renderVariant(card,day,id){const v=(day.variants||[]).find(x=>variantId(x)===id);if(!v)return;const summaryHost=card.querySelector('.exec-summary-metrics');if(summaryHost)summaryHost.innerHTML=summaryHtml(v.summary);const fp=card.querySelector('[data-view-panel="flow"]');if(fp)fp.innerHTML=flowHtml(v.flow);const lh=card.querySelector('.exec-map-legend-host');if(lh)lh.innerHTML=mapLegendHtml(v.map);const n=card.querySelector('.exec-map-note');if(n)n.textContent=v.map?.note||'';const m=card.querySelector('.exec-day-map');if(m){m.innerHTML='';delete m.dataset.loadedVariant;}if(card.querySelector('.exec-view-tab.active')?.dataset.view==='map')renderDayMap(card,day);}
+function activeVariant(day,card){return (day.variants||[]).find(v=>v.id===card.dataset.activeVariant)||(day.variants||[])[0];}
+function renderVariant(card,day,id){const v=(day.variants||[]).find(x=>x.id===id);if(!v)return;const summaryHost=card.querySelector('.exec-summary-metrics');if(summaryHost)summaryHost.innerHTML=summaryHtml(v.summary);const fp=card.querySelector('[data-view-panel="flow"]');if(fp)fp.innerHTML=flowHtml(v.flow);const lh=card.querySelector('.exec-map-legend-host');if(lh)lh.innerHTML=mapLegendHtml(v.map);const n=card.querySelector('.exec-map-note');if(n)n.textContent=v.map?.note||'';const m=card.querySelector('.exec-day-map');if(m){m.innerHTML='';delete m.dataset.loadedVariant;}if(card.querySelector('.exec-view-tab.active')?.dataset.view==='map')renderDayMap(card,day);}
 function personalOsEntityUrl(p){return p.entity_type==='spot'?`./?type=spot&id=${encodeURIComponent(p.id)}`:null;}
 function mapPopupHtml(p){const personal=personalOsEntityUrl(p),gm=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${p.lat},${p.lon}`)}`;return `<div class="exec-map-popup"><div class="exec-map-popup-title">${e(p.name)}</div><div class="exec-map-popup-links">${personal?`<a class="exec-map-popup-link" href="${personal}">PersonalOS</a>`:'<span class="exec-map-popup-link is-disabled" title="TravelPoint詳細ページは未実装">PersonalOS</span>'}<a class="exec-map-popup-link" href="${gm}" target="_blank" rel="noopener">Google Maps ↗</a></div></div>`;}
 function showMapError(card,err){const m=card.querySelector('.exec-day-map'),x=card.querySelector('.exec-map-message');if(m)m.style.display='none';if(x)x.textContent=`地図の読み込みに失敗しました: ${err.message}`;}
 async function ensureMaps(){if(window.google?.maps)return;const key=window.PERSONALOS_CONFIG?.googleMapsApiKey||'';if(!key)throw new Error('Google Maps API key 未設定');if(window.__concreteMapsPromise)return window.__concreteMapsPromise;window.__concreteMapsPromise=new Promise((resolve,reject)=>{window.__personalosConcreteMapsReady=resolve;const s=document.createElement('script');s.src=`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=__personalosConcreteMapsReady&v=weekly`;s.async=true;s.defer=true;s.onerror=()=>reject(new Error('Google Maps JavaScript API load error'));document.head.appendChild(s);});return window.__concreteMapsPromise;}
-async function renderDayMap(card,day){const v=activeVariant(day,card),spec=v?.map;if(!spec)return;const el=card.querySelector('.exec-day-map');if(!el||el.dataset.loadedVariant===variantId(v))return;try{await ensureMaps();el.style.display='block';el.innerHTML='';const map=new google.maps.Map(el,{mapTypeControl:true,streetViewControl:false,fullscreenControl:true});const bounds=new google.maps.LatLngBounds(),byId=Object.fromEntries((spec.points||[]).map(p=>[p.id,p])),info=new google.maps.InfoWindow();for(const p of spec.points||[]){const pos={lat:Number(p.lat),lng:Number(p.lon)};bounds.extend(pos);const marker=new google.maps.Marker({map,position:pos,label:{text:String(p.order||''),color:'#fff',fontWeight:'700'},title:p.name,zIndex:100+Number(p.order||0)});marker.addListener('click',()=>{info.setContent(mapPopupHtml(p));info.open({map,anchor:marker});});}const style={train:{strokeColor:'#7b61ff',strokeWeight:6},air:{strokeColor:'#34a853',strokeWeight:4,strokeOpacity:.75},rental_car:{strokeColor:'#1a73e8',strokeWeight:7},walk:{strokeColor:'#f9ab00',strokeWeight:5},motorbike:{strokeColor:'#8e5ac7',strokeWeight:6},bus:{strokeColor:'#5f6368',strokeWeight:6}};for(const s of spec.segments||[]){const a=byId[s.from],b=byId[s.to];if(!a||!b)continue;new google.maps.Polyline({map,path:[{lat:Number(a.lat),lng:Number(a.lon)},{lat:Number(b.lat),lng:Number(b.lon)}],strokeOpacity:.9,...(style[s.mode]||{})});}if(!bounds.isEmpty())map.fitBounds(bounds,34);const msg=card.querySelector('.exec-map-message');if(msg)msg.textContent='';el.dataset.loadedVariant=variantId(v);}catch(err){showMapError(card,err);}}
+async function renderDayMap(card,day){const v=activeVariant(day,card),spec=v?.map;if(!spec)return;const el=card.querySelector('.exec-day-map');if(!el||el.dataset.loadedVariant===v.id)return;try{await ensureMaps();el.style.display='block';el.innerHTML='';const map=new google.maps.Map(el,{mapTypeControl:true,streetViewControl:false,fullscreenControl:true});const bounds=new google.maps.LatLngBounds(),byId=Object.fromEntries((spec.points||[]).map(p=>[p.id,p])),info=new google.maps.InfoWindow();for(const p of spec.points||[]){const pos={lat:Number(p.lat),lng:Number(p.lon)};bounds.extend(pos);const marker=new google.maps.Marker({map,position:pos,label:{text:String(p.order||''),color:'#fff',fontWeight:'700'},title:p.name,zIndex:100+Number(p.order||0)});marker.addListener('click',()=>{info.setContent(mapPopupHtml(p));info.open({map,anchor:marker});});}const style={train:{strokeColor:'#7b61ff',strokeWeight:6},air:{strokeColor:'#34a853',strokeWeight:4,strokeOpacity:.75},rental_car:{strokeColor:'#1a73e8',strokeWeight:7},walk:{strokeColor:'#f9ab00',strokeWeight:5},motorbike:{strokeColor:'#8e5ac7',strokeWeight:6},bus:{strokeColor:'#5f6368',strokeWeight:6}};for(const s of spec.segments||[]){const a=byId[s.from],b=byId[s.to];if(!a||!b)continue;new google.maps.Polyline({map,path:[{lat:Number(a.lat),lng:Number(a.lon)},{lat:Number(b.lat),lng:Number(b.lon)}],strokeOpacity:.9,...(style[s.mode]||{})});}if(!bounds.isEmpty())map.fitBounds(bounds,34);const msg=card.querySelector('.exec-map-message');if(msg)msg.textContent='';el.dataset.loadedVariant=v.id;}catch(err){showMapError(card,err);}}
