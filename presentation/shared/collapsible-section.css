@@ -1,0 +1,60 @@
+.ui-collapsible{
+  margin:0 0 22px;
+  padding:24px 26px;
+  background:var(--surface,#fff);
+  border:1px solid var(--border,#d2d9df);
+  border-radius:20px;
+  box-shadow:var(--shadow-soft,0 3px 12px rgba(60,64,67,.11));
+}
+.ui-collapsible>.ui-collapsible-heading{
+  position:relative;
+  margin:0 0 18px;
+  padding-right:44px;
+  cursor:pointer;
+  user-select:none;
+  outline:none;
+  font-size:1.22rem;
+  line-height:1.35;
+}
+.ui-collapsible>.ui-collapsible-heading::before{
+  content:"";
+  position:absolute;
+  right:4px;
+  top:50%;
+  width:10px;
+  height:10px;
+  border-right:2px solid #6f7780;
+  border-bottom:2px solid #6f7780;
+  transform:translateY(-70%) rotate(45deg);
+  transition:transform .16s ease,border-color .16s ease;
+}
+.ui-collapsible.is-collapsed{
+  padding:20px 26px;
+}
+.ui-collapsible.is-collapsed>.ui-collapsible-heading{
+  margin:0;
+}
+.ui-collapsible.is-collapsed>.ui-collapsible-heading::before{
+  transform:translateY(-45%) rotate(-45deg);
+}
+.ui-collapsible>.ui-collapsible-heading:focus-visible{
+  border-radius:8px;
+  box-shadow:0 0 0 3px rgba(26,115,232,.16);
+}
+.ui-collapsible>.ui-collapsible-heading:hover::before{
+  border-color:#1a73e8;
+}
+.ui-collapsible>.ui-collapsible-body{
+  padding-top:2px;
+}
+.ui-collapsible>.ui-collapsible-body[hidden]{
+  display:none!important;
+}
+@media(max-width:520px){
+  .ui-collapsible,.ui-collapsible.is-collapsed{padding:18px}
+  .ui-collapsible>.ui-collapsible-heading{font-size:1.08rem;padding-right:34px}
+}
+@media(prefers-color-scheme:dark){
+  .ui-collapsible{background:#202124;border-color:#3c4043}
+  .ui-collapsible>.ui-collapsible-heading::before{border-color:#9aa0a6}
+}
