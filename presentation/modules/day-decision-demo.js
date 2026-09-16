@@ -1,4 +1,4 @@
-import { buildPlanDayViewModel, renderDayOverviewInner, renderDayAlternatives, addBaseRouteBadge, syncRouteTabs } from './day-viewmodel.js?v=20260916-30';
+import { buildPlanDayViewModel, renderDayOverviewInner, renderDayAlternatives, addBaseRouteBadge, syncRouteTabs } from './day-viewmodel.js';
 
 const qsDayDecision = new URLSearchParams(location.search);
 const planId = qsDayDecision.get('id');
