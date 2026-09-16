@@ -1,5 +1,15 @@
 /* Formal Leisure Presentation stylesheet entrypoint.
-   index.html loads only this file for Presentation-specific styling. */
+   Import order is intentional: base -> shared -> page-specific modules. */
+
+/* Base: page-agnostic tokens and shell only. */
+@import url('./base/tokens.css');
+@import url('./base/shell.css');
+
+/* Shared components. */
+@import url('./shared/collapsible-section.css');
+@import url('./shared/flow-icons.css');
+
+/* Page / feature presentation. Legacy modules remain intact during staged refactor. */
 @import url('./modules/home-explorer.css');
 @import url('./modules/concrete-plan.css');
 @import url('./modules/execution-meta.css');
@@ -17,7 +27,5 @@
 @import url('./modules/plan-flow-hierarchy.css');
 @import url('./modules/plan-flow-icons.css');
 @import url('./modules/light-contrast.css');
-@import url('./shared/collapsible-section.css');
-@import url('./shared/flow-icons.css');
 @import url('./modules/mode-switch-compact.css');
 @import url('./modules/day-decisions.css');
