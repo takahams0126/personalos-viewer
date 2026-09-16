@@ -2,8 +2,6 @@ const qsRoute = new URLSearchParams(location.search);
 const routeType = qsRoute.get('type');
 const routeId = qsRoute.get('id');
 
-if (routeType === 'route' && routeId) initRouteRenderer();
-
 const escRoute = (v='') => String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 const roleRoute = (v='') => ({
   core:'主役', main:'主役', optional:'任意', main_lunch:'昼食', high_priority:'高優先',
@@ -23,17 +21,17 @@ function routeCards(items=[], cls='') {
   return items.length ? `<div class="route-demo-cards ${cls}">${items.map(x=>`<article>${escRoute(x)}</article>`).join('')}</div>` : '';
 }
 function internalChevron() {
-  return `<svg class="route-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
+  return `<svg class="route-ref-chevron ui-entity-ref-icon" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
 function routeExternalLinkIcon() {
   return `<svg class="route-popup-link-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`;
 }
 function routeRefMini(ref, published=new Set()) {
   const key = `${ref.type || 'spot'}:${ref.id || ''}`;
-  const inner = `<span class="route-hero-ref-kind">主役Spot</span><strong>${escRoute(ref.label || ref.id || '')}</strong>${internalChevron()}`;
+  const inner = `<span class="route-hero-ref-kind ui-entity-ref-kind">主役Spot</span><strong>${escRoute(ref.label || ref.id || '')}</strong>${internalChevron()}`;
   return published.has(key)
-    ? `<a class="route-hero-ref" href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${inner}</a>`
-    : `<span class="route-hero-ref route-hero-ref-disabled">${inner}</span>`;
+    ? `<a class="route-hero-ref ui-entity-ref-card" href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${inner}</a>`
+    : `<span class="route-hero-ref route-hero-ref-disabled ui-entity-ref-card is-disabled">${inner}</span>`;
 }
 
 function findSection(app, title) {
@@ -45,14 +43,14 @@ function makeCollapsible(section, open=true) {
   const heading = section.querySelector(':scope > h2');
   if (!heading) return;
   section.dataset.routeCollapsible = '1';
-  section.classList.add('route-collapsible');
+  section.classList.add('route-collapsible','ui-collapsible');
 
   const body = document.createElement('div');
-  body.className = 'route-collapsible-body';
+  body.className = 'route-collapsible-body ui-collapsible-body';
   [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
   section.appendChild(body);
 
-  heading.classList.add('route-toggle-heading');
+  heading.classList.add('route-toggle-heading','ui-collapsible-heading');
   heading.setAttribute('role','button');
   heading.setAttribute('tabindex','0');
 
@@ -160,18 +158,13 @@ async function initRouteRenderer() {
     manifest = m.ok ? await m.json() : {items:[]};
   } catch { return; }
 
-  installRoutePopupEnhancer();
   const app = document.querySelector('#app');
-  const attach = () => {
-    const hero = app?.querySelector('.hero');
-    if (!hero || app.dataset.routeRendererAttached) return false;
-    app.dataset.routeRendererAttached = '1';
-    enhanceRoute(data, app, hero, manifest);
-    return true;
-  };
-  if (attach()) return;
-  const observer = new MutationObserver(()=>{ if (attach()) observer.disconnect(); });
-  observer.observe(app,{childList:true,subtree:true});
+  const hero = app?.querySelector('.hero');
+  if (!app || !hero || app.dataset.routeRendererAttached) return;
+
+  app.dataset.routeRendererAttached = '1';
+  installRoutePopupEnhancer();
+  enhanceRoute(data, app, hero, manifest);
 }
 
 function enhanceRoute(data, app, hero, manifest={items:[]}) {
@@ -198,7 +191,7 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
     facts.push(['季節', season]);
   }
   if (facts.length) {
-    hero.insertAdjacentHTML('beforeend', `<div class="route-hero-facts">${facts.map(([label,value])=>`<div><span>${escRoute(label)}</span><strong>${label==='季節'?value:escRoute(value)}</strong></div>`).join('')}</div>`);
+    hero.insertAdjacentHTML('beforeend', `<div class="route-hero-facts ui-hero-facts">${facts.map(([label,value])=>`<div><span>${escRoute(label)}</span><strong>${label==='季節'?value:escRoute(value)}</strong></div>`).join('')}</div>`);
   }
 
   const mapSection = findSection(app, 'ルートの地図');
@@ -247,3 +240,5 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   makeCollapsible(sequenceSection, true);
   makeCollapsible(constraintSection, true);
 }
+
+if (routeType === 'route' && routeId) initRouteRenderer();
