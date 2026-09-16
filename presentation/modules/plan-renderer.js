@@ -5,6 +5,10 @@ import {
   renderDayOverview,
   syncRouteTabs
 } from './day-viewmodel.js';
+import {
+  makeCollapsible,
+  renderEntityRefCard
+} from '../shared/component-contracts.js';
 
 const qsPlan = new URLSearchParams(location.search);
 const planType = qsPlan.get('type');
@@ -16,16 +20,14 @@ const rolePlan = (v='') => ({primary:'主役',main:'主役',core:'主役',stopov
 const priorityPlan = (v='') => ({primary:'優先',secondary:'次点',high:'高',medium:'中',low:'低',optional:'任意'}[v] || String(v).replaceAll('_',' '));
 const pointTypePlan = (v='') => ({home:'自宅',station:'駅',airport:'空港',bus_stop:'バス停',parking:'駐車場',trailhead:'登山口',ferry_terminal:'フェリー乗り場',rental_car_office:'レンタカー営業所',operational_point:'運用地点',other:'その他'}[v] || String(v).replaceAll('_',' '));
 
-function planInternalChevron(){
-  return `<svg class="plan-ref-chevron ui-entity-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
-}
-
 function planMainRouteCard(ref,published){
   const key=`${ref?.type||'route'}:${ref?.id||''}`;
-  const content=`<span class="plan-main-route-kind ui-entity-ref-kind">主役Route</span><strong>${escPlan(ref?.label||ref?.id||'')}</strong>${planInternalChevron()}`;
-  return published.has(key)
-    ? `<a class="plan-main-route-card ui-entity-ref-card" href="?type=${encodeURIComponent(ref?.type||'route')}&id=${encodeURIComponent(ref?.id||'')}">${content}</a>`
-    : `<span class="plan-main-route-card ui-entity-ref-card is-disabled">${content}</span>`;
+  return renderEntityRefCard({
+    kind:'主役Route',
+    title:ref?.label||ref?.id||'',
+    href:`?type=${encodeURIComponent(ref?.type||'route')}&id=${encodeURIComponent(ref?.id||'')}`,
+    disabled:!published.has(key)
+  });
 }
 
 function enhanceTripValue(section,value={}){
@@ -54,27 +56,6 @@ function routeStopsHtml(refs=[],published){
   return `<div class="route-stops vertical plan-route-stops">${refs.map((x,i)=>`<span class="route-stop"><span class="stop-no">${i+1}</span><span class="plan-route-stop-main">${refPlan(x,published)}</span></span>`).join('')}</div>`;
 }
 function routeSequence(routeData,routeId,fallback=[]){const data=routeData.get(routeId);const sequence=data?.route?.sequence;return Array.isArray(sequence)&&sequence.length ? sequence : fallback;}
-
-function makePlanCollapsible(section,open=true){
-  if(!section || section.dataset.planCollapsible==='1') return;
-  const headingHost=section.querySelector(':scope > h2') || section.querySelector(':scope > .section-heading');
-  const title=headingHost?.matches('h2') ? headingHost : headingHost?.querySelector('h2');
-  if(!headingHost || !title) return;
-  section.dataset.planCollapsible='1';
-  section.classList.add('plan-collapsible','ui-collapsible');
-  const body=document.createElement('div');
-  body.className='plan-collapsible-body ui-collapsible-body';
-  [...section.children].filter(x=>x!==headingHost).forEach(x=>body.appendChild(x));
-  section.appendChild(body);
-  headingHost.classList.add('plan-toggle-heading','ui-collapsible-heading');
-  headingHost.setAttribute('role','button');
-  headingHost.setAttribute('tabindex','0');
-  const apply=(nextOpen)=>{section.classList.toggle('is-collapsed',!nextOpen);body.hidden=!nextOpen;headingHost.setAttribute('aria-expanded',nextOpen?'true':'false');};
-  const toggle=()=>apply(headingHost.getAttribute('aria-expanded')!=='true');
-  headingHost.addEventListener('click',toggle);
-  headingHost.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
-  apply(open);
-}
 
 function makeDayToggle(card){
   const header=card.querySelector(':scope > .day-head');if(!header || card.dataset.dayToggle==='1') return;card.dataset.dayToggle='1';
@@ -109,7 +90,7 @@ function enhanceDay(card,day,routeData,published){
 function addPlanTailSections(plan,app,itinerary){
   const breakdown=plan.estimated_cost?.breakdown||[];let costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');if(breakdown.length && !costSection){itinerary.insertAdjacentHTML('afterend',`<section class="section plan-demo-section plan-cost"><h2>費用の内訳</h2><div class="plan-cost-grid">${breakdown.map(x=>`<div>${escPlan(x)}</div>`).join('')}</div></section>`);costSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='費用の内訳');}
   const risks=plan.risks||[];let riskSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');if(risks.length && !riskSection){const rows=risks.map(risk=>`<li><span class="plan-impact impact-${escPlan(risk.impact||'medium')}">${escPlan(impactPlan(risk.impact||''))}</span><strong>${escPlan(risk.risk||'')}</strong>${risk.mitigation?`<div class="flow-note">対策: ${escPlan(risk.mitigation)}</div>`:''}</li>`).join('');const anchor=costSection||itinerary;anchor.insertAdjacentHTML('afterend',`<section class="section plan-demo-section plan-risk"><h2>変動要素・リスク</h2><ul class="list">${rows}</ul></section>`);riskSection=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');}
-  makePlanCollapsible(costSection,false);makePlanCollapsible(riskSection,false);
+  makeCollapsible(costSection,{open:false});makeCollapsible(riskSection,{open:false});
 }
 
 function enhancePlan(planData,app,routeData,published){
@@ -125,7 +106,7 @@ function enhancePlan(planData,app,routeData,published){
   const stars=[...app.querySelectorAll('.section')].find(x=>x.querySelector('h2')?.textContent.trim()==='この旅の主役');
   enhanceTripValue(value,planData.plan?.trip_value||{});
   if(stars && (planData.hero_refs||[]).length){const oldCards=stars.querySelector('.cards');const html=`<div class="plan-main-route-grid">${planData.hero_refs.map(ref=>planMainRouteCard(ref,published)).join('')}</div>`;if(oldCards) oldCards.outerHTML=html;else stars.insertAdjacentHTML('beforeend',html);}
-  makePlanCollapsible(value,false);makePlanCollapsible(stars,true);makePlanCollapsible(itinerary,true);
+  makeCollapsible(value,{open:false});makeCollapsible(stars,{open:true});makeCollapsible(itinerary,{open:true});
   const cards=[...itinerary.querySelectorAll('.day-card')];
   (planData.plan?.days||[]).forEach((day,index)=>{const card=cards[index];if(card) enhanceDay(card,day,routeData,published);});
   addPlanTailSections(planData.plan||{},app,itinerary);
