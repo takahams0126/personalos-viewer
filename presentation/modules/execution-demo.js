@@ -10,7 +10,7 @@ async function initConcreteDemo(){
   let concrete, planData;
   try {
     const [c,p]=await Promise.all([
-      fetch(`./data/_staging/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
+      fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
       fetch(`./data/plans/${encodeURIComponent(id)}.json`,{cache:'no-store'})
     ]);
     if(!c.ok||!p.ok)return;
