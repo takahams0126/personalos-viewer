@@ -35,15 +35,15 @@ if (type === 'spot') {
   if (!type) {
     await load('./modules/home-explorer.js');
   } else if (type === 'plan') {
-    await load('./modules/plan-demo.js');
+    await load('./modules/plan-renderer.js');
     await waitFor('.plan-demo-itinerary .plan-axis');
     await load('./modules/plan-flow-icons.js');
-    await load('./modules/day-decision-demo.js');
-    await load('./modules/execution-demo.js');
+    await load('./modules/day-decisions.js');
+    await load('./modules/concrete-plan-renderer.js');
     await waitFor('#execution-mode-panel');
-    await load('./modules/execution-feasibility-poc.js');
-    await load('./modules/execution-fuel-poc.js');
-    await load('./modules/execution-weather-poc.js');
+    await load('./modules/execution-feasibility.js');
+    await load('./modules/execution-fuel.js');
+    await load('./modules/execution-weather.js');
   } else if (type === 'route') {
     await load('./modules/route-renderer.js');
     await waitFor('.route-demo-page, .route-demo-section, .route-stops');
