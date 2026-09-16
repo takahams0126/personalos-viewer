@@ -6,7 +6,7 @@
 @import url('./base/shell.css');
 @import url('./base/primitives.css');
 
-/* Shared components. */
+/* Shared components and reusable layouts. */
 @import url('./shared/hero.css');
 @import url('./shared/section.css');
 @import url('./shared/card.css');
@@ -15,6 +15,7 @@
 @import url('./shared/entity-reference.css');
 @import url('./shared/hero-copy.css');
 @import url('./shared/hero-facts.css');
+@import url('./shared/content-layout.css');
 @import url('./shared/flow-icons.css');
 
 /* Page / feature presentation. */
