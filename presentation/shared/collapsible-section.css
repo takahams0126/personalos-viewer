@@ -37,6 +37,15 @@
   font-size:1.22rem;
   line-height:1.35;
 }
+.ui-collapsible-title::after{
+  content:"";
+  display:block;
+  width:34px;
+  height:4px;
+  margin-top:7px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--ui-color-accent,#fbbc04),var(--ui-color-accent-strong,#f9ab00));
+}
 .ui-collapsible.is-collapsed{padding:20px 26px}
 .ui-collapsible.is-collapsed>.ui-collapsible-heading{margin:0}
 .ui-collapsible.is-collapsed>.ui-collapsible-heading::before{transform:translateY(-45%) rotate(-45deg)}
