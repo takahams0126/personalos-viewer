@@ -27,8 +27,8 @@ const yen=v=>v===null||v===undefined?'—':`¥${Number(v).toLocaleString('ja-JP'
 
 function renderFuelPlan(panel,spec){
   const days=panel.querySelector('.execution-days'); if(!days)return;
-  const stations=Object.fromEntries((spec.travel_point_candidates||[]).map(s=>[s.poc_id,s]));
-  const rows=(spec.planned_refuels||[]).map(p=>fuelRow(p,stations[p.station_poc_id])).join('');
+  const stations=Object.fromEntries((spec.travel_point_candidates||[]).map(s=>[s.id,s]));
+  const rows=(spec.planned_refuels||[]).map(p=>fuelRow(p,stations[p.station_id])).join('');
   const cost=spec.fuel_cost||{};
   const html=`<section class="section exec-fuel-plan"><div class="section-heading"><h2>給油計画</h2><p>${esc(spec.purpose||'')}</p></div><div class="exec-fuel-grid">${rows}</div><div class="exec-fuel-cost"><span>燃料費</span><strong>${cost.estimated_cost_yen==null?'未算定':yen(cost.estimated_cost_yen)}</strong><small>${esc(cost.display_note||'')}</small></div></section>`;
   const costSection=panel.querySelector('.exec-trip-cost');
