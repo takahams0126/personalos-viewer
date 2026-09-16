@@ -1,0 +1,31 @@
+/* Shared Leisure Flow node/icon presentation. Plan visual language is canonical. */
+.ui-flow-node-destination{
+  width:36px!important;height:36px!important;border-radius:50%!important;
+  border:1px solid rgba(26,115,232,.30)!important;background:#e8f0fe!important;
+  color:#1a73e8!important;box-shadow:0 3px 9px rgba(26,115,232,.14)!important;
+  display:grid!important;place-items:center!important;font-size:0!important;position:relative;z-index:2;
+}
+.ui-flow-node-transfer{
+  width:18px!important;height:18px!important;margin-left:9px!important;border:0!important;
+  border-radius:0!important;background:transparent!important;color:#7b8187!important;
+  box-shadow:none!important;font-size:0!important;display:grid!important;place-items:center!important;
+}
+.leisure-tabler-icon.ui-flow-icon{display:block!important;fill:none!important;stroke:currentColor!important;color:inherit!important;opacity:1!important;visibility:visible!important}
+.leisure-tabler-icon.ui-flow-icon-destination{width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;color:#1a73e8!important;stroke:#1a73e8!important}
+.leisure-tabler-icon.ui-flow-icon-transfer{width:17px!important;height:17px!important;min-width:17px!important;min-height:17px!important;color:#7b8187!important;stroke:#7b8187!important}
+
+/* Keep both Plan and Execution on the same visual spine grammar. */
+.exec-flow::before{background:#dfe3e7!important}
+.exec-flow-item.exec-transfer{min-height:30px!important;padding-top:4px!important;padding-bottom:4px!important}
+
+@media(max-width:640px){
+  .ui-flow-node-destination{width:34px!important;height:34px!important}
+  .leisure-tabler-icon.ui-flow-icon-destination{width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important}
+  .ui-flow-node-transfer{margin-left:8px!important}
+}
+@media(prefers-color-scheme:dark){
+  .ui-flow-node-destination{border-color:#46698f!important;background:#243449!important;color:#8ab4f8!important;box-shadow:0 3px 10px rgba(0,0,0,.22)!important}
+  .leisure-tabler-icon.ui-flow-icon-destination{color:#8ab4f8!important;stroke:#8ab4f8!important}
+  .ui-flow-node-transfer,.leisure-tabler-icon.ui-flow-icon-transfer{color:#b7bdc3!important;stroke:#b7bdc3!important}
+  .exec-flow::before{background:#3c4043!important}
+}
