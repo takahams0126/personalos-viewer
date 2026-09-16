@@ -3,7 +3,7 @@ if(qs.get('type')==='plan'&&qs.get('id')) initWeatherPoc();
 
 async function initWeatherPoc(){
   const id=qs.get('id'); let payload;
-  try{const r=await fetch(`./data/_staging/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;payload=await r.json();}catch{return;}
+  try{const r=await fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;payload=await r.json();}catch{return;}
   const days=(payload.days||[]).filter(day=>day.weather_assessment);
   const attach=()=>{
     const panel=document.querySelector('#execution-mode-panel');
