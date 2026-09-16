@@ -1,6 +1,5 @@
-/* Shared Hero facts strip for entity pages.
-   Generic ui-* classes are canonical. Legacy aliases remain during migration. */
-:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){
+/* Canonical Hero facts strip. */
+.ui-hero-facts{
   display:grid;
   margin-top:14px;
   border:1px solid #dfe7ef;
@@ -8,16 +7,11 @@
   background:rgba(255,255,255,.72);
   overflow:hidden;
 }
-:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div{min-width:0;padding:9px 10px}
-:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div+div{border-left:1px solid #e4e9ee}
-:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) span{display:block;margin-bottom:1px;color:#707780;font-size:.68rem;font-weight:700}
-:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) strong{display:block;color:#202124;font-size:.9rem;line-height:1.35}
-
-/* Season is a compact value row; do not inherit the generic block-span behavior. */
-.ui-hero-facts .route-season-icons,
-.ui-hero-facts .spot-season-icons,
-.route-hero-facts .route-season-icons,
-.spot-hero-facts .spot-season-icons{
+.ui-hero-fact{min-width:0;padding:9px 10px}
+.ui-hero-fact+.ui-hero-fact{border-left:1px solid #e4e9ee}
+.ui-hero-fact-label{display:block;margin-bottom:1px;color:#707780;font-size:.68rem;font-weight:700}
+.ui-hero-fact-value{display:block;color:#202124;font-size:.9rem;line-height:1.35}
+.ui-season-icons{
   display:flex;
   flex-wrap:nowrap;
   gap:3px;
@@ -26,7 +20,7 @@
   min-width:0;
   max-width:100%;
 }
-:where(.route-season-icons i,.spot-season-icon){
+.ui-season-icon{
   display:grid;
   place-items:center;
   flex:0 0 21px;
@@ -41,20 +35,17 @@
   font-weight:800;
 }
 @media(max-width:900px){
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){grid-template-columns:repeat(2,minmax(0,1fr))}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(odd){border-left:0}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-top:1px solid #e4e9ee}
+  .ui-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ui-hero-fact:nth-child(odd){border-left:0}
+  .ui-hero-fact:nth-child(n+3){border-top:1px solid #e4e9ee}
 }
 @media(max-width:640px){
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){grid-template-columns:repeat(2,minmax(0,1fr))}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div{border-top:1px solid #e4e9ee}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(-n+2){border-top:0}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(odd){border-left:0}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(even){border-left:1px solid #e4e9ee}
-  .ui-hero-facts .route-season-icons,
-  .ui-hero-facts .spot-season-icons,
-  .route-hero-facts .route-season-icons,
-  .spot-hero-facts .spot-season-icons{
+  .ui-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ui-hero-fact{border-top:1px solid #e4e9ee}
+  .ui-hero-fact:nth-child(-n+2){border-top:0}
+  .ui-hero-fact:nth-child(odd){border-left:0}
+  .ui-hero-fact:nth-child(even){border-left:1px solid #e4e9ee}
+  .ui-season-icons{
     display:grid;
     grid-template-columns:repeat(2,21px);
     gap:3px;
@@ -62,13 +53,12 @@
   }
 }
 @media(max-width:380px){
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){grid-template-columns:1fr}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div{border-left:0!important;border-top:1px solid #e4e9ee}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:first-child{border-top:0}
+  .ui-hero-facts{grid-template-columns:1fr}
+  .ui-hero-fact{border-left:0!important;border-top:1px solid #e4e9ee}
+  .ui-hero-fact:first-child{border-top:0}
 }
 @media(prefers-color-scheme:dark){
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){background:rgba(32,33,36,.72);border-color:#3c4043}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div+div,
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-color:#3c4043}
-  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) strong{color:#e8eaed}
+  .ui-hero-facts{background:rgba(32,33,36,.72);border-color:#3c4043}
+  .ui-hero-fact+.ui-hero-fact,.ui-hero-fact:nth-child(n+3){border-color:#3c4043}
+  .ui-hero-fact-value{color:#e8eaed}
 }
