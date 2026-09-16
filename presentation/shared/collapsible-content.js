@@ -1,0 +1,23 @@
+// Normalize collapsible structure after page render.
+// Headings contain only the interactive title; explanatory copy belongs to the body
+// so it follows the section's open/closed state.
+
+function normalizeCollapsibleDescriptions(root=document){
+  root.querySelectorAll('.ui-collapsible').forEach(section=>{
+    const heading=section.querySelector(':scope > .ui-collapsible-heading.section-heading');
+    const body=section.querySelector(':scope > .ui-collapsible-body');
+    if(!heading || !body || section.dataset.uiCollapsibleContent==='1') return;
+    const descriptions=[...heading.children].filter(node=>node.matches?.('p'));
+    if(!descriptions.length){section.dataset.uiCollapsibleContent='1';return;}
+    const anchor=body.firstChild;
+    descriptions.forEach(node=>{
+      node.classList.add('ui-collapsible-description');
+      body.insertBefore(node,anchor);
+    });
+    section.dataset.uiCollapsibleContent='1';
+  });
+}
+
+normalizeCollapsibleDescriptions();
+
+export { normalizeCollapsibleDescriptions };
