@@ -1,3 +1,10 @@
+import {
+  makeCollapsible,
+  renderEntityRefCard,
+  renderHeroFacts,
+  renderSeasonIcons
+} from '../shared/component-contracts.js';
+
 const qsRoute = new URLSearchParams(location.search);
 const routeType = qsRoute.get('type');
 const routeId = qsRoute.get('id');
@@ -20,54 +27,22 @@ function routeChipList(items=[]) {
 function routeCards(items=[], cls='') {
   return items.length ? `<div class="route-demo-cards ${cls}">${items.map(x=>`<article>${escRoute(x)}</article>`).join('')}</div>` : '';
 }
-function internalChevron() {
-  return `<svg class="route-ref-chevron ui-entity-ref-icon" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
-}
 function routeExternalLinkIcon() {
   return `<svg class="route-popup-link-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`;
 }
 function routeRefMini(ref, published=new Set()) {
   const key = `${ref.type || 'spot'}:${ref.id || ''}`;
-  const inner = `<span class="route-hero-ref-kind ui-entity-ref-kind">主役Spot</span><strong>${escRoute(ref.label || ref.id || '')}</strong>${internalChevron()}`;
-  return published.has(key)
-    ? `<a class="route-hero-ref ui-entity-ref-card" href="?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}">${inner}</a>`
-    : `<span class="route-hero-ref route-hero-ref-disabled ui-entity-ref-card is-disabled">${inner}</span>`;
+  const href = `?type=${encodeURIComponent(ref.type||'spot')}&id=${encodeURIComponent(ref.id||'')}`;
+  return renderEntityRefCard({
+    kind:'主役Spot',
+    title:ref.label || ref.id || '',
+    href,
+    disabled:!published.has(key)
+  });
 }
 
 function findSection(app, title) {
   return [...app.querySelectorAll(':scope > .section')].find(x => x.querySelector(':scope > h2')?.textContent.trim() === title) || null;
-}
-
-function makeCollapsible(section, open=true) {
-  if (!section || section.dataset.routeCollapsible === '1') return;
-  const heading = section.querySelector(':scope > h2');
-  if (!heading) return;
-  section.dataset.routeCollapsible = '1';
-  section.classList.add('route-collapsible','ui-collapsible');
-
-  const body = document.createElement('div');
-  body.className = 'route-collapsible-body ui-collapsible-body';
-  [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
-  section.appendChild(body);
-
-  heading.classList.add('route-toggle-heading','ui-collapsible-heading');
-  heading.setAttribute('role','button');
-  heading.setAttribute('tabindex','0');
-
-  const apply = nextOpen => {
-    section.classList.toggle('is-collapsed', !nextOpen);
-    body.hidden = !nextOpen;
-    heading.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
-  };
-  const toggle = () => apply(heading.getAttribute('aria-expanded') !== 'true');
-  heading.addEventListener('click', toggle);
-  heading.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggle();
-    }
-  });
-  apply(open);
 }
 
 async function loadRouteSpotSummary(id) {
@@ -172,6 +147,7 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   const appeal = r.appeal || {};
   const published = new Set((manifest.items||[]).map(x=>`${x.type}:${x.id}`));
   hero.classList.add('route-demo-hero');
+  hero.querySelectorAll(':scope > p').forEach(p => p.classList.add('ui-hero-copy'));
 
   if ((appeal.themes||[]).length) hero.insertAdjacentHTML('beforeend', routeChipList(appeal.themes));
   if (r.family || r.variant) {
@@ -182,17 +158,12 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   }
 
   const facts = [
-    ['所要時間', r.duration || ''],
-    ['難易度', difficultyRoute(r.difficulty || '')],
-    ['移動', r.route_type === 'driving' ? '車' : (r.route_type || '')],
-  ].filter(([,value]) => value);
-  if ((r.season||[]).length) {
-    const season = `<span class="route-season-icons">${r.season.map(x=>`<i title="${escRoute(x)}">${escRoute(x.slice(0,1))}</i>`).join('')}</span>`;
-    facts.push(['季節', season]);
-  }
-  if (facts.length) {
-    hero.insertAdjacentHTML('beforeend', `<div class="route-hero-facts ui-hero-facts">${facts.map(([label,value])=>`<div><span>${escRoute(label)}</span><strong>${label==='季節'?value:escRoute(value)}</strong></div>`).join('')}</div>`);
-  }
+    {label:'所要時間', value:r.duration || ''},
+    {label:'難易度', value:difficultyRoute(r.difficulty || '')},
+    {label:'移動', value:r.route_type === 'driving' ? '車' : (r.route_type || '')},
+  ].filter(item => item.value);
+  if ((r.season||[]).length) facts.push({label:'季節', valueHtml:renderSeasonIcons(r.season)});
+  if (facts.length) hero.insertAdjacentHTML('beforeend', renderHeroFacts(facts));
 
   const mapSection = findSection(app, 'ルートの地図');
   mapSection?.querySelector('.map-tabs')?.remove();
@@ -235,10 +206,10 @@ function enhanceRoute(data, app, hero, manifest={items:[]}) {
   if (sequenceSection) (mapSection || appealSection).insertAdjacentElement('afterend', sequenceSection);
   if (constraintSection) app.appendChild(constraintSection);
 
-  makeCollapsible(appealSection, false);
-  makeCollapsible(mapSection, true);
-  makeCollapsible(sequenceSection, true);
-  makeCollapsible(constraintSection, true);
+  makeCollapsible(appealSection, {open:false});
+  makeCollapsible(mapSection, {open:true});
+  makeCollapsible(sequenceSection, {open:true});
+  makeCollapsible(constraintSection, {open:true});
 }
 
 if (routeType === 'route' && routeId) initRouteRenderer();
