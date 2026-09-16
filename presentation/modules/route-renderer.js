@@ -25,6 +25,9 @@ function routeCards(items=[], cls='') {
 function internalChevron() {
   return `<svg class="route-ref-chevron" viewBox="0 0 54 24" fill="none" aria-hidden="true"><path d="M2 4l8 8-8 8"/><path d="M18 4l8 8-8 8"/><path d="M34 4l8 8-8 8"/></svg>`;
 }
+function routeExternalLinkIcon() {
+  return `<svg class="route-popup-link-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`;
+}
 function routeRefMini(ref, published=new Set()) {
   const key = `${ref.type || 'spot'}:${ref.id || ''}`;
   const inner = `<span class="route-hero-ref-kind">主役Spot</span><strong>${escRoute(ref.label || ref.id || '')}</strong>${internalChevron()}`;
@@ -86,12 +89,21 @@ async function enhanceRoutePopup(popup) {
   popup.classList.add('route-popup-enhanced');
 
   const title = popup.querySelector(':scope > strong');
-  if (title) title.classList.add('route-popup-title');
-
   const links = popup.querySelector(':scope > .pin-links');
   [...popup.children].forEach(child => {
     if (child !== title && child !== links) child.remove();
   });
+
+  const windowRoot = popup.closest('.gm-style-iw-c');
+  const header = windowRoot?.querySelector('.gm-style-iw-chr');
+  if (windowRoot) windowRoot.classList.add('route-popup-window');
+  if (title && header) {
+    title.remove();
+    title.className = 'route-popup-header-title';
+    header.prepend(title);
+  } else if (title) {
+    title.classList.add('route-popup-title');
+  }
 
   if (!links) return;
   links.classList.add('route-popup-actions');
@@ -103,11 +115,11 @@ async function enhanceRoutePopup(popup) {
   const google = anchors.find(a => /google\.com\/maps/i.test(a.href));
 
   if (personal) {
-    personal.textContent = 'PersonalOSで詳しく見る';
+    personal.innerHTML = `<span>PersonalOSで詳しく見る</span>${routeExternalLinkIcon()}`;
     personal.classList.add('route-popup-action','is-primary');
   }
   if (google) {
-    google.textContent = 'Google Mapsで開く ↗';
+    google.innerHTML = `<span>Google Mapsで開く</span>${routeExternalLinkIcon()}`;
     google.classList.add('route-popup-action','is-secondary');
   }
 
