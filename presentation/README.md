@@ -4,7 +4,7 @@ This directory is the single production Presentation layer for the Leisure Viewe
 
 ## Responsibility
 
-Presentation converts already-generated Public Projection JSON + referenced Map Artifacts into deterministic DOM/UI.
+Presentation converts already-generated public entity JSON plus referenced map data into deterministic DOM/UI.
 
 It owns only:
 
@@ -22,23 +22,32 @@ It does not own Leisure data semantics.
 - `app.js` loads published data and boots the Viewer shell.
 - `presentation/main.js` is the single production Presentation entry point.
 - `presentation/main.css` is the single production Presentation stylesheet entry point.
-- `presentation/` may contain internal modules/components, but they must be generic and data-independent.
-- `data/` contains published entity data.
-- `maps/` contains generated map artifacts.
-- `_prototype/` is validation history and must never be loaded by production Presentation.
+- Production modules use formal renderer/responsibility names; validation-era `demo` / `poc` module files are not production dependencies.
+- `data/` contains published entity JSON only.
+- `maps/` contains generated Viewer map artifacts.
+- `_prototype/ui-validation/` contains historical/temporary validation inputs and is not loaded by browser Presentation.
+- `_prototype/poc/` is intentionally isolated PoC space and is separate from the production Presentation layer.
 
-## Forbidden in final production Presentation
+## Forbidden in production Presentation
 
 - hard-coded entity IDs such as `P001`, `R005`, `S0036`
 - entity-specific names/text such as Yakushima or Jomonsugi
-- fetches from `presentation/fixtures/`
-- runtime `*-demo.json` / `*-poc.json` dependencies
+- fetches from fixtures or `_prototype/`
+- runtime `*-demo.json` / `*-poc.json` / `*-decisions.json` dependencies
 - semantic merge of auxiliary JSON in JavaScript
 - route/decision/feasibility/weather/fuel facts embedded in JavaScript
 - map path construction based on guessed filename conventions
 - schema migration or compatibility rescue
 
-All of those belong to generated Public Projection / Map Artifact data or upstream runtime logic.
+All such information belongs to complete published entity JSON, referenced map artifacts, or upstream generation logic.
+
+## Current temporary bridge
+
+`tools/build_presentation_input.py` is a Viewer-local build-time normalization bridge used only to assemble complete validation input while the Presentation boundary is being fixed.
+
+Its validation overlays live under `_prototype/ui-validation/data/`. They are not browser runtime dependencies and are not part of the normal `data/` publication area.
+
+The bridge must remain replaceable by complete generated public JSON without Presentation changes. Comparison with or modification of the formal Canonical -> ViewModel -> Public Projection generator is explicitly outside the current step and remains on hold until separately instructed.
 
 ## Plan / ConcretePlan invariant
 
@@ -50,12 +59,12 @@ The common Plan Day presentation is shared. ConcretePlan adds execution-only inf
 
 ## Determinism
 
-For the same Viewer version, Public Projection JSON and referenced Map Artifacts, Presentation must produce the same DOM/behavior.
+For the same Viewer release, entity JSON and referenced map artifacts, Presentation must produce the same DOM/behavior.
 
-No result may depend on mutation timing, module load races, entity-specific branches, hidden prototype files or side-loaded fixture data.
+Asset cache versions are normalized at Pages build time from one release identifier so parent and child modules cannot silently load different generations.
 
-## Current normalization state
+## Baseline and remaining commonization
 
-Some internal files still retain historical `demo` / `poc` names and temporary fixture dependencies because they were recovered from validated UI history. They are migration debt, not accepted end-state architecture.
+The visual/behavioral regression reference is `../BASELINE.md`. The architecture target is `../VIEWER_ARCHITECTURE.md`.
 
-The visual/behavioral regression reference is `../BASELINE.md`. The target architecture is `../VIEWER_ARCHITECTURE.md`.
+Some DOM/CSS selector names still contain historical words such as `demo` or `poc`. They are internal selector names only; they are not data dependencies or runtime validation branches. Renaming those selectors is intentionally deferred to the broader Presentation/common-component normalization phase so the frozen baseline is not disturbed by a cosmetic selector migration.
