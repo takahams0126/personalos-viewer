@@ -30,12 +30,12 @@ function makeSpotCollapsible(section, open=false) {
   const heading = section.querySelector(':scope > h2');
   if (!heading) return;
   section.dataset.spotCollapsible = '1';
-  section.classList.add('spot-collapsible');
+  section.classList.add('spot-collapsible','ui-collapsible');
   const body = document.createElement('div');
-  body.className = 'spot-collapsible-body';
+  body.className = 'spot-collapsible-body ui-collapsible-body';
   [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
   section.appendChild(body);
-  heading.classList.add('spot-toggle-heading');
+  heading.classList.add('spot-toggle-heading','ui-collapsible-heading');
   heading.setAttribute('role','button');
   heading.setAttribute('tabindex','0');
   const apply = nextOpen => {
