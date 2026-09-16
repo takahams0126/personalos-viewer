@@ -39,9 +39,9 @@ if (type === 'spot') {
   } else if (type === 'plan') {
     await load('./modules/plan-renderer.js');
     await waitFor('.plan-demo-itinerary .plan-axis');
-    await load('./modules/plan-flow-icons.js');
     await load('./modules/day-decisions.js');
     await load('./modules/concrete-plan-renderer.js');
+    await load('./shared/flow-icons.js');
     await waitFor('#execution-mode-panel');
     await load('./modules/execution-feasibility.js');
     await load('./modules/execution-fuel.js');
