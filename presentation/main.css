@@ -6,13 +6,16 @@
 @import url('./base/shell.css');
 
 /* Shared components. */
+@import url('./shared/hero.css');
+@import url('./shared/section.css');
+@import url('./shared/badge.css');
 @import url('./shared/collapsible-section.css');
 @import url('./shared/entity-reference.css');
 @import url('./shared/hero-copy.css');
 @import url('./shared/hero-facts.css');
 @import url('./shared/flow-icons.css');
 
-/* Page / feature presentation. Legacy modules remain intact during staged refactor. */
+/* Page / feature presentation. */
 @import url('./modules/home-explorer.css');
 @import url('./modules/concrete-plan.css');
 @import url('./modules/execution-meta.css');
