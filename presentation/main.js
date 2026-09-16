@@ -27,6 +27,8 @@ async function load(path) {
   catch (error) { console.error(`[presentation] failed: ${versionedPath}`, error); }
 }
 
+if (type) await load('./shared/breadcrumb.js');
+
 if (type === 'spot') {
   await load('./modules/spot-renderer.js');
 } else {
