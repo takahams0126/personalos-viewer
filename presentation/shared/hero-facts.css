@@ -1,5 +1,6 @@
-/* Shared Hero facts strip for Route / Spot and future entity pages. */
-:where(.route-hero-facts,.spot-hero-facts){
+/* Shared Hero facts strip for entity pages.
+   Generic ui-* classes are canonical. Legacy aliases remain during migration. */
+:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){
   display:grid;
   margin-top:14px;
   border:1px solid #dfe7ef;
@@ -7,25 +8,25 @@
   background:rgba(255,255,255,.72);
   overflow:hidden;
 }
-:where(.route-hero-facts,.spot-hero-facts)>div{min-width:0;padding:9px 10px}
-:where(.route-hero-facts,.spot-hero-facts)>div+div{border-left:1px solid #e4e9ee}
-:where(.route-hero-facts,.spot-hero-facts) span{display:block;margin-bottom:1px;color:#707780;font-size:.68rem;font-weight:700}
-:where(.route-hero-facts,.spot-hero-facts) strong{display:block;color:#202124;font-size:.9rem;line-height:1.35}
+:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div{min-width:0;padding:9px 10px}
+:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div+div{border-left:1px solid #e4e9ee}
+:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) span{display:block;margin-bottom:1px;color:#707780;font-size:.68rem;font-weight:700}
+:where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) strong{display:block;color:#202124;font-size:.9rem;line-height:1.35}
 :where(.route-season-icons,.spot-season-icons){display:flex;gap:3px;align-items:center;margin:0}
 :where(.route-season-icons i,.spot-season-icon){display:grid;place-items:center;width:21px;height:21px;border:1px solid #efcf66;border-radius:50%;background:#fff7d6;color:#6d5200;font-size:.61rem;font-style:normal;font-weight:800}
 @media(max-width:900px){
-  :where(.route-hero-facts,.spot-hero-facts){grid-template-columns:repeat(2,minmax(0,1fr))}
-  :where(.route-hero-facts,.spot-hero-facts)>div:nth-child(odd){border-left:0}
-  :where(.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-top:1px solid #e4e9ee}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){grid-template-columns:repeat(2,minmax(0,1fr))}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(odd){border-left:0}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-top:1px solid #e4e9ee}
 }
 @media(max-width:640px){
-  :where(.route-hero-facts,.spot-hero-facts){grid-template-columns:1fr}
-  :where(.route-hero-facts,.spot-hero-facts)>div{border-left:0!important;border-top:1px solid #e4e9ee}
-  :where(.route-hero-facts,.spot-hero-facts)>div:first-child{border-top:0}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){grid-template-columns:1fr}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div{border-left:0!important;border-top:1px solid #e4e9ee}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:first-child{border-top:0}
 }
 @media(prefers-color-scheme:dark){
-  :where(.route-hero-facts,.spot-hero-facts){background:rgba(32,33,36,.72);border-color:#3c4043}
-  :where(.route-hero-facts,.spot-hero-facts)>div+div,
-  :where(.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-color:#3c4043}
-  :where(.route-hero-facts,.spot-hero-facts) strong{color:#e8eaed}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts){background:rgba(32,33,36,.72);border-color:#3c4043}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div+div,
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts)>div:nth-child(n+3){border-color:#3c4043}
+  :where(.ui-hero-facts,.route-hero-facts,.spot-hero-facts) strong{color:#e8eaed}
 }
