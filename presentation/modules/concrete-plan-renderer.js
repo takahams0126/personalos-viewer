@@ -138,7 +138,7 @@ function renderExecutionIntro(meta={},data={}){
   const transports=derivePrimaryTransports(data);
   const bookings=(data.booking_connections||[]).map(x=>x.label).filter(Boolean);
   const verified=meta.last_verified_at?formatDateTime(meta.last_verified_at):'未確認';
-  const badge=display.poc_badge?`<span class="demo-chip warn">${e(display.poc_badge)}</span>`:'';
+  const badge=display.badge?`<span class="demo-chip warn">${e(display.badge)}</span>`:'';
   const facts=[
     ['実施期間',period||'未設定'],
     ['元Plan',meta.source_plan_id||data.source_plan_id||'—'],
