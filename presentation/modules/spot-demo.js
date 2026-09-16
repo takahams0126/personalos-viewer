@@ -2,7 +2,7 @@ const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const id = qs.get('id');
 
-if (type === 'spot' && id === 'S0036') initSpotDemo();
+if (type === 'spot' && id) initSpotDemo();
 
 function esc(v='') { return String(v).replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c])); }
 function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">${items.map(x=>`<span class="spot-chip">${esc(x)}</span>`).join('')}</div>` : ''; }
