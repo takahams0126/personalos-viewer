@@ -1,6 +1,5 @@
 /* Light-theme contrast guardrail.
-   Preserve the airy editorial look, but keep semantic cards and block hierarchy visible
-   on lower-contrast / brighter displays. */
+   Shared ui-* contracts own common presentation; page selectors below are feature-specific only. */
 @media (prefers-color-scheme: light) {
   :root {
     --border:#cfd7df;
@@ -12,36 +11,17 @@
   body{background:linear-gradient(180deg,#f4f8fb 0,#edf2f5 240px,#edf2f5 100%)}
   .site-header{border-bottom-color:#cbd3db;box-shadow:0 1px 8px rgba(45,55,65,.09)}
 
-  .hero,.section,.card,.day-card,.home-item{
-    border-color:#cbd3db;
-  }
-  .section,.card,.day-card,.home-item{
-    box-shadow:0 3px 12px rgba(45,55,65,.10);
-  }
+  .ui-entity-hero:not(.is-spot-hero),
+  .ui-section,
+  .ui-card,
+  .day-card,
+  .home-item{border-color:#cbd3db}
+  .ui-section,.ui-card,.day-card,.home-item{box-shadow:0 3px 12px rgba(45,55,65,.10)}
 
-  /* Hero and plan/execution switch are structural UI, not ordinary white cards. */
-  .hero{
-    background:linear-gradient(135deg,#eaf2f9 0%,#f2f7fb 58%,#e4eef7 100%);
-    border:1px solid #b8c8d7;
-    box-shadow:0 8px 24px rgba(45,67,88,.14),0 1px 3px rgba(45,67,88,.10);
-  }
-  .plan-mode-switch{
-    background:#e7edf3;
-    border-color:#b7c3ce;
-    box-shadow:0 4px 14px rgba(45,55,65,.13);
-  }
-  .plan-mode-btn{
-    color:#4f5963;
-  }
-  .plan-mode-btn.active{
-    background:#dce9fb;
-    color:#174ea6;
-    box-shadow:0 2px 8px rgba(26,115,232,.16);
-  }
-  .demo-chip{
-    background:#dce3e9;
-    color:#4e5963;
-  }
+  .plan-mode-switch{background:#e7edf3;border-color:#b7c3ce;box-shadow:0 4px 14px rgba(45,55,65,.13)}
+  .plan-mode-btn{color:#4f5963}
+  .plan-mode-btn.active{background:#dce9fb;color:#174ea6;box-shadow:0 2px 8px rgba(26,115,232,.16)}
+  .demo-chip{background:#dce3e9;color:#4e5963}
 
   /* Yellow semantic/value cards: stronger surface and boundary. */
   .plan-value-highlights article,
@@ -54,81 +34,31 @@
     background:linear-gradient(180deg,#fff,#f6f8fa);
     box-shadow:0 3px 10px rgba(45,55,65,.08);
   }
-  .plan-value-key-grid article{
-    background:#f5f7f9;
-    border-color:#c5ced7;
-  }
-  .plan-value-key-grid article span,
-  .plan-value-key-wrap>h3{
-    color:#59616a;
-  }
-  .plan-value-key-grid article p{
-    color:#25292d;
-  }
-  .plan-value-key-wrap{
-    border-top-color:#c8d0d8;
-  }
+  .plan-value-key-grid article{background:#f5f7f9;border-color:#c5ced7}
+  .plan-value-key-grid article span,.plan-value-key-wrap>h3{color:#59616a}
+  .plan-value-key-grid article p{color:#25292d}
+  .plan-value-key-wrap{border-top-color:#c8d0d8}
 
-  /* Blue reference cards: reference/navigation should be unmistakable. */
-  .plan-main-route-card,
-  .route-hero-ref,
-  .spot-related-card{
+  /* Canonical internal entity reference cards. */
+  .ui-entity-ref-card{
     background:linear-gradient(180deg,#eef5ff,#f8fbff);
     border-color:#9fbee8;
     box-shadow:0 3px 10px rgba(26,115,232,.10);
   }
-  .plan-main-route-card:hover,
-  .route-hero-ref:hover,
-  .spot-related-card:hover{
-    background:#e7f1ff;
-    border-color:#78a7df;
-    box-shadow:0 5px 16px rgba(26,115,232,.14);
-  }
-  .plan-main-route-kind,
-  .route-hero-ref-kind,
-  .spot-related-kind{
-    color:#0b57d0;
-  }
-  .plan-ref-chevron path:nth-child(1),
-  .route-ref-chevron path:nth-child(1),
-  .spot-related-arrow .chev-1{stroke:#9fc2ef}
-  .plan-ref-chevron path:nth-child(2),
-  .route-ref-chevron path:nth-child(2),
-  .spot-related-arrow .chev-2{stroke:#639ce1}
-  .plan-ref-chevron path:nth-child(3),
-  .route-ref-chevron path:nth-child(3),
-  .spot-related-arrow .chev-3{stroke:#1769c2}
+  .ui-entity-ref-card:hover{background:#e7f1ff;border-color:#78a7df;box-shadow:0 5px 16px rgba(26,115,232,.14)}
+  .ui-entity-ref-kind{color:#0b57d0}
+  .ui-entity-ref-icon path:nth-child(1){stroke:#9fc2ef}
+  .ui-entity-ref-icon path:nth-child(2){stroke:#639ce1}
+  .ui-entity-ref-icon path:nth-child(3){stroke:#1769c2}
 
   /* Foldable sections and day blocks need a readable container boundary. */
-  .plan-collapsible,
-  .route-collapsible,
-  .plan-demo-itinerary .day-card{
-    border-color:#c3ccd5;
-  }
-  .plan-demo-itinerary .day-card.is-open .day-head{
-    border-bottom-color:#ccd4dc;
-  }
-  .plan-day-overview{
-    background:linear-gradient(180deg,#f5f7f9,#f0f3f6);
-    border-color:#c5ced7;
-  }
-  .plan-day-flow-heading::after{
-    background:#c8d0d8;
-  }
+  .ui-collapsible,.plan-demo-itinerary .day-card{border-color:#c3ccd5}
+  .plan-demo-itinerary .day-card.is-open .day-head{border-bottom-color:#ccd4dc}
+  .plan-day-overview{background:linear-gradient(180deg,#f5f7f9,#f0f3f6);border-color:#c5ced7}
+  .plan-day-flow-heading::after{background:#c8d0d8}
 
   /* Generic facts and route stop cards should not disappear into white. */
-  .fact-grid div,
-  .route-stop,
-  .day-endpoints,
-  .route-hero-facts{
-    border-color:#cbd3db;
-  }
-  .fact-grid div,
-  .day-endpoints{
-    background:#f3f6f8;
-  }
-  .route-stop{
-    background:#f9fbfc;
-    box-shadow:0 2px 7px rgba(45,55,65,.08);
-  }
+  .fact-grid div,.route-stop,.day-endpoints,.ui-hero-facts{border-color:#cbd3db}
+  .fact-grid div,.day-endpoints{background:#f3f6f8}
+  .route-stop{background:#f9fbfc;box-shadow:0 2px 7px rgba(45,55,65,.08)}
 }
