@@ -35,7 +35,7 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir _site
-          cp -R index.html app.js style.css manifest.json data maps presentation _site/
+          cp -R index.html app.js manifest.json data maps presentation _site/
           if [ -d _generated/data ]; then
             cp -R _generated/data/. _site/data/
           fi
