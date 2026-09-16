@@ -25,9 +25,9 @@
 .spot-season-icons{display:inline-flex;gap:4px}
 .spot-season-icon{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff7d6;border:1px solid #efcf66;color:#6d5200;font-size:.68rem;font-style:normal;font-weight:800;line-height:1}
 
-.section.spot-demo-section{position:relative;margin:0;padding:38px 4px 36px;background:transparent;border:0;border-radius:0;box-shadow:none}
-.section.spot-demo-section+.section.spot-demo-section{margin-top:8px;padding-top:46px;border-top:2px solid #d8dee4;background:linear-gradient(180deg,rgba(244,247,249,.62) 0,rgba(244,247,249,0) 34px)}
-.section.spot-demo-section+.section.spot-demo-section::before{content:"";position:absolute;top:-2px;left:0;width:54px;height:2px;background:linear-gradient(90deg,#fbbc04,#f9ab00)}
+.section.spot-demo-section:not(.ui-collapsible){position:relative;margin:0;padding:38px 4px 36px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.section.spot-demo-section:not(.ui-collapsible)+.section.spot-demo-section:not(.ui-collapsible){margin-top:8px;padding-top:46px;border-top:2px solid #d8dee4;background:linear-gradient(180deg,rgba(244,247,249,.62) 0,rgba(244,247,249,0) 34px)}
+.section.spot-demo-section:not(.ui-collapsible)+.section.spot-demo-section:not(.ui-collapsible)::before{content:"";position:absolute;top:-2px;left:0;width:54px;height:2px;background:linear-gradient(90deg,#fbbc04,#f9ab00)}
 .spot-demo-section h2{font-size:1.5rem;margin-bottom:18px}
 .spot-demo-section h2::after{width:28px;height:3px;margin-top:9px}
 .spot-demo-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
@@ -78,8 +78,8 @@
   .spot-demo-hero,.spot-demo-facts{background:#202124;border-color:#3c4043}
   .spot-demo-hero-copy{background:linear-gradient(145deg,#202124,#242629)}
   .spot-demo-summary{color:#e8eaed}
-  .spot-hero-links,.spot-demo-sub,.section.spot-demo-section+.section.spot-demo-section{border-color:#3c4043}
-  .section.spot-demo-section+.section.spot-demo-section{background:linear-gradient(180deg,rgba(60,64,67,.28) 0,rgba(60,64,67,0) 34px)}
+  .spot-hero-links,.spot-demo-sub,.section.spot-demo-section:not(.ui-collapsible)+.section.spot-demo-section:not(.ui-collapsible){border-color:#3c4043}
+  .section.spot-demo-section:not(.ui-collapsible)+.section.spot-demo-section:not(.ui-collapsible){background:linear-gradient(180deg,rgba(60,64,67,.28) 0,rgba(60,64,67,0) 34px)}
   .spot-hero-link-row a{background:transparent;border-color:#4b5563}
   .spot-carousel{background:#202124}
   .spot-demo-facts div+div,.spot-demo-card+.spot-demo-card,.spot-related-card+.spot-related-card{border-color:#3c4043}
