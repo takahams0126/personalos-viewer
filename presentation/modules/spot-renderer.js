@@ -1,3 +1,10 @@
+import {
+  makeCollapsible,
+  renderEntityRefCard,
+  renderHeroFacts,
+  renderSeasonIcons
+} from '../shared/component-contracts.js';
+
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const id = qs.get('id');
@@ -9,49 +16,20 @@ function chipList(items=[]) { return items.length ? `<div class="spot-chip-row">
 function list(items=[]) { return items.length ? `<ul class="spot-demo-list">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>` : ''; }
 function cards(items=[], className='') { return items.length ? `<div class="spot-demo-cards ${className?`spot-demo-cards-${esc(className)}`:''}">${items.map(x=>`<article class="spot-demo-card ${className}">${esc(x)}</article>`).join('')}</div>` : ''; }
 function externalLinkIcon() { return `<svg class="spot-link-icon external" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`; }
-function internalLinkIcon() { return `<svg class="spot-link-icon internal triple-chevron" viewBox="0 0 42 20" fill="none" aria-hidden="true" focusable="false"><path class="chev chev-1" d="M2 3l7 7-7 7"/><path class="chev chev-2" d="M13 3l7 7-7 7"/><path class="chev chev-3" d="M24 3l7 7-7 7"/></svg>`; }
 function heroLinks(links=[]) { return links.length ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(x=>`<a href="${esc(x.url)}" target="_blank" rel="noopener"><span>${esc(x.label)}</span>${externalLinkIcon()}</a>`).join('')}</div></div>` : ''; }
-function factValue(fact, spot={}) {
-  if (fact?.label === '季節' && (spot.season||[]).length) {
-    const seasons = spot.season.map(x=>`<i class="spot-season-icon" title="${esc(x)}" aria-label="${esc(x)}">${esc(x.slice(0,1))}</i>`).join('');
-    return `<strong class="spot-season-fact"><span class="spot-season-icons">${seasons}</span></strong>`;
-  }
-  return `<strong>${esc(fact?.value||'')}</strong>`;
-}
 function heroFacts(facts=[], spot={}) {
-  return facts.length ? `<div class="spot-hero-facts">${facts.map(x=>`<div><span>${esc(x.label)}</span>${factValue(x,spot)}</div>`).join('')}</div>` : '';
+  const items = facts.map(fact => fact?.label === '季節' && (spot.season||[]).length
+    ? {label:fact.label, valueHtml:renderSeasonIcons(spot.season)}
+    : {label:fact?.label||'', value:fact?.value||''});
+  return renderHeroFacts(items);
 }
 function relatedHeroCards(related=[]) {
-  return related.length ? `<div class="spot-hero-related"><span class="spot-hero-related-label">関連スポット</span><div class="spot-hero-related-grid">${related.map(x=>`<a class="spot-hero-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-hero-related-kind">関連Spot</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-arrow" aria-hidden="true">${internalLinkIcon()}</span></a>`).join('')}</div></div>` : '';
-}
-
-function makeSpotCollapsible(section, open=false) {
-  if (!section || section.dataset.spotCollapsible === '1') return;
-  const heading = section.querySelector(':scope > h2');
-  if (!heading) return;
-  section.dataset.spotCollapsible = '1';
-  section.classList.add('spot-collapsible','ui-collapsible');
-  const body = document.createElement('div');
-  body.className = 'spot-collapsible-body ui-collapsible-body';
-  [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
-  section.appendChild(body);
-  heading.classList.add('spot-toggle-heading','ui-collapsible-heading');
-  heading.setAttribute('role','button');
-  heading.setAttribute('tabindex','0');
-  const apply = nextOpen => {
-    section.classList.toggle('is-collapsed', !nextOpen);
-    body.hidden = !nextOpen;
-    heading.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
-  };
-  const toggle = () => apply(heading.getAttribute('aria-expanded') !== 'true');
-  heading.addEventListener('click', toggle);
-  heading.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggle();
-    }
-  });
-  apply(open);
+  if (!related.length) return '';
+  return `<div class="spot-hero-related"><span class="spot-hero-related-label">関連スポット</span><div class="spot-hero-related-grid">${related.map(x=>renderEntityRefCard({
+    kind:'関連Spot',
+    title:x.label||x.id||'',
+    href:`?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}`
+  })).join('')}</div></div>`;
 }
 
 async function initSpotRenderer() {
@@ -63,19 +41,15 @@ async function initSpotRenderer() {
   } catch { return; }
 
   const app = document.querySelector('#app');
-  const attach = () => {
-    const hero = app?.querySelector('.hero');
-    if (!hero || app.dataset.spotRendererAttached) return false;
-    app.dataset.spotRendererAttached = '1';
-    render(data, app);
-    initCarousel(app);
-    const sections = [...app.querySelectorAll(':scope > .spot-demo-section')];
-    sections.forEach(section => makeSpotCollapsible(section, section.querySelector(':scope > h2')?.textContent.trim() === 'このスポットの魅力'));
-    return true;
-  };
-  if (attach()) return;
-  const observer = new MutationObserver(()=>{ if (attach()) observer.disconnect(); });
-  observer.observe(app,{childList:true,subtree:true});
+  const hero = app?.querySelector('.hero');
+  if (!app || !hero || app.dataset.spotRendererAttached) return;
+  app.dataset.spotRendererAttached = '1';
+  render(data, app);
+  initCarousel(app);
+  const sections = [...app.querySelectorAll(':scope > .spot-demo-section')];
+  sections.forEach(section => makeCollapsible(section, {
+    open:section.querySelector(':scope > h2')?.textContent.trim() === 'このスポットの魅力'
+  }));
 }
 
 function galleryHtml(images=[], title='') {
@@ -103,7 +77,7 @@ function render(data, app) {
       <div class="spot-demo-hero-copy">
         <div class="kicker">スポット · ${esc(data.id)}</div>
         <h1>${esc(data.title)}</h1>
-        <p class="spot-demo-summary">${esc(data.summary||'')}</p>
+        <p class="ui-hero-copy">${esc(data.summary||'')}</p>
         ${chipList(s.themes||[])}
         ${heroLinks(links)}
         ${relatedHeroCards(related)}
