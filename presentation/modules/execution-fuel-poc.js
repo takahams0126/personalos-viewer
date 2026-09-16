@@ -3,7 +3,7 @@ if(qs.get('type')==='plan'&&qs.get('id')) initFuelPoc();
 
 async function initFuelPoc(){
   const id=qs.get('id'); let spec;
-  try{const r=await fetch(`./data/_staging/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;const payload=await r.json();spec=payload.fuel_plan||{};}catch{return;}
+  try{const r=await fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;const payload=await r.json();spec=payload.fuel_plan||{};}catch{return;}
   const attach=()=>{
     const panel=document.querySelector('#execution-mode-panel');
     if(!panel||panel.dataset.fuelPocAttached)return false;
