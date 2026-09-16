@@ -1,0 +1,36 @@
+/* Canonical badge presentation.
+   Semantic meaning is expressed by ui-* modifier classes; legacy badge/subtle remain input markers only. */
+.ui-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px 9px;
+  margin-left:6px;
+  border:1px solid rgba(26,115,232,.14);
+  border-radius:var(--ui-radius-pill);
+  background:#e4eefc;
+  color:#345;
+  font-size:.73rem;
+  font-weight:700;
+  vertical-align:middle;
+}
+.ui-badge.is-subtle{
+  background:#eceff2;
+  color:#555;
+  border-color:#d7dde2;
+}
+.ui-badge.is-tag{
+  margin-left:0;
+  background:#fff7d6;
+  border-color:#f4d35e;
+  color:#6d5200;
+}
+.ui-badge.is-status{background:#e8f0fe;color:#174ea6;border-color:#cbdcf6}
+.ui-badge.is-caution{background:#fff3cd;color:#725400;border-color:#efcf66}
+.ui-badge.is-success{background:#e6f4ea;color:#137333;border-color:#c7e3ce}
+@media(prefers-color-scheme:dark){
+  .ui-badge{background:#243449;color:#8ab4f8;border-color:#3f5878}
+  .ui-badge.is-subtle{background:#2d2f31;color:#bdc1c6;border-color:#4a4d50}
+  .ui-badge.is-tag,.ui-badge.is-caution{background:#3b3524;color:#fdd663;border-color:#796b35}
+  .ui-badge.is-success{background:#20382a;color:#81c995;border-color:#345c43}
+}
