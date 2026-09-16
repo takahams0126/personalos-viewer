@@ -1,25 +1,20 @@
-import { buildPlanDayViewModel, renderDayOverviewInner, renderDayAlternatives, addBaseRouteBadge, syncRouteTabs } from './day-viewmodel.js?v=20260915-29';
+import { buildPlanDayViewModel, renderDayOverviewInner, renderDayAlternatives, addBaseRouteBadge, syncRouteTabs } from './day-viewmodel.js?v=20260916-30';
 
 const qsDayDecision = new URLSearchParams(location.search);
 const planId = qsDayDecision.get('id');
 if (qsDayDecision.get('type') === 'plan' && planId) initDayDecision();
 
 async function initDayDecision(){
-  let extra, planData;
+  let planData;
   try{
-    const [r,p] = await Promise.all([
-      fetch(`./data/plans/${encodeURIComponent(planId)}-decisions.json`,{cache:'no-store'}),
-      fetch(`./data/plans/${encodeURIComponent(planId)}.json`,{cache:'no-store'})
-    ]);
-    if(!r.ok || !p.ok) return;
-    [extra,planData] = await Promise.all([r.json(),p.json()]);
+    const r=await fetch(`./data/plans/${encodeURIComponent(planId)}.json`,{cache:'no-store'});
+    if(!r.ok) return;
+    planData=await r.json();
   }catch{return;}
 
-  const decisions = extra.day_decisions || {};
   const planDays = Object.fromEntries((planData.plan?.days||[]).map(d=>[String(d.day),d]));
   const app = document.querySelector('#app');
-
-  const vmFor = dayNo => buildPlanDayViewModel(planDays[String(dayNo)]||{},decisions[String(dayNo)]||null);
+  const vmFor = dayNo => buildPlanDayViewModel(planDays[String(dayNo)]||{});
 
   const renderPlan = () => {
     app?.querySelectorAll('#plan-mode-panel .day-card').forEach(card => {
@@ -28,27 +23,17 @@ async function initDayDecision(){
       if(!m) return;
       const vm = vmFor(m[1]);
       if(!vm.day) return;
-
       addBaseRouteBadge(card.querySelector('.day-head'),vm);
       syncRouteTabs(card,vm,'plan');
-
       const body = card.querySelector('.plan-day-body');
       if(!body) return;
       const overview = body.querySelector('.plan-day-overview');
       if(overview) overview.innerHTML=renderDayOverviewInner(vm);
-
       const existing=card.querySelector('.day-decision-block');
       const block=renderDayAlternatives(vm,'plan');
-      if(block){
-        existing?.remove();
-        if(overview) overview.insertAdjacentHTML('afterend',block);
-        else body.insertAdjacentHTML('afterbegin',block);
-      }else{
-        existing?.remove();
-      }
+      if(block){existing?.remove();if(overview) overview.insertAdjacentHTML('afterend',block);else body.insertAdjacentHTML('afterbegin',block);}else existing?.remove();
       card.dataset.dayDecisionAttached='1';
     });
-
     const riskSection=[...app?.querySelectorAll('#plan-mode-panel .section')||[]].find(x=>x.querySelector('h2')?.textContent.trim()==='変動要素・リスク');
     if(riskSection) riskSection.hidden = true;
   };
@@ -58,27 +43,15 @@ async function initDayDecision(){
       const dayNo = card.dataset.day;
       const vm = vmFor(dayNo);
       if(!vm.day) return;
-
       addBaseRouteBadge(card.querySelector('.execution-day-header'),vm);
       syncRouteTabs(card,vm,'execution');
-
       const overview=card.querySelector('.exec-day-overview');
       if(overview) overview.innerHTML=renderDayOverviewInner(vm);
-
       let decisionBlock=card.querySelector('.day-decision-block');
       const block=renderDayAlternatives(vm,'execution');
-      if(block && !decisionBlock){
-        if(overview) overview.insertAdjacentHTML('afterend',block);
-        else card.querySelector('.exec-day-body')?.insertAdjacentHTML('afterbegin',block);
-        decisionBlock=card.querySelector('.day-decision-block');
-      }
-
+      if(block && !decisionBlock){if(overview) overview.insertAdjacentHTML('afterend',block);else card.querySelector('.exec-day-body')?.insertAdjacentHTML('afterbegin',block);decisionBlock=card.querySelector('.day-decision-block');}
       const summary=card.querySelector('.exec-day-summary');
-      if(summary){
-        summary.classList.add('exec-day-summary-separated');
-        if(decisionBlock) decisionBlock.insertAdjacentElement('afterend',summary);
-        else if(overview) overview.insertAdjacentElement('afterend',summary);
-      }
+      if(summary){summary.classList.add('exec-day-summary-separated');if(decisionBlock) decisionBlock.insertAdjacentElement('afterend',summary);else if(overview) overview.insertAdjacentElement('afterend',summary);}
       card.dataset.dayDecisionAttached='1';
     });
   };
@@ -87,15 +60,9 @@ async function initDayDecision(){
     const planPanel = app?.querySelector('#plan-mode-panel');
     const executionPanel = app?.querySelector('#execution-mode-panel');
     if(!planPanel || !executionPanel) return false;
-    renderPlan();
-    renderExecution();
-    app.dataset.dayDecisionReady='1';
-    return true;
+    renderPlan();renderExecution();app.dataset.dayDecisionReady='1';return true;
   };
-
   if(applyWhenReady()) return;
-  const observer = new MutationObserver(()=>{
-    if(applyWhenReady()) observer.disconnect();
-  });
+  const observer = new MutationObserver(()=>{if(applyWhenReady()) observer.disconnect();});
   observer.observe(app,{childList:true,subtree:true});
 }
