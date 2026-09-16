@@ -1,0 +1,56 @@
+/* Shared internal entity reference card.
+   Existing Plan / Route / Spot class names are aliases of one presentation component.
+   Page-specific files may still carry temporary duplicate declarations during migration. */
+:where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card){
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"kind icon" "title icon";
+  gap:1px 8px;
+  align-items:center;
+  padding:10px 12px;
+  border:1px solid #cdddf3;
+  border-radius:12px;
+  background:rgba(247,251,255,.9);
+  color:inherit;
+  text-decoration:none;
+}
+:where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover{
+  background:#f2f7ff;
+  border-color:#a9c6ef;
+  text-decoration:none;
+}
+:where(.plan-main-route-kind,.route-hero-ref-kind,.spot-hero-related-kind){
+  grid-area:kind;
+  color:#1a73e8;
+  font-size:.66rem;
+  font-weight:800;
+}
+:where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card)>strong{
+  grid-area:title;
+  min-width:0;
+  font-size:.88rem;
+}
+:where(.plan-ref-chevron,.route-ref-chevron,.spot-link-icon.internal){
+  grid-area:icon;
+  width:30px;
+  height:16px;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transition:transform .16s ease;
+}
+:where(.plan-ref-chevron,.route-ref-chevron) path:nth-child(1),
+.spot-link-icon.internal .chev-1{stroke:#c8dcfa}
+:where(.plan-ref-chevron,.route-ref-chevron) path:nth-child(2),
+.spot-link-icon.internal .chev-2{stroke:#8db8ef}
+:where(.plan-ref-chevron,.route-ref-chevron) path:nth-child(3),
+.spot-link-icon.internal .chev-3{stroke:#3f8de4}
+:where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover :where(.plan-ref-chevron,.route-ref-chevron,.spot-link-icon.internal){
+  transform:translateX(3px)
+}
+:where(.plan-main-route-card.is-disabled,.route-hero-ref-disabled){opacity:.58}
+@media(prefers-color-scheme:dark){
+  :where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card){background:linear-gradient(180deg,#202b3a,#202124);border-color:#3f5878}
+  :where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover{background:#243449;border-color:#5879a4}
+  :where(.plan-main-route-card,.route-hero-ref,.spot-hero-related-card)>strong{color:#e8eaed}
+}
