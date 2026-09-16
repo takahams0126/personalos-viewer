@@ -2,8 +2,6 @@ const qs = new URLSearchParams(location.search);
 const currentType = qs.get('type');
 const currentId = qs.get('id');
 
-if (currentType && currentId) initBreadcrumb();
-
 const dirFor = type => type === 'plan' ? 'plans' : type === 'route' ? 'routes' : type === 'spot' ? 'spots' : '';
 const dataPathFor = (type, id) => `./data/${dirFor(type)}/${encodeURIComponent(id)}.json`;
 const hrefFor = ref => `./?type=${encodeURIComponent(ref.type)}&id=${encodeURIComponent(ref.id)}`;
@@ -59,3 +57,5 @@ async function initBreadcrumb() {
     })
   ].join('');
 }
+
+if (currentType && currentId) initBreadcrumb();
