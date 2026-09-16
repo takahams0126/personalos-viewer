@@ -30,30 +30,6 @@
   height:20px;
 }
 
-.spot-demo-section.spot-collapsible{
-  margin:0 0 22px;
-  padding:24px 26px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:20px;
-  box-shadow:var(--shadow-soft);
-}
-.spot-demo-section.spot-collapsible>.spot-toggle-heading{
-  margin:0 0 18px;
-  padding-right:44px;
-  font-size:1.22rem;
-  line-height:1.35;
-}
-.spot-demo-section.spot-collapsible.is-collapsed{
-  padding:20px 26px;
-}
-.spot-demo-section.spot-collapsible.is-collapsed>.spot-toggle-heading{
-  margin:0;
-}
-.spot-demo-section.spot-collapsible>.spot-collapsible-body{
-  padding-top:2px;
-}
-
 @media(max-width:980px){
   .spot-hero-related-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
   .spot-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -63,13 +39,4 @@
 }
 @media(max-width:520px){
   .spot-hero-related-grid{grid-template-columns:1fr}
-  .spot-demo-section.spot-collapsible{padding:18px}
-  .spot-demo-section.spot-collapsible.is-collapsed{padding:18px}
-  .spot-demo-section.spot-collapsible>.spot-toggle-heading{font-size:1.08rem;padding-right:34px}
-}
-@media(prefers-color-scheme:dark){
-  .spot-demo-section.spot-collapsible{
-    background:#202124;
-    border-color:#3c4043;
-  }
 }
