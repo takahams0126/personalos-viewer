@@ -1,0 +1,14 @@
+/* Shared Hero body copy.
+   Entity Hero paragraphs use one typography contract so wrapping and spacing stay deterministic. */
+.ui-hero-copy,
+.route-demo-hero > p{
+  margin:1em 0;
+  max-width:none;
+  font-size:1rem;
+  line-height:1.65;
+  text-wrap:pretty;
+  line-break:strict;
+  word-break:auto-phrase;
+}
+.route-demo-hero > p:first-of-type{margin-top:1em}
+.route-demo-hero > p:last-of-type{margin-bottom:1em}
