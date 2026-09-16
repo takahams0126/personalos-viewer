@@ -1,0 +1,35 @@
+/* Canonical body/header/main shell. Structural only: no entity-specific presentation. */
+body.leisure-app{
+  margin:0;
+  font-family:var(--ui-font-sans);
+  color:var(--ui-color-text);
+  background:linear-gradient(180deg,#f4f8fc 0,var(--ui-page-background) 240px,var(--ui-page-background) 100%);
+  line-height:1.65;
+}
+
+.leisure-app .app-header{
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.leisure-app .app-main{
+  width:min(100%,var(--ui-content-max));
+  margin-inline:auto;
+  padding:var(--ui-page-pad-top) var(--ui-page-pad-x) var(--ui-page-pad-bottom);
+}
+
+.leisure-app .app-main > :first-child{margin-top:0}
+.leisure-app .app-main > :last-child{margin-bottom:0}
+
+@media(max-width:640px){
+  :root{
+    --ui-page-pad-x:10px;
+    --ui-page-pad-top:18px;
+    --ui-page-pad-bottom:52px;
+  }
+}
+
+@media(prefers-color-scheme:dark){
+  body.leisure-app{background:var(--ui-page-background)}
+}
