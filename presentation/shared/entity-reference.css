@@ -1,6 +1,5 @@
-/* Shared internal entity reference card.
-   Generic ui-* classes are canonical. Legacy Plan/Route/Spot selectors remain as aliases during migration. */
-:where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card){
+/* Canonical internal entity reference card. */
+.ui-entity-ref-card{
   display:grid;
   grid-template-columns:minmax(0,1fr) auto;
   grid-template-areas:"kind icon" "title icon";
@@ -13,23 +12,25 @@
   color:inherit;
   text-decoration:none;
 }
-:where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover{
+.ui-entity-ref-card:hover{
   background:#f2f7ff;
   border-color:#a9c6ef;
   text-decoration:none;
 }
-:where(.ui-entity-ref-kind,.plan-main-route-kind,.route-hero-ref-kind,.spot-hero-related-kind){
+.ui-entity-ref-kind{
   grid-area:kind;
   color:#1a73e8;
   font-size:.66rem;
   font-weight:800;
 }
-:where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card)>strong{
+.ui-entity-ref-title{
   grid-area:title;
   min-width:0;
   font-size:.88rem;
+  line-height:1.35;
 }
-:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron,.spot-link-icon.internal){
+.ui-entity-ref-icon{
+  grid-area:icon;
   width:30px;
   height:16px;
   stroke-width:3;
@@ -37,26 +38,13 @@
   stroke-linejoin:round;
   transition:transform .16s ease;
 }
-:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron){grid-area:icon}
-.spot-hero-related-card>.spot-related-arrow{
-  grid-area:icon;
-  display:grid;
-  place-items:center;
-  margin:0;
-  color:inherit;
-}
-:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron) path:nth-child(1),
-.spot-link-icon.internal .chev-1{stroke:#c8dcfa}
-:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron) path:nth-child(2),
-.spot-link-icon.internal .chev-2{stroke:#8db8ef}
-:where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron) path:nth-child(3),
-.spot-link-icon.internal .chev-3{stroke:#3f8de4}
-:where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover :where(.ui-entity-ref-icon,.plan-ref-chevron,.route-ref-chevron,.spot-link-icon.internal){
-  transform:translateX(3px)
-}
-:where(.ui-entity-ref-card.is-disabled,.plan-main-route-card.is-disabled,.route-hero-ref-disabled){opacity:.58}
+.ui-entity-ref-icon path:nth-child(1){stroke:#c8dcfa}
+.ui-entity-ref-icon path:nth-child(2){stroke:#8db8ef}
+.ui-entity-ref-icon path:nth-child(3){stroke:#3f8de4}
+.ui-entity-ref-card:hover .ui-entity-ref-icon{transform:translateX(3px)}
+.ui-entity-ref-card.is-disabled{opacity:.58}
 @media(prefers-color-scheme:dark){
-  :where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card){background:linear-gradient(180deg,#202b3a,#202124);border-color:#3f5878}
-  :where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card):hover{background:#243449;border-color:#5879a4}
-  :where(.ui-entity-ref-card,.plan-main-route-card,.route-hero-ref,.spot-hero-related-card)>strong{color:#e8eaed}
+  .ui-entity-ref-card{background:linear-gradient(180deg,#202b3a,#202124);border-color:#3f5878}
+  .ui-entity-ref-card:hover{background:#243449;border-color:#5879a4}
+  .ui-entity-ref-title{color:#e8eaed}
 }
