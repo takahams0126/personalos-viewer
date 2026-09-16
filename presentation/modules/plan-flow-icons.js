@@ -2,59 +2,47 @@ import {
   renderTablerIcon,
   resolveDestinationIcon,
   resolveTransferIcon
-} from './icon-registry.js?v=20260915-14';
+} from './icon-registry.js';
 
-const planIconQs = new URLSearchParams(location.search);
-if (planIconQs.get('type') === 'plan') initPlanFlowIcons();
+const DESTINATION_SELECTOR = '.plan-axis .plan-axis-point > .flow-icon, .plan-axis .plan-axis-destination > .flow-icon';
+const TRANSFER_SELECTOR = '.plan-axis .plan-axis-transfer > .flow-icon';
 
-function destinationSemantics(item) {
-  const text = item.textContent || '';
-
-  // Match specific semantic entities before broad substrings.
-  // Example: "屋久島空港周辺レンタカー営業所" contains "空港" but is a rental_car_office.
-  if (text.includes('レンタカー営業所')) return {pointType:'rental_car_office'};
-  if (text.includes('自宅')) return {pointType:'home'};
-  if (text.includes('空港')) return {pointType:'airport'};
-  if (text.includes('宿泊') || text.includes('素泊民宿')) return {category:'lodging'};
-  if (text.includes('温泉')) return {category:'onsen'};
-  if (text.includes('夕食')) return {role:'dinner'};
-  if (text.includes('昼食')) return {role:'lunch'};
-
-  return {};
+function decorateDestination(icon){
+  if(icon.dataset.semanticIcon==='1')return;
+  const item=icon.closest('.flow-item');
+  const flowType=item?.dataset.flowType||'';
+  const pointType=item?.querySelector('.plan-axis-type')?.textContent?.trim()||'';
+  const title=item?.querySelector('.flow-title')?.textContent?.trim()||'';
+  let resolved='map-pin';
+  if(/自宅/.test(pointType)||/自宅/.test(title))resolved='home';
+  else if(/空港/.test(pointType)||/空港/.test(title))resolved='building-airport';
+  else if(/駅/.test(pointType)||/駅/.test(title))resolved='track';
+  else if(/レンタカー/.test(pointType)||/レンタカー/.test(title))resolved='building-store';
+  else resolved=resolveDestinationIcon({});
+  icon.innerHTML=renderTablerIcon(resolved,'plan-flow-svg');
+  icon.dataset.semanticIcon='1';
+  icon.dataset.flowType=flowType;
 }
 
-function transferModeFor(item) {
-  const text = item.textContent || '';
-  if (text.includes('飛行機')) return 'air';
-  if (text.includes('電車')) return 'train';
-  if (text.includes('徒歩')) return 'walk';
-  if (text.includes('バイク') || text.includes('モーターサイクル')) return 'motorbike';
-  if (text.includes('レンタカー') || text.includes('車＋登山アクセス')) return 'rental_car';
-  return 'default';
+function decorateTransfer(icon){
+  if(icon.dataset.semanticIcon==='1')return;
+  const item=icon.closest('.flow-item');
+  const text=item?.textContent||'';
+  let mode='';
+  if(/飛行機/.test(text))mode='air';
+  else if(/電車/.test(text))mode='train';
+  else if(/バス/.test(text))mode='bus';
+  else if(/レンタカー/.test(text))mode='rental_car';
+  else if(/徒歩/.test(text))mode='walk';
+  icon.innerHTML=renderTablerIcon(resolveTransferIcon(mode),'plan-flow-svg');
+  icon.dataset.semanticIcon='1';
 }
 
-function decoratePlanFlow(root=document) {
-  root.querySelectorAll('.plan-axis .plan-axis-point > .flow-icon, .plan-axis .plan-axis-destination > .flow-icon').forEach(icon => {
-    const item = icon.closest('.flow-item');
-    if (!item || icon.dataset.semanticIcon === '1') return;
-    icon.dataset.semanticIcon = '1';
-    const iconName = resolveDestinationIcon(destinationSemantics(item));
-    icon.innerHTML = renderTablerIcon(iconName, 'plan-destination-icon');
-  });
-
-  root.querySelectorAll('.plan-axis .plan-axis-transfer > .flow-icon').forEach(icon => {
-    const item = icon.closest('.flow-item');
-    if (!item || icon.dataset.semanticIcon === '1') return;
-    icon.dataset.semanticIcon = '1';
-    const iconName = resolveTransferIcon(transferModeFor(item));
-    icon.innerHTML = renderTablerIcon(iconName, 'plan-transfer-icon');
-  });
+function apply(){
+  document.querySelectorAll(DESTINATION_SELECTOR).forEach(decorateDestination);
+  document.querySelectorAll(TRANSFER_SELECTOR).forEach(decorateTransfer);
 }
 
-function initPlanFlowIcons() {
-  const app = document.querySelector('#app');
-  if (!app) return;
-  decoratePlanFlow(app);
-  const observer = new MutationObserver(() => decoratePlanFlow(app));
-  observer.observe(app, {childList:true, subtree:true});
-}
+apply();
+const observer=new MutationObserver(apply);
+observer.observe(document.documentElement,{childList:true,subtree:true});
