@@ -22,11 +22,7 @@ function matchingDestination(day, endpoint) {
 function applyNodeIcon(node, iconName, nodeKind) {
   if (!node || !iconName) return;
   node.classList.add('ui-flow-node', `ui-flow-node-${nodeKind}`);
-
-  // MutationObserver watches the Flow tree. Rewriting identical SVG markup would
-  // trigger the observer again forever, so icon decoration must be idempotent.
   if (node.dataset.uiFlowIcon === iconName && node.dataset.uiFlowKind === nodeKind && node.querySelector('svg')) return;
-
   node.dataset.uiFlowIcon = iconName;
   node.dataset.uiFlowKind = nodeKind;
   node.innerHTML = renderTablerIcon(
@@ -54,11 +50,7 @@ function decoratePlanDay(card, day) {
     if (flow.type === 'transfer') {
       applyNodeIcon(node, resolveTransferIcon(flow.mode), 'transfer');
     } else if (flow.type === 'destination') {
-      applyNodeIcon(
-        node,
-        resolveDestinationIcon(destinationSemantics(flow.destination_ref || {}, flow.role)),
-        'destination'
-      );
+      applyNodeIcon(node, resolveDestinationIcon(destinationSemantics(flow.destination_ref || {}, flow.role)), 'destination');
     }
   });
 }
@@ -77,11 +69,7 @@ function decorateExecutionDay(article, dayData) {
     if (flow.type === 'transfer') {
       applyNodeIcon(item.querySelector('.exec-transfer-node'), resolveTransferIcon(flow.mode), 'transfer');
     } else if (flow.type === 'destination') {
-      applyNodeIcon(
-        item.querySelector('.exec-destination-node'),
-        resolveDestinationIcon(destinationSemantics(flow.ref || {}, flow.role)),
-        'destination'
-      );
+      applyNodeIcon(item.querySelector('.exec-destination-node'), resolveDestinationIcon(destinationSemantics(flow.ref || {}, flow.role)), 'destination');
     }
   });
 }
@@ -97,22 +85,11 @@ async function initSharedFlowIcons() {
     if (c.ok) concrete = await c.json();
   } catch {}
 
-  const apply = () => {
-    const planCards = [...document.querySelectorAll('.plan-demo-itinerary .day-card')];
-    (planData?.plan?.days || []).forEach((day,index) => decoratePlanDay(planCards[index], day));
-    const concreteByDay = new Map((concrete?.days || []).map(day => [String(day.day),day]));
-    document.querySelectorAll('.execution-day').forEach(article => decorateExecutionDay(article, concreteByDay.get(article.dataset.day)));
-  };
+  const planCards = [...document.querySelectorAll('.plan-demo-itinerary .day-card')];
+  (planData?.plan?.days || []).forEach((day,index) => decoratePlanDay(planCards[index], day));
 
-  apply();
-  const app = document.querySelector('#app');
-  if (!app) return;
-  new MutationObserver(apply).observe(app, {
-    childList:true,
-    subtree:true,
-    attributes:true,
-    attributeFilter:['data-active-variant']
-  });
+  const concreteByDay = new Map((concrete?.days || []).map(day => [String(day.day),day]));
+  document.querySelectorAll('.execution-day').forEach(article => decorateExecutionDay(article, concreteByDay.get(article.dataset.day)));
 }
 
 if (type === 'plan' && id) initSharedFlowIcons();
