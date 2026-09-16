@@ -18,6 +18,41 @@ function factValue(fact, spot={}) {
   }
   return `<strong>${esc(fact?.value||'')}</strong>`;
 }
+function heroFacts(facts=[], spot={}) {
+  return facts.length ? `<div class="spot-hero-facts">${facts.map(x=>`<div><span>${esc(x.label)}</span>${factValue(x,spot)}</div>`).join('')}</div>` : '';
+}
+function relatedHeroCards(related=[]) {
+  return related.length ? `<div class="spot-hero-related"><span class="spot-hero-related-label">関連スポット</span><div class="spot-hero-related-grid">${related.map(x=>`<a class="spot-hero-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-hero-related-kind">関連Spot</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-arrow" aria-hidden="true">${internalLinkIcon()}</span></a>`).join('')}</div></div>` : '';
+}
+
+function makeSpotCollapsible(section, open=false) {
+  if (!section || section.dataset.spotCollapsible === '1') return;
+  const heading = section.querySelector(':scope > h2');
+  if (!heading) return;
+  section.dataset.spotCollapsible = '1';
+  section.classList.add('spot-collapsible');
+  const body = document.createElement('div');
+  body.className = 'spot-collapsible-body';
+  [...section.children].filter(x => x !== heading).forEach(x => body.appendChild(x));
+  section.appendChild(body);
+  heading.classList.add('spot-toggle-heading');
+  heading.setAttribute('role','button');
+  heading.setAttribute('tabindex','0');
+  const apply = nextOpen => {
+    section.classList.toggle('is-collapsed', !nextOpen);
+    body.hidden = !nextOpen;
+    heading.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+  };
+  const toggle = () => apply(heading.getAttribute('aria-expanded') !== 'true');
+  heading.addEventListener('click', toggle);
+  heading.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggle();
+    }
+  });
+  apply(open);
+}
 
 async function initSpotRenderer() {
   let data;
@@ -34,6 +69,8 @@ async function initSpotRenderer() {
     app.dataset.spotRendererAttached = '1';
     render(data, app);
     initCarousel(app);
+    const sections = [...app.querySelectorAll(':scope > .spot-demo-section')];
+    sections.forEach(section => makeSpotCollapsible(section, section.querySelector(':scope > h2')?.textContent.trim() === 'このスポットの魅力'));
     return true;
   };
   if (attach()) return;
@@ -69,11 +106,11 @@ function render(data, app) {
         <p class="spot-demo-summary">${esc(data.summary||'')}</p>
         ${chipList(s.themes||[])}
         ${heroLinks(links)}
+        ${relatedHeroCards(related)}
+        ${heroFacts(s.facts||[],s)}
       </div>
       ${galleryHtml(s.image_refs||[], data.title)}
     </section>
-
-    ${(s.facts||[]).length?`<section class="spot-demo-facts">${s.facts.map(x=>`<div><span>${esc(x.label)}</span>${factValue(x,s)}</div>`).join('')}</section>`:''}
 
     ${(s.highlights||[]).length|| (s.strengths||[]).length?`<section class="section spot-demo-section"><h2>このスポットの魅力</h2>${cards(s.highlights||[],'highlight')}${(s.strengths||[]).length?`<div class="spot-demo-sub"><h3>強み</h3>${list(s.strengths)}</div>`:''}</section>`:''}
 
@@ -81,11 +118,9 @@ function render(data, app) {
 
     ${(s.value_points||[]).length?`<section class="section spot-demo-section"><h2>選ぶ価値</h2>${cards(s.value_points||[],'value')}</section>`:''}
 
-    ${(reviews.positives||[]).length || (reviews.cautions||[]).length || (reviews.best_for||[]).length?`<section class="section spot-demo-section"><div class="spot-demo-review-head"><div><h2>口コミから見える評価</h2><p>正本に保存された口コミ要約を表示しています。</p></div>${reviews.checked_at?`<span>確認 ${esc(reviews.checked_at)}</span>`:''}</div><div class="spot-review-grid"><article class="spot-review-card positive"><h3>よく評価されている点</h3>${list(reviews.positives)}</article><article class="spot-review-card caution"><h3>気をつけたい点</h3>${list(reviews.cautions)}</article><article class="spot-review-card best"><h3>特に向いているケース</h3>${list(reviews.best_for)}</article></div></section>`:''}
+    ${(reviews.positives||[]).length || (reviews.cautions||[]).length || (reviews.best_for||[]).length?`<section class="section spot-demo-section"><h2>口コミから見える評価</h2><div class="spot-demo-review-head">${reviews.checked_at?`<span>確認 ${esc(reviews.checked_at)}</span>`:''}</div><div class="spot-review-grid"><article class="spot-review-card positive"><h3>よく評価されている点</h3>${list(reviews.positives)}</article><article class="spot-review-card caution"><h3>気をつけたい点</h3>${list(reviews.cautions)}</article><article class="spot-review-card best"><h3>特に向いているケース</h3>${list(reviews.best_for)}</article></div></section>`:''}
 
     ${(s.practicality||[]).length?`<section class="section spot-demo-section"><h2>利用情報</h2>${list(s.practicality||[])}</section>`:''}
-
-    ${related.length?`<section class="section spot-demo-section spot-related-section"><h2>組み合わせやすいスポット</h2><div class="spot-related-grid">${related.map(x=>`<a class="spot-related-card" href="?type=${encodeURIComponent(x.type||'spot')}&id=${encodeURIComponent(x.id||'')}"><span class="spot-related-kind">関連スポット</span><strong>${esc(x.label||x.id)}</strong><span class="spot-related-meta">${esc(x.relation_type==='good_pair'?'相性のよい組み合わせ':x.relation_type||'関連')}</span><span class="spot-related-arrow" aria-hidden="true">${internalLinkIcon()}</span></a>`).join('')}</div></section>`:''}
   `;
 }
 
