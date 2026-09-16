@@ -3,7 +3,7 @@ if(qs.get('type')==='plan'&&qs.get('id')) init();
 
 async function init(){
   const id=qs.get('id'); let spec;
-  try{const r=await fetch(`./data/_staging/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;spec=await r.json();}catch{return;}
+  try{const r=await fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});if(!r.ok)return;spec=await r.json();}catch{return;}
   const attach=()=>{const panel=document.querySelector('#execution-mode-panel');if(!panel||panel.dataset.feasibilityPocAttached)return false;panel.dataset.feasibilityPocAttached='1';for(const daySpec of spec.days||[])decorateDay(panel,Number(daySpec.day),daySpec);renderTripCostSummary(panel,spec.cost_summary);return true;};
   if(attach())return;const ob=new MutationObserver(()=>{if(attach())ob.disconnect();});ob.observe(document.querySelector('#app')||document.body,{childList:true,subtree:true});
 }
