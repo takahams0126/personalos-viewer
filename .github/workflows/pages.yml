@@ -39,6 +39,12 @@ jobs:
           if [ -d _generated/data ]; then
             cp -R _generated/data/. _site/data/
           fi
+          rm -f _site/data/plans/*-decisions.json
+          rm -f _site/data/concrete-plans/*-poc.json
+          mkdir -p _site/data/_staging/concrete-plans
+          if [ -d _generated/data/concrete-plans ]; then
+            cp -R _generated/data/concrete-plans/. _site/data/_staging/concrete-plans/
+          fi
           mkdir -p _site/_prototype
           cp -R _prototype/poc _site/_prototype/
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
