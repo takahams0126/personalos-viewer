@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Build staged presentation input
+        run: python tools/build_presentation_input.py
+
       - name: Build static site
         shell: bash
         env:
@@ -33,6 +36,10 @@ jobs:
           rm -rf _site
           mkdir _site
           cp -R index.html app.js style.css manifest.json data maps presentation _site/
+          if [ -d _generated/data/_staging ]; then
+            mkdir -p _site/data/_staging
+            cp -R _generated/data/_staging/. _site/data/_staging/
+          fi
           mkdir -p _site/_prototype
           cp -R _prototype/poc _site/_prototype/
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
