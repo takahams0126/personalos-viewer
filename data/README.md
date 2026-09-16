@@ -28,4 +28,8 @@ During Presentation normalization, temporary JSON may exist to preserve the appr
 - match the intended Public Projection semantics/shape as closely as possible;
 - be removable by replacing it with normal pipeline output without changing Presentation.
 
+Current temporary normalization files include `plans/<plan-id>-decisions.json` while Plan Day decision fields are being moved into the complete Plan Public Projection. These files are staging artifacts only and must disappear once the normal Plan projection emits the same structured data.
+
+The current `concrete-plans/*-detail-poc.json`, `*-feasibility-poc.json`, `*-fuel-poc.json`, `*-meta-poc.json` and `*-weather-poc.json` files are also migration inputs to be absorbed into complete ConcretePlan Public Projection JSON. They are not separate target contracts.
+
 Temporary validation data must not become a second canonical model.
