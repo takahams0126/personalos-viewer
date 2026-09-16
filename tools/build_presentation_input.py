@@ -7,6 +7,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONCRETE_DATA = ROOT / "data" / "concrete-plans"
 PLAN_DATA = ROOT / "data" / "plans"
+VALIDATION_DATA = ROOT / "_prototype" / "ui-validation" / "data"
+CONCRETE_AUX = VALIDATION_DATA / "concrete-plans"
+PLAN_AUX = VALIDATION_DATA / "plans"
 OUT_CONCRETE = ROOT / "_generated" / "data" / "concrete-plans"
 OUT_PLANS = ROOT / "_generated" / "data" / "plans"
 
@@ -105,11 +108,11 @@ def strip_source_meta(value: dict) -> dict:
 
 def build_concrete(base_path: Path) -> dict:
     entity_id = base_path.stem; base = load(base_path, {})
-    detail = load(CONCRETE_DATA / f"{entity_id}-detail-poc.json", {})
-    feasibility = load(CONCRETE_DATA / f"{entity_id}-feasibility-poc.json", {})
-    fuel = load(CONCRETE_DATA / f"{entity_id}-fuel-poc.json", {})
-    weather = load(CONCRETE_DATA / f"{entity_id}-weather-poc.json", {})
-    meta = load(CONCRETE_DATA / f"{entity_id}-meta-poc.json", {})
+    detail = load(CONCRETE_AUX / f"{entity_id}-detail-poc.json", {})
+    feasibility = load(CONCRETE_AUX / f"{entity_id}-feasibility-poc.json", {})
+    fuel = load(CONCRETE_AUX / f"{entity_id}-fuel-poc.json", {})
+    weather = load(CONCRETE_AUX / f"{entity_id}-weather-poc.json", {})
+    meta = load(CONCRETE_AUX / f"{entity_id}-meta-poc.json", {})
     concrete = merge_feasibility_flow(merge_fuel_flow(merge_detail(base, detail), fuel), feasibility)
     weather_by_day = weather.get("days") or {}; feasibility_by_day = feasibility.get("days") or {}
     for day in concrete.get("days") or []:
@@ -122,7 +125,7 @@ def build_concrete(base_path: Path) -> dict:
 def build_plan(base_path: Path) -> dict:
     entity_id = base_path.stem
     out = copy.deepcopy(load(base_path, {}))
-    decisions = load(PLAN_DATA / f"{entity_id}-decisions.json", {})
+    decisions = load(PLAN_AUX / f"{entity_id}-decisions.json", {})
     by_day = decisions.get("day_decisions") or {}
     for day in (out.get("plan") or {}).get("days") or []:
         decision = by_day.get(str(int(day.get("day") or 0))) or {}
@@ -136,13 +139,10 @@ def build_plan(base_path: Path) -> dict:
 def main():
     OUT_CONCRETE.mkdir(parents=True, exist_ok=True); OUT_PLANS.mkdir(parents=True, exist_ok=True)
     for base_path in sorted(CONCRETE_DATA.glob("*.json")):
-        stem = base_path.stem
-        if any(stem.endswith(s) for s in ("-detail-poc","-feasibility-poc","-fuel-poc","-meta-poc","-weather-poc")): continue
         target = OUT_CONCRETE / base_path.name
         target.write_text(json.dumps(build_concrete(base_path), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
         print(target.relative_to(ROOT))
     for base_path in sorted(PLAN_DATA.glob("*.json")):
-        if base_path.stem.endswith("-decisions"): continue
         target = OUT_PLANS / base_path.name
         target.write_text(json.dumps(build_plan(base_path), ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
         print(target.relative_to(ROOT))
