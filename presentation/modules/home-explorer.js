@@ -4,7 +4,7 @@ if (!params.get('type') && !params.get('id')) initHomeExplorer();
 async function initHomeExplorer(){
   let catalog;
   try{
-    const r=await fetch('./data/home-catalog.json',{cache:'no-store'});
+    const r=await fetch('./manifest.json',{cache:'no-store'});
     if(!r.ok)return;
     catalog=await r.json();
   }catch{return;}
