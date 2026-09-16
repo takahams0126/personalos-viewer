@@ -7,6 +7,8 @@
 
 /* Shared components. */
 @import url('./shared/collapsible-section.css');
+@import url('./shared/entity-reference.css');
+@import url('./shared/hero-facts.css');
 @import url('./shared/flow-icons.css');
 
 /* Page / feature presentation. Legacy modules remain intact during staged refactor. */
