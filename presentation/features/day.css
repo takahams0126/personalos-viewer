@@ -1,0 +1,25 @@
+/* Canonical Day presentation feature. */
+.day-card{position:relative;overflow:hidden;padding:22px;margin:17px 0;background:var(--surface);border:1px solid #cfd8e0;border-radius:20px;box-shadow:0 5px 20px rgba(60,64,67,.11)}
+.day-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--blue),#34a853)}
+.day-head{display:grid;grid-template-columns:92px 1fr;gap:18px;align-items:start}
+.day-head h3{margin:0;font-size:1.13rem}
+.day-head p{margin:.35rem 0 0;color:var(--text-soft)}
+.day-number{font-weight:900;color:#fff;background:linear-gradient(135deg,var(--blue),#4285f4);border-radius:14px;padding:9px 11px;text-align:center;box-shadow:0 3px 10px rgba(26,115,232,.22)}
+.day-time{margin:14px 0}
+.day-constraints{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.day-constraints span{font-size:.82rem;color:var(--text-soft)}
+.day-endpoints{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:11px 13px;background:#f1f4f6;border:1px solid #d8dfe5;border-radius:12px;margin-bottom:10px}
+.day-endpoints>span{color:var(--orange);font-weight:900}
+
+@media(max-width:640px){
+  .day-card{padding:17px}
+  .day-head{grid-template-columns:1fr;gap:9px}
+  .day-number{width:max-content}
+}
+
+@media(prefers-color-scheme:dark){
+  .day-card{background:#202124;border-color:#3c4043}
+  .day-endpoints{background:#292a2d;border-color:#3c4043}
+  .day-head p{color:#bdc1c6}
+  .day-card::before{opacity:.9}
+}
