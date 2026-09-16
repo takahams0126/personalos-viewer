@@ -1,9 +1,10 @@
 /* Formal Leisure Presentation stylesheet entrypoint.
    Import order is intentional: base -> shared -> page-specific modules. */
 
-/* Base: page-agnostic tokens and shell only. */
+/* Base: page-agnostic tokens, shell and primitives. */
 @import url('./base/tokens.css');
 @import url('./base/shell.css');
+@import url('./base/primitives.css');
 
 /* Shared components. */
 @import url('./shared/hero.css');
