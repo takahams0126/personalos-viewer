@@ -127,7 +127,6 @@
     "3": {
       "date": "2026-10-21",
       "weekday":"水",
-      "purpose_override":"天候予備日。雨なら20日/22日のトレッキングを振替",
       "day_of_checks": [
         {"kind":"weather","label":"Day2 / Day4 山岳天候の比較","status":"unconfirmed"},
         {"kind":"decision","label":"縄文杉・白谷雲水峡の振替要否","status":"unconfirmed"}
