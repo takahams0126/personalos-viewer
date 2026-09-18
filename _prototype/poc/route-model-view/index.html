@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RouteModel View PoC</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=2">
 </head>
 <body>
   <div class="poc-shell">
@@ -21,11 +21,11 @@
       <p class="poc-context-note">この3ビューの切替自体はConcretePlan Dayの責務。このPoCではルート詳細Rendererのみを検証します。</p>
     </header>
 
-    <main id="route-model-root" data-view-model="./data/RM001.view.json" aria-live="polite">
+    <main id="route-model-root" data-view-model="./data/RM001.view.json?v=2" aria-live="polite">
       <p class="poc-loading">ルート詳細を読み込み中…</p>
     </main>
   </div>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=2"></script>
 </body>
 </html>
