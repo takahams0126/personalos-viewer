@@ -22,7 +22,6 @@ function matchingDestination(day, endpoint) {
 function applyNodeIcon(node, iconName, nodeKind) {
   if (!node || !iconName) return;
   node.classList.add('ui-flow-node', `ui-flow-node-${nodeKind}`);
-  if (node.dataset.uiFlowIcon === iconName && node.dataset.uiFlowKind === nodeKind && node.querySelector('svg')) return;
   node.dataset.uiFlowIcon = iconName;
   node.dataset.uiFlowKind = nodeKind;
   node.innerHTML = renderTablerIcon(
@@ -55,41 +54,15 @@ function decoratePlanDay(card, day) {
   });
 }
 
-function activeExecutionVariant(dayData, article) {
-  const variantId = article?.dataset.activeVariant;
-  return (dayData?.variants || []).find(v => v.id === variantId) || (dayData?.variants || [])[0];
-}
-
-function decorateExecutionDay(article, dayData) {
-  const variant = activeExecutionVariant(dayData, article);
-  if (!variant) return;
-  const items = [...article.querySelectorAll('.exec-flow > .exec-flow-item')];
-  (variant.flow || []).forEach((flow,index) => {
-    const item = items[index]; if (!item) return;
-    if (flow.type === 'transfer') {
-      applyNodeIcon(item.querySelector('.exec-transfer-node'), resolveTransferIcon(flow.mode), 'transfer');
-    } else if (flow.type === 'destination') {
-      applyNodeIcon(item.querySelector('.exec-destination-node'), resolveDestinationIcon(destinationSemantics(flow.ref || {}, flow.role)), 'destination');
-    }
-  });
-}
-
-async function initSharedFlowIcons() {
-  let planData = null, concrete = null;
+async function initPlanFlowIcons() {
+  let planData = null;
   try {
-    const [p,c] = await Promise.all([
-      fetch(`./data/plans/${encodeURIComponent(id)}.json`,{cache:'no-store'}),
-      fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`,{cache:'no-store'})
-    ]);
-    if (p.ok) planData = await p.json();
-    if (c.ok) concrete = await c.json();
+    const response = await fetch(`./data/plans/${encodeURIComponent(id)}.json`,{cache:'no-store'});
+    if (response.ok) planData = await response.json();
   } catch {}
 
   const planCards = [...document.querySelectorAll('.plan-demo-itinerary .day-card')];
   (planData?.plan?.days || []).forEach((day,index) => decoratePlanDay(planCards[index], day));
-
-  const concreteByDay = new Map((concrete?.days || []).map(day => [String(day.day),day]));
-  document.querySelectorAll('.execution-day').forEach(article => decorateExecutionDay(article, concreteByDay.get(article.dataset.day)));
 }
 
-if (type === 'plan' && id) initSharedFlowIcons();
+if (type === 'plan' && id) initPlanFlowIcons();
