@@ -41,6 +41,26 @@ jobs:
           fi
           mkdir -p _site/_prototype
           cp -R _prototype/poc _site/_prototype/
+
+          # Viewer v2 injects the browser key directly into its Google Maps adapter.
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path('_site/viewer/shared/google-map.js')
+          source = path.read_text(encoding='utf-8')
+          marker = "const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';"
+          if source.count(marker) != 1:
+              raise RuntimeError('Google Maps API key injection marker is missing or duplicated.')
+
+          key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+          replacement = f'const GOOGLE_MAPS_API_KEY = {json.dumps(key)};'
+          path.write_text(source.replace(marker, replacement), encoding='utf-8')
+          PY
+
+          # Legacy Viewer compatibility (index.html / app.js).
+          # TODO: Remove config.js generation when the legacy Viewer path is retired.
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
           touch _site/.nojekyll
 

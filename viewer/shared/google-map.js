@@ -1,3 +1,5 @@
+const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';
+
 let googleMapsPromise;
 
 export function buildGoogleMapsSearchUrl({ name = '', placeId = '' } = {}) {
@@ -58,7 +60,7 @@ export async function renderGoogleMap({
 } = {}) {
   if (!element) throw new Error('Google Maps element is required.');
 
-  const key = window.PERSONALOS_CONFIG?.googleMapsApiKey || '';
+  const key = GOOGLE_MAPS_API_KEY === '__GOOGLE_MAPS_API_KEY__' ? '' : GOOGLE_MAPS_API_KEY;
   if (!key) {
     element.style.display = 'none';
     setMessage(messageElement, 'Google Maps API key 未設定。');
