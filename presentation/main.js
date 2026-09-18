@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260918-execution-day-header-1';
+const PRESENTATION_VERSION = '20260918-shared-day-badges-1';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
