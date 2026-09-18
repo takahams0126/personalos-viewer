@@ -1,6 +1,7 @@
 import { resolveRequest } from './core/request.js';
 import { loadStyle } from './shared/load-style.js';
 import { renderError } from './shared/error-view.js';
+import { renderBreadcrumb } from './shared/navigation.js';
 
 const pageLoaders = {
   top: () => import('./top/top.js'),
@@ -14,8 +15,9 @@ export async function main() {
   loadStyle(new URL('./shared/main.css', import.meta.url).href);
 
   const request = resolveRequest();
-  const loader = pageLoaders[request.type];
+  renderBreadcrumb(request);
 
+  const loader = pageLoaders[request.type];
   if (!loader) {
     throw new Error(`Unsupported viewer page type: ${request.type}`);
   }

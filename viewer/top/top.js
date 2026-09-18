@@ -1,5 +1,6 @@
 import { loadManifest } from '../core/data.js';
 import { loadStyle } from '../shared/load-style.js';
+import { buildViewerHref } from '../shared/navigation.js';
 
 const TYPE_LABELS = { plan: 'プラン', route: 'ルート', spot: 'スポット' };
 const CATEGORY_LABELS = {
@@ -17,11 +18,9 @@ export async function render() {
   loadStyle(new URL('./top.css', import.meta.url).href);
   const catalog = await loadManifest();
   const app = document.querySelector('#app');
-  const breadcrumb = document.querySelector('#breadcrumb');
   if (!app) return;
 
   document.title = 'PersonalOS Leisure';
-  if (breadcrumb) breadcrumb.innerHTML = '';
 
   app.innerHTML = `
     <section class="ui-entity-hero">
@@ -112,7 +111,7 @@ function categoryLabel(value) {
 }
 
 function cardHtml(item) {
-  const href = `./index2.html?type=${encodeURIComponent(item.type)}&id=${encodeURIComponent(item.id)}`;
+  const href = buildViewerHref({ type: item.type, id: item.id });
   const image = item.image_url
     ? `<div class="explorer-thumb"><img src="${esc(item.image_url)}" alt="" loading="lazy" onerror="this.parentElement.remove()"></div>`
     : '';
