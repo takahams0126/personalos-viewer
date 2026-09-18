@@ -6,15 +6,16 @@
   display:grid!important;place-items:center!important;font-size:0!important;position:relative;z-index:2;
 }
 .ui-flow-node-transfer{
-  width:18px!important;height:18px!important;margin-left:9px!important;border:0!important;
+  width:18px!important;height:18px!important;margin:0 0 0 9px!important;border:0!important;
   border-radius:0!important;background:transparent!important;color:#7b8187!important;
   box-shadow:none!important;font-size:0!important;display:grid!important;place-items:center!important;
 }
+.ui-flow-node::after{content:none!important}
 .leisure-tabler-icon.ui-flow-icon{display:block!important;fill:none!important;stroke:currentColor!important;color:inherit!important;opacity:1!important;visibility:visible!important}
 .leisure-tabler-icon.ui-flow-icon-destination{width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;color:#1a73e8!important;stroke:#1a73e8!important}
 .leisure-tabler-icon.ui-flow-icon-transfer{width:17px!important;height:17px!important;min-width:17px!important;min-height:17px!important;color:#7b8187!important;stroke:#7b8187!important}
 
-/* Keep both Plan and Execution on the same visual spine grammar. */
+/* Plan and ConcretePlan share the same visual spine grammar. */
 .exec-flow::before{background:#dfe3e7!important}
 .exec-flow-item.exec-transfer{min-height:30px!important;padding-top:4px!important;padding-bottom:4px!important}
 
