@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260918-shared-semantics-1';
+const PRESENTATION_VERSION = '20260918-shared-flow-icons-2';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
