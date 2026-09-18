@@ -11,12 +11,12 @@ function assertViewModel(model) {
   if (!model || model.type !== 'route-model-view') {
     throw new Error('Expected route-model-view input.');
   }
-  if (!model.title || !Array.isArray(model.metrics) || !Array.isArray(model.sections)) {
+  if (!model.title || !Array.isArray(model.metrics) || !Array.isArray(model.waypoints)) {
     throw new Error('RouteModel ViewModel is missing required presentation fields.');
   }
-  for (const section of model.sections) {
-    if (!section?.key || !section?.label || !Array.isArray(section.waypoints)) {
-      throw new Error('RouteModel ViewModel has an invalid section.');
+  for (const waypoint of model.waypoints) {
+    if (!waypoint?.id || !waypoint?.label || !waypoint?.time?.primary) {
+      throw new Error('RouteModel ViewModel has an invalid waypoint.');
     }
   }
 }
@@ -35,42 +35,43 @@ function renderMetrics(metrics) {
 }
 
 function renderBadges(badges = []) {
-  if (!badges.length) return '';
-  return `
-    <div class="waypoint-badges">
-      ${badges.map((badge) => `<span class="waypoint-badge">${escapeHtml(badge)}</span>`).join('')}
-    </div>
-  `;
+  return badges
+    .map((badge) => `<span class="waypoint-badge">${escapeHtml(badge)}</span>`)
+    .join('');
 }
 
 function renderWaypoint(waypoint) {
-  const segment = waypoint.segment_from_previous
-    ? `<span class="waypoint-segment">+${escapeHtml(waypoint.segment_from_previous)}</span>`
+  const phase = waypoint.phase_label
+    ? `<span class="waypoint-phase">${escapeHtml(waypoint.phase_label)}</span>`
+    : '';
+  const secondaryTime = waypoint.time.secondary
+    ? `<span class="waypoint-time-secondary">${escapeHtml(waypoint.time.secondary)}</span>`
+    : '';
+  const segment = waypoint.next_segment?.duration
+    ? `
+      <div class="waypoint-segment" aria-label="次の地点まで${escapeHtml(waypoint.next_segment.duration)}">
+        <span aria-hidden="true">↓</span>
+        <strong>${escapeHtml(waypoint.next_segment.duration)}</strong>
+      </div>
+    `
     : '';
 
   return `
     <li class="route-waypoint">
       <div class="waypoint-time">
-        <strong>${escapeHtml(waypoint.elapsed)}</strong>
-        ${segment}
+        <strong>${escapeHtml(waypoint.time.primary)}</strong>
+        ${secondaryTime}
       </div>
       <div class="waypoint-track" aria-hidden="true"><span></span></div>
       <div class="waypoint-body">
-        <div class="waypoint-label">${escapeHtml(waypoint.label)}</div>
-        ${renderBadges(waypoint.badges)}
+        ${phase}
+        <div class="waypoint-main">
+          <span class="waypoint-label">${escapeHtml(waypoint.label)}</span>
+          ${renderBadges(waypoint.badges)}
+        </div>
       </div>
+      ${segment}
     </li>
-  `;
-}
-
-function renderSection(section) {
-  return `
-    <section class="route-section route-section--${escapeHtml(section.key)}">
-      <h3>${escapeHtml(section.label)}</h3>
-      <ol class="route-waypoints">
-        ${section.waypoints.map(renderWaypoint).join('')}
-      </ol>
-    </section>
   `;
 }
 
@@ -94,10 +95,25 @@ function renderNotes(notes = []) {
   `;
 }
 
+function renderTimeAxis(timeAxis) {
+  if (!timeAxis?.label) return '';
+  const start = timeAxis.start_at
+    ? `<span class="route-time-start">${escapeHtml(timeAxis.start_at)} 開始</span>`
+    : '';
+  return `
+    <div class="route-time-axis">
+      <span>${escapeHtml(timeAxis.label)}</span>
+      ${start}
+      <small>地点間は次の地点までの所要時間</small>
+    </div>
+  `;
+}
+
 /**
  * Render a presentation-ready RouteModel ViewModel.
+ * Absolute/relative time resolution is completed before this renderer runs.
  * The renderer intentionally does not interpret Canonical RouteModel fields,
- * ConcretePlan timing, provider-specific payloads, or route-specific IDs.
+ * ConcretePlan execution rules, provider-specific payloads, or route-specific IDs.
  * @param {object} model
  * @returns {string}
  */
@@ -120,10 +136,11 @@ export function renderRouteModel(model) {
       </header>
 
       ${renderMetrics(model.metrics)}
+      ${renderTimeAxis(model.time_axis)}
 
-      <div class="route-sections">
-        ${model.sections.map(renderSection).join('')}
-      </div>
+      <ol class="route-waypoints">
+        ${model.waypoints.map(renderWaypoint).join('')}
+      </ol>
 
       ${renderNotes(model.notes)}
     </article>
