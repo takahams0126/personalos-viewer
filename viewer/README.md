@@ -9,7 +9,7 @@ viewer/
 ├─ main.js                 # composition root: request → primary entity → one page
 ├─ core/
 │  ├─ request.js           # URL/request parsing
-│  └─ data.js              # data access / entity paths
+│  └─ data.js              # all Viewer JSON data access / entity paths
 ├─ shared/                 # cross-page presentation + provider adapters
 ├─ top/
 ├─ spot/
@@ -27,7 +27,8 @@ viewer/main.js
   ↓ load primary entity exactly once
 page.render({ request, data })
   ↓
-page-specific render + explicit shared helpers / supplemental artifacts
+page-specific render
+  └─ optional supplemental JSON via core/data.js::loadJson()
 ```
 
 `viewer/**` is the Modern Zone. `index.html`, `app.js`, and `presentation/**` are the retained Legacy Zone while migration is incomplete. Do not use legacy implementation patterns as guidance for new Viewer code.

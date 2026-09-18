@@ -1,3 +1,4 @@
+import { loadJson } from '../core/data.js';
 import {
   escapeHtml,
   makeCollapsible,
@@ -121,12 +122,6 @@ function joinRouteMapPoints(mapArtifact, sequence = []) {
   });
 }
 
-async function loadMapArtifact(path) {
-  const response = await fetch(path, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`${path}: ${response.status}`);
-  return response.json();
-}
-
 async function initRouteMap(data, request) {
   const mapSpec = data?.map;
   if (!mapSpec?.points_json) return;
@@ -136,7 +131,7 @@ async function initRouteMap(data, request) {
   if (!element) return;
 
   try {
-    const artifact = await loadMapArtifact(mapSpec.points_json);
+    const artifact = await loadJson(mapSpec.points_json);
     const points = joinRouteMapPoints(artifact, data.route?.sequence || []);
 
     await renderGoogleMap({

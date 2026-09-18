@@ -4,6 +4,35 @@ const MOBILE_BREAKPOINT = 640;
 const EDGE_GAP = 12;
 const ANCHOR_GAP = 18;
 
+/**
+ * @typedef {Object} MapPopupMetaItem
+ * @property {string} label
+ * @property {string} value
+ */
+
+/**
+ * @typedef {Object} MapPopupAction
+ * @property {'primary'|'secondary'} [kind]
+ * @property {string} label
+ * @property {string} href
+ * @property {boolean} [external]
+ */
+
+/**
+ * Provider-neutral popup content contract shared by conceptual and actual-road maps.
+ * Domain/page code decides what to show; this module only presents the supplied data.
+ *
+ * @typedef {Object} MapPopupData
+ * @property {string} [title]
+ * @property {string} [summary]
+ * @property {MapPopupMetaItem[]} [meta]
+ * @property {MapPopupAction[]} [actions]
+ */
+
+/**
+ * @param {MapPopupData} [data]
+ * @returns {{title:string,summary:string,meta:MapPopupMetaItem[],actions:Array<{kind:'primary'|'secondary',label:string,href:string,external:boolean}>}}
+ */
 function normalizePopupData(data = {}) {
   return {
     title: String(data.title || ''),
@@ -71,6 +100,10 @@ function createPopupDom(onClose) {
   return { root, title, body, summary, meta, actions };
 }
 
+/**
+ * @param {{title:HTMLElement,body:HTMLElement,summary:HTMLElement,meta:HTMLElement,actions:HTMLElement}} parts
+ * @param {MapPopupData} rawData
+ */
 function renderPopupData(parts, rawData) {
   const data = normalizePopupData(rawData);
   parts.title.textContent = data.title;
@@ -117,6 +150,12 @@ function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
 
+/**
+ * Create the shared Google Maps popup adapter.
+ *
+ * @param {{maps:Object,map:Object}} options
+ * @returns {Object}
+ */
 export function createGoogleMapPopup({ maps, map } = {}) {
   if (!maps?.OverlayView || !maps?.LatLng || !map) {
     throw new Error('Google Maps OverlayView and map are required.');
@@ -201,6 +240,9 @@ export function createGoogleMapPopup({ maps, map } = {}) {
       this.parts.root.remove();
     }
 
+    /**
+     * @param {{position:Object,data?:MapPopupData}} [options]
+     */
     open({ position, data } = {}) {
       if (!position) return;
       this.position = position instanceof maps.LatLng

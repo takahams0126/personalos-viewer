@@ -31,10 +31,12 @@ viewer/main.js
   └─ page.render({ request, data })
         ↓
       page module
-        ↓
-      explicit shared helpers / supplemental artifacts
-        ↓
-      complete render
+        ├─ presentation / interaction
+        └─ optional loadJson() for supplemental artifacts
+              ↓
+            shared helpers / provider adapters
+              ↓
+            complete render
 ```
 
 ### Responsibilities
@@ -48,14 +50,35 @@ viewer/main.js
 - `viewer/core/request.js`
   - parse Viewer request state from the URL
 - `viewer/core/data.js`
-  - generic data access and entity path resolution
+  - own HTTP/JSON data access and entity path resolution
+  - expose `loadEntity()` for the composition root
+  - expose `loadJson()` for supplemental artifacts
 - `viewer/<page>/`
   - page-specific presentation and interaction
   - decide which supplemental artifacts are needed
-  - must not refetch its primary entity
+  - consume primary data passed through `page.render({ request, data })`
+  - use `loadJson()` rather than raw `fetch()` for supplemental JSON
 - `viewer/shared/`
   - cross-page presentation components, navigation, provider adapters, and reusable UI behavior
   - must not contain Spot/Route/Plan/ConcretePlan domain branching
+
+## Data access ownership
+
+```text
+Primary entity
+  viewer/main.js
+    ↓ loadEntity(type, id)
+  viewer/core/data.js
+    ↓
+  page.render({ request, data })
+
+Supplemental artifact
+  page module decides what it needs
+    ↓ loadJson(path)
+  viewer/core/data.js
+```
+
+`loadEntity()` has one runtime owner: `viewer/main.js`. `entityPath()` remains infrastructure owned by `viewer/core/data.js`. Page modules do not call either function and do not use raw `fetch()`.
 
 ## Dependency rules
 
@@ -74,6 +97,54 @@ core   ↛ page
 core   ↛ shared presentation
 ```
 
+## Public contracts
+
+### ViewerRequest
+
+Resolved once by `viewer/core/request.js` and passed down from the composition root.
+
+```js
+{
+  type: string,
+  id: string | null,
+  trail: Array<{ type: string, id: string }>
+}
+```
+
+Page modules consume this object and do not reinterpret the URL.
+
+### Page module
+
+Every page module exposes the same entry contract:
+
+```js
+render({ request, data })
+```
+
+- `request`: resolved `ViewerRequest`
+- `data`: primary entity loaded by `viewer/main.js`, or `null` for TOP
+- page-specific supplemental artifacts may be loaded explicitly through `viewer/core/data.js::loadJson()`
+
+### MapPopupData
+
+Map callers decide what content/actions exist. Shared map presentation decides only how they are rendered.
+
+```js
+{
+  title?: string,
+  summary?: string,
+  meta?: Array<{ label: string, value: string }>,
+  actions?: Array<{
+    kind?: 'primary' | 'secondary',
+    label: string,
+    href: string,
+    external?: boolean
+  }>
+}
+```
+
+This contract is intentionally Route-independent so conceptual maps and actual-road maps can share the same popup presentation.
+
 ## Modern Zone guard rules
 
 The CI Architecture Guard currently protects `viewer/**` and `index2.html` only.
@@ -88,6 +159,9 @@ The following patterns are prohibited in the Modern Zone:
 6. Modern code must not use `MutationObserver` as a bootstrap/wait-for-render mechanism.
 7. Modern modules must not self-bootstrap by registering page startup through `DOMContentLoaded` or `window.onload`; startup belongs to `viewer/main.js` / `index2.html`.
 8. Modern code must not import from legacy `app.js` or `presentation/**`.
+9. `index2.html` must load `viewer/main.js` exactly once as an ES module and must not load legacy `app.js`, `config.js`, or `presentation/**` scripts.
+10. `loadEntity()` has exactly one runtime owner in the Modern Zone: `viewer/main.js`. `entityPath()` remains inside `viewer/core/data.js`.
+11. Page modules must not call raw `fetch()`. Supplemental JSON access goes through `viewer/core/data.js::loadJson()`.
 
 The guard is intentionally scoped to the Modern Zone during migration. Existing legacy patterns are not CI failures yet.
 

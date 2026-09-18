@@ -4,6 +4,21 @@ import { loadStyle } from './shared/load-style.js';
 import { renderError } from './shared/error-view.js';
 import { renderBreadcrumb } from './shared/navigation.js';
 
+/**
+ * Public contract between the composition root and every Viewer page module.
+ * TOP receives data=null; entity pages receive their primary entity exactly once.
+ *
+ * @typedef {Object} ViewerPageContext
+ * @property {{type:string,id:string|null,trail:Array<{type:string,id:string}>}} request
+ * @property {Object|null} data
+ */
+
+/**
+ * @typedef {Object} ViewerPageModule
+ * @property {(context: ViewerPageContext) => (void|Promise<void>)} render
+ */
+
+/** @type {Record<string, () => Promise<ViewerPageModule>>} */
 const pageLoaders = {
   top: () => import('./top/top.js'),
   spot: () => import('./spot/spot.js'),

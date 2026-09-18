@@ -78,6 +78,35 @@ def check_migration_registry() -> list[Violation]:
     return violations
 
 
+def check_entrypoint_integrity() -> list[Violation]:
+    entry = ROOT / "index2.html"
+    if not entry.exists():
+        return [Violation("MODERN-009", entry, "Modern Viewer entrypoint index2.html is missing.", "Restore index2.html as the Modern Viewer entrypoint.")]
+
+    text = read(entry)
+    script_tags = re.findall(r"<script\b[^>]*>", text, flags=re.IGNORECASE)
+    main_tags = [tag for tag in script_tags if re.search(r"\bsrc=['\"](?:\./)?viewer/main\.js['\"]", tag, flags=re.IGNORECASE)]
+    violations: list[Violation] = []
+
+    if len(main_tags) != 1:
+        violations.append(Violation("MODERN-009", entry, f"index2.html must load viewer/main.js exactly once; found {len(main_tags)} references.", "Keep exactly one <script type=\"module\" src=\"./viewer/main.js\"></script> entrypoint."))
+    elif not re.search(r"\btype=['\"]module['\"]", main_tags[0], flags=re.IGNORECASE):
+        violations.append(Violation("MODERN-009", entry, "viewer/main.js is not loaded as an ES module.", "Load viewer/main.js with <script type=\"module\">."))
+
+    forbidden: list[str] = []
+    for tag in script_tags:
+        match = re.search(r"\bsrc=['\"]([^'\"]+)['\"]", tag, flags=re.IGNORECASE)
+        if not match:
+            continue
+        src = match.group(1).split("?", 1)[0].split("#", 1)[0].lstrip("./")
+        if src in {"app.js", "config.js"} or src.startswith("presentation/"):
+            forbidden.append(match.group(1))
+
+    if forbidden:
+        violations.append(Violation("MODERN-009", entry, f"Modern entrypoint loads legacy scripts: {', '.join(forbidden)}", "Keep legacy scripts on index.html only; index2.html must enter through viewer/main.js."))
+    return violations
+
+
 def check_page_url_parsing(path: Path, text: str) -> list[Violation]:
     parts = path.relative_to(VIEWER).parts
     if not parts or parts[0] not in PAGE_DIRS:
@@ -101,6 +130,40 @@ def check_primary_entity_fetch(path: Path, text: str) -> list[Violation]:
     ]
     if any(re.search(pattern, compact) for pattern in patterns):
         return [Violation("MODERN-002", path, f"Page '{page}' appears to load its own primary entity.", "Primary entity data must be loaded once by viewer/main.js and passed to page.render({ request, data }).")]
+    return []
+
+
+def check_primary_loader_ownership() -> list[Violation]:
+    main_path = VIEWER / "main.js"
+    data_path = VIEWER / "core" / "data.js"
+    if not main_path.exists():
+        return [Violation("MODERN-010", main_path, "viewer/main.js is missing.", "Restore viewer/main.js as the composition root and primary entity loader owner.")]
+
+    text = read(main_path)
+    violations: list[Violation] = []
+    import_pattern = r"import\s*\{[^}]*\bloadEntity\b[^}]*\}\s*from\s*['\"]\./core/data\.js['\"]"
+    if not re.search(import_pattern, text, flags=re.DOTALL):
+        violations.append(Violation("MODERN-010", main_path, "viewer/main.js does not import loadEntity from viewer/core/data.js.", "Import loadEntity from ./core/data.js and keep primary entity loading in viewer/main.js."))
+
+    call_count = len(re.findall(r"\bloadEntity\s*\(", text))
+    if call_count != 1:
+        violations.append(Violation("MODERN-010", main_path, f"viewer/main.js must call loadEntity exactly once in the normal path; found {call_count} calls.", "Keep one primary load in viewer/main.js and pass the result to page.render({ request, data })."))
+
+    for path in js_files():
+        if path in {main_path, data_path}:
+            continue
+        module_text = read(path)
+        if re.search(r"\b(?:loadEntity|entityPath)\s*\(", module_text):
+            violations.append(Violation("MODERN-010", path, "Primary entity/path infrastructure is called outside viewer/main.js or viewer/core/data.js.", "Use page.render({ request, data }) for primary data. Use loadJson() only for supplemental artifacts."))
+    return violations
+
+
+def check_page_raw_fetch(path: Path, text: str) -> list[Violation]:
+    parts = path.relative_to(VIEWER).parts
+    if not parts or parts[0] not in PAGE_DIRS:
+        return []
+    if re.search(r"\bfetch\s*\(", text):
+        return [Violation("MODERN-011", path, "Page module performs raw fetch().", "Use viewer/core/data.js loadJson() for supplemental artifacts; primary entity data comes from viewer/main.js.")]
     return []
 
 
@@ -158,11 +221,14 @@ def check_bootstrap_patterns(path: Path, text: str) -> list[Violation]:
 
 def main() -> int:
     violations = check_migration_registry()
+    violations.extend(check_entrypoint_integrity())
+    violations.extend(check_primary_loader_ownership())
 
     for path in js_files():
         text = read(path)
         violations.extend(check_page_url_parsing(path, text))
         violations.extend(check_primary_entity_fetch(path, text))
+        violations.extend(check_page_raw_fetch(path, text))
         violations.extend(check_dependency_direction(path, text))
         violations.extend(check_private_google_dom(path, text))
         violations.extend(check_bootstrap_patterns(path, text))
