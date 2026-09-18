@@ -46,3 +46,4 @@ PoCで有効性が確認されても、そのまま正式実装へ昇格しな�
 ## Current PoCs
 
 - `mountain-route/` — Leisure RouteをYAMAP公開モデルコースから山岳executionへ展開できるかの検証
+- `route-model-view/` — RouteModelを表示用ViewModelへProjectionし、ConcretePlan Dayの「ルート詳細」として汎用描画できるかの検証

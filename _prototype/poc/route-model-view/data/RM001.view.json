@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "type": "route-model-view",
+  "route_model_id": "RM001",
+  "route_id": "R005",
+  "title": "荒川登山口-ウィルソン株-縄文杉 往復コース",
+  "status": {
+    "key": "validated",
+    "label": "確認済み"
+  },
+  "source": {
+    "provider": "yamap",
+    "label": "YAMAP公開モデルコース",
+    "url": "https://yamap.com/model-courses/25891"
+  },
+  "metrics": [
+    {"key": "duration", "label": "標準所要", "value": "10時間28分"},
+    {"key": "distance", "label": "距離", "value": "19.8 km"},
+    {"key": "ascent", "label": "上り", "value": "1,171 m"},
+    {"key": "descent", "label": "下り", "value": "1,171 m"}
+  ],
+  "endpoints": {
+    "start": "荒川登山口",
+    "finish": "荒川登山口"
+  },
+  "sections": [
+    {
+      "key": "outbound",
+      "label": "往路",
+      "waypoints": [
+        {"id":"W001","label":"荒川登山口","elapsed":"開始","segment_from_previous":null,"badges":["登山口"]},
+        {"id":"W002","label":"橋","elapsed":"0:25","segment_from_previous":"25分","badges":[]},
+        {"id":"W003","label":"小杉谷休憩舎","elapsed":"0:50","segment_from_previous":"25分","badges":[]},
+        {"id":"W004","label":"楠川分れ","elapsed":"1:40","segment_from_previous":"50分","badges":["分岐"]},
+        {"id":"W005","label":"分岐","elapsed":"1:55","segment_from_previous":"15分","badges":["分岐"]},
+        {"id":"W006","label":"分岐","elapsed":"1:58","segment_from_previous":"3分","badges":["分岐"]},
+        {"id":"W007","label":"仁王杉","elapsed":"2:48","segment_from_previous":"50分","badges":[]},
+        {"id":"W008","label":"大株歩道入口","elapsed":"3:18","segment_from_previous":"30分","badges":[]},
+        {"id":"W009","label":"トロッコ道終点トイレ","elapsed":"3:20","segment_from_previous":"2分","badges":["トイレ"]},
+        {"id":"W010","label":"大株歩道入口","elapsed":"3:22","segment_from_previous":"2分","badges":[]},
+        {"id":"W011","label":"ウィルソン株","elapsed":"3:47","segment_from_previous":"25分","badges":["主要地点"]},
+        {"id":"W012","label":"水場","elapsed":"4:37","segment_from_previous":"50分","badges":["水場"]},
+        {"id":"W013","label":"大王杉","elapsed":"4:45","segment_from_previous":"8分","badges":["主要地点"]}
+      ]
+    },
+    {
+      "key": "turnaround",
+      "label": "折返し",
+      "waypoints": [
+        {"id":"W014","label":"縄文杉","elapsed":"5:30","segment_from_previous":"45分","badges":["折返し","主要地点"]}
+      ]
+    },
+    {
+      "key": "return",
+      "label": "復路",
+      "waypoints": [
+        {"id":"W015","label":"大王杉","elapsed":"6:10","segment_from_previous":"40分","badges":["主要地点"]},
+        {"id":"W016","label":"水場","elapsed":"6:16","segment_from_previous":"6分","badges":["水場"]},
+        {"id":"W017","label":"ウィルソン株","elapsed":"7:01","segment_from_previous":"45分","badges":["主要地点"]},
+        {"id":"W018","label":"大株歩道入口","elapsed":"7:21","segment_from_previous":"20分","badges":[]},
+        {"id":"W019","label":"トロッコ道終点トイレ","elapsed":"7:23","segment_from_previous":"2分","badges":["トイレ"]},
+        {"id":"W020","label":"大株歩道入口","elapsed":"7:25","segment_from_previous":"2分","badges":[]},
+        {"id":"W021","label":"仁王杉","elapsed":"7:50","segment_from_previous":"25分","badges":[]},
+        {"id":"W022","label":"分岐","elapsed":"8:35","segment_from_previous":"45分","badges":["分岐"]},
+        {"id":"W023","label":"分岐","elapsed":"8:38","segment_from_previous":"3分","badges":["分岐"]},
+        {"id":"W024","label":"楠川分れ","elapsed":"8:53","segment_from_previous":"15分","badges":["分岐"]},
+        {"id":"W025","label":"小杉谷休憩舎","elapsed":"9:41","segment_from_previous":"48分","badges":[]},
+        {"id":"W026","label":"橋","elapsed":"10:05","segment_from_previous":"24分","badges":[]},
+        {"id":"W027","label":"荒川登山口","elapsed":"10:28","segment_from_previous":"23分","badges":["終了"]}
+      ]
+    }
+  ],
+  "notes": [
+    "時間は絶対時刻ではなく、Route開始からの標準経過時間です。",
+    "当日の開始時刻・休憩・天候・後続交通との接続はConcretePlan側で扱います。",
+    "山岳区間の地図はこのViewModelでは描画しません。"
+  ]
+}

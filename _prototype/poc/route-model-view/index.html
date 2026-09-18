@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RouteModel View PoC</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="poc-shell">
+    <header class="poc-header">
+      <p class="poc-kicker">PersonalOS Leisure · display PoC</p>
+      <h1>RouteModel View</h1>
+      <p class="poc-lead">ConcretePlan Day の「ルート詳細」だけを、表示用ViewModelから描画する検証です。</p>
+
+      <div class="poc-context" aria-label="ConcretePlan Dayの想定ビュー">
+        <span>行動順</span>
+        <strong>ルート詳細</strong>
+        <span>マップ</span>
+      </div>
+      <p class="poc-context-note">この3ビューの切替自体はConcretePlan Dayの責務。このPoCではルート詳細Rendererのみを検証します。</p>
+    </header>
+
+    <main id="route-model-root" data-view-model="./data/RM001.view.json" aria-live="polite">
+      <p class="poc-loading">ルート詳細を読み込み中…</p>
+    </main>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
