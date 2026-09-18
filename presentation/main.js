@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260916-presentation-3';
+const PRESENTATION_VERSION = '20260918-execution-inline-1';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
@@ -75,6 +75,7 @@ async function loadPlan() {
   await load('./modules/execution-feasibility.js');
   await load('./modules/execution-fuel.js');
   await load('./modules/execution-weather.js');
+  await load('./modules/execution-inline-details.js');
   normalizeDom();
 }
 
