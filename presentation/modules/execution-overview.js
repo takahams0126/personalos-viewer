@@ -1,6 +1,25 @@
 const qs = new URLSearchParams(location.search);
 if (qs.get('type') === 'plan' && qs.get('id')) initExecutionOverview();
 
+const WEATHER_ICON_BASE = 'https://cdn.meteocons.com/3.0.0-next.10/svg/fill';
+const WEATHER_ICON_BY_CODE = Object.freeze({
+  CLEAR: 'clear-day',
+  MOSTLY_CLEAR: 'mostly-clear-day',
+  PARTLY_CLOUDY: 'partly-cloudy-day',
+  CLOUDY: 'cloudy',
+  LIGHT_RAIN: 'drizzle',
+  RAIN: 'rain',
+  HEAVY_RAIN: 'extreme-rain',
+  SHOWER: 'rain',
+  THUNDERSTORM: 'thunderstorms-day-rain',
+  LIGHT_SNOW: 'snow',
+  SNOW: 'snow',
+  HEAVY_SNOW: 'snow',
+  SLEET: 'sleet',
+  FOG: 'fog-day',
+  UNKNOWN: 'not-available'
+});
+
 async function initExecutionOverview(){
   const id = qs.get('id');
   let spec;
@@ -55,8 +74,9 @@ function renderOverview(spec, overview){
 }
 
 function renderWeatherDay(day){
-  const slug = /^[a-z0-9-]+$/.test(day.icon_slug || '') ? day.icon_slug : 'not-available';
-  const src = `https://cdn.meteocons.com/latest/svg-static/fill/${slug}.svg`;
+  const code = String(day.weather_code || 'UNKNOWN').toUpperCase();
+  const slug = WEATHER_ICON_BY_CODE[code] || WEATHER_ICON_BY_CODE.UNKNOWN;
+  const src = `${WEATHER_ICON_BASE}/${slug}.svg`;
   return `<div class="exec-overview-weather-day">
     <div class="exec-overview-weather-date"><strong>${esc(day.date_label || '')}</strong><span>${esc(day.weekday ? `(${day.weekday})` : '')}</span></div>
     <img src="${src}" alt="" aria-hidden="true" width="76" height="76" loading="lazy">
