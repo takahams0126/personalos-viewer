@@ -37,16 +37,16 @@
       "条件が合えば平内海中温泉、合わなければ尾之間温泉へ切り替えられ、最後まで体験価値を残しやすい"
     ],
     "sequence": [
-      {"type":"spot","id":"S0037","label":"志戸子ガジュマル公園","role":"optional"},
-      {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core"},
-      {"type":"spot","id":"S0039","label":"西部林道","role":"core"},
-      {"type":"spot","id":"S0036","label":"大川の滝","role":"core"},
-      {"type":"spot","id":"S0045","label":"手打ちそば 松竹","role":"main_lunch"},
-      {"type":"spot","id":"S0034","label":"トローキの滝","role":"high_priority"},
-      {"type":"spot","id":"S0035","label":"千尋の滝","role":"high_priority"},
-      {"type":"spot","id":"S0040","label":"中間ガジュマル","role":"optional"},
-      {"type":"spot","id":"S0028","label":"平内海中温泉","role":"condition_high"},
-      {"type":"spot","id":"S0026","label":"尾之間温泉","role":"fallback_onsen"}
+      {"type":"spot","id":"S0037","label":"志戸子ガジュマル公園","role":"optional","summary":"太い幹と根を複雑に広げるガジュマル群を短時間で歩いて楽しめる北部の亜熱帯植物Spot"},
+      {"type":"spot","id":"S0038","label":"永田いなか浜","role":"core","summary":"約1kmの白砂と海岸景観を楽しめ、世界的に重要なウミガメ産卵地として自然保全上の価値も高い海岸Spot"},
+      {"type":"spot","id":"S0039","label":"西部林道","role":"core","summary":"車で走れる唯一の屋久島世界自然遺産地域で、原生的な照葉樹林とヤクザル・ヤクシカの気配を車窓から体感できる森林道路Spot"},
+      {"type":"spot","id":"S0036","label":"大川の滝","role":"core","summary":"落差88mの大瀑布を駐車場から徒歩数分で滝壺近くまで迫って見られる屋久島代表級の滝"},
+      {"type":"spot","id":"S0045","label":"手打ちそば 松竹","role":"main_lunch","summary":"古民家の落ち着いた雰囲気と本格的な手打ちそば、屋久島らしい料理を楽しめる栗生の食事Spot"},
+      {"type":"spot","id":"S0034","label":"トローキの滝","role":"high_priority","summary":"山から流れてきた水がそのまま海へ落ちる、屋久島ならではの水と海の近さを短時間で感じられる滝"},
+      {"type":"spot","id":"S0035","label":"千尋の滝","role":"high_priority","summary":"巨大な花崗岩の一枚岩を背景に水が落ちる、屋久島の地形スケールを短時間で感じられる代表景勝地"},
+      {"type":"spot","id":"S0040","label":"中間ガジュマル","role":"optional","summary":"太い枝と根が道路をまたぐ姿をすぐ近くで見られる、南西部の短時間立ち寄りに適した亜熱帯植物Spot"},
+      {"type":"spot","id":"S0028","label":"平内海中温泉","role":"condition_high","summary":"干潮時だけ海岸の岩場に現れ、海と一体化するような入浴体験ができる天然露天温泉"},
+      {"type":"spot","id":"S0026","label":"尾之間温泉","role":"fallback_onsen","summary":"浴槽底の玉石の下から源泉が湧く熱めの硫黄泉を、素朴な地元共同湯で楽しめる温泉Spot"}
     ],
     "constraints": [
       "雨が強い日は一周にこだわらず、R010 屋久島南部雨天ドライブへ切り替える。同じ日に両方を詰め込まない",
