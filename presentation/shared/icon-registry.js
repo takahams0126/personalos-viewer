@@ -86,6 +86,14 @@ export const iconPaths = {
     '<circle cx="12" cy="12" r="9" />',
     '<path d="M12 7v5l3 2" />'
   ],
+  'rotate-clockwise': [
+    '<path d="M4.05 11a8 8 0 1 1 .5 4" />',
+    '<path d="M4 4v7h7" />'
+  ],
+  'rotate-counterclockwise': [
+    '<path d="M19.95 11a8 8 0 1 0 -.5 4" />',
+    '<path d="M20 4v7h-7" />'
+  ],
   'building-airport': [
     '<path d="M3.59 7h8.82a1 1 0 0 1 .902 1.433l-1.44 3a1 1 0 0 1 -.901 .567h-5.942a1 1 0 0 1 -.901 -.567l-1.44 -3a1 1 0 0 1 .901 -1.433" />',
     '<path d="M6 7l-.78 -2.342a.5 .5 0 0 1 .473 -.658h4.612a.5 .5 0 0 1 .475 .658l-.78 2.342" />',
@@ -182,7 +190,9 @@ export const leisureIconMap = {
     'transfer.motorbike': 'motorbike',
     'transfer.walk': 'walk',
     'flow.route': 'route',
-    'flow.free_time': 'clock'
+    'flow.free_time': 'clock',
+    'direction.clockwise': 'rotate-clockwise',
+    'direction.counterclockwise': 'rotate-counterclockwise'
   },
   contentRole: {
     photo_highlight: 'photo',
