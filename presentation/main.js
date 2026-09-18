@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260918-shared-day-badges-1';
+const PRESENTATION_VERSION = '20260918-day-weather-1';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
@@ -74,6 +74,7 @@ async function loadPlan() {
   await waitForBaseRender('#execution-mode-panel');
   await load('./modules/execution-day-header.js');
   await load('./modules/execution-overview.js');
+  await load('./modules/execution-day-summary.js');
   await load('./modules/execution-feasibility.js');
   await load('./modules/execution-fuel.js');
   await load('./modules/execution-weather.js');
