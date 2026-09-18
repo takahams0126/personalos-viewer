@@ -30,6 +30,7 @@ async function initExecutionDayHeader() {
     const dayNo = header?.querySelector('.execution-day-no');
     if (!header || !dayNo) return;
 
+    dayNo.classList.add('day-number');
     header.querySelector('.exec-day-date-inline')?.remove();
     header.querySelector('.exec-day-date-pill')?.remove();
 
@@ -37,7 +38,7 @@ async function initExecutionDayHeader() {
     if (!dateLabel) return;
 
     const pill = document.createElement('div');
-    pill.className = 'exec-day-date-pill';
+    pill.className = 'exec-day-date-pill day-date';
     pill.textContent = dateLabel;
     dayNo.after(pill);
   });
