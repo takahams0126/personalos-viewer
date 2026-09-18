@@ -1,3 +1,5 @@
+import { createGoogleMapPopup } from './google-map-popup.js';
+
 const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';
 
 let googleMapsPromise;
@@ -55,7 +57,7 @@ export async function renderGoogleMap({
   getPosition = point => ({ lat: Number(point.lat), lng: Number(point.lng ?? point.lon) }),
   getTitle = point => point.title || point.name || '',
   getLabel = () => '',
-  getPopupContent = null,
+  getPopupData = null,
   mapOptions = {}
 } = {}) {
   if (!element) throw new Error('Google Maps element is required.');
@@ -70,6 +72,7 @@ export async function renderGoogleMap({
   const maps = await ensureGoogleMaps(key);
   element.style.display = '';
   element.replaceChildren();
+  if (getComputedStyle(element).position === 'static') element.style.position = 'relative';
 
   const map = new maps.Map(element, {
     mapTypeControl: true,
@@ -77,7 +80,7 @@ export async function renderGoogleMap({
     fullscreenControl: true,
     ...mapOptions
   });
-  const infoWindow = new maps.InfoWindow();
+  const popup = getPopupData ? createGoogleMapPopup({ maps, map }) : null;
   const bounds = new maps.LatLngBounds();
   const markers = [];
 
@@ -95,18 +98,23 @@ export async function renderGoogleMap({
       zIndex: 100 + Number(point.order || 0)
     });
 
-    if (getPopupContent) {
+    if (popup) {
       marker.addListener('click', () => {
-        infoWindow.setContent(getPopupContent(point));
-        infoWindow.open({ map, anchor: marker });
+        const data = getPopupData(point);
+        if (!data) {
+          popup.close();
+          return;
+        }
+        popup.open({ position, data });
       });
     }
 
     markers.push(marker);
   });
 
+  if (popup) map.addListener('click', () => popup.close());
   if (!bounds.isEmpty()) map.fitBounds(bounds, 28);
   setMessage(messageElement);
 
-  return { map, markers, infoWindow };
+  return { map, markers, popup };
 }

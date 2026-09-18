@@ -31,18 +31,6 @@
 .map-wrap{min-height:420px;border-radius:18px;overflow:hidden;background:#dde3e7;border:1px solid #c8d0d7;box-shadow:0 5px 18px rgba(60,64,67,.14)}
 .route-map{width:100%;height:500px}
 .map-message{padding:20px;color:var(--text-soft)}
-.route-popup{width:min(280px,calc(100vw - 72px));min-width:0;max-width:100%;padding:4px 2px}
-.route-popup-title{display:block;margin:0 0 7px!important;color:#202124;font-size:1rem!important;line-height:1.35;font-weight:800;overflow-wrap:anywhere}
-.route-popup-summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;min-width:0;margin:0 0 11px;color:#3c4043;font-size:.8rem;line-height:1.55;overflow-wrap:anywhere}
-.route-popup-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;min-width:0;margin-top:0}
-.route-popup-action{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:34px;padding:7px 10px;border-radius:999px;font-size:.76rem;font-weight:800;text-align:center;text-decoration:none!important;white-space:normal;overflow-wrap:anywhere;transition:background .15s ease,border-color .15s ease,transform .15s ease}
-.route-popup-action span{min-width:0}
-.route-popup-action:hover{transform:translateY(-1px);text-decoration:none!important}
-.route-popup-action.is-primary{background:#eaf2ff;color:#0b57d0!important;border:1px solid #bed0eb;box-shadow:0 1px 4px rgba(60,64,67,.07)}
-.route-popup-action.is-primary:hover{background:#dfeaff;border-color:#9fbee5}
-.route-popup-action.is-secondary{background:#fffaf0;color:#7a5200!important;border:1px solid #ead49f;box-shadow:0 1px 4px rgba(60,64,67,.05)}
-.route-popup-action.is-secondary:hover{background:#fff4d6;border-color:#ddb85c}
-.route-popup-link-icon{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
 
 @media(max-width:900px){
   .route-hero-refs{grid-template-columns:1fr 1fr}
@@ -55,8 +43,6 @@
   .route-hero-meta{gap:7px 12px}
   .route-demo-section{padding:18px}
   .route-map{height:390px}
-  .route-popup{width:min(240px,calc(100vw - 64px))}
-  .route-popup-action{padding:7px 8px;font-size:.72rem}
 }
 
 @media(prefers-color-scheme:dark){

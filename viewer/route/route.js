@@ -48,10 +48,6 @@ function renderStrengthCards(items = []) {
   return `<div class="route-demo-cards primary">${items.map(item => `<article>${escapeHtml(item)}</article>`).join('')}</div>`;
 }
 
-function externalLinkIcon() {
-  return `<svg class="route-popup-link-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`;
-}
-
 function renderHeroRef(ref, request) {
   const href = ref?.type && ref?.id ? buildEntityHref({ type: ref.type, id: ref.id }, request) : '';
   return renderEntityRefCard({
@@ -72,7 +68,7 @@ function renderRouteStop(item, index, request) {
   return `<span class="route-stop"><span class="stop-no">${index + 1}</span>${label}${role}</span>`;
 }
 
-function renderPopup(point, request) {
+function buildPopupData(point, request) {
   const target = point.entityId ? { type: point.entityType || 'spot', id: point.entityId } : null;
   const personalHref = target ? buildEntityHref(target, request) : '';
   const googleHref = buildGoogleMapsSearchUrl({
@@ -82,18 +78,28 @@ function renderPopup(point, request) {
 
   const actions = [
     personalHref
-      ? `<a class="route-popup-action is-primary" href="${escapeHtml(personalHref)}"><span>PersonalOSで詳しく見る</span>${externalLinkIcon()}</a>`
-      : '',
+      ? {
+          kind: 'primary',
+          label: 'PersonalOSで詳しく見る',
+          href: personalHref,
+          external: false
+        }
+      : null,
     googleHref
-      ? `<a class="route-popup-action is-secondary" href="${escapeHtml(googleHref)}" target="_blank" rel="noopener"><span>Google Mapsで開く</span>${externalLinkIcon()}</a>`
-      : ''
-  ].filter(Boolean).join('');
+      ? {
+          kind: 'secondary',
+          label: 'Google Mapsで開く',
+          href: googleHref,
+          external: true
+        }
+      : null
+  ].filter(Boolean);
 
-  return `<div class="pin-popup route-popup">
-    <strong class="route-popup-title">${escapeHtml(point.name)}</strong>
-    ${point.summary ? `<p class="route-popup-summary">${escapeHtml(point.summary)}</p>` : ''}
-    ${actions ? `<div class="route-popup-actions">${actions}</div>` : ''}
-  </div>`;
+  return {
+    title: point.name,
+    summary: point.summary,
+    actions
+  };
 }
 
 function joinRouteMapPoints(mapArtifact, sequence = []) {
@@ -140,7 +146,7 @@ async function initRouteMap(data, request) {
       getPosition: point => ({ lat: Number(point.lat), lng: Number(point.lon) }),
       getTitle: point => point.name,
       getLabel: point => point.order ? String(point.order) : '',
-      getPopupContent: point => renderPopup(point, request)
+      getPopupData: point => buildPopupData(point, request)
     });
   } catch (error) {
     element.style.display = 'none';
