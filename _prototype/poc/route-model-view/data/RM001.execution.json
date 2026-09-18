@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "type": "route-execution-poc-input",
+  "canonical_fragment_type": "ConcretePlan.flow[].route_execution",
+  "route_execution": {
+    "route_model_id": "RM001",
+    "planned_start_at": "2026-10-20T08:00:00+09:00",
+    "planned_end_at": "2026-10-20T18:58:00+09:00",
+    "pace_policy": {
+      "basis": "route_model_standard",
+      "factor": 1.0,
+      "reason": "PoCではRM001の標準区間時間をそのまま使用する"
+    },
+    "breaks": [
+      {
+        "break_id": "B001",
+        "after_waypoint_id": "W014",
+        "before_waypoint_id": "W015",
+        "duration_min": 30,
+        "reason": "昼食・休憩",
+        "required": true
+      }
+    ],
+    "artifact_refs": []
+  },
+  "notes": [
+    "このファイル自体はPoC wrapperでありCanonical recordではない。route_execution配下だけが現行Concrete Plan Schemaのroute_execution shapeに合わせた仮入力。",
+    "W014 縄文杉到着後からW015 復路大王杉へ出発する前に30分休憩する想定。",
+    "Publication / ViewModel生成がRouteModelの相対時間とこのRouteExecutionを合成し、表示用の到着時刻・出発時刻・累積経過時間へ解決する。"
+  ]
+}

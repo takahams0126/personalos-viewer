@@ -7,6 +7,11 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+function safeToken(value, fallback = 'default') {
+  const token = String(value ?? '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  return token || fallback;
+}
+
 function assertViewModel(model) {
   if (!model || model.type !== 'route-model-view') {
     throw new Error('Expected route-model-view input.');
@@ -15,7 +20,7 @@ function assertViewModel(model) {
     throw new Error('RouteModel ViewModel is missing required presentation fields.');
   }
   for (const waypoint of model.waypoints) {
-    if (!waypoint?.id || !waypoint?.label || !waypoint?.time?.primary) {
+    if (!waypoint?.id || !waypoint?.label || !waypoint?.time?.primary || !waypoint?.phase) {
       throw new Error('RouteModel ViewModel has an invalid waypoint.');
     }
   }
@@ -40,10 +45,40 @@ function renderBadges(badges = []) {
     .join('');
 }
 
-function renderWaypoint(waypoint) {
-  const phase = waypoint.phase_label
-    ? `<span class="waypoint-phase">${escapeHtml(waypoint.phase_label)}</span>`
+function renderPhaseMarker(marker) {
+  if (!marker?.label) return '';
+  const kind = safeToken(marker.kind);
+  return `
+    <li class="route-phase route-phase--${kind}">
+      <span>${escapeHtml(marker.label)}</span>
+    </li>
+  `;
+}
+
+function renderBreak(breakInfo) {
+  if (!breakInfo?.duration) return '';
+  const departure = breakInfo.departure_at
+    ? `<span class="waypoint-break-departure">${escapeHtml(breakInfo.departure_at)} 出発</span>`
     : '';
+  const reason = breakInfo.reason
+    ? `<span class="waypoint-break-reason">${escapeHtml(breakInfo.reason)}</span>`
+    : '';
+
+  return `
+    <div class="waypoint-break">
+      <div class="waypoint-break-main">
+        <span class="waypoint-break-label">${escapeHtml(breakInfo.label || '休憩')}</span>
+        <strong>${escapeHtml(breakInfo.duration)}</strong>
+      </div>
+      ${reason}
+      ${departure}
+    </div>
+  `;
+}
+
+function renderWaypoint(waypoint) {
+  const phase = safeToken(waypoint.phase);
+  const emphasis = waypoint.emphasis ? ` route-waypoint--${safeToken(waypoint.emphasis)}` : '';
   const secondaryTime = waypoint.time.secondary
     ? `<span class="waypoint-time-secondary">${escapeHtml(waypoint.time.secondary)}</span>`
     : '';
@@ -57,19 +92,20 @@ function renderWaypoint(waypoint) {
     : '';
 
   return `
-    <li class="route-waypoint">
+    ${renderPhaseMarker(waypoint.phase_marker)}
+    <li class="route-waypoint route-waypoint--${phase}${emphasis}">
       <div class="waypoint-time">
         <strong>${escapeHtml(waypoint.time.primary)}</strong>
         ${secondaryTime}
       </div>
       <div class="waypoint-track" aria-hidden="true"><span></span></div>
       <div class="waypoint-body">
-        ${phase}
         <div class="waypoint-main">
           <span class="waypoint-label">${escapeHtml(waypoint.label)}</span>
           ${renderBadges(waypoint.badges)}
         </div>
       </div>
+      ${renderBreak(waypoint.break)}
       ${segment}
     </li>
   `;
@@ -98,22 +134,26 @@ function renderNotes(notes = []) {
 function renderTimeAxis(timeAxis) {
   if (!timeAxis?.label) return '';
   const start = timeAxis.start_at
-    ? `<span class="route-time-start">${escapeHtml(timeAxis.start_at)} 開始</span>`
+    ? `<span class="route-time-pill">${escapeHtml(timeAxis.start_at)} 開始</span>`
+    : '';
+  const end = timeAxis.end_at
+    ? `<span class="route-time-pill">${escapeHtml(timeAxis.end_at)} 終了見込</span>`
     : '';
   return `
     <div class="route-time-axis">
-      <span>${escapeHtml(timeAxis.label)}</span>
+      <span class="route-time-axis-label">${escapeHtml(timeAxis.label)}</span>
       ${start}
-      <small>地点間は次の地点までの所要時間</small>
+      ${end}
+      <small>地点間の黄色表示は「次のWaypointまで」の所要時間</small>
     </div>
   `;
 }
 
 /**
  * Render a presentation-ready RouteModel ViewModel.
- * Absolute/relative time resolution is completed before this renderer runs.
+ * RouteModel + RouteExecution time/break resolution is completed before this renderer runs.
  * The renderer intentionally does not interpret Canonical RouteModel fields,
- * ConcretePlan execution rules, provider-specific payloads, or route-specific IDs.
+ * ConcretePlan execution rules, provider payloads, or route-specific IDs.
  * @param {object} model
  * @returns {string}
  */

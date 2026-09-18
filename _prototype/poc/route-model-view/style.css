@@ -9,6 +9,7 @@
   --text-soft: #5f6368;
   --yellow-soft: #fef7e0;
   --route-yellow: #fbbc04;
+  --return-blue: #6b93c9;
 }
 
 * { box-sizing: border-box; }
@@ -33,17 +34,8 @@ a { color: inherit; }
   color: var(--text-soft);
 }
 
-.poc-header h1 {
-  margin: 0;
-  font-size: clamp(28px, 5vw, 42px);
-  line-height: 1.15;
-}
-
-.poc-lead {
-  max-width: 760px;
-  margin: 10px 0 18px;
-  color: var(--text-soft);
-}
+.poc-header h1 { margin: 0; font-size: clamp(28px, 5vw, 42px); line-height: 1.15; }
+.poc-lead { max-width: 760px; margin: 10px 0 18px; color: var(--text-soft); }
 
 .poc-context {
   display: inline-grid;
@@ -53,7 +45,7 @@ a { color: inherit; }
   border: 1px solid #d8dfe5;
   border-radius: 12px;
   background: var(--surface);
-  box-shadow: 0 2px 8px rgba(60, 64, 67, .06);
+  box-shadow: 0 2px 8px rgba(60,64,67,.06);
 }
 
 .poc-context span,
@@ -75,7 +67,7 @@ a { color: inherit; }
   background: var(--surface);
   border: 1px solid #cfd8e0;
   border-radius: 20px;
-  box-shadow: 0 5px 20px rgba(60, 64, 67, .11);
+  box-shadow: 0 5px 20px rgba(60,64,67,.11);
 }
 
 .route-model-view::before {
@@ -85,7 +77,7 @@ a { color: inherit; }
   top: 0;
   bottom: 0;
   width: 5px;
-  background: linear-gradient(180deg, var(--blue), #34a853);
+  background: linear-gradient(180deg,var(--blue),#34a853);
 }
 
 .route-model-header {
@@ -97,12 +89,7 @@ a { color: inherit; }
   border-bottom: 1px solid #dce2e7;
 }
 
-.route-model-heading h2 {
-  margin: 0;
-  font-size: clamp(20px, 4vw, 28px);
-  line-height: 1.3;
-}
-
+.route-model-heading h2 { margin: 0; font-size: clamp(20px,4vw,28px); line-height: 1.3; }
 .route-endpoints {
   display: inline-flex;
   gap: 8px;
@@ -116,7 +103,6 @@ a { color: inherit; }
   font-size: 13px;
   font-weight: 700;
 }
-
 .route-endpoints span { color: #d56e0c; font-weight: 900; }
 
 .route-source {
@@ -133,27 +119,18 @@ a { color: inherit; }
   font-weight: 800;
   white-space: nowrap;
 }
-
 .route-source:hover { background: #f1f4f6; }
 
 .route-metrics {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4,minmax(0,1fr));
   gap: 9px;
   margin: 0;
   padding: 16px 24px 16px 28px;
   background: #f8fafb;
   border-bottom: 1px solid #dce2e7;
 }
-
-.route-metric {
-  min-width: 0;
-  padding: 9px 11px;
-  border: 1px solid #dce2e7;
-  border-radius: 11px;
-  background: var(--surface);
-}
-
+.route-metric { min-width: 0; padding: 9px 11px; border: 1px solid #dce2e7; border-radius: 11px; background: var(--surface); }
 .route-metric dt { font-size: 11px; font-weight: 700; color: var(--text-soft); }
 .route-metric dd { margin: 2px 0 0; font-size: 15px; font-weight: 900; color: #202124; }
 
@@ -166,13 +143,8 @@ a { color: inherit; }
   color: var(--text-soft);
   font-size: 12px;
 }
-
-.route-time-axis > span:first-child {
-  font-weight: 900;
-  color: #3c4043;
-}
-
-.route-time-start {
+.route-time-axis-label { font-weight: 900; color: #3c4043; }
+.route-time-pill {
   display: inline-flex;
   padding: 4px 8px;
   border-radius: 999px;
@@ -180,39 +152,73 @@ a { color: inherit; }
   color: var(--blue-dark);
   font-weight: 800;
 }
-
 .route-time-axis small { font-size: 11px; color: #7a8087; }
 
 .route-waypoints {
   --time-col: 72px;
   --rail-col: 28px;
   --rail-half: 14px;
-  position: relative;
   list-style: none;
   margin: 0 24px 8px 28px;
   padding: 14px 0 8px;
 }
 
-.route-waypoints::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  left: calc(var(--time-col) + var(--rail-half));
-  top: 31px;
-  bottom: 31px;
-  width: 3px;
-  transform: translateX(-50%);
-  border-radius: 3px;
-  background: linear-gradient(180deg, #fdd663, #f7e3a0);
+.route-phase {
+  list-style: none;
+  margin: 10px 0 8px calc(var(--time-col) + var(--rail-col) + 8px);
+}
+.route-phase span {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .02em;
+}
+.route-phase--outbound span { background: #fff4cc; color: #765500; border: 1px solid #f3d36c; }
+.route-phase--return span { background: #e8f0fe; color: var(--blue-dark); border: 1px solid #c6dafc; }
+.route-phase--turnaround {
+  margin: 18px 0 10px;
+  padding: 8px 0;
+  border-top: 1px solid #efc13c;
+  border-bottom: 1px solid #efc13c;
+  text-align: center;
+}
+.route-phase--turnaround span {
+  background: #fff3bf;
+  color: #6f4b00;
+  border: 1px solid #e9bd33;
+  box-shadow: 0 2px 6px rgba(122,82,0,.08);
 }
 
 .route-waypoint {
   position: relative;
   display: grid;
-  grid-template-columns: var(--time-col) var(--rail-col) minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  min-height: 58px;
+  grid-template-columns: var(--time-col) var(--rail-col) minmax(0,1fr);
+  grid-template-rows: auto auto auto;
+  min-height: 78px;
 }
+
+.route-waypoint::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: calc(var(--time-col) + var(--rail-half));
+  top: 20px;
+  bottom: -10px;
+  width: 3px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: linear-gradient(180deg,#fdd663,#f7e3a0);
+}
+.route-waypoint--return::before {
+  width: 0;
+  border-left: 3px dashed var(--return-blue);
+  border-radius: 0;
+  background: none;
+}
+.route-waypoint:last-child::before { display: none; }
 
 .waypoint-time {
   grid-column: 1;
@@ -221,21 +227,8 @@ a { color: inherit; }
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-
-.waypoint-time > strong {
-  display: block;
-  font-size: 14px;
-  font-weight: 900;
-  color: #202124;
-}
-
-.waypoint-time-secondary {
-  display: block;
-  margin-top: 1px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #80868b;
-}
+.waypoint-time > strong { display: block; font-size: 14px; font-weight: 900; color: #202124; }
+.waypoint-time-secondary { display: block; margin-top: 2px; font-size: 10px; font-weight: 700; color: #80868b; }
 
 .waypoint-track {
   position: relative;
@@ -244,7 +237,6 @@ a { color: inherit; }
   grid-row: 1;
   min-height: 38px;
 }
-
 .waypoint-track span {
   position: absolute;
   top: 11px;
@@ -257,49 +249,21 @@ a { color: inherit; }
   background: var(--route-yellow);
   box-shadow: 0 0 0 2px #e3b51a;
 }
-
-.route-waypoint:first-child .waypoint-track span,
-.route-waypoint:last-child .waypoint-track span {
-  width: 14px;
-  height: 14px;
-  top: 10px;
-  background: var(--blue);
-  box-shadow: 0 0 0 2px #b8cef1;
+.route-waypoint--return .waypoint-track span { background: #fff; box-shadow: 0 0 0 2px var(--return-blue); }
+.route-waypoint:first-of-type .waypoint-track span,
+.route-waypoint:last-child .waypoint-track span { width: 14px; height: 14px; top: 10px; background: var(--blue); box-shadow: 0 0 0 2px #b8cef1; }
+.route-waypoint--turnaround .waypoint-track span {
+  width: 17px;
+  height: 17px;
+  top: 8px;
+  border-radius: 4px;
+  background: #f9ab00;
+  box-shadow: 0 0 0 3px #fde293;
 }
 
-.waypoint-body {
-  grid-column: 3;
-  grid-row: 1;
-  min-width: 0;
-  padding: 3px 0 6px 8px;
-}
-
-.waypoint-phase {
-  display: inline-flex;
-  margin-bottom: 4px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #eef3f8;
-  color: #3c4043;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.waypoint-main {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-  min-width: 0;
-}
-
-.waypoint-label {
-  min-width: 0;
-  font-size: 14px;
-  font-weight: 850;
-  overflow-wrap: anywhere;
-}
-
+.waypoint-body { grid-column: 3; grid-row: 1; min-width: 0; padding: 3px 0 7px 8px; }
+.waypoint-main { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.waypoint-label { min-width: 0; font-size: 14px; font-weight: 850; overflow-wrap: anywhere; }
 .waypoint-badge {
   display: inline-flex;
   flex: 0 0 auto;
@@ -312,25 +276,56 @@ a { color: inherit; }
   line-height: 1.25;
 }
 
-.waypoint-segment {
-  z-index: 1;
+.route-waypoint--turnaround {
+  margin-bottom: 8px;
+  padding-top: 8px;
+  border: 1px solid #f3d36c;
+  border-radius: 14px;
+  background: linear-gradient(90deg,#fffdf5,#fff8db);
+}
+.route-waypoint--turnaround .waypoint-label { font-size: 15px; font-weight: 950; }
+
+.waypoint-break {
   grid-column: 3;
   grid-row: 2;
+  display: grid;
+  grid-template-columns: max-content minmax(0,1fr) max-content;
+  gap: 5px 8px;
+  align-items: center;
+  margin: 3px 0 8px 8px;
+  padding: 8px 10px;
+  border: 1px solid #b7dfc3;
+  border-radius: 10px;
+  background: #edf7f0;
+  color: #245b35;
+  font-size: 11px;
+}
+.waypoint-break-main { display: inline-flex; align-items: center; gap: 5px; }
+.waypoint-break-main strong { font-size: 12px; }
+.waypoint-break-label { display: inline-flex; padding: 2px 6px; border-radius: 999px; background: #d8efdf; font-weight: 900; }
+.waypoint-break-reason { min-width: 0; color: #3d6849; }
+.waypoint-break-departure { font-weight: 900; white-space: nowrap; color: #137333; }
+
+.waypoint-segment {
+  position: relative;
+  z-index: 3;
+  grid-column: 2;
+  grid-row: 3;
   display: inline-flex;
-  justify-self: start;
+  justify-self: center;
   gap: 4px;
   align-items: center;
-  min-height: 28px;
-  margin: 1px 0 7px 8px;
-  padding: 3px 8px;
-  border: 1px solid #f3d36c;
+  width: max-content;
+  margin: 12px 0 17px;
+  padding: 5px 9px;
+  border: 1px solid #f3c84f;
   border-radius: 999px;
   background: var(--yellow-soft);
-  color: #7a5200;
+  color: #765100;
+  box-shadow: 0 1px 3px rgba(122,82,0,.08);
   font-size: 11px;
   line-height: 1;
 }
-
 .waypoint-segment strong { font-weight: 900; font-variant-numeric: tabular-nums; }
 
 .route-notes {
@@ -341,44 +336,32 @@ a { color: inherit; }
   color: var(--text-soft);
   font-size: 12px;
 }
-
 .route-notes ul { margin: 0; padding-left: 18px; }
 .route-notes li + li { margin-top: 5px; }
 
 .poc-loading,
-.poc-error {
-  padding: 24px;
-  border: 1px solid #cfd8e0;
-  border-radius: 16px;
-  background: var(--surface);
-  color: var(--text-soft);
-}
-
+.poc-error { padding: 24px; border: 1px solid #cfd8e0; border-radius: 16px; background: var(--surface); color: var(--text-soft); }
 .poc-error { color: #b3261e; }
 
 @media (max-width: 720px) {
-  .poc-shell { width: min(100% - 20px, 980px); padding-top: 24px; }
+  .poc-shell { width: min(100% - 20px,980px); padding-top: 24px; }
   .poc-context { width: 100%; }
   .poc-context span,
   .poc-context strong { min-width: 0; padding-inline: 8px; }
-
   .route-model-header { display: block; padding: 18px 16px 15px 21px; }
   .route-source { margin-top: 12px; }
-  .route-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 13px 16px 13px 21px; }
+  .route-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 13px 16px 13px 21px; }
   .route-time-axis { margin: 14px 16px 0 21px; }
-
-  .route-waypoints {
-    --time-col: 58px;
-    --rail-col: 24px;
-    --rail-half: 12px;
-    margin: 0 16px 6px 21px;
-  }
-
+  .route-waypoints { --time-col: 58px; --rail-col: 24px; --rail-half: 12px; margin: 0 16px 6px 21px; }
+  .route-phase { margin-left: calc(var(--time-col) + var(--rail-col) + 6px); }
+  .route-phase--turnaround { margin-left: 0; }
   .waypoint-time { padding-right: 5px; }
   .waypoint-time > strong { font-size: 13px; }
   .waypoint-body { padding-left: 6px; }
   .waypoint-label { font-size: 13px; }
-  .waypoint-segment { margin-left: 6px; }
+  .waypoint-break { grid-template-columns: 1fr max-content; margin-left: 6px; }
+  .waypoint-break-reason { grid-column: 1 / -1; }
+  .waypoint-segment { margin-top: 14px; margin-bottom: 18px; }
   .route-notes { padding: 14px 16px 18px 21px; }
 }
 
@@ -398,11 +381,16 @@ a { color: inherit; }
   .route-metrics,
   .route-notes { background: #292a2d; }
   .route-endpoints { background: #292a2d; border-color: #3c4043; color: #e8eaed; }
-  .route-time-axis > span:first-child { color: #e8eaed; }
-  .route-time-start { background: #25395d; color: #8ab4f8; }
+  .route-time-axis-label { color: #e8eaed; }
+  .route-time-pill { background: #25395d; color: #8ab4f8; }
   .route-source { border-color: #3c4043; color: #8ab4f8; }
   .waypoint-track span { border-color: #202124; }
-  .waypoint-phase,
+  .route-waypoint--return .waypoint-track span { background: #202124; }
   .waypoint-badge { background: #303134; color: #bdc1c6; }
+  .route-waypoint--turnaround { background: #3f3516; border-color: #745f22; }
+  .waypoint-break { background: #20382a; border-color: #355d43; color: #81c995; }
+  .waypoint-break-label { background: #284a34; }
+  .waypoint-break-reason { color: #9ac7a5; }
+  .waypoint-break-departure { color: #81c995; }
   .waypoint-segment { background: #4a3b14; border-color: #6d571f; color: #fdd663; }
 }
