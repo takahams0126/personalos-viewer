@@ -1,5 +1,5 @@
 // Shared Leisure icon registry.
-// Presentation only maps semantic fields -> icon names. Data semantics stay upstream.
+// Presentation only maps structured semantic fields -> icon names. Data semantics stay upstream.
 
 export const iconPaths = {
   home: [
@@ -61,6 +61,17 @@ export const iconPaths = {
     '<path d="M16 21l-2 -4l-3 -3l1 -6" />',
     '<path d="M6 12l2 -3l4 -1l3 3l3 1" />'
   ],
+  parking: [
+    '<path d="M6 4h7a5 5 0 0 1 0 10h-7z" />',
+    '<path d="M6 14v6" />'
+  ],
+  road: [
+    '<path d="M7 3l-2 18" />',
+    '<path d="M17 3l2 18" />',
+    '<path d="M12 5v3" />',
+    '<path d="M12 11v3" />',
+    '<path d="M12 17v2" />'
+  ],
   bed: [
     '<path d="M5 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />',
     '<path d="M22 17v-3h-20" />',
@@ -118,6 +129,10 @@ export const leisureIconMap = {
     airport: 'building-airport',
     bus_stop: 'bus-stop',
     rental_car_office: 'building-store',
+    parking: 'parking',
+    facility: 'building-community',
+    road: 'road',
+    sightseeing_point: 'photo',
     default: 'map-pin'
   },
   spotCategory: {
