@@ -1,9 +1,7 @@
-import { loadEntity } from '../core/data.js';
 import { loadStyle } from '../shared/load-style.js';
 
-export async function render(request) {
+export async function render({ request, data }) {
   loadStyle(new URL('./concrete-plan.css', import.meta.url).href);
-  const data = await loadEntity('concrete-plan', request.id);
   const app = document.querySelector('#app');
   if (!app) return;
 

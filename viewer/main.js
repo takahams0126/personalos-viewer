@@ -1,4 +1,5 @@
 import { resolveRequest } from './core/request.js';
+import { loadEntity } from './core/data.js';
 import { loadStyle } from './shared/load-style.js';
 import { renderError } from './shared/error-view.js';
 import { renderBreadcrumb } from './shared/navigation.js';
@@ -22,8 +23,12 @@ export async function main() {
     throw new Error(`Unsupported viewer page type: ${request.type}`);
   }
 
+  const data = request.type === 'top'
+    ? null
+    : await loadEntity(request.type, request.id);
+
   const page = await loader();
-  await page.render(request);
+  await page.render({ request, data });
 }
 
 try {

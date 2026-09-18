@@ -1,9 +1,7 @@
-import { loadEntity } from '../core/data.js';
 import { loadStyle } from '../shared/load-style.js';
 
-export async function render(request) {
+export async function render({ request, data }) {
   loadStyle(new URL('./route.css', import.meta.url).href);
-  const data = await loadEntity('route', request.id);
   const app = document.querySelector('#app');
   if (!app) return;
 
