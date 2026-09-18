@@ -73,6 +73,19 @@ export const iconPaths = {
     '<path d="M4 21l1 -1.5" />',
     '<path d="M20 21l-1 -1.5" />'
   ],
+  parking: [
+    '<path d="M7 4h6a5 5 0 0 1 0 10h-6z" />',
+    '<path d="M7 14v6" />'
+  ],
+  route: [
+    '<circle cx="6" cy="18" r="2" />',
+    '<circle cx="18" cy="6" r="2" />',
+    '<path d="M8 18h3a3 3 0 0 0 3 -3v-6a3 3 0 0 1 3 -3" />'
+  ],
+  clock: [
+    '<circle cx="12" cy="12" r="9" />',
+    '<path d="M12 7v5l3 2" />'
+  ],
   'building-airport': [
     '<path d="M3.59 7h8.82a1 1 0 0 1 .902 1.433l-1.44 3a1 1 0 0 1 -.901 .567h-5.942a1 1 0 0 1 -.901 -.567l-1.44 -3a1 1 0 0 1 .901 -1.433" />',
     '<path d="M6 7l-.78 -2.342a.5 .5 0 0 1 .473 -.658h4.612a.5 .5 0 0 1 .475 .658l-.78 2.342" />',
@@ -118,6 +131,7 @@ export const leisureIconMap = {
     airport: 'building-airport',
     bus_stop: 'bus-stop',
     rental_car_office: 'building-store',
+    parking: 'parking',
     default: 'map-pin'
   },
   spotCategory: {
@@ -148,6 +162,28 @@ export const leisureIconMap = {
     rental_car_and_mountain_access: 'car',
     default: 'map-pin'
   },
+  flowSemantic: {
+    'destination.home': 'home',
+    'destination.station': 'track',
+    'destination.airport': 'building-airport',
+    'destination.bus_stop': 'bus-stop',
+    'destination.rental_car_office': 'building-store',
+    'destination.parking': 'parking',
+    'destination.lodging': 'bed',
+    'destination.onsen': 'bath',
+    'destination.food': 'tools-kitchen-3',
+    'destination.sightseeing': 'photo',
+    'destination.generic': 'map-pin',
+    'transfer.air': 'plane',
+    'transfer.train': 'train',
+    'transfer.bus': 'bus',
+    'transfer.rental_car': 'car',
+    'transfer.car': 'car',
+    'transfer.motorbike': 'motorbike',
+    'transfer.walk': 'walk',
+    'flow.route': 'route',
+    'flow.free_time': 'clock'
+  },
   contentRole: {
     photo_highlight: 'photo',
     photo: 'photo'
@@ -160,6 +196,13 @@ export const leisureIconMap = {
 export function renderTablerIcon(name, cls='') {
   const paths = iconPaths[name] || iconPaths['map-pin'];
   return `<svg class="plan-tabler-icon leisure-tabler-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths.join('')}</svg>`;
+}
+
+export function resolveSemanticIcon(code) {
+  if (!code) return 'map-pin';
+  const icon = leisureIconMap.flowSemantic[code];
+  if (!icon) console.warn(`[presentation-contract] unknown icon semantic: ${code}`);
+  return icon || 'map-pin';
 }
 
 export function resolveTravelPointIcon(pointType) {
