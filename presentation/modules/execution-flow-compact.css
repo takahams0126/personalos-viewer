@@ -1,0 +1,62 @@
+/* Compact Flow-local timing rows.
+   Keep action / constraint semantics readable without pushing time metadata to the far edge. */
+
+.exec-activity.exec-action-row{
+  display:grid;
+  grid-template-columns:minmax(92px,140px) max-content max-content;
+  justify-content:start;
+  align-items:center;
+  column-gap:10px;
+  row-gap:5px;
+  max-width:100%;
+}
+.exec-action-label{
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.exec-action-deadline,
+.exec-action-row .exec-duration-meta{
+  justify-self:start;
+}
+.exec-action-deadline.is-empty{
+  display:none;
+}
+
+.exec-deadline{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  gap:5px 10px;
+}
+.exec-deadline>span{
+  min-width:0!important;
+}
+.exec-deadline>strong,
+.exec-deadline>em{
+  margin-left:0;
+  white-space:nowrap;
+}
+
+@media(max-width:760px){
+  .exec-activity.exec-action-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-start;
+    gap:5px 9px;
+  }
+  .exec-action-label{
+    flex:0 1 auto;
+  }
+  .exec-action-deadline,
+  .exec-action-row .exec-duration-meta{
+    grid-column:auto;
+  }
+  .exec-deadline{
+    gap:5px 8px;
+  }
+  .exec-deadline>small{
+    flex-basis:100%;
+  }
+}
