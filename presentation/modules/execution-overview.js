@@ -51,7 +51,13 @@ function renderOverview(spec, overview){
   const state = stateLabel(spec.status);
   const verified = spec.last_verified_at ? formatDateTime(spec.last_verified_at) : '未確認';
   const weather = (overview.weather_daily || []).map(renderWeatherDay).join('');
-  const sharedFacts = (overview.shared_facts || []).map(item => `<div class="exec-overview-fact"><span>${esc(item.label)}</span><strong>${esc(item.value)}</strong></div>`).join('');
+  const sharedFacts = Object.fromEntries((overview.shared_facts || []).map(item => [item.label, item.value]));
+  const facts = [
+    ['実施期間', `${period || '未設定'}${overview.stay_label ? `　${overview.stay_label}` : ''}`],
+    ['宿泊拠点', sharedFacts['宿泊拠点'] || '未設定'],
+    ['主要予約', sharedFacts['主要予約'] || '未確認'],
+    ['実施情報更新', verified]
+  ];
 
   return `<section class="section execution-overview">
     <div class="exec-overview-head">
@@ -61,15 +67,15 @@ function renderOverview(spec, overview){
       </div>
       ${state ? `<span class="exec-overview-state is-${esc(spec.status || 'unknown')}">${esc(state)}</span>` : ''}
     </div>
-    <div class="exec-overview-meta">
-      <div><span>実施期間</span><strong>${esc(period || '未設定')}${overview.stay_label ? `　${esc(overview.stay_label)}` : ''}</strong></div>
-      <div><span>実施情報更新</span><strong>${esc(verified)}</strong></div>
+    <div class="exec-overview-grid">
+      <div class="exec-overview-info">
+        ${facts.map(([label,value]) => `<div class="exec-overview-info-row"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('')}
+      </div>
+      ${weather ? `<div class="exec-overview-weather">
+        <div class="exec-overview-weather-title"><strong>${esc(overview.weather_heading || '天気')}</strong>${overview.weather_note ? `<span>${esc(overview.weather_note)}</span>` : ''}</div>
+        <div class="exec-overview-weather-days">${weather}</div>
+      </div>` : ''}
     </div>
-    ${weather ? `<div class="exec-overview-weather">
-      <div class="exec-overview-weather-title"><strong>${esc(overview.weather_heading || '天気')}</strong>${overview.weather_note ? `<span>${esc(overview.weather_note)}</span>` : ''}</div>
-      <div class="exec-overview-weather-days">${weather}</div>
-    </div>` : ''}
-    ${sharedFacts ? `<div class="exec-overview-facts">${sharedFacts}</div>` : ''}
   </section>`;
 }
 
