@@ -10,8 +10,24 @@
   "display": {
     "kicker": "実施プラン",
     "heading": "実施日の行動計画",
-    "poc_badge": "PoC・ユーザー提供/未検証",
     "days_heading": "日ごとの実施計画",
-    "days_description": "実施日ごとに、計画Dayを具体的な時刻・移動・手続・条件へ展開します。"
+    "days_description": "実施日ごとに、計画Dayを具体的な時刻・移動・手続・条件へ展開します。",
+    "execution_overview": {
+      "heading": "実施概要",
+      "stay_label": "4泊5日",
+      "weather_heading": "5日間の天気",
+      "weather_note": "表示サンプル",
+      "weather_daily": [
+        {"date_label":"10/19","weekday":"月","icon_slug":"clear-day","label":"晴"},
+        {"date_label":"10/20","weekday":"火","icon_slug":"rain","label":"雨"},
+        {"date_label":"10/21","weekday":"水","icon_slug":"partly-cloudy-day","label":"晴時々曇"},
+        {"date_label":"10/22","weekday":"木","icon_slug":"thunderstorms-day-rain","label":"雷雨"},
+        {"date_label":"10/23","weekday":"金","icon_slug":"overcast","label":"曇"}
+      ],
+      "shared_facts": [
+        {"label":"宿泊拠点","value":"民宿ふれんど・4連泊"},
+        {"label":"主要予約","value":"航空券 / 宿 / レンタカー"}
+      ]
+    }
   }
 }
