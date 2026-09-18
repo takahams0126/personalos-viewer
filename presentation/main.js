@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260916-presentation-3';
+const PRESENTATION_VERSION = '20260918-execution-overview-1';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
@@ -72,6 +72,7 @@ async function loadPlan() {
   normalizeDom();
   await load('./shared/flow-icons.js');
   await waitForBaseRender('#execution-mode-panel');
+  await load('./modules/execution-overview.js');
   await load('./modules/execution-feasibility.js');
   await load('./modules/execution-fuel.js');
   await load('./modules/execution-weather.js');
