@@ -1,0 +1,35 @@
+/* Canonical page primitives: element defaults and small page-agnostic helpers. */
+*{box-sizing:border-box}
+
+a{
+  color:var(--ui-color-link);
+  text-decoration:none;
+  font-weight:600;
+}
+a:hover{text-decoration:underline}
+
+.kicker{
+  color:var(--ui-color-primary-dark);
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.summary{color:#3c4043}
+.section-heading p{margin-top:-5px;color:var(--ui-color-text-soft)}
+.muted{color:#6a6f74;font-size:.86rem}
+.list{margin:0;padding-left:1.25rem}
+.list li{margin:.42rem 0}
+.note{
+  padding:12px 14px;
+  background:#fff7e6;
+  border-left:4px solid var(--ui-color-accent);
+  border-radius:8px;
+  color:#4d5156;
+}
+.empty,.error,.loading{color:var(--ui-color-text-soft)}
+
+@media(prefers-color-scheme:dark){
+  .summary,.kicker,.empty,.error,.loading,.muted{color:#bdc1c6}
+  .note{background:#292a2d;color:#e8eaed}
+}

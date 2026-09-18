@@ -1,0 +1,35 @@
+/* Canonical section surface for non-collapsible content.
+   Collapsible sections use ui-collapsible, which owns its own surface contract. */
+.ui-section:not(.ui-collapsible){
+  margin:22px 0;
+  padding:26px;
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-radius-lg);
+  background:var(--ui-surface);
+  box-shadow:var(--ui-shadow-soft);
+}
+.ui-section:not(.ui-collapsible)>h2,
+.ui-section:not(.ui-collapsible)>.section-heading h2{
+  margin:0 0 14px;
+  font-size:1.35rem;
+  letter-spacing:-.02em;
+}
+.ui-section:not(.ui-collapsible)>h2::after,
+.ui-section:not(.ui-collapsible)>.section-heading h2::after{
+  content:"";
+  display:block;
+  width:34px;
+  height:4px;
+  margin-top:7px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--ui-color-accent),var(--ui-color-accent-strong));
+}
+@media(max-width:640px){
+  .ui-section:not(.ui-collapsible){padding:18px;border-radius:16px}
+}
+@media(prefers-color-scheme:light){
+  .ui-section:not(.ui-collapsible){border-color:#cbd3db;box-shadow:0 3px 12px rgba(45,55,65,.10)}
+}
+@media(prefers-color-scheme:dark){
+  .ui-section:not(.ui-collapsible){background:var(--ui-surface);border-color:var(--ui-border)}
+}

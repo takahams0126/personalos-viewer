@@ -1,0 +1,79 @@
+/* Canonical reusable content layouts.
+   These define generic grid/list/image presentation shared by entity pages. */
+.cards,
+.strategy-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:14px;
+}
+
+.ref-card{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+}
+
+.value-card{
+  font-weight:700;
+  border-left:4px solid var(--ui-color-accent);
+  background:linear-gradient(135deg,#fff9e8,#fff);
+}
+
+.fact-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:12px;
+  margin:18px 0 0;
+}
+.fact-grid div{
+  padding:14px 16px;
+  background:linear-gradient(180deg,#f6f8fa,#eef2f5);
+  border:1px solid #d9e0e5;
+  border-radius:14px;
+}
+.fact-grid dt{
+  margin-bottom:5px;
+  color:#646b72;
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+.fact-grid dd{margin:0;font-weight:600}
+
+.image-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:14px;
+}
+.image-card{
+  margin:0;
+  min-height:190px;
+  overflow:hidden;
+  border-radius:16px;
+  background:#e4e8eb;
+  box-shadow:var(--ui-shadow-soft);
+}
+.image-card img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-height:190px;
+  max-height:380px;
+  object-fit:cover;
+  transition:transform .25s ease;
+}
+.image-card:hover img{transform:scale(1.025)}
+
+@media(max-width:640px){
+  .strategy-grid,
+  .cards,
+  .fact-grid,
+  .image-grid{grid-template-columns:1fr}
+}
+
+@media(prefers-color-scheme:dark){
+  .fact-grid div{background:#292a2d;border-color:#3c4043}
+  .image-card{background:#303134}
+  .value-card{background:#27251d}
+}

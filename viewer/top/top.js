@@ -24,10 +24,10 @@ export async function render() {
   if (breadcrumb) breadcrumb.innerHTML = '';
 
   app.innerHTML = `
-    <section class="top-hero">
-      <div class="top-kicker">PersonalOS Leisure</div>
+    <section class="ui-entity-hero">
+      <div class="kicker">PersonalOS Leisure</div>
       <h1>レジャー</h1>
-      <p>旅の計画から、ルート、スポットへ掘り下げて見られます。</p>
+      <p class="summary">旅の計画から、ルート、スポットへ掘り下げて見られます。</p>
     </section>
     <section class="home-explorer" aria-label="レジャー一覧">
       <div class="home-toolbar">

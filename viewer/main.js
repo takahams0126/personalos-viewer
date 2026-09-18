@@ -11,7 +11,7 @@ const pageLoaders = {
 };
 
 export async function main() {
-  loadStyle(new URL('./shared/shared.css', import.meta.url).href);
+  loadStyle(new URL('./shared/main.css', import.meta.url).href);
 
   const request = resolveRequest();
   const loader = pageLoaders[request.type];
