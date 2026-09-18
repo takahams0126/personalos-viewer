@@ -1,33 +1,33 @@
-# Viewer skeleton
+# Viewer
 
-New normalized viewer entry structure.
+Normalized Viewer implementation used by `index2.html` during migration from the legacy Viewer.
+
+See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the architecture contract and repository-root [`viewer-migration.json`](../viewer-migration.json) for machine-readable migration state.
 
 ```text
 viewer/
-├─ main.js
+├─ main.js                 # composition root: request → primary entity → one page
 ├─ core/
-│  ├─ request.js
-│  └─ data.js
-├─ shared/
-│  ├─ load-style.js
-│  └─ error-view.js
+│  ├─ request.js           # URL/request parsing
+│  └─ data.js              # data access / entity paths
+├─ shared/                 # cross-page presentation + provider adapters
 ├─ top/
-│  ├─ top.js
-│  └─ top.css
 ├─ spot/
-│  ├─ spot.js
-│  └─ spot.css
 ├─ route/
-│  ├─ route.js
-│  └─ route.css
 ├─ plan/
-│  ├─ plan.js
-│  └─ plan.css
 └─ concrete-plan/
-   ├─ concrete-plan.js
-   └─ concrete-plan.css
 ```
 
-`main.js` only resolves the request and dispatches to one page module. Each page module owns loading the data required for that page and rendering one complete page.
+Normal path for non-TOP pages:
 
-This skeleton is not wired to `index.html` yet. Legacy `app.js` and `presentation/` remain untouched during the migration.
+```text
+index2.html
+  ↓
+viewer/main.js
+  ↓ load primary entity exactly once
+page.render({ request, data })
+  ↓
+page-specific render + explicit shared helpers / supplemental artifacts
+```
+
+`viewer/**` is the Modern Zone. `index.html`, `app.js`, and `presentation/**` are the retained Legacy Zone while migration is incomplete. Do not use legacy implementation patterns as guidance for new Viewer code.

@@ -2,7 +2,7 @@ name: Deploy PersonalOS Viewer
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -11,21 +11,30 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  architecture:
+    name: Viewer Architecture Guard
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build complete presentation input
-        run: python tools/build_presentation_input.py
+      - name: Check modern Viewer architecture
+        run: python tools/check_viewer_architecture.py
+
+  build:
+    name: Build site
+    needs: architecture
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Build static site
         shell: bash
@@ -36,11 +45,6 @@ jobs:
           rm -rf _site
           mkdir _site
           cp -R index.html index2.html app.js manifest.json data maps presentation viewer _site/
-          if [ -d _generated/data ]; then
-            cp -R _generated/data/. _site/data/
-          fi
-          mkdir -p _site/_prototype
-          cp -R _prototype/poc _site/_prototype/
 
           # Viewer v2 injects the browser key directly into its Google Maps adapter.
           python - <<'PY'
@@ -64,17 +68,19 @@ jobs:
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
           touch _site/.nojekyll
 
-      - name: Version Viewer assets
-        run: python tools/version_presentation_assets.py _site "$GITHUB_SHA"
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

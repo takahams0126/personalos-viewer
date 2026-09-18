@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "zones": {
+    "legacy": {
+      "entrypoints": ["index.html", "app.js"],
+      "directories": ["presentation/"],
+      "policy": "retained-for-comparison-and-fallback"
+    },
+    "modern": {
+      "entrypoints": ["index2.html"],
+      "directories": ["viewer/"],
+      "policy": "architecture-guarded"
+    }
+  },
+  "pages": {
+    "top": { "modern": true, "legacy_retained": true },
+    "spot": { "modern": true, "legacy_retained": true },
+    "route": { "modern": true, "legacy_retained": true },
+    "plan": { "modern": false, "legacy_retained": true },
+    "concrete-plan": { "modern": false, "legacy_retained": true }
+  }
+}
