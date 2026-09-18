@@ -5,7 +5,7 @@
 const qs = new URLSearchParams(location.search);
 const type = qs.get('type');
 const pageType = type || 'home';
-const PRESENTATION_VERSION = '20260918-shared-flow-icons-2';
+const PRESENTATION_VERSION = '20260918-execution-day-header-1';
 
 const body = document.body;
 body.classList.add(`page-${pageType}`);
@@ -72,6 +72,7 @@ async function loadPlan() {
   normalizeDom();
   await load('./shared/flow-icons.js');
   await waitForBaseRender('#execution-mode-panel');
+  await load('./modules/execution-day-header.js');
   await load('./modules/execution-overview.js');
   await load('./modules/execution-feasibility.js');
   await load('./modules/execution-fuel.js');
