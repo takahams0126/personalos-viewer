@@ -46,14 +46,14 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir _site
-          cp -R index.html index2.html app.js manifest.json data maps legacy presentation viewer _site/
+          cp -R index.html app.js manifest.json data maps legacy presentation viewer _site/
           if [ -d _generated/data ]; then
             cp -R _generated/data/. _site/data/
           fi
           mkdir -p _site/_prototype
           cp -R _prototype/poc _site/_prototype/
 
-          # Viewer v2 injects the browser key directly into its Google Maps adapter.
+          # Modern Viewer injects the browser key directly into its Google Maps adapter.
           python - <<'PY'
           import json
           import os
@@ -70,8 +70,7 @@ jobs:
           path.write_text(source.replace(marker, replacement), encoding='utf-8')
           PY
 
-          # Legacy Viewer compatibility (index.html / app.js).
-          # TODO: Remove config.js generation when the legacy Viewer path is retired.
+          # Legacy Viewer compatibility (legacy/index.html -> ../config.js).
           printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/config.js
           touch _site/.nojekyll
 
