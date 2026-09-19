@@ -2,23 +2,35 @@
 
 ## Purpose
 
-This document is the architecture contract for the Modern Viewer path while the legacy implementation remains available only as a frozen comparison baseline.
+This document is the architecture contract for the Modern Viewer.
 
-Two implementations intentionally coexist during the transition.
+Modern Viewer is a **clean rebuild from the current Display contracts**. The frozen Legacy implementation exists only as comparison evidence; it is not the source implementation to port.
 
 ```text
-Legacy Zone
+Frozen comparison only
   legacy/index.html
   app.js
   presentation/**
   legacy/**
 
-Modern Zone
+Modern production
   index.html
   viewer/**
 ```
 
-The legacy path remains available for comparison while migration is in progress. New architecture rules apply only to the Modern Zone unless explicitly stated otherwise.
+## Coexistence invariants
+
+These rules define the boundary between the clean Modern rebuild and the frozen Legacy comparison path.
+
+1. Root `index.html` is the single Modern production entrypoint.
+2. Legacy remains under `legacy/index.html`; it must not be promoted back to root because a Modern page is incomplete.
+3. Do not create a second Modern entrypoint such as `index2.html`.
+4. Page implementation is incremental. `Top / Spot / Route` can be implemented while `Plan / ConcretePlan` remain skeletons.
+5. Incomplete pages are built inside `viewer/**` from current Display contracts; do not port or revive Legacy implementation patterns.
+6. Root `app.js`, `presentation/**`, and `legacy/**` are frozen comparison assets only and are forbidden dependencies for Modern code.
+7. Current Modern page build state is owned by `/viewer-build-status.json`.
+8. Display semantics and HTML Boundary are defined upstream. Modern Renderer consumes that boundary rather than inferring Domain meaning from Legacy DOM or old PoC code.
+9. Legacy visual behavior may be used as comparison evidence, but it does not override current contracts or explicit user review.
 
 ## Modern Viewer normal path
 
@@ -148,7 +160,7 @@ This contract is intentionally Route-independent so conceptual maps and actual-r
 
 ## Modern Zone guard rules
 
-The CI Architecture Guard protects root `index.html` and `viewer/**` only.
+The CI Architecture Guard protects root `index.html` and `viewer/**`.
 
 The following patterns are prohibited in the Modern Zone:
 
@@ -164,18 +176,31 @@ The following patterns are prohibited in the Modern Zone:
 10. `loadEntity()` has exactly one runtime owner in the Modern Zone: `viewer/main.js`. `entityPath()` remains inside `viewer/core/data.js`.
 11. Page modules must not call raw `fetch()`. Supplemental JSON access goes through `viewer/core/data.js::loadJson()`.
 
-The guard is intentionally scoped to the Modern Zone during migration. Existing legacy patterns are not CI failures.
+The guard is intentionally scoped to the Modern Zone while the frozen Legacy comparison implementation still exists. Existing Legacy patterns are not CI failures because Legacy is not part of the Modern implementation.
 
-## Migration state
+## Modern build state
 
-Machine-readable migration state lives in `/viewer-migration.json`.
+Machine-readable build state lives in `/viewer-build-status.json`.
+
+Current state:
+
+```text
+Top             implemented
+Spot            implemented
+Route           implemented
+Plan            skeleton
+ConcretePlan    skeleton
+```
+
+This is **not an old-to-new transition percentage**. It records which Modern pages have been newly implemented.
 
 Current policy:
 
-- migrated page types use `viewer/**` as the authoritative modern implementation;
-- legacy implementations remain retained under `legacy/index.html` and `legacy/**` for comparison until migration is complete;
-- non-migrated page types stay outside strict page-specific migration assumptions;
-- once all page types are migrated, the legacy path can be retired and the guard can be widened repository-wide.
+- `implemented` page types use `viewer/**` as the authoritative implementation;
+- `skeleton` page types are completed next inside the Modern Zone from current Display contracts;
+- Legacy remains frozen for comparison only;
+- current Display Pipeline Phase 2 proves HTML Boundary → fixture JSON → Modern Renderer before upstream Canonical/Builder reconciliation;
+- once Modern no longer needs Legacy comparison, Legacy can be retired by an explicit decision.
 
 ## Failure behavior
 

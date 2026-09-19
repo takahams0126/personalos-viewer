@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "strategy": "clean-rebuild",
+  "modern_entrypoint": "index.html",
+  "legacy_reference_entrypoint": "legacy/index.html",
+  "legacy_role": "frozen-comparison-only",
+  "pages": {
+    "top": {
+      "implementation_status": "implemented",
+      "legacy_reference": true
+    },
+    "spot": {
+      "implementation_status": "implemented",
+      "legacy_reference": true
+    },
+    "route": {
+      "implementation_status": "implemented",
+      "legacy_reference": true
+    },
+    "plan": {
+      "implementation_status": "skeleton",
+      "legacy_reference": true
+    },
+    "concrete-plan": {
+      "implementation_status": "skeleton",
+      "legacy_reference": true
+    }
+  },
+  "current_phase": {
+    "name": "display-pipeline-phase-2",
+    "focus": [
+      "plan",
+      "concrete-plan"
+    ],
+    "input": "html-boundary-fixture-json",
+    "goal": "prove-final-display-from-boundary-only"
+  }
+}
