@@ -1,0 +1,24 @@
+{
+  "schema_version": 3,
+  "artifact_type": "google_map_points",
+  "generated": true,
+  "canonical": false,
+  "source_type": "route",
+  "source_id": "R011",
+  "provider": "google_places_with_geocoding_fallback",
+  "generated_at": "2026-09-13T11:55:13.343109+00:00",
+  "presentation_hash": "canonical-sequence-v4",
+  "unresolved_location_ids": [],
+  "points": [
+    {"entity_type":"spot","entity_id":"S0037","name":"志戸子ガジュマル公園","role":"optional","place_id":"ChIJzzOYXnoZPTURCTI7PYsTiFI","lat":30.448903199999997,"lon":130.5200634,"order":1},
+    {"entity_type":"spot","entity_id":"S0038","name":"永田いなか浜","role":"core","place_id":"ChIJq4lOOgE9PTURhysN4ntEzgw","lat":30.4065904,"lon":130.4331373,"order":2},
+    {"entity_type":"spot","entity_id":"S0039","name":"西部林道","role":"core","place_id":"ChIJUffvv0k6PTURxZGT4susESE","lat":30.3354821,"lon":130.3966833,"order":3},
+    {"entity_type":"spot","entity_id":"S0036","name":"大川の滝","role":"core","place_id":"ChIJnzqBwks6PTURAlWO4qP4q8g","lat":30.299849499999993,"lon":130.41370519999998,"order":4},
+    {"entity_type":"spot","entity_id":"S0045","name":"手打ちそば 松竹","role":"main_lunch","place_id":"ChIJP3cKZ2Q6PTURxP0sh-ZfBFM","lat":30.2742215,"lon":130.4249112,"order":5},
+    {"entity_type":"spot","entity_id":"S0034","name":"トローキの滝","role":"high_priority","place_id":"ChIJpZ4RCOMmPTURIa4QaPRlDmg","lat":30.2505858,"lon":130.5908327,"order":6},
+    {"entity_type":"spot","entity_id":"S0035","name":"千尋の滝","role":"high_priority","place_id":"ChIJl0Cun-MmPTURDr7kcFzAe1I","lat":30.2623292,"lon":130.5822033,"order":7},
+    {"entity_type":"spot","entity_id":"S0040","name":"中間ガジュマル","role":"optional","place_id":"ChIJIeCs_RwxPTURKZ8R6zv8hQM","lat":30.255886500000003,"lon":130.4326218,"order":8},
+    {"entity_type":"spot","entity_id":"S0028","name":"平内海中温泉","role":"condition_high","place_id":"ChIJQfhGO_AvPTUR9nspFzmOv84","lat":30.230952199999997,"lon":130.4839206,"order":9},
+    {"entity_type":"spot","entity_id":"S0026","name":"尾之間温泉","role":"fallback_onsen","place_id":"ChIJw6nTUdklPTURRwWJ_T8Apsk","lat":30.240386199999996,"lon":130.5487159,"order":10}
+  ]
+}
