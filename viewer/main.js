@@ -1,16 +1,21 @@
 import { resolveRequest } from './core/request.js';
-import { loadEntity } from './core/data.js';
+import { loadPageData, resources } from './core/data.js';
+import {
+  createNavigationContext,
+  installDocumentNavigation
+} from './core/navigation.js';
 import { loadStyle } from './shared/load-style.js';
 import { renderError } from './shared/error-view.js';
-import { renderBreadcrumb } from './shared/navigation.js';
+import { renderNavigation } from './shared/navigation.js';
 
 /**
  * Public contract between the composition root and every Viewer page module.
- * TOP receives data=null; entity pages receive their primary entity exactly once.
  *
  * @typedef {Object} ViewerPageContext
- * @property {{type:string,id:string|null,trail:Array<{type:string,id:string}>}} request
+ * @property {{type:string,id:string|null}} request
  * @property {Object|null} data
+ * @property {{source:Object|null,href:(target:Object)=>string}} navigation
+ * @property {{loadJson:(path:string,options?:Object)=>Promise<Object>}} resources
  */
 
 /**
@@ -31,19 +36,21 @@ export async function main() {
   loadStyle(new URL('./shared/main.css', import.meta.url).href);
 
   const request = resolveRequest();
-  renderBreadcrumb(request);
-
   const loader = pageLoaders[request.type];
   if (!loader) {
     throw new Error(`Unsupported viewer page type: ${request.type}`);
   }
 
-  const data = request.type === 'top'
-    ? null
-    : await loadEntity(request.type, request.id);
+  const data = await loadPageData(request.type, request.id);
+  const navigation = createNavigationContext({ request, data });
+  const context = { request, data, navigation, resources };
+
+  renderNavigation(context);
 
   const page = await loader();
-  await page.render({ request, data });
+  await page.render(context);
+
+  installDocumentNavigation(context);
 }
 
 try {

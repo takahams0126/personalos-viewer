@@ -1,6 +1,4 @@
-import { loadManifest } from '../core/data.js';
 import { loadStyle } from '../shared/load-style.js';
-import { buildViewerHref } from '../shared/navigation.js';
 
 const TYPE_LABELS = { plan: 'プラン', route: 'ルート', spot: 'スポット' };
 const CATEGORY_LABELS = {
@@ -14,9 +12,8 @@ const CATEGORY_LABELS = {
   facility: '施設'
 };
 
-export async function render() {
+export async function render({ data: catalog, navigation }) {
   loadStyle(new URL('./top.css', import.meta.url).href);
-  const catalog = await loadManifest();
   const app = document.querySelector('#app');
   if (!app) return;
 
@@ -78,7 +75,7 @@ export async function render() {
 
     count.textContent = `${typeLabel(state.type)} ${rows.length}件`;
     grid.innerHTML = rows.length
-      ? rows.map(cardHtml).join('')
+      ? rows.map(item => cardHtml(item, navigation)).join('')
       : '<div class="home-empty">条件に合う項目がありません。</div>';
   };
 
@@ -110,8 +107,8 @@ function categoryLabel(value) {
   return CATEGORY_LABELS[value] || String(value).replaceAll('_', ' ');
 }
 
-function cardHtml(item) {
-  const href = buildViewerHref({ type: item.type, id: item.id });
+function cardHtml(item, navigation) {
+  const href = navigation.href({ type: item.type, id: item.id });
   const image = item.image_url
     ? `<div class="explorer-thumb"><img src="${esc(item.image_url)}" alt="" loading="lazy" onerror="this.parentElement.remove()"></div>`
     : '';

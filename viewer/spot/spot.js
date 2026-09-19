@@ -4,16 +4,15 @@ import {
   makeCollapsible,
   renderEntityRefCard
 } from '../shared/component-contracts.js';
-import { buildEntityHref } from '../shared/navigation.js';
 
-export async function render({ request, data }) {
+export async function render({ data, navigation }) {
   loadStyle(new URL('./spot.css', import.meta.url).href);
   loadStyle(new URL('./spot-final.css', import.meta.url).href);
 
   const app = document.querySelector('#app');
   if (!app) return;
 
-  renderSpot(data, app, request);
+  renderSpot(data, app, navigation);
   initCarousel(app);
 
   const sections = [...app.querySelectorAll(':scope > .spot-demo-section')];
@@ -94,14 +93,14 @@ function heroFacts(facts = []) {
   </div>`;
 }
 
-function relatedSection(related = [], request) {
+function relatedSection(related = [], navigation) {
   if (!related.length) return '';
   return `<section class="section ui-section spot-demo-section spot-related-section">
     <h2>関連スポット</h2>
     <div class="spot-related-grid">${related.map(item => renderEntityRefCard({
       kind: '関連Spot',
       title: item.label || item.id || '',
-      href: buildEntityHref({ type: item.entity_type || 'spot', id: item.id || '' }, request)
+      href: navigation.href({ type: item.entity_type || 'spot', id: item.id || '' })
     })).join('')}</div>
   </section>`;
 }
@@ -140,7 +139,7 @@ function appealSection(appeal = {}) {
   </section>`;
 }
 
-function renderSpot(data, app, request) {
+function renderSpot(data, app, navigation) {
   app.innerHTML = `
     <section class="spot-demo-hero ui-entity-hero is-spot-hero">
       <div class="spot-demo-hero-copy ui-entity-hero-copy">
@@ -159,7 +158,7 @@ function renderSpot(data, app, request) {
     </section>
 
     ${appealSection(data.appeal || {})}
-    ${relatedSection(data.related_spots || [], request)}
+    ${relatedSection(data.related_spots || [], navigation)}
   `;
 }
 

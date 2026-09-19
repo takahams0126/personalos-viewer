@@ -5,12 +5,38 @@ const ENTITY_DIRS = {
   'concrete-plan': 'concrete-plans'
 };
 
-export async function loadJson(path) {
-  const response = await fetch(path, { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`Failed to load ${path}: ${response.status}`);
+export function createResourceManager({ fetchImpl = globalThis.fetch.bind(globalThis) } = {}) {
+  const jsonLoads = new Map();
+
+  async function loadJson(path, { cache = 'no-store' } = {}) {
+    const url = new URL(path, document.baseURI).href;
+    const key = `${cache}:${url}`;
+    if (jsonLoads.has(key)) return jsonLoads.get(key);
+
+    const load = (async () => {
+      const response = await fetchImpl(url, { cache });
+      if (!response.ok) {
+        throw new Error(`Failed to load ${path}: ${response.status}`);
+      }
+      return response.json();
+    })();
+
+    jsonLoads.set(key, load);
+    try {
+      return await load;
+    } catch (error) {
+      jsonLoads.delete(key);
+      throw error;
+    }
   }
-  return response.json();
+
+  return Object.freeze({ loadJson });
+}
+
+export const resources = createResourceManager();
+
+export function loadJson(path, options) {
+  return resources.loadJson(path, options);
 }
 
 export function entityPath(type, id) {
@@ -21,9 +47,13 @@ export function entityPath(type, id) {
 }
 
 export function loadEntity(type, id) {
-  return loadJson(entityPath(type, id));
+  return resources.loadJson(entityPath(type, id));
 }
 
 export function loadManifest() {
-  return loadJson('./manifest.json');
+  return resources.loadJson('./manifest.json');
+}
+
+export function loadPageData(type, id) {
+  return type === 'top' ? loadManifest() : loadEntity(type, id);
 }

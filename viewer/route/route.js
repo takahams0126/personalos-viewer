@@ -1,9 +1,7 @@
-import { loadJson } from '../core/data.js';
 import {
   escapeHtml,
   makeCollapsible
 } from '../shared/component-contracts.js';
-import { buildEntityHref } from '../shared/navigation.js';
 import { renderGoogleMap } from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
 
@@ -29,12 +27,12 @@ function renderInlineFacts(facts = []) {
   return `<div class="route-inline-facts">${facts.map(fact => `<span class="route-inline-fact"><b>${escapeHtml(fact.label)}</b><span>${escapeHtml(fact.value)}</span></span>`).join('')}</div>`;
 }
 
-function renderHeroSpots(spots = [], request) {
+function renderHeroSpots(spots = [], navigation) {
   if (!spots.length) return '';
   return `<div class="route-hero-spots">
     <span class="route-hero-spots-label">主役スポット</span>
     <div class="route-hero-spot-links">${spots.map(spot => {
-      const href = buildEntityHref({ type: spot.entity_type, id: spot.id }, request);
+      const href = navigation.href({ type: spot.entity_type, id: spot.id });
       return `<a href="${escapeHtml(href)}">${escapeHtml(spot.label)}</a>`;
     }).join('<span class="route-hero-spot-separator" aria-hidden="true">｜</span>')}</div>
   </div>`;
@@ -45,13 +43,13 @@ function renderBadges(badges = []) {
   return `<div class="route-sequence-badges">${badges.map(badge => `<span class="route-sequence-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</span>`).join('')}</div>`;
 }
 
-function renderRouteStop(item, request) {
+function renderRouteStop(item, navigation) {
   const spot = item.spot || {};
-  const href = spot.id ? buildEntityHref({ type: spot.entity_type || 'spot', id: spot.id }, request) : '';
+  const href = spot.id ? navigation.href({ type: spot.entity_type || 'spot', id: spot.id }) : '';
   const title = escapeHtml(spot.label || spot.id || '');
   const label = href ? `<a class="route-sequence-title" href="${escapeHtml(href)}">${title}</a>` : `<span class="route-sequence-title">${title}</span>`;
   const fallback = item.fallback_for
-    ? `<div class="route-sequence-fallback"><b>代替対象</b><a href="${escapeHtml(buildEntityHref({ type: item.fallback_for.entity_type || 'spot', id: item.fallback_for.id }, request))}">${escapeHtml(item.fallback_for.label)}</a></div>`
+    ? `<div class="route-sequence-fallback"><b>代替対象</b><a href="${escapeHtml(navigation.href({ type: item.fallback_for.entity_type || 'spot', id: item.fallback_for.id }))}">${escapeHtml(item.fallback_for.label)}</a></div>`
     : '';
 
   return `<article class="route-sequence-item">
@@ -65,9 +63,9 @@ function renderRouteStop(item, request) {
   </article>`;
 }
 
-function buildPopupData(point, request) {
+function buildPopupData(point, navigation) {
   const target = point.entityId ? { type: point.entityType || 'spot', id: point.entityId } : null;
-  const personalHref = target ? buildEntityHref(target, request) : '';
+  const personalHref = target ? navigation.href(target) : '';
 
   return {
     title: point.name,
@@ -103,7 +101,7 @@ function joinRouteMapPoints(mapArtifact, sequence = []) {
   });
 }
 
-async function initRouteMap(data, request) {
+async function initRouteMap(data, navigation, resources) {
   const artifactRef = data?.map?.artifact_ref;
   if (!artifactRef) return;
 
@@ -112,7 +110,7 @@ async function initRouteMap(data, request) {
   if (!element) return;
 
   try {
-    const artifact = await loadJson(artifactRef);
+    const artifact = await resources.loadJson(artifactRef);
     const points = joinRouteMapPoints(artifact, data.sequence || []);
 
     await renderGoogleMap({
@@ -122,7 +120,7 @@ async function initRouteMap(data, request) {
       getPosition: point => ({ lat: Number(point.lat), lng: Number(point.lon) }),
       getTitle: point => point.name,
       getLabel: point => String(point.order || ''),
-      getPopupData: point => buildPopupData(point, request)
+      getPopupData: point => buildPopupData(point, navigation)
     });
   } catch (error) {
     element.style.display = 'none';
@@ -132,7 +130,7 @@ async function initRouteMap(data, request) {
   }
 }
 
-function renderRouteHtml(data, request) {
+function renderRouteHtml(data, navigation) {
   const mapSection = data.map?.artifact_ref
     ? `<section class="section" data-route-section="map">
         <h2>ルートの概念地図</h2>
@@ -145,7 +143,7 @@ function renderRouteHtml(data, request) {
 
   const sequenceSection = `<section class="section" data-route-section="sequence">
     <h2>立ち寄り順</h2>
-    <div class="route-sequence-list">${(data.sequence || []).map(item => renderRouteStop(item, request)).join('')}</div>
+    <div class="route-sequence-list">${(data.sequence || []).map(item => renderRouteStop(item, navigation)).join('')}</div>
   </section>`;
 
   const constraints = (data.constraints || []).length
@@ -161,7 +159,7 @@ function renderRouteHtml(data, request) {
       ${data.summary ? `<p class="summary ui-hero-copy">${escapeHtml(data.summary)}</p>` : ''}
       ${renderChips(data.theme_chips || [])}
       ${renderInlineFacts(data.hero_facts || [])}
-      ${renderHeroSpots(data.hero_spots || [], request)}
+      ${renderHeroSpots(data.hero_spots || [], navigation)}
     </section>
     <section class="section route-demo-section route-demo-value" data-route-section="appeal">
       <h2>このルートの魅力</h2>
@@ -173,17 +171,17 @@ function renderRouteHtml(data, request) {
     ${constraints}`;
 }
 
-export async function render({ request, data }) {
+export async function render({ data, navigation, resources }) {
   loadStyle(new URL('./route.css', import.meta.url).href);
   const app = document.querySelector('#app');
   if (!app) return;
 
-  app.innerHTML = renderRouteHtml(data, request);
+  app.innerHTML = renderRouteHtml(data, navigation);
 
   makeCollapsible(app.querySelector('[data-route-section="appeal"]'), { open: false });
   makeCollapsible(app.querySelector('[data-route-section="map"]'), { open: true });
   makeCollapsible(app.querySelector('[data-route-section="sequence"]'), { open: true });
   makeCollapsible(app.querySelector('[data-route-section="constraints"]'), { open: true });
 
-  await initRouteMap(data, request);
+  await initRouteMap(data, navigation, resources);
 }

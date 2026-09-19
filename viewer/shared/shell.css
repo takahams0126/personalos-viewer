@@ -34,8 +34,20 @@ body.leisure-app{
 .leisure-app .breadcrumb{
   display:flex;
   gap:8px;
+  align-items:center;
   font-size:.9rem;
   color:#6b7075;
+}
+.leisure-app .breadcrumb-back{
+  appearance:none;
+  border:0;
+  padding:0;
+  background:none;
+  color:inherit;
+  font:inherit;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:2px;
 }
 
 .leisure-app .app-main{

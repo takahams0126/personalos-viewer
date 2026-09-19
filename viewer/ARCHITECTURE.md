@@ -20,8 +20,6 @@ Modern production
 
 ## Coexistence invariants
 
-These rules define the boundary between the clean Modern rebuild and the frozen Legacy comparison path.
-
 1. Root `index.html` is the single Modern production entrypoint.
 2. Legacy remains under `legacy/index.html`; it must not be promoted back to root because a Modern page is incomplete.
 3. Do not create a second Modern entrypoint such as `index2.html`.
@@ -36,48 +34,11 @@ These rules define the boundary between the clean Modern rebuild and the frozen 
 
 The goal of Modern Viewer is not to minimize a single local metric such as JSON request count. The goal is to deliver the user-agreed Final Display with high overall software quality while preserving upstream meaning and layer responsibility.
 
-Design decisions must balance at least:
+Design decisions must balance semantic correctness, runtime performance, maintainability, extensibility, change locality, testability/diagnosability, cacheability/reuse, and generation/rebuild cost.
 
-- semantic correctness and user-agreed display fidelity;
-- runtime performance and avoidance of unnecessary I/O;
-- maintainability and clear ownership;
-- extensibility and replaceability;
-- change locality and blast-radius minimization;
-- testability and diagnosability;
-- cacheability and reuse;
-- generation/rebuild cost as well as runtime cost;
-- development speed and exploratory flexibility while the design is still evolving.
-
-`1 page = 1 application-data read` is therefore **not** a Viewer invariant. It can be a useful heuristic when it reduces unnecessary work, but must not force unrelated resources into one oversized payload or couple resources with different change, generation, cache, or reuse lifecycles.
-
-### Testing is demand-driven, not default-driven
-
-Tests, architecture guards, lint rules, and CI checks are tools for improving quality; they are not the development goal and must not become a proxy for quality.
-
-While a page, contract, or runtime design is still exploratory or incomplete, the AI must not default to creating tests or stronger guards merely because doing so appears safer. Premature tests can freeze an unstable implementation, create repeated test-repair work on every design change, and later require deletion or relaxation. That maintenance cost is itself a loss of overall quality.
-
-If the AI believes a new test, guard, CI check, test framework, or substantial test-maintenance effort is warranted, **explicit user approval is required before implementation**. Before asking for approval, state briefly:
-
-- the concrete risk or invariant to protect;
-- why existing review or manual verification is insufficient;
-- the expected maintenance cost;
-- a lower-cost alternative, if available.
-
-Without explicit approval, do not:
-
-- add unit, integration, E2E, visual, or regression tests;
-- add or expand Architecture Guard / lint rules;
-- add new required or automated CI verification;
-- introduce a test framework, runner, or validation infrastructure;
-- substantially rewrite tests merely to make an unstable prototype state pass.
-
-Existing approved tests and guards may be run when they are already part of the repository workflow, but their existence does not override the current user goal. A failing test is not automatically proof that the implementation must change; first consider whether the test is stale, over-constraining an exploratory design, or protecting an invariant that is no longer intended.
-
-The AI must not prioritize making tests green over the user-agreed implementation goal.
+`1 page = 1 application-data read` is **not** a Viewer invariant. Unnecessary I/O should be avoided, but unrelated resources must not be coupled merely to reduce request count.
 
 ### Semantic completion vs resource composition
-
-Modern Viewer must distinguish two different activities:
 
 ```text
 Semantic completion
@@ -89,37 +50,15 @@ Resource composition
 = allowed in Viewer from explicit references
 ```
 
-A Viewer page must not fetch Manifest, related Entity JSON, Canonical data, or other sources merely to discover missing labels, relationships, summaries, warnings, or other display meaning.
+Viewer must not fetch Manifest, related Entity JSON, Canonical data, or other sources merely to discover missing labels, relationships, summaries, warnings, or other display meaning.
 
-By contrast, a page may load multiple explicitly referenced artifacts such as conceptual maps, execution maps, route details, or other independently managed presentation resources when that separation improves change locality, reuse, cache behavior, failure isolation, or rebuild cost.
+Explicitly referenced artifacts may be loaded independently when separation improves change locality, reuse, cache behavior, failure isolation, or rebuild cost.
 
-### Resource boundary rule
+### Testing / Guard / CI principle
 
-Inline versus external resource boundaries are chosen by cohesion, not by request-count targets. Consider whether resources:
+Testing, Architecture Guards, and CI checks are quality tools, not goals. In incomplete, experimental, or actively changing areas they are **not default implementation work**.
 
-- change together;
-- are generated together;
-- share freshness and lifecycle;
-- should invalidate cache together;
-- are reusable independently;
-- differ materially in size or load timing;
-- should fail independently.
-
-The Viewer must not infer resource paths from Domain meaning. Supplemental resources must be reachable through explicit references supplied by the accepted page/boundary input.
-
-Repeated requests for the same resource should be structurally avoidable through common loading/deduplication where useful. Cache and dedupe are performance optimizations, never correctness requirements.
-
-### Navigation rule
-
-Navigation is Viewer runtime/common-UI state, not a representation of Canonical Entity relationships.
-
-- N:N Entity relationships must not be forced into a single parent/child breadcrumb hierarchy.
-- Current-page labels should come from already-loaded page data.
-- Previous/source labels should come from navigation state already known at transition time when needed.
-- Navigation must not trigger Manifest or related-Entity semantic lookup merely to obtain Japanese labels.
-- Browser history state should be entry-scoped; a global session value must not become the truth for back/forward navigation.
-
-These principles define the constraints for the navigation redesign; the current request shape may evolve to satisfy them.
+New tests, Guard expansion, CI validation, test-framework introduction, or substantial test-maintenance work require **explicit user approval before implementation**, even if an AI judges them useful. Do not freeze exploratory behavior just to make tests pass, and do not prioritize test maintenance over current user-agreed product/design goals.
 
 ## Modern Viewer normal path
 
@@ -127,158 +66,148 @@ These principles define the constraints for the navigation redesign; the current
 index.html
   ↓
 viewer/main.js
-  ├─ resolveRequest()
-  ├─ renderBreadcrumb()
-  ├─ loadEntity()       # exactly once for the primary entity
-  └─ page.render({ request, data })
-        ↓
-      page module
+  ├─ resolveRequest()              # identity only: type + id
+  ├─ loadPageData()               # TOP=Manifest, Entity=Boundary JSON
+  ├─ createNavigationContext()    # history entry state
+  ├─ create PageContext
+  ├─ render common navigation
+  └─ page.render(PageContext)
         ├─ presentation / interaction
-        └─ optional loadJson() for explicitly referenced supplemental artifacts
-              ↓
-            shared helpers / provider adapters
-              ↓
-            complete render
+        └─ resources.loadJson() for explicit supplemental artifacts
 ```
 
-### Responsibilities
+Normal navigation remains document navigation rather than SPA replacement. Internal links are query-relative (`?type=...&id=...`) and do not encode the physical entry filename or deployment path.
+
+## PageContext
+
+Every page receives the same composition contract:
+
+```js
+{
+  request: {
+    type: string,
+    id: string | null
+  },
+  data: Object,
+  navigation: {
+    source: { type, id, title } | null,
+    href(target): string
+  },
+  resources: {
+    loadJson(path, options?): Promise<Object>
+  }
+}
+```
+
+- `request` identifies the current Viewer page only.
+- `data` is the page's primary accepted input. TOP receives `manifest.json`; Entity pages receive their Boundary JSON.
+- `navigation` is runtime/UI context, not Canonical relation state.
+- `resources` provides access to explicitly referenced supplemental resources without giving page modules ownership of raw fetch.
+
+## Responsibilities
 
 - `viewer/main.js`
   - composition root
-  - resolve the request
+  - resolve request identity
+  - load primary page data
+  - create PageContext
   - render common navigation
-  - load the primary entity exactly once for non-TOP pages
   - dispatch to exactly one page module
+  - install document-navigation behavior
 - `viewer/core/request.js`
-  - parse Viewer request state from the URL
+  - parse only `type` / `id` from URL
+  - never own browser-history context
+- `viewer/core/navigation.js`
+  - build physical-entry-independent Viewer hrefs
+  - read/write entry-scoped navigation context through `history.state`
+  - preserve normal document reload semantics for internal navigation
 - `viewer/core/data.js`
-  - own HTTP/JSON data access and entity path resolution
-  - expose `loadEntity()` for the composition root
-  - expose `loadJson()` for explicit supplemental artifacts
+  - own HTTP/JSON access and entity path resolution
+  - own shared Resource Manager
+  - deduplicate repeated loads of the same JSON resource within a document lifecycle
 - `viewer/<page>/`
   - page-specific presentation and interaction
-  - decide load timing for supplemental artifacts explicitly referenced by accepted page data
-  - consume primary data passed through `page.render({ request, data })`
-  - must not discover supplemental semantics or resource paths by searching other Entity data
-  - use `loadJson()` rather than raw `fetch()` for supplemental JSON
+  - consume PageContext
+  - load only explicitly referenced supplemental artifacts through `context.resources`
 - `viewer/shared/`
-  - cross-page presentation components, navigation, provider adapters, and reusable UI behavior
+  - cross-page presentation components/provider adapters/common UI
   - must not contain Spot/Route/Plan/ConcretePlan domain branching
 
-## Data access ownership
+## Data and resource ownership
 
 ```text
-Primary entity
-  viewer/main.js
-    ↓ loadEntity(type, id)
-  viewer/core/data.js
+Primary page input
+  main.js
+    ↓ loadPageData(type, id)
+  Resource Manager
     ↓
-  page.render({ request, data })
+  PageContext.data
 
 Explicit supplemental artifact
   accepted page data contains artifact reference
     ↓
-  page module decides load timing
-    ↓ loadJson(path)
-  viewer/core/data.js
+  page chooses load timing
+    ↓ context.resources.loadJson(ref)
+  Resource Manager
 ```
 
-`loadEntity()` has one runtime owner: `viewer/main.js`. `entityPath()` remains infrastructure owned by `viewer/core/data.js`. Page modules do not call either function and do not use raw `fetch()`.
+Primary data ownership is centralized without imposing a one-read-per-page rule. Supplemental resources remain independent when their lifecycle warrants it.
+
+## Navigation ownership
+
+```text
+URL query
+= current Entity identity
+= type + id
+
+history.state
+= history-entry-specific navigation context
+= source label/type/id
+
+Manifest
+= TOP/search directory primary data
+= not a generic Entity label lookup service
+
+Canonical / Boundary relationships
+= Domain/display meaning
+= not browser history
+```
+
+N:N Entity relationships are not represented as a fixed parent/child breadcrumb hierarchy. `trail[]` is no longer part of ViewerRequest.
+
+Internal links never encode `index.html`, `index2.html`, repository path, or hosting path. The current document owns the physical entrypoint; Viewer navigation owns query state only.
+
+## Resource Manager
+
+The current Resource Manager intentionally stays small:
+
+- one shared JSON loading boundary;
+- in-document deduplication of identical resource loads;
+- explicit cache option passed to fetch;
+- failed loads are removed from the in-memory load map so a later request can retry.
+
+This is infrastructure, not a requirement to introduce broader caching, prefetch, Service Workers, or SPA state management.
 
 ## Dependency rules
-
-Allowed dependency direction:
 
 ```text
 main → core
 main → page
 main → shared
 
-page → core        # explicit supplemental data only
 page → shared
+page ↛ core data/navigation implementation
 
 shared ↛ page
 core   ↛ page
 core   ↛ shared presentation
 ```
 
-## Public contracts
-
-### ViewerRequest
-
-Resolved once by `viewer/core/request.js` and passed down from the composition root.
-
-```js
-{
-  type: string,
-  id: string | null,
-  trail: Array<{ type: string, id: string }>
-}
-```
-
-Page modules consume this object and do not reinterpret the URL.
-
-`trail` reflects the current implementation shape. It must not be interpreted as Canonical parentage or N:N Entity hierarchy; navigation state may be revised under the Navigation rule above.
-
-### Page module
-
-Every page module exposes the same entry contract:
-
-```js
-render({ request, data })
-```
-
-- `request`: resolved `ViewerRequest`
-- `data`: primary entity loaded by `viewer/main.js`, or `null` for TOP
-- page-specific supplemental artifacts may be loaded explicitly through `viewer/core/data.js::loadJson()` only from accepted explicit references
-
-### MapPopupData
-
-Map callers decide what content/actions exist. Shared map presentation decides only how they are rendered.
-
-```js
-{
-  title?: string,
-  summary?: string,
-  meta?: Array<{ label: string, value: string }>,
-  actions?: Array<{
-    kind?: 'primary' | 'secondary',
-    label: string,
-    href: string,
-    external?: boolean
-  }>
-}
-```
-
-This contract is intentionally Route-independent so conceptual maps and actual-road maps can share the same popup presentation.
-
-## Modern Zone guard rules
-
-The CI Architecture Guard protects root `index.html` and `viewer/**`.
-
-The following patterns are prohibited in the Modern Zone:
-
-1. Page modules must not parse `location.search` / `URLSearchParams` directly. URL request interpretation belongs to `viewer/core/request.js`.
-2. Page modules must not directly fetch their primary entity JSON under `data/spots`, `data/routes`, `data/plans`, or `data/concrete-plans`. Primary entity loading belongs to `viewer/main.js` through `loadEntity()`.
-3. `viewer/shared/**` must not import page modules from `viewer/top`, `viewer/spot`, `viewer/route`, `viewer/plan`, or `viewer/concrete-plan`.
-4. `viewer/core/**` must not import page modules or presentation code from `viewer/shared/**`.
-5. Modern code must not depend on Google Maps private DOM selectors such as `.gm-style-*`.
-6. Modern code must not use `MutationObserver` as a bootstrap/wait-for-render mechanism.
-7. Modern modules must not self-bootstrap by registering page startup through `DOMContentLoaded` or `window.onload`; startup belongs to `viewer/main.js` / `index.html`.
-8. Modern code must not import from legacy root `app.js`, `presentation/**`, or `legacy/**`.
-9. `index.html` must load `viewer/main.js` exactly once as an ES module and must not load legacy `app.js`, `config.js`, or `presentation/**` scripts.
-10. `loadEntity()` has exactly one runtime owner in the Modern Zone: `viewer/main.js`. `entityPath()` remains inside `viewer/core/data.js`.
-11. Page modules must not call raw `fetch()`. Supplemental JSON access goes through `viewer/core/data.js::loadJson()`.
-
-The guard is intentionally scoped to the Modern Zone while the frozen Legacy comparison implementation still exists. Existing Legacy patterns are not CI failures because Legacy is not part of the Modern implementation.
-
-The optimization principles above are architecture constraints. Not every constraint is mechanically enforced by the current guard. **No new guard rule or CI enforcement is added merely because a principle exists; expansion requires explicit user approval under the Testing rule above.**
+Pages receive runtime services through PageContext rather than importing data/navigation infrastructure directly.
 
 ## Modern build state
 
 Machine-readable build state lives in `/viewer-build-status.json`.
-
-Current state:
 
 ```text
 Top             implemented
@@ -288,26 +217,10 @@ Plan            skeleton
 ConcretePlan    skeleton
 ```
 
-This is **not an old-to-new transition percentage**. It records which Modern pages have been newly implemented.
-
-Current policy:
-
-- `implemented` page types use `viewer/**` as the authoritative implementation;
-- `skeleton` page types are completed next inside the Modern Zone from current Display contracts;
-- Legacy remains frozen for comparison only;
-- current Display Pipeline Phase 2 proves HTML Boundary → fixture JSON → Modern Renderer before upstream Canonical/Builder reconciliation;
-- once Modern no longer needs Legacy comparison, Legacy can be retired by an explicit decision.
+This foundation change does not implement Plan or ConcretePlan display.
 
 ## Failure behavior
 
-On push to `main`, the currently approved CI configuration runs the existing Architecture Guard before the Pages build.
+Primary input failure still fails page bootstrap and is rendered through the shared error view. Supplemental artifacts should remain failure-isolated by their owning page/component when practical.
 
-```text
-push
-  ↓
-Architecture Guard
-  ├─ PASS → build → deploy
-  └─ FAIL → build/deploy do not run
-```
-
-A failed existing guard does not by itself authorize adding tests, expanding the guard, or reshaping the implementation around the guard. Diagnose whether the implementation or the guard is stale relative to the current user-approved design before taking corrective action.
+No test, Guard, workflow, or CI expansion is implied by this architecture change; those require separate explicit user approval.
