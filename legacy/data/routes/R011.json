@@ -58,7 +58,7 @@
     ]
   },
   "map": {
-    "points_json": "./maps/R011-google-points.json",
+    "points_json": "./legacy/maps/R011-google-points.json",
     "path_mode": "conceptual"
   }
 }
