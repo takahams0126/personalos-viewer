@@ -1,11 +1,15 @@
-const VIEWER_ENTRY = './index2.html';
-
 function normalizeTrail(trail = []) {
   return trail.filter(item => item?.type && item?.id);
 }
 
+/**
+ * Build a Viewer link relative to the document currently serving the Modern Viewer.
+ *
+ * Internal navigation owns only Viewer query state. It must not know or encode the
+ * physical entry filename, host directory, or deployment path.
+ */
 export function buildViewerHref({ type, id, trail = [] }) {
-  if (!type || type === 'top') return VIEWER_ENTRY;
+  if (!type || type === 'top') return '?';
 
   const params = new URLSearchParams();
   params.set('type', type);
@@ -14,7 +18,7 @@ export function buildViewerHref({ type, id, trail = [] }) {
     params.append('trail', `${item.type}:${item.id}`);
   });
 
-  return `${VIEWER_ENTRY}?${params.toString()}`;
+  return `?${params.toString()}`;
 }
 
 export function buildEntityHref(target, request) {
@@ -42,7 +46,7 @@ export function renderBreadcrumb(request, root = document.querySelector('#breadc
   ];
 
   const top = document.createElement('a');
-  top.href = VIEWER_ENTRY;
+  top.href = buildViewerHref({ type: 'top' });
   top.textContent = 'TOP';
   root.appendChild(top);
 
