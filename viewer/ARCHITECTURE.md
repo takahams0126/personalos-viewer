@@ -2,27 +2,28 @@
 
 ## Purpose
 
-This document is the architecture contract for the new Viewer path during migration from the legacy implementation.
+This document is the architecture contract for the Modern Viewer path while the legacy implementation remains available only as a frozen comparison baseline.
 
 Two implementations intentionally coexist during the transition.
 
 ```text
 Legacy Zone
-  index.html
+  legacy/index.html
   app.js
   presentation/**
+  legacy/**
 
 Modern Zone
-  index2.html
+  index.html
   viewer/**
 ```
 
-The legacy path remains available for comparison and fallback while migration is in progress. New architecture rules apply only to the Modern Zone unless explicitly stated otherwise.
+The legacy path remains available for comparison while migration is in progress. New architecture rules apply only to the Modern Zone unless explicitly stated otherwise.
 
 ## Modern Viewer normal path
 
 ```text
-index2.html
+index.html
   ↓
 viewer/main.js
   ├─ resolveRequest()
@@ -147,7 +148,7 @@ This contract is intentionally Route-independent so conceptual maps and actual-r
 
 ## Modern Zone guard rules
 
-The CI Architecture Guard currently protects `viewer/**` and `index2.html` only.
+The CI Architecture Guard protects root `index.html` and `viewer/**` only.
 
 The following patterns are prohibited in the Modern Zone:
 
@@ -157,13 +158,13 @@ The following patterns are prohibited in the Modern Zone:
 4. `viewer/core/**` must not import page modules or presentation code from `viewer/shared/**`.
 5. Modern code must not depend on Google Maps private DOM selectors such as `.gm-style-*`.
 6. Modern code must not use `MutationObserver` as a bootstrap/wait-for-render mechanism.
-7. Modern modules must not self-bootstrap by registering page startup through `DOMContentLoaded` or `window.onload`; startup belongs to `viewer/main.js` / `index2.html`.
-8. Modern code must not import from legacy `app.js` or `presentation/**`.
-9. `index2.html` must load `viewer/main.js` exactly once as an ES module and must not load legacy `app.js`, `config.js`, or `presentation/**` scripts.
+7. Modern modules must not self-bootstrap by registering page startup through `DOMContentLoaded` or `window.onload`; startup belongs to `viewer/main.js` / `index.html`.
+8. Modern code must not import from legacy root `app.js`, `presentation/**`, or `legacy/**`.
+9. `index.html` must load `viewer/main.js` exactly once as an ES module and must not load legacy `app.js`, `config.js`, or `presentation/**` scripts.
 10. `loadEntity()` has exactly one runtime owner in the Modern Zone: `viewer/main.js`. `entityPath()` remains inside `viewer/core/data.js`.
 11. Page modules must not call raw `fetch()`. Supplemental JSON access goes through `viewer/core/data.js::loadJson()`.
 
-The guard is intentionally scoped to the Modern Zone during migration. Existing legacy patterns are not CI failures yet.
+The guard is intentionally scoped to the Modern Zone during migration. Existing legacy patterns are not CI failures.
 
 ## Migration state
 
@@ -172,7 +173,7 @@ Machine-readable migration state lives in `/viewer-migration.json`.
 Current policy:
 
 - migrated page types use `viewer/**` as the authoritative modern implementation;
-- legacy implementations remain retained until the migration is complete;
+- legacy implementations remain retained under `legacy/index.html` and `legacy/**` for comparison until migration is complete;
 - non-migrated page types stay outside strict page-specific migration assumptions;
 - once all page types are migrated, the legacy path can be retired and the guard can be widened repository-wide.
 
@@ -188,4 +189,4 @@ Architecture Guard
   └─ FAIL → build/deploy do not run
 ```
 
-A failed guard does not prevent the commit or push itself in Phase 1. It prevents publication and emits a rule ID, file, reason, and remediation hint so a human or AI can make a corrective commit.
+A failed guard does not prevent the commit or push itself. It prevents publication and emits a rule ID, file, reason, and remediation hint so a human or AI can make a corrective commit.
