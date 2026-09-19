@@ -2,9 +2,7 @@ import { loadStyle } from '../shared/load-style.js';
 import {
   escapeHtml as esc,
   makeCollapsible,
-  renderEntityRefCard,
-  renderHeroFacts,
-  renderSeasonIcons
+  renderEntityRefCard
 } from '../shared/component-contracts.js';
 import { buildEntityHref } from '../shared/navigation.js';
 
@@ -45,74 +43,123 @@ function externalLinkIcon() {
   return `<svg class="spot-link-icon external" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M14 5h5v5"/><path d="M10 14 19 5"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>`;
 }
 
-function heroLinks(links = []) {
-  return links.length
-    ? `<div class="spot-hero-links"><span class="spot-hero-links-label">公式・参考</span><div class="spot-hero-link-row">${links.map(link => `<a href="${esc(link.url)}" target="_blank" rel="noopener"><span>${esc(link.label)}</span>${externalLinkIcon()}</a>`).join('')}</div></div>`
+function heroAccess(access) {
+  if (!access?.location_text) return '';
+  const map = access.google_maps_url
+    ? `<a class="spot-hero-map-link" href="${esc(access.google_maps_url)}" target="_blank" rel="noopener"><span>Googleマップ</span>${externalLinkIcon()}</a>`
     : '';
-}
 
-function heroFacts(facts = [], spot = {}) {
-  const items = facts.map(fact => fact?.label === '季節' && (spot.season || []).length
-    ? { label: fact.label, valueHtml: renderSeasonIcons(spot.season) }
-    : { label: fact?.label || '', value: fact?.value || '' });
-  return renderHeroFacts(items);
-}
-
-function relatedHeroCards(related = [], request) {
-  if (!related.length) return '';
-
-  return `<div class="spot-hero-related"><span class="spot-hero-related-label">関連スポット</span><div class="spot-hero-related-grid">${related.map(item => renderEntityRefCard({
-    kind: '関連Spot',
-    title: item.label || item.id || '',
-    href: buildEntityHref({ type: item.type || 'spot', id: item.id || '' }, request)
-  })).join('')}</div></div>`;
-}
-
-function galleryHtml(images = [], title = '') {
-  const sorted = [...images].sort((a, b) => (a.priority ?? 999) - (b.priority ?? 999));
-  if (!sorted.length) return '';
-
-  const slides = sorted.map((image, index) => `<figure class="spot-carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}"><img src="${esc(image.url)}" alt="${esc(image.caption || `${title} ${index + 1}`)}" draggable="false"><figcaption><span>${esc(image.caption || '')}</span>${image.credit ? `<small>${esc(image.credit)}</small>` : ''}</figcaption></figure>`).join('');
-  const thumbs = sorted.map((image, index) => `<button class="spot-carousel-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="画像 ${index + 1} を表示"><img src="${esc(image.url)}" alt=""></button>`).join('');
-
-  return `<div class="spot-carousel" data-count="${sorted.length}">
-    <div class="spot-carousel-stage" tabindex="0">
-      <div class="spot-carousel-track">${slides}</div>
-      ${sorted.length > 1 ? `<button type="button" class="spot-carousel-nav prev" aria-label="前の画像">‹</button><button type="button" class="spot-carousel-nav next" aria-label="次の画像">›</button><div class="spot-carousel-count"><span class="current">1</span> / ${sorted.length}</div>` : ''}
+  return `<div class="spot-hero-info-row spot-hero-access">
+    <span class="spot-hero-info-label">アクセス</span>
+    <div class="spot-hero-info-content">
+      <div class="spot-hero-access-main"><span>${esc(access.location_text)}</span>${map}</div>
+      ${access.note ? `<small>${esc(access.note)}</small>` : ''}
     </div>
-    ${sorted.length > 1 ? `<div class="spot-carousel-thumbs">${thumbs}</div>` : ''}
   </div>`;
 }
 
-function renderSpot(data, app, request) {
-  const spot = data.spot || {};
-  const reviews = spot.review_summary || {};
-  const links = spot.links || [];
-  const related = spot.related || [];
+function inlineFacts(facts = [], className = '') {
+  if (!facts.length) return '';
+  return `<div class="spot-inline-facts ${esc(className)}">${facts.map(fact => `<span class="spot-inline-fact"><b>${esc(fact.label)}</b><span>${esc(fact.value)}</span></span>`).join('')}</div>`;
+}
 
+function heroFacilities(facilities) {
+  if (!facilities?.facts?.length) return '';
+  return `<div class="spot-hero-info-row">
+    <span class="spot-hero-info-label">設備・施設</span>
+    <div class="spot-hero-info-content">
+      ${inlineFacts(facilities.facts, 'spot-facility-facts')}
+      ${facilities.note ? `<small>${esc(facilities.note)}</small>` : ''}
+    </div>
+  </div>`;
+}
+
+function heroReferences(references) {
+  if (!references?.official && !references?.supplemental) return '';
+  const links = [];
+  if (references.official?.url) links.push({ label: '公式・観光情報', url: references.official.url });
+  if (references.supplemental?.url) links.push({ label: '補足情報', url: references.supplemental.url });
+
+  return `<div class="spot-hero-info-row">
+    <span class="spot-hero-info-label">公式・参考</span>
+    <div class="spot-hero-link-row">${links.map(link => `<a href="${esc(link.url)}" target="_blank" rel="noopener"><span>${esc(link.label)}</span>${externalLinkIcon()}</a>`).join('')}</div>
+  </div>`;
+}
+
+function heroFacts(facts = []) {
+  if (!facts.length) return '';
+  return `<div class="spot-hero-info-row spot-hero-facts-row">
+    <span class="spot-hero-info-label">主要Fact</span>
+    ${inlineFacts(facts, 'spot-major-facts')}
+  </div>`;
+}
+
+function relatedSection(related = [], request) {
+  if (!related.length) return '';
+  return `<section class="section ui-section spot-demo-section spot-related-section">
+    <h2>関連スポット</h2>
+    <div class="spot-related-grid">${related.map(item => renderEntityRefCard({
+      kind: '関連Spot',
+      title: item.label || item.id || '',
+      href: buildEntityHref({ type: item.entity_type || 'spot', id: item.id || '' }, request)
+    })).join('')}</div>
+  </section>`;
+}
+
+function galleryHtml(images = [], title = '') {
+  if (!images.length) return '';
+
+  const slides = images.map((image, index) => `<figure class="spot-carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}"><img src="${esc(image.url)}" alt="${esc(image.caption || `${title} ${index + 1}`)}" draggable="false"><figcaption><span>${esc(image.caption || '')}</span>${image.credit ? `<small>${esc(image.credit)}</small>` : ''}</figcaption></figure>`).join('');
+  const thumbs = images.map((image, index) => `<button class="spot-carousel-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="画像 ${index + 1} を表示"><img src="${esc(image.url)}" alt=""></button>`).join('');
+
+  return `<div class="spot-carousel" data-count="${images.length}">
+    <div class="spot-carousel-stage" tabindex="0">
+      <div class="spot-carousel-track">${slides}</div>
+      ${images.length > 1 ? `<button type="button" class="spot-carousel-nav prev" aria-label="前の画像">‹</button><button type="button" class="spot-carousel-nav next" aria-label="次の画像">›</button><div class="spot-carousel-count"><span class="current">1</span> / ${images.length}</div>` : ''}
+    </div>
+    ${images.length > 1 ? `<div class="spot-carousel-thumbs">${thumbs}</div>` : ''}
+  </div>`;
+}
+
+function appealSection(appeal = {}) {
+  const review = appeal.review || {};
+  const hasHighlights = (appeal.highlights || []).length > 0;
+  const hasReview = (review.positives || []).length > 0 || (review.cautions || []).length > 0;
+  if (!hasHighlights && !hasReview) return '';
+
+  return `<section class="section ui-section spot-demo-section spot-appeal-section">
+    <h2>このスポットの魅力</h2>
+    ${cards(appeal.highlights || [], 'highlight')}
+    ${hasReview ? `<div class="spot-review-block">
+      <div class="spot-review-title-row"><h3>口コミから見える評価</h3>${review.checked_label ? `<span>${esc(review.checked_label)}</span>` : ''}</div>
+      <div class="spot-review-grid">
+        ${(review.positives || []).length ? `<article class="spot-review-card positive"><h3>よく評価されている点</h3>${list(review.positives)}</article>` : ''}
+        ${(review.cautions || []).length ? `<article class="spot-review-card caution"><h3>気をつけたい点</h3>${list(review.cautions)}</article>` : ''}
+      </div>
+    </div>` : ''}
+  </section>`;
+}
+
+function renderSpot(data, app, request) {
   app.innerHTML = `
     <section class="spot-demo-hero ui-entity-hero is-spot-hero">
       <div class="spot-demo-hero-copy ui-entity-hero-copy">
         <div class="kicker">スポット · ${esc(data.id)}</div>
         <h1>${esc(data.title)}</h1>
-        <p class="ui-hero-copy">${esc(data.summary || '')}</p>
-        ${chipList(spot.themes || [])}
-        ${heroLinks(links)}
-        ${relatedHeroCards(related, request)}
-        ${heroFacts(spot.facts || [], spot)}
+        <p class="spot-demo-summary ui-hero-copy">${esc(data.summary || '')}</p>
+        ${chipList(data.theme_chips || [])}
+        <div class="spot-hero-info">
+          ${heroAccess(data.access)}
+          ${heroFacilities(data.facilities)}
+          ${heroReferences(data.references)}
+          ${heroFacts(data.hero_facts || [])}
+        </div>
       </div>
-      ${galleryHtml(spot.image_refs || [], data.title)}
+      ${galleryHtml(data.images || [], data.title)}
     </section>
 
-    ${(spot.highlights || []).length || (spot.strengths || []).length ? `<section class="section ui-section spot-demo-section"><h2>このスポットの魅力</h2>${cards(spot.highlights || [], 'highlight')}${(spot.strengths || []).length ? `<div class="spot-demo-sub"><h3>強み</h3>${list(spot.strengths)}</div>` : ''}</section>` : ''}
-
-    ${(spot.user_fit || []).length || (spot.suitable_for || []).length ? `<section class="section ui-section spot-demo-section"><h2>こんな旅に向いている</h2>${cards(spot.user_fit || [], 'fit')}${chipList(spot.suitable_for || [])}</section>` : ''}
-
-    ${(spot.value_points || []).length ? `<section class="section ui-section spot-demo-section"><h2>選ぶ価値</h2>${cards(spot.value_points || [], 'value')}</section>` : ''}
-
-    ${(reviews.positives || []).length || (reviews.cautions || []).length || (reviews.best_for || []).length ? `<section class="section ui-section spot-demo-section"><h2>口コミから見える評価</h2><div class="spot-demo-review-head">${reviews.checked_at ? `<span>確認 ${esc(reviews.checked_at)}</span>` : ''}</div><div class="spot-review-grid"><article class="spot-review-card positive"><h3>よく評価されている点</h3>${list(reviews.positives)}</article><article class="spot-review-card caution"><h3>気をつけたい点</h3>${list(reviews.cautions)}</article><article class="spot-review-card best"><h3>特に向いているケース</h3>${list(reviews.best_for)}</article></div></section>` : ''}
-
-    ${(spot.practicality || []).length ? `<section class="section ui-section spot-demo-section"><h2>利用情報</h2>${list(spot.practicality || [])}</section>` : ''}
+    ${appealSection(data.appeal || {})}
+    ${relatedSection(data.related_spots || [], request)}
   `;
 }
 
