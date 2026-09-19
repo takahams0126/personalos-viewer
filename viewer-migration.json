@@ -2,12 +2,12 @@
   "schema_version": 1,
   "zones": {
     "legacy": {
-      "entrypoints": ["index.html", "app.js"],
-      "directories": ["presentation/"],
+      "entrypoints": ["legacy/index.html", "app.js"],
+      "directories": ["legacy/", "presentation/"],
       "policy": "retained-for-comparison-and-fallback"
     },
     "modern": {
-      "entrypoints": ["index2.html"],
+      "entrypoints": ["index.html"],
       "directories": ["viewer/"],
       "policy": "architecture-guarded"
     }
