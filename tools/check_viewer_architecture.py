@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Architecture guard for the Modern Viewer zone.
 
-Phase 1 deliberately validates only index2.html + viewer/** so the legacy
-implementation can coexist during migration.
+Validates index.html + viewer/** while the frozen legacy implementation
+coexists under legacy/ with its legacy app/presentation assets.
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def rel(path: Path) -> str:
 
 def iter_modern_files() -> list[Path]:
     files: list[Path] = []
-    entry = ROOT / "index2.html"
+    entry = ROOT / "index.html"
     if entry.exists():
         files.append(entry)
     if VIEWER.exists():
@@ -79,9 +79,9 @@ def check_migration_registry() -> list[Violation]:
 
 
 def check_entrypoint_integrity() -> list[Violation]:
-    entry = ROOT / "index2.html"
+    entry = ROOT / "index.html"
     if not entry.exists():
-        return [Violation("MODERN-009", entry, "Modern Viewer entrypoint index2.html is missing.", "Restore index2.html as the Modern Viewer entrypoint.")]
+        return [Violation("MODERN-009", entry, "Modern Viewer entrypoint index.html is missing.", "Restore index.html as the Modern Viewer entrypoint.")]
 
     text = read(entry)
     script_tags = re.findall(r"<script\b[^>]*>", text, flags=re.IGNORECASE)
@@ -89,7 +89,7 @@ def check_entrypoint_integrity() -> list[Violation]:
     violations: list[Violation] = []
 
     if len(main_tags) != 1:
-        violations.append(Violation("MODERN-009", entry, f"index2.html must load viewer/main.js exactly once; found {len(main_tags)} references.", "Keep exactly one <script type=\"module\" src=\"./viewer/main.js\"></script> entrypoint."))
+        violations.append(Violation("MODERN-009", entry, f"index.html must load viewer/main.js exactly once; found {len(main_tags)} references.", "Keep exactly one <script type=\"module\" src=\"./viewer/main.js\"></script> entrypoint."))
     elif not re.search(r"\btype=['\"]module['\"]", main_tags[0], flags=re.IGNORECASE):
         violations.append(Violation("MODERN-009", entry, "viewer/main.js is not loaded as an ES module.", "Load viewer/main.js with <script type=\"module\">."))
 
@@ -103,7 +103,7 @@ def check_entrypoint_integrity() -> list[Violation]:
             forbidden.append(match.group(1))
 
     if forbidden:
-        violations.append(Violation("MODERN-009", entry, f"Modern entrypoint loads legacy scripts: {', '.join(forbidden)}", "Keep legacy scripts on index.html only; index2.html must enter through viewer/main.js."))
+        violations.append(Violation("MODERN-009", entry, f"Modern entrypoint loads legacy scripts: {', '.join(forbidden)}", "Keep legacy scripts on legacy/index.html only; index.html must enter through viewer/main.js."))
     return violations
 
 
@@ -245,7 +245,7 @@ def main() -> int:
         return 1
 
     print("Viewer Architecture Guard: PASS")
-    print("Modern Zone checked: index2.html + viewer/**")
+    print("Modern Zone checked: index.html + viewer/**")
     return 0
 
 
