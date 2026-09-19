@@ -8,6 +8,7 @@ import { buildEntityHref } from '../shared/navigation.js';
 
 export async function render({ request, data }) {
   loadStyle(new URL('./spot.css', import.meta.url).href);
+  loadStyle(new URL('./spot-final.css', import.meta.url).href);
 
   const app = document.querySelector('#app');
   if (!app) return;
