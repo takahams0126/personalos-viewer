@@ -14,10 +14,20 @@
   "access": {
     "location_text": "鹿児島県熊毛郡屋久島町栗生",
     "note": "駐車場から主要景観まで徒歩約2分",
-    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=30.299851%2C130.413705"
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E5%B7%9D%E3%81%AE%E6%BB%9D&query_place_id=ChIJnzqBwks6PTURAlWO4qP4q8g"
   },
   "facilities": {
     "facts": [
+      {
+        "semantic": "attached_parking",
+        "label": "付帯駐車場",
+        "value": "あり・無料"
+      },
+      {
+        "semantic": "nearby_parking",
+        "label": "独立駐車場",
+        "value": "あり・有料"
+      },
       {
         "semantic": "toilet",
         "label": "トイレ",
