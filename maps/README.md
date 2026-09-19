@@ -1,6 +1,6 @@
 # Leisure Map Artifacts
 
-`maps/` contains only the **published Map Artifacts required by the Viewer**.
+`maps/` contains only the **published Map Artifacts required by the Modern Viewer**.
 
 The formal map path is Google Maps based.
 
@@ -20,16 +20,16 @@ The Viewer receives only published artifacts referenced by Public Projection JSO
 
 ## Published artifact kinds
 
-### `google_map_points`
+### `conceptual_map`
 
-Used for conceptual Google Map point rendering.
+Used for Route conceptual Google Map point rendering.
 
 Typical published fields include:
 
-- entity type / id / name
-- order / role
-- `place_id`
+- entity reference
+- order
 - latitude / longitude
+- external provider reference such as Google Place ID
 
 ### `execution_route`
 
@@ -46,7 +46,7 @@ Typical published fields include:
 
 The Viewer must not call Google Routes API again merely to redraw an already-materialized route.
 
-## Target ownership layout
+## Ownership layout
 
 ```text
 maps/
@@ -76,6 +76,15 @@ Exact filenames are references emitted by the formal Public Projection / Map Art
 6. Place resolution, cache/index maintenance, hash/TTL decisions and Google Routes API calls happen upstream.
 7. Adding new published Routes and ConcretePlans may add map artifacts without any HTML/CSS/JavaScript change.
 
-## Current migration state
+## Legacy isolation
 
-Legacy R011 Google-map JSON files remain flat under `maps/` only to preserve the frozen Viewer baseline. They will be reorganized only when current Public Projection references and the upstream publish contract are migrated together.
+Legacy Viewer map artifacts are not stored under `maps/`.
+They are frozen under `legacy/maps/` together with the rest of the legacy publication snapshot.
+
+```text
+legacy/maps/
+├─ R011-google-points.json
+└─ R011-google-route.json
+```
+
+`maps/**` is therefore reserved for the Modern Viewer publication contract.
