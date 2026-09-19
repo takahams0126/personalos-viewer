@@ -109,7 +109,7 @@ function galleryHtml(images = [], title = '') {
   if (!images.length) return '';
 
   const slides = images.map((image, index) => `<figure class="spot-carousel-slide ${index === 0 ? 'active' : ''}" data-index="${index}"><img src="${esc(image.url)}" alt="${esc(image.caption || `${title} ${index + 1}`)}" draggable="false"><figcaption><span>${esc(image.caption || '')}</span>${image.credit ? `<small>${esc(image.credit)}</small>` : ''}</figcaption></figure>`).join('');
-  const thumbs = images.map((image, index) => `<button class="spot-carousel-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="画像 ${index + 1} を表示"><img src="${esc(image.url)}" alt=""></button>`).join('');
+  const thumbs = images.map((image, index) => `<button type="button" class="spot-carousel-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="画像 ${index + 1} を表示"><img src="${esc(image.url)}" alt=""></button>`).join('');
 
   return `<div class="spot-carousel" data-count="${images.length}">
     <div class="spot-carousel-stage" tabindex="0">
@@ -168,9 +168,13 @@ function initCarousel(root) {
     const thumbs = [...carousel.querySelectorAll('.spot-carousel-thumb')];
     const stage = carousel.querySelector('.spot-carousel-stage');
     const count = carousel.querySelector('.spot-carousel-count .current');
-    if (!slides.length) return;
+    if (!slides.length || !stage) return;
 
     let index = 0;
+    let gestureStart = null;
+    let suppressImageClick = false;
+    let suppressTimer = null;
+
     const show = next => {
       index = (next + slides.length) % slides.length;
       slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === index));
@@ -180,67 +184,82 @@ function initCarousel(root) {
     };
 
     const openLightbox = () => openSpotLightbox(slides, index, show);
-    const prev = carousel.querySelector('.prev');
-    const next = carousel.querySelector('.next');
+    const suppressNextImageClick = () => {
+      suppressImageClick = true;
+      window.clearTimeout(suppressTimer);
+      suppressTimer = window.setTimeout(() => { suppressImageClick = false; }, 400);
+    };
 
-    [prev, next, ...thumbs].filter(Boolean).forEach(button => {
-      button.addEventListener('pointerdown', event => event.stopPropagation());
-      button.addEventListener('pointerup', event => event.stopPropagation());
-    });
-
-    prev?.addEventListener('click', event => {
+    carousel.querySelector('.prev')?.addEventListener('click', event => {
       event.preventDefault();
-      event.stopPropagation();
       show(index - 1);
     });
-    next?.addEventListener('click', event => {
+    carousel.querySelector('.next')?.addEventListener('click', event => {
       event.preventDefault();
-      event.stopPropagation();
       show(index + 1);
     });
     thumbs.forEach((thumb, thumbIndex) => thumb.addEventListener('click', event => {
       event.preventDefault();
-      event.stopPropagation();
       show(thumbIndex);
     }));
-    stage?.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft') show(index - 1);
-      if (event.key === 'ArrowRight') show(index + 1);
-      if (event.key === 'Enter') openLightbox();
-    });
-
-    let startX = null;
-    let startY = null;
-    let pointerStartedOnImage = false;
-
-    stage?.addEventListener('pointerdown', event => {
-      if (event.target.closest('button')) return;
-      startX = event.clientX;
-      startY = event.clientY;
-      pointerStartedOnImage = Boolean(event.target.closest('.spot-carousel-slide img'));
-      stage.setPointerCapture?.(event.pointerId);
-    });
-    stage?.addEventListener('pointerup', event => {
-      if (startX === null || event.target.closest('button')) return;
-      const dx = event.clientX - startX;
-      const dy = event.clientY - startY;
-      const startedOnImage = pointerStartedOnImage;
-      startX = null;
-      startY = null;
-      pointerStartedOnImage = false;
-      if (Math.abs(dx) > 45) {
-        show(index + (dx < 0 ? 1 : -1));
+    slides.forEach(slide => slide.querySelector('img')?.addEventListener('click', event => {
+      event.preventDefault();
+      if (suppressImageClick) {
+        suppressImageClick = false;
         return;
       }
-      if (startedOnImage && Math.abs(dx) < 10 && Math.abs(dy) < 10) openLightbox();
+      openLightbox();
+    }));
+
+    stage.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        show(index - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(index + 1);
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        openLightbox();
+      }
+    });
+
+    stage.addEventListener('pointerdown', event => {
+      if (event.target.closest('button')) return;
+      gestureStart = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+      stage.setPointerCapture?.(event.pointerId);
+    });
+    stage.addEventListener('pointerup', event => {
+      if (!gestureStart || gestureStart.pointerId !== event.pointerId) return;
+      const dx = event.clientX - gestureStart.x;
+      const dy = event.clientY - gestureStart.y;
+      gestureStart = null;
+
+      if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy)) {
+        suppressNextImageClick();
+        show(index + (dx < 0 ? 1 : -1));
+      }
+    });
+    stage.addEventListener('pointercancel', () => {
+      gestureStart = null;
     });
   });
 }
 
 function openSpotLightbox(slides, startIndex, syncCarousel) {
+  document.querySelector('.spot-lightbox')?.remove();
+  document.body.classList.remove('spot-lightbox-open');
+
   let index = startIndex;
+  let gestureStart = null;
+  const previousFocus = document.activeElement;
   const overlay = document.createElement('div');
   overlay.className = 'spot-lightbox';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', '画像を拡大表示');
   overlay.innerHTML = `
     <button type="button" class="spot-lightbox-close" aria-label="閉じる">×</button>
     ${slides.length > 1 ? `<button type="button" class="spot-lightbox-nav prev" aria-label="前の画像">‹</button><button type="button" class="spot-lightbox-nav next" aria-label="次の画像">›</button>` : ''}
@@ -250,6 +269,7 @@ function openSpotLightbox(slides, startIndex, syncCarousel) {
   const image = overlay.querySelector('img');
   const caption = overlay.querySelector('figcaption');
   const counter = overlay.querySelector('.spot-lightbox-count');
+  const closeButton = overlay.querySelector('.spot-lightbox-close');
 
   const show = next => {
     index = (next + slides.length) % slides.length;
@@ -266,22 +286,50 @@ function openSpotLightbox(slides, startIndex, syncCarousel) {
     document.removeEventListener('keydown', onKey);
     overlay.remove();
     document.body.classList.remove('spot-lightbox-open');
+    previousFocus?.focus?.({ preventScroll: true });
   };
 
   const onKey = event => {
-    if (event.key === 'Escape') close();
-    if (event.key === 'ArrowLeft') show(index - 1);
-    if (event.key === 'ArrowRight') show(index + 1);
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    }
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      show(index - 1);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      show(index + 1);
+    }
   };
 
-  overlay.querySelector('.spot-lightbox-close')?.addEventListener('click', close);
+  closeButton?.addEventListener('click', close);
   overlay.querySelector('.prev')?.addEventListener('click', () => show(index - 1));
   overlay.querySelector('.next')?.addEventListener('click', () => show(index + 1));
   overlay.addEventListener('click', event => {
     if (event.target === overlay) close();
   });
+  overlay.addEventListener('pointerdown', event => {
+    if (event.target.closest('button')) return;
+    gestureStart = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+    overlay.setPointerCapture?.(event.pointerId);
+  });
+  overlay.addEventListener('pointerup', event => {
+    if (!gestureStart || gestureStart.pointerId !== event.pointerId) return;
+    const dx = event.clientX - gestureStart.x;
+    const dy = event.clientY - gestureStart.y;
+    gestureStart = null;
+    if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy)) {
+      show(index + (dx < 0 ? 1 : -1));
+    }
+  });
+  overlay.addEventListener('pointercancel', () => {
+    gestureStart = null;
+  });
   document.addEventListener('keydown', onKey);
   document.body.appendChild(overlay);
   document.body.classList.add('spot-lightbox-open');
   show(index);
+  closeButton?.focus({ preventScroll: true });
 }
