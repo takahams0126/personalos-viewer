@@ -32,6 +32,69 @@ These rules define the boundary between the clean Modern rebuild and the frozen 
 8. Display semantics and HTML Boundary are defined upstream. Modern Renderer consumes that boundary rather than inferring Domain meaning from Legacy DOM or old PoC code.
 9. Legacy visual behavior may be used as comparison evidence, but it does not override current contracts or explicit user review.
 
+## System-level optimization principles
+
+The goal of Modern Viewer is not to minimize a single local metric such as JSON request count. The goal is to deliver the user-agreed Final Display with high overall software quality while preserving upstream meaning and layer responsibility.
+
+Design decisions must balance at least:
+
+- semantic correctness and user-agreed display fidelity;
+- runtime performance and avoidance of unnecessary I/O;
+- maintainability and clear ownership;
+- extensibility and replaceability;
+- change locality and blast-radius minimization;
+- testability and diagnosability;
+- cacheability and reuse;
+- generation/rebuild cost as well as runtime cost.
+
+`1 page = 1 application-data read` is therefore **not** a Viewer invariant. It can be a useful heuristic when it reduces unnecessary work, but must not force unrelated resources into one oversized payload or couple resources with different change, generation, cache, or reuse lifecycles.
+
+### Semantic completion vs resource composition
+
+Modern Viewer must distinguish two different activities:
+
+```text
+Semantic completion
+= deciding or filling in display meaning
+= must be complete upstream
+
+Resource composition
+= loading and rendering resources already selected by the boundary
+= allowed in Viewer from explicit references
+```
+
+A Viewer page must not fetch Manifest, related Entity JSON, Canonical data, or other sources merely to discover missing labels, relationships, summaries, warnings, or other display meaning.
+
+By contrast, a page may load multiple explicitly referenced artifacts such as conceptual maps, execution maps, route details, or other independently managed presentation resources when that separation improves change locality, reuse, cache behavior, failure isolation, or rebuild cost.
+
+### Resource boundary rule
+
+Inline versus external resource boundaries are chosen by cohesion, not by request-count targets. Consider whether resources:
+
+- change together;
+- are generated together;
+- share freshness and lifecycle;
+- should invalidate cache together;
+- are reusable independently;
+- differ materially in size or load timing;
+- should fail independently.
+
+The Viewer must not infer resource paths from Domain meaning. Supplemental resources must be reachable through explicit references supplied by the accepted page/boundary input.
+
+Repeated requests for the same resource should be structurally avoidable through common loading/deduplication where useful. Cache and dedupe are performance optimizations, never correctness requirements.
+
+### Navigation rule
+
+Navigation is Viewer runtime/common-UI state, not a representation of Canonical Entity relationships.
+
+- N:N Entity relationships must not be forced into a single parent/child breadcrumb hierarchy.
+- Current-page labels should come from already-loaded page data.
+- Previous/source labels should come from navigation state already known at transition time when needed.
+- Navigation must not trigger Manifest or related-Entity semantic lookup merely to obtain Japanese labels.
+- Browser history state should be entry-scoped; a global session value must not become the truth for back/forward navigation.
+
+These principles define the constraints for the navigation redesign; the current request shape may evolve to satisfy them.
+
 ## Modern Viewer normal path
 
 ```text
@@ -45,7 +108,7 @@ viewer/main.js
         ↓
       page module
         ├─ presentation / interaction
-        └─ optional loadJson() for supplemental artifacts
+        └─ optional loadJson() for explicitly referenced supplemental artifacts
               ↓
             shared helpers / provider adapters
               ↓
@@ -65,11 +128,12 @@ viewer/main.js
 - `viewer/core/data.js`
   - own HTTP/JSON data access and entity path resolution
   - expose `loadEntity()` for the composition root
-  - expose `loadJson()` for supplemental artifacts
+  - expose `loadJson()` for explicit supplemental artifacts
 - `viewer/<page>/`
   - page-specific presentation and interaction
-  - decide which supplemental artifacts are needed
+  - decide load timing for supplemental artifacts explicitly referenced by accepted page data
   - consume primary data passed through `page.render({ request, data })`
+  - must not discover supplemental semantics or resource paths by searching other Entity data
   - use `loadJson()` rather than raw `fetch()` for supplemental JSON
 - `viewer/shared/`
   - cross-page presentation components, navigation, provider adapters, and reusable UI behavior
@@ -85,8 +149,10 @@ Primary entity
     ↓
   page.render({ request, data })
 
-Supplemental artifact
-  page module decides what it needs
+Explicit supplemental artifact
+  accepted page data contains artifact reference
+    ↓
+  page module decides load timing
     ↓ loadJson(path)
   viewer/core/data.js
 ```
@@ -102,7 +168,7 @@ main → core
 main → page
 main → shared
 
-page → core        # supplemental data only
+page → core        # explicit supplemental data only
 page → shared
 
 shared ↛ page
@@ -126,6 +192,8 @@ Resolved once by `viewer/core/request.js` and passed down from the composition r
 
 Page modules consume this object and do not reinterpret the URL.
 
+`trail` reflects the current implementation shape. It must not be interpreted as Canonical parentage or N:N Entity hierarchy; navigation state may be revised under the Navigation rule above.
+
 ### Page module
 
 Every page module exposes the same entry contract:
@@ -136,7 +204,7 @@ render({ request, data })
 
 - `request`: resolved `ViewerRequest`
 - `data`: primary entity loaded by `viewer/main.js`, or `null` for TOP
-- page-specific supplemental artifacts may be loaded explicitly through `viewer/core/data.js::loadJson()`
+- page-specific supplemental artifacts may be loaded explicitly through `viewer/core/data.js::loadJson()` only from accepted explicit references
 
 ### MapPopupData
 
@@ -177,6 +245,8 @@ The following patterns are prohibited in the Modern Zone:
 11. Page modules must not call raw `fetch()`. Supplemental JSON access goes through `viewer/core/data.js::loadJson()`.
 
 The guard is intentionally scoped to the Modern Zone while the frozen Legacy comparison implementation still exists. Existing Legacy patterns are not CI failures because Legacy is not part of the Modern implementation.
+
+The optimization principles above are architecture constraints. Not every constraint is mechanically enforced by the current guard yet; guard expansion should happen only when a rule has a deterministic, low-false-positive check.
 
 ## Modern build state
 
