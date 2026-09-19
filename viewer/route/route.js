@@ -1,43 +1,11 @@
 import { loadJson } from '../core/data.js';
 import {
   escapeHtml,
-  makeCollapsible,
-  renderEntityRefCard,
-  renderHeroFacts,
-  renderSeasonIcons
+  makeCollapsible
 } from '../shared/component-contracts.js';
 import { buildEntityHref } from '../shared/navigation.js';
-import {
-  buildGoogleMapsSearchUrl,
-  renderGoogleMap
-} from '../shared/google-map.js';
+import { renderGoogleMap } from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
-
-const roleLabel = value => ({
-  core: '主役',
-  main: '主役',
-  optional: '任意',
-  main_lunch: '昼食',
-  high_priority: '高優先',
-  condition_high: '条件付き',
-  fallback_onsen: '代替温泉',
-  onsen: '温泉',
-  fallback: '代替'
-}[value] || String(value || '').replaceAll('_', ' '));
-
-const difficultyLabel = value => ({
-  easy: 'やさしい',
-  easy_to_medium: 'やさしい〜中程度',
-  medium: '中程度',
-  medium_to_hard: '中程度〜難しい',
-  hard: '難しい'
-}[value] || value || '');
-
-const variantLabel = value => ({
-  standard: '標準',
-  full: 'フル',
-  short: '短縮'
-}[value] || String(value || '').replaceAll('_', ' '));
 
 function renderChips(items = []) {
   if (!items.length) return '';
@@ -49,90 +17,103 @@ function renderStrengthCards(items = []) {
   return `<div class="route-demo-cards primary">${items.map(item => `<article>${escapeHtml(item)}</article>`).join('')}</div>`;
 }
 
-function renderHeroRef(ref, request) {
-  const href = ref?.type && ref?.id ? buildEntityHref({ type: ref.type, id: ref.id }, request) : '';
-  return renderEntityRefCard({
-    kind: '主役Spot',
-    title: ref?.label || ref?.id || '',
-    href
-  });
+function renderHeroMeta(data) {
+  const items = [`ルート · ${data.id}`];
+  if (data.family_label) items.push(`系統：${data.family_label}`);
+  if (data.variant?.label) items.push(`バリエーション：${data.variant.label}`);
+  return `<div class="route-entity-meta">${items.map(item => `<span>${escapeHtml(item)}</span>`).join('<i aria-hidden="true">｜</i>')}</div>`;
 }
 
-function renderRouteStop(item, index, request) {
-  const href = item?.type && item?.id ? buildEntityHref({ type: item.type, id: item.id }, request) : '';
-  const title = escapeHtml(item?.label || item?.id || '');
-  const label = href ? `<a href="${escapeHtml(href)}">${title}</a>` : title;
-  const role = item?.role
-    ? `<small class="route-role-badge role-${escapeHtml(item.role)}">${escapeHtml(roleLabel(item.role))}</small>`
+function renderInlineFacts(facts = []) {
+  if (!facts.length) return '';
+  return `<div class="route-inline-facts">${facts.map(fact => `<span class="route-inline-fact"><b>${escapeHtml(fact.label)}</b><span>${escapeHtml(fact.value)}</span></span>`).join('')}</div>`;
+}
+
+function renderHeroSpots(spots = [], request) {
+  if (!spots.length) return '';
+  return `<div class="route-hero-spots">
+    <span class="route-hero-spots-label">主役スポット</span>
+    <div class="route-hero-spot-links">${spots.map(spot => {
+      const href = buildEntityHref({ type: spot.entity_type, id: spot.id }, request);
+      return `<a href="${escapeHtml(href)}">${escapeHtml(spot.label)}</a>`;
+    }).join('<span class="route-hero-spot-separator" aria-hidden="true">｜</span>')}</div>
+  </div>`;
+}
+
+function renderBadges(badges = []) {
+  if (!badges.length) return '';
+  return `<div class="route-sequence-badges">${badges.map(badge => `<span class="route-sequence-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</span>`).join('')}</div>`;
+}
+
+function renderRouteStop(item, request) {
+  const spot = item.spot || {};
+  const href = spot.id ? buildEntityHref({ type: spot.entity_type || 'spot', id: spot.id }, request) : '';
+  const title = escapeHtml(spot.label || spot.id || '');
+  const label = href ? `<a class="route-sequence-title" href="${escapeHtml(href)}">${title}</a>` : `<span class="route-sequence-title">${title}</span>`;
+  const fallback = item.fallback_for
+    ? `<div class="route-sequence-fallback"><b>代替対象</b><a href="${escapeHtml(buildEntityHref({ type: item.fallback_for.entity_type || 'spot', id: item.fallback_for.id }, request))}">${escapeHtml(item.fallback_for.label)}</a></div>`
     : '';
 
-  return `<span class="route-stop"><span class="stop-no">${index + 1}</span>${label}${role}</span>`;
+  return `<article class="route-sequence-item">
+    <div class="route-sequence-order">${String(item.order).padStart(2, '0')}</div>
+    <div class="route-sequence-body">
+      <div class="route-sequence-heading">${label}${renderBadges(item.badges || [])}</div>
+      ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ''}
+      ${item.condition_text ? `<div class="route-sequence-condition"><b>条件</b><span>${escapeHtml(item.condition_text)}</span></div>` : ''}
+      ${fallback}
+    </div>
+  </article>`;
 }
 
 function buildPopupData(point, request) {
   const target = point.entityId ? { type: point.entityType || 'spot', id: point.entityId } : null;
   const personalHref = target ? buildEntityHref(target, request) : '';
-  const googleHref = buildGoogleMapsSearchUrl({
-    name: point.name,
-    placeId: point.placeId
-  });
-
-  const actions = [
-    personalHref
-      ? {
-          kind: 'primary',
-          label: 'PersonalOSで詳しく見る',
-          href: personalHref,
-          external: false
-        }
-      : null,
-    googleHref
-      ? {
-          kind: 'secondary',
-          label: 'Google Mapsで開く',
-          href: googleHref,
-          external: true
-        }
-      : null
-  ].filter(Boolean);
 
   return {
     title: point.name,
     summary: point.summary,
-    actions
+    actions: personalHref
+      ? [{
+          kind: 'primary',
+          label: 'PersonalOSで詳しく見る',
+          href: personalHref,
+          external: false
+        }]
+      : []
   };
 }
 
 function joinRouteMapPoints(mapArtifact, sequence = []) {
-  const byId = new Map(sequence.filter(item => item?.id).map(item => [item.id, item]));
+  const byId = new Map(sequence
+    .filter(item => item?.spot?.id)
+    .map(item => [item.spot.id, item]));
 
   return (mapArtifact?.points || []).map(point => {
-    const entityId = point.entity_id || point.spot_id || '';
+    const entityId = point.entity_ref?.id || '';
     const routeItem = byId.get(entityId) || {};
     return {
-      ...point,
       entityId,
-      entityType: point.entity_type || routeItem.type || 'spot',
-      name: routeItem.label || point.name || entityId || 'Point',
+      entityType: point.entity_ref?.entity_type || 'spot',
+      name: routeItem.spot?.label || entityId || 'Point',
       summary: routeItem.summary || '',
-      role: routeItem.role || point.role || '',
-      order: point.order || '',
-      placeId: point.place_id || ''
+      order: point.order,
+      lat: point.position?.lat,
+      lon: point.position?.lon
     };
   });
 }
 
 async function initRouteMap(data, request) {
-  const mapSpec = data?.map;
-  if (!mapSpec?.points_json) return;
+  const artifactRef = data?.map?.artifact_ref;
+  if (!artifactRef) return;
 
   const element = document.querySelector('#route-map');
   const messageElement = document.querySelector('#route-map-message');
   if (!element) return;
 
   try {
-    const artifact = await loadJson(mapSpec.points_json);
-    const points = joinRouteMapPoints(artifact, data.route?.sequence || []);
+    const artifact = await loadJson(artifactRef);
+    const points = joinRouteMapPoints(artifact, data.sequence || []);
 
     await renderGoogleMap({
       element,
@@ -140,7 +121,7 @@ async function initRouteMap(data, request) {
       points,
       getPosition: point => ({ lat: Number(point.lat), lng: Number(point.lon) }),
       getTitle: point => point.name,
-      getLabel: point => point.order ? String(point.order) : '',
+      getLabel: point => String(point.order || ''),
       getPopupData: point => buildPopupData(point, request)
     });
   } catch (error) {
@@ -152,34 +133,9 @@ async function initRouteMap(data, request) {
 }
 
 function renderRouteHtml(data, request) {
-  const route = data.route || {};
-  const appeal = route.appeal || {};
-  const strengths = appeal.strengths || route.highlights || [];
-
-  const facts = [
-    { label: '所要時間', value: route.duration || '' },
-    { label: '難易度', value: difficultyLabel(route.difficulty) },
-    { label: '移動', value: route.route_type === 'driving' ? '車' : (route.route_type || '') }
-  ].filter(item => item.value);
-
-  if ((route.season || []).length) {
-    facts.push({ label: '季節', valueHtml: renderSeasonIcons(route.season) });
-  }
-
-  const heroMeta = route.family || route.variant
-    ? `<div class="route-hero-meta">
-        ${route.family ? `<span><small>系統</small><strong>${escapeHtml(route.family)}</strong></span>` : ''}
-        ${route.variant ? `<span><small>バリエーション</small><strong>${escapeHtml(variantLabel(route.variant))}</strong></span>` : ''}
-      </div>`
-    : '';
-
-  const heroRefs = (data.hero_refs || []).length
-    ? `<div class="route-hero-refs">${data.hero_refs.map(ref => renderHeroRef(ref, request)).join('')}</div>`
-    : '';
-
-  const mapSection = data.map?.points_json
+  const mapSection = data.map?.artifact_ref
     ? `<section class="section" data-route-section="map">
-        <h2>ルートの地図</h2>
+        <h2>ルートの概念地図</h2>
         <div class="map-wrap">
           <div id="route-map" class="route-map"></div>
           <div id="route-map-message" class="map-message"></div>
@@ -187,33 +143,30 @@ function renderRouteHtml(data, request) {
       </section>`
     : '';
 
-  const sequence = route.sequence || route.sequence_refs || [];
   const sequenceSection = `<section class="section" data-route-section="sequence">
     <h2>立ち寄り順</h2>
-    <div class="route-stops vertical">${sequence.map((item, index) => renderRouteStop(item, index, request)).join('')}</div>
+    <div class="route-sequence-list">${(data.sequence || []).map(item => renderRouteStop(item, request)).join('')}</div>
   </section>`;
 
-  const constraints = (route.constraints || []).length
+  const constraints = (data.constraints || []).length
     ? `<section class="section" data-route-section="constraints">
         <h2>重要な条件</h2>
-        <ul class="list">${route.constraints.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+        <ul class="list route-constraint-list">${data.constraints.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
       </section>`
     : '';
 
   return `<section class="hero route-demo-hero">
-      <div class="kicker">ルート · ${escapeHtml(data.id)}</div>
+      ${renderHeroMeta(data)}
       <h1>${escapeHtml(data.title || data.id)}</h1>
       ${data.summary ? `<p class="summary ui-hero-copy">${escapeHtml(data.summary)}</p>` : ''}
-      ${route.purpose ? `<p class="ui-hero-copy">${escapeHtml(route.purpose)}</p>` : ''}
-      ${renderChips(appeal.themes || [])}
-      ${heroMeta}
-      ${heroRefs}
-      ${renderHeroFacts(facts)}
+      ${renderChips(data.theme_chips || [])}
+      ${renderInlineFacts(data.hero_facts || [])}
+      ${renderHeroSpots(data.hero_spots || [], request)}
     </section>
     <section class="section route-demo-section route-demo-value" data-route-section="appeal">
       <h2>このルートの魅力</h2>
-      ${appeal.summary ? `<p class="route-appeal-summary">${escapeHtml(appeal.summary)}</p>` : ''}
-      ${renderStrengthCards(strengths)}
+      ${data.appeal?.summary ? `<p class="route-appeal-summary">${escapeHtml(data.appeal.summary)}</p>` : ''}
+      ${renderStrengthCards(data.appeal?.strengths || [])}
     </section>
     ${mapSection}
     ${sequenceSection}
