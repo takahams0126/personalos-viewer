@@ -18,7 +18,7 @@ export async function render({ request, data }) {
 
   const sections = [...app.querySelectorAll(':scope > .spot-demo-section')];
   sections.forEach(section => makeCollapsible(section, {
-    open: section.querySelector(':scope > h2')?.textContent.trim() === 'このスポットの魅力'
+    open: section.classList.contains('spot-appeal-section') || section.classList.contains('spot-related-section')
   }));
 }
 
@@ -90,7 +90,6 @@ function heroReferences(references) {
 function heroFacts(facts = []) {
   if (!facts.length) return '';
   return `<div class="spot-hero-info-row spot-hero-facts-row">
-    <span class="spot-hero-info-label">主要Fact</span>
     ${inlineFacts(facts, 'spot-major-facts')}
   </div>`;
 }
