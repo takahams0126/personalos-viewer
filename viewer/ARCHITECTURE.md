@@ -45,9 +45,35 @@ Design decisions must balance at least:
 - change locality and blast-radius minimization;
 - testability and diagnosability;
 - cacheability and reuse;
-- generation/rebuild cost as well as runtime cost.
+- generation/rebuild cost as well as runtime cost;
+- development speed and exploratory flexibility while the design is still evolving.
 
 `1 page = 1 application-data read` is therefore **not** a Viewer invariant. It can be a useful heuristic when it reduces unnecessary work, but must not force unrelated resources into one oversized payload or couple resources with different change, generation, cache, or reuse lifecycles.
+
+### Testing is demand-driven, not default-driven
+
+Tests, architecture guards, lint rules, and CI checks are tools for improving quality; they are not the development goal and must not become a proxy for quality.
+
+While a page, contract, or runtime design is still exploratory or incomplete, the AI must not default to creating tests or stronger guards merely because doing so appears safer. Premature tests can freeze an unstable implementation, create repeated test-repair work on every design change, and later require deletion or relaxation. That maintenance cost is itself a loss of overall quality.
+
+If the AI believes a new test, guard, CI check, test framework, or substantial test-maintenance effort is warranted, **explicit user approval is required before implementation**. Before asking for approval, state briefly:
+
+- the concrete risk or invariant to protect;
+- why existing review or manual verification is insufficient;
+- the expected maintenance cost;
+- a lower-cost alternative, if available.
+
+Without explicit approval, do not:
+
+- add unit, integration, E2E, visual, or regression tests;
+- add or expand Architecture Guard / lint rules;
+- add new required or automated CI verification;
+- introduce a test framework, runner, or validation infrastructure;
+- substantially rewrite tests merely to make an unstable prototype state pass.
+
+Existing approved tests and guards may be run when they are already part of the repository workflow, but their existence does not override the current user goal. A failing test is not automatically proof that the implementation must change; first consider whether the test is stale, over-constraining an exploratory design, or protecting an invariant that is no longer intended.
+
+The AI must not prioritize making tests green over the user-agreed implementation goal.
 
 ### Semantic completion vs resource composition
 
@@ -246,7 +272,7 @@ The following patterns are prohibited in the Modern Zone:
 
 The guard is intentionally scoped to the Modern Zone while the frozen Legacy comparison implementation still exists. Existing Legacy patterns are not CI failures because Legacy is not part of the Modern implementation.
 
-The optimization principles above are architecture constraints. Not every constraint is mechanically enforced by the current guard yet; guard expansion should happen only when a rule has a deterministic, low-false-positive check.
+The optimization principles above are architecture constraints. Not every constraint is mechanically enforced by the current guard. **No new guard rule or CI enforcement is added merely because a principle exists; expansion requires explicit user approval under the Testing rule above.**
 
 ## Modern build state
 
@@ -274,7 +300,7 @@ Current policy:
 
 ## Failure behavior
 
-On push to `main`, CI runs the Architecture Guard before the Pages build.
+On push to `main`, the currently approved CI configuration runs the existing Architecture Guard before the Pages build.
 
 ```text
 push
@@ -284,4 +310,4 @@ Architecture Guard
   └─ FAIL → build/deploy do not run
 ```
 
-A failed guard does not prevent the commit or push itself. It prevents publication and emits a rule ID, file, reason, and remediation hint so a human or AI can make a corrective commit.
+A failed existing guard does not by itself authorize adding tests, expanding the guard, or reshaping the implementation around the guard. Diagnose whether the implementation or the guard is stale relative to the current user-approved design before taking corrective action.
