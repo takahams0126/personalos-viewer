@@ -1,107 +1,102 @@
 {
-  "schema_version": 3,
+  "schema_version": 1,
   "view_type": "spot",
   "id": "S0036",
   "title": "大川の滝",
-  "summary": "落差88mの大瀑布を駐車場から徒歩数分で滝壺近くまで迫って見られる、南西部ドライブの主役級景勝地",
-  "hero_refs": [
-    {"type":"spot","id":"S0036","label":"大川の滝"}
+  "summary": "落差88mの大瀑布を駐車場から徒歩数分で滝壺近くまで迫って見られる屋久島代表級の滝",
+  "theme_chips": [
+    "滝",
+    "景勝地",
+    "自然",
+    "水辺",
+    "日本の滝100選"
   ],
-  "parent_refs": [
-    {"type":"route","id":"R011","label":"屋久島一周ドライブ"}
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町栗生",
+    "note": "駐車場から主要景観まで徒歩約2分",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E9%B9%BF%E5%85%90%E5%B3%B6%E7%9C%8C%E7%86%8A%E6%AF%9B%E9%83%A1%E5%B1%8B%E4%B9%85%E5%B3%B6%E7%94%BA%E6%A0%97%E7%94%9F"
+  },
+  "facilities": {
+    "facts": [
+      {
+        "semantic": "toilet",
+        "label": "トイレ",
+        "value": "あり"
+      },
+      {
+        "semantic": "accessible_toilet",
+        "label": "多目的トイレ",
+        "value": "あり"
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6999.html"
+    },
+    "supplemental": {
+      "url": "https://www.tripadvisor.jp/Attraction_Review-g1121600-d1384953-Reviews-Oko_no_Taki_Fall-Yakushima_cho_Kumage_gun_Kagoshima_Prefecture_Kyushu.html"
+    }
+  },
+  "related_spots": [
+    {
+      "entity_type": "spot",
+      "id": "S0039",
+      "label": "西部林道"
+    },
+    {
+      "entity_type": "spot",
+      "id": "S0045",
+      "label": "手打ちそば 松竹"
+    }
   ],
-  "spot": {
-    "category": "attraction",
-    "themes": ["滝","景勝地","ドライブ","自然","水辺","日本の滝100選"],
-    "strengths": [
-      "長時間歩かずに非常に迫力ある滝を楽しめる",
-      "滝壺近くまで寄れるため落差だけでなく水量・飛沫・音を体感しやすい",
-      "日本の滝100選に選ばれている屋久島代表級の滝",
-      "西部林道を抜けた後の南西部側クライマックスとして配置しやすい",
-      "栗生・南部温泉群との接続がよい"
-    ],
+  "hero_facts": [
+    {
+      "semantic": "waterfall_height",
+      "label": "落差",
+      "value": "88m"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "不要"
+    },
+    {
+      "semantic": "season",
+      "label": "おすすめ時期",
+      "value": "通年"
+    },
+    {
+      "semantic": "duration",
+      "label": "滞在目安",
+      "value": "30〜60分程度"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-okawa-no-taki-01.jpg",
+      "caption": null,
+      "credit": null,
+      "source_url": "https://yakukan.jp/spot/6999.html"
+    }
+  ],
+  "appeal": {
     "highlights": [
       "落差88mの大瀑布",
-      "滝壺近くから感じる水しぶきと轟音",
+      "滝壺近くの水しぶきと轟音",
       "日本の滝100選"
     ],
-    "user_fit": [
-      "レンタカーで自然景観を巡る日と相性が良い",
-      "長距離歩行を増やさず、強い自然景観を追加したい旅行に向く"
-    ],
-    "suitable_for": ["予備日","ドライブ","小雨","滝","水辺景観"],
-    "season": ["春","夏","秋","冬"],
-    "value_points": [
-      "駐車場から短い徒歩で高い景観価値を得られる",
-      "島一周ドライブの移動負荷に対して追加負担が小さい"
-    ],
-    "practicality": [
-      "30〜60分程度の立ち寄りに向く",
-      "駐車場から徒歩約2分程度で主要景観へ到達できる",
-      "トイレ・多目的トイレがある",
-      "豪雨・強風時は道路・滝壺周辺の安全を優先して見送る"
-    ],
-    "facts": [
-      {"label":"落差","value":"88m"},
-      {"label":"歩行負荷","value":"小"},
-      {"label":"予約","value":"不要"},
-      {"label":"季節","value":"通年"}
-    ],
-    "review_summary": {
+    "review": {
+      "checked_label": "確認: 2026-09-13",
       "positives": [
-        "滝の大きさ・水量・轟音を、短い徒歩で得られる大迫力として高く評価する口コミが多い",
-        "雨の後は水量が増して迫力がさらに強くなるという体験談が目立つ",
-        "島一周ドライブの途中に無理なく立ち寄れ、歩行負荷が小さいのに満足度が高い点が好評",
-        "滝壺近くまで寄れることで、遠望型の滝より体感的な迫力が強いとする声がある"
+        "短い徒歩で得られる大迫力として高評価が多い",
+        "雨後は水量が増して迫力が強くなるという体験談が目立つ",
+        "歩行負荷が小さいのに満足度が高い"
       ],
       "cautions": [
-        "雨後の増水時は迫力が増す一方、飛沫・濡れ・足元条件も厳しくなる",
-        "悪天候時は滝そのものより道路と現地安全を優先して見送る判断が必要",
-        "短時間で見られるため、単独目的より西部林道・栗生・南部温泉と組み合わせる方が旅行価値を高めやすい"
-      ],
-      "best_for": [
-        "島一周ドライブで負荷を増やさず強い自然景観を入れたい旅行",
-        "滝・水辺景観が好きで、間近の迫力を重視する人",
-        "西部林道通過後のクライマックスを作りたいRoute"
-      ],
-      "checked_at": "2026-09-13"
-    },
-    "image_refs": [
-      {
-        "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa1-dr.jpg",
-        "role": "hero",
-        "priority": 1,
-        "caption": "大川の滝1",
-        "credit": "提供：一般社団法人 屋久島観光協会",
-        "source_url": "https://yakukan.jp/tourism-association/photo-download.html",
-        "source_type": "tourism"
-      },
-      {
-        "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa2-dr.jpg",
-        "role": "gallery",
-        "priority": 2,
-        "caption": "大川の滝2",
-        "credit": "提供：一般社団法人 屋久島観光協会",
-        "source_url": "https://yakukan.jp/tourism-association/photo-download.html",
-        "source_type": "tourism"
-      },
-      {
-        "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa-rain-dr.jpg",
-        "role": "gallery",
-        "priority": 3,
-        "caption": "雨の後の大川の滝",
-        "credit": "提供：一般社団法人 屋久島観光協会",
-        "source_url": "https://yakukan.jp/tourism-association/photo-download.html",
-        "source_type": "tourism"
-      }
-    ],
-    "links": [
-      {"label":"公式・観光情報","url":"https://yakukan.jp/spot/6999.html","source_type":"tourism"},
-      {"label":"口コミ・写真","url":"https://www.tripadvisor.jp/Attraction_Review-g1121600-d1384953-Reviews-Oko_no_Taki_Fall-Yakushima_cho_Kumage_gun_Kagoshima_Prefecture_Kyushu.html","source_type":"other"}
-    ],
-    "related": [
-      {"type":"spot","id":"S0039","label":"西部林道","relation_type":"good_pair","role":"after_western_forest_road"},
-      {"type":"spot","id":"S0045","label":"手打ちそば 松竹","relation_type":"good_pair","role":"lunch_near_kurio"}
-    ]
+        "雨後は飛沫・濡れ・足元条件も厳しくなる",
+        "悪天候時は道路と現地安全を優先する"
+      ]
+    }
   }
 }
