@@ -6,12 +6,14 @@
   <meta name="color-scheme" content="light dark" />
   <title>PersonalOS Viewer</title>
   <style>
+    .viewer-loading .app-header{display:none}
     .initial-loading{
       min-height:calc(100dvh - 64px);
       display:grid;
       place-items:center;
       padding:24px;
     }
+    .viewer-loading .initial-loading{min-height:100dvh}
     .initial-loading-status{
       display:grid;
       justify-items:center;
@@ -37,7 +39,7 @@
     }
   </style>
 </head>
-<body class="leisure-app">
+<body class="leisure-app viewer-loading">
   <header class="site-header app-header">
     <a class="brand" href="?">PersonalOS Leisure</a>
     <nav id="breadcrumb" class="breadcrumb" aria-label="breadcrumb"></nav>
