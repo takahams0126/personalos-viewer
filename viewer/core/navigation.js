@@ -1,4 +1,5 @@
 const HISTORY_STATE_KEY = 'personalosViewer';
+const PENDING_NAVIGATION_KEY = 'personalosViewerPendingNavigation';
 
 function normalizeSource(source) {
   if (!source?.type) return null;
@@ -34,10 +35,44 @@ function currentSource({ request, data }) {
   });
 }
 
+function currentEntryKey(url = location) {
+  return `${url.pathname}${url.search}`;
+}
+
+function writeEntryNavigationState(source) {
+  const nextState = {
+    ...(history.state || {}),
+    [HISTORY_STATE_KEY]: {
+      ...(history.state?.[HISTORY_STATE_KEY] || {}),
+      navigation: { source: normalizeSource(source) }
+    }
+  };
+  history.replaceState(nextState, '', location.href);
+}
+
+function consumePendingNavigation() {
+  let pending = null;
+  try {
+    const raw = sessionStorage.getItem(PENDING_NAVIGATION_KEY);
+    if (raw) pending = JSON.parse(raw);
+  } catch {
+    sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
+    return null;
+  }
+
+  if (!pending || pending.destination !== currentEntryKey()) return null;
+
+  sessionStorage.removeItem(PENDING_NAVIGATION_KEY);
+  const source = normalizeSource(pending.source);
+  if (source) writeEntryNavigationState(source);
+  return source;
+}
+
 export function createNavigationContext({ request, data }) {
-  const state = readNavigationState();
+  const stored = readNavigationState();
+  const source = stored.source || consumePendingNavigation();
   return {
-    source: state.source,
+    source,
     href: target => buildViewerHref(target)
   };
 }
@@ -61,8 +96,9 @@ function resolveInternalViewerUrl(anchor) {
 }
 
 /**
- * Keep normal document navigation while attaching entry-scoped navigation context.
- * The destination URL remains physical-entry independent and contains only Viewer identity.
+ * Preserve normal document navigation. Session storage is only a short-lived
+ * transport for the destination entry's source context; history.state remains
+ * the authoritative entry-scoped navigation state after the destination loads.
  */
 export function installDocumentNavigation(context, root = document) {
   const onClick = event => {
@@ -74,18 +110,17 @@ export function installDocumentNavigation(context, root = document) {
     const url = resolveInternalViewerUrl(anchor);
     if (!url) return;
 
-    event.preventDefault();
-    const state = {
-      ...(history.state || {}),
-      [HISTORY_STATE_KEY]: {
-        navigation: {
-          source: currentSource(context)
-        }
-      }
+    const payload = {
+      destination: currentEntryKey(url),
+      source: currentSource(context)
     };
 
-    history.pushState(state, '', `${url.pathname}${url.search}${url.hash}`);
-    location.reload();
+    try {
+      sessionStorage.setItem(PENDING_NAVIGATION_KEY, JSON.stringify(payload));
+    } catch {
+      // Navigation must still proceed even if session storage is unavailable.
+    }
+    // Do not preventDefault(): let the browser create a real document-history entry.
   };
 
   root.addEventListener('click', onClick);
