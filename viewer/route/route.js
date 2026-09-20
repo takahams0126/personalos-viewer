@@ -1,6 +1,7 @@
 import {
   escapeHtml,
-  makeCollapsible
+  makeCollapsible,
+  renderEntityRefCard
 } from '../shared/component-contracts.js';
 import { renderGoogleMap } from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
@@ -29,38 +30,29 @@ function renderInlineFacts(facts = []) {
 
 function renderHeroSpots(spots = [], navigation) {
   if (!spots.length) return '';
-  return `<div class="route-hero-spots">
-    <span class="route-hero-spots-label">主役スポット</span>
-    <div class="route-hero-spot-links">${spots.map(spot => {
-      const href = navigation.href({ type: spot.entity_type, id: spot.id });
-      return `<a href="${escapeHtml(href)}">${escapeHtml(spot.label)}</a>`;
-    }).join('<span class="route-hero-spot-separator" aria-hidden="true">｜</span>')}</div>
-  </div>`;
+  return `<div class="route-hero-refs">${spots.map(spot => renderEntityRefCard({
+    kind: '主役Spot',
+    title: spot.label || spot.id || '',
+    href: navigation.href({ type: spot.entity_type || 'spot', id: spot.id })
+  })).join('')}</div>`;
 }
 
 function renderBadges(badges = []) {
   if (!badges.length) return '';
-  return `<div class="route-sequence-badges">${badges.map(badge => `<span class="route-sequence-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</span>`).join('')}</div>`;
+  return `<span class="route-stop-badges">${badges.map(badge => `<small class="route-role-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</small>`).join('')}</span>`;
 }
 
 function renderRouteStop(item, navigation) {
   const spot = item.spot || {};
   const href = spot.id ? navigation.href({ type: spot.entity_type || 'spot', id: spot.id }) : '';
   const title = escapeHtml(spot.label || spot.id || '');
-  const label = href ? `<a class="route-sequence-title" href="${escapeHtml(href)}">${title}</a>` : `<span class="route-sequence-title">${title}</span>`;
-  const fallback = item.fallback_for
-    ? `<div class="route-sequence-fallback"><b>代替対象</b><a href="${escapeHtml(navigation.href({ type: item.fallback_for.entity_type || 'spot', id: item.fallback_for.id }))}">${escapeHtml(item.fallback_for.label)}</a></div>`
-    : '';
+  const label = href ? `<a href="${escapeHtml(href)}">${title}</a>` : `<span>${title}</span>`;
 
-  return `<article class="route-sequence-item">
-    <div class="route-sequence-order">${String(item.order).padStart(2, '0')}</div>
-    <div class="route-sequence-body">
-      <div class="route-sequence-heading">${label}${renderBadges(item.badges || [])}</div>
-      ${item.summary ? `<p>${escapeHtml(item.summary)}</p>` : ''}
-      ${item.condition_text ? `<div class="route-sequence-condition"><b>条件</b><span>${escapeHtml(item.condition_text)}</span></div>` : ''}
-      ${fallback}
-    </div>
-  </article>`;
+  return `<div class="route-stop">
+    <span class="stop-no">${escapeHtml(String(item.order ?? ''))}</span>
+    ${label}
+    ${renderBadges(item.badges || [])}
+  </div>`;
 }
 
 function buildPopupData(point, navigation) {
@@ -143,7 +135,7 @@ function renderRouteHtml(data, navigation) {
 
   const sequenceSection = `<section class="section" data-route-section="sequence">
     <h2>立ち寄り順</h2>
-    <div class="route-sequence-list">${(data.sequence || []).map(item => renderRouteStop(item, navigation)).join('')}</div>
+    <div class="route-stops vertical">${(data.sequence || []).map(item => renderRouteStop(item, navigation)).join('')}</div>
   </section>`;
 
   const constraints = (data.constraints || []).length
