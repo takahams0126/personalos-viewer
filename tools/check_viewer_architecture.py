@@ -205,7 +205,7 @@ def check_page_url_parsing(path: Path, text: str) -> list[Violation]:
                 "MODERN-001",
                 path,
                 "Page module parses Viewer URL state directly.",
-                "Use request passed by viewer/main.js; keep URL parsing in viewer/core/request.js.",
+                "Use request passed by Viewer PageContext; keep URL parsing in viewer/core/request.js.",
             )
         ]
     return []
@@ -229,7 +229,7 @@ def check_primary_entity_fetch(path: Path, text: str) -> list[Violation]:
                 "MODERN-002",
                 path,
                 f"Page '{page}' appears to load its own primary entity.",
-                "Primary entity data must be loaded once by viewer/main.js and passed to page.render({ request, data }).",
+                "Primary page data is resolved by loadPageData() in viewer/main.js and provided through PageContext.data; page modules must not fetch it again.",
             )
         ]
     return []
@@ -244,14 +244,14 @@ def check_primary_loader_ownership() -> list[Violation]:
                 "MODERN-010",
                 main_path,
                 "viewer/main.js is missing.",
-                "Restore viewer/main.js as the composition root and primary entity loader owner.",
+                "Restore viewer/main.js as the composition root and primary page-data loader owner.",
             )
         ]
 
     text = read(main_path)
     violations: list[Violation] = []
     import_pattern = (
-        r"import\s*\{[^}]*\bloadEntity\b[^}]*\}\s*from\s*"
+        r"import\s*\{[^}]*\bloadPageData\b[^}]*\}\s*from\s*"
         r"['\"]\./core/data\.js['\"]"
     )
     if not re.search(import_pattern, text, flags=re.DOTALL):
@@ -259,19 +259,19 @@ def check_primary_loader_ownership() -> list[Violation]:
             Violation(
                 "MODERN-010",
                 main_path,
-                "viewer/main.js does not import loadEntity from viewer/core/data.js.",
-                "Import loadEntity from ./core/data.js and keep primary entity loading in viewer/main.js.",
+                "viewer/main.js does not import loadPageData from viewer/core/data.js.",
+                "Import loadPageData from ./core/data.js and keep primary page-data loading in viewer/main.js.",
             )
         )
 
-    call_count = len(re.findall(r"\bloadEntity\s*\(", text))
+    call_count = len(re.findall(r"\bloadPageData\s*\(", text))
     if call_count != 1:
         violations.append(
             Violation(
                 "MODERN-010",
                 main_path,
-                f"viewer/main.js must call loadEntity exactly once in the normal path; found {call_count} calls.",
-                "Keep one primary load in viewer/main.js and pass the result to page.render({ request, data }).",
+                f"viewer/main.js must call loadPageData exactly once in the normal path; found {call_count} calls.",
+                "Keep one primary page-data load in viewer/main.js and pass the result through PageContext.data.",
             )
         )
 
@@ -279,13 +279,16 @@ def check_primary_loader_ownership() -> list[Violation]:
         if path in {main_path, data_path}:
             continue
         module_text = read(path)
-        if re.search(r"\b(?:loadEntity|entityPath)\s*\(", module_text):
+        if re.search(
+            r"\b(?:loadPageData|loadEntity|loadManifest|entityPath)\s*\(",
+            module_text,
+        ):
             violations.append(
                 Violation(
                     "MODERN-010",
                     path,
-                    "Primary entity/path infrastructure is called outside viewer/main.js or viewer/core/data.js.",
-                    "Use page.render({ request, data }) for primary data. Use loadJson() only for supplemental artifacts.",
+                    "Primary page-data infrastructure is called outside viewer/main.js or viewer/core/data.js.",
+                    "Consume primary data through PageContext.data. Load only explicit supplemental artifacts through context.resources.loadJson().",
                 )
             )
     return violations
@@ -301,7 +304,7 @@ def check_page_raw_fetch(path: Path, text: str) -> list[Violation]:
                 "MODERN-011",
                 path,
                 "Page module performs raw fetch().",
-                "Use viewer/core/data.js loadJson() for supplemental artifacts; primary entity data comes from viewer/main.js.",
+                "Use PageContext.resources.loadJson() for explicitly referenced supplemental artifacts; primary page data comes from PageContext.data.",
             )
         ]
     return []
