@@ -84,10 +84,22 @@
   ],
   "images": [
     {
-      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-okawa-no-taki-01.jpg",
-      "caption": null,
-      "credit": null,
-      "source_url": "https://yakukan.jp/spot/6999.html"
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa1-dr.jpg",
+      "caption": "大川の滝1",
+      "credit": "提供：一般社団法人 屋久島観光協会",
+      "source_url": "https://yakukan.jp/tourism-association/photo-download.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa2-dr.jpg",
+      "caption": "大川の滝2",
+      "credit": "提供：一般社団法人 屋久島観光協会",
+      "source_url": "https://yakukan.jp/tourism-association/photo-download.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-okawa-rain-dr.jpg",
+      "caption": "雨の後の大川の滝",
+      "credit": "提供：一般社団法人 屋久島観光協会",
+      "source_url": "https://yakukan.jp/tourism-association/photo-download.html"
     }
   ],
   "appeal": {
