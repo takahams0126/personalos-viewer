@@ -33,9 +33,9 @@ export async function render({ data: catalog, navigation }) {
           <button class="home-tab" data-type="spot" type="button">スポット</button>
         </div>
         <div class="home-filters">
-          <label>エリア<select id="home-area"><option value="">すべて</option>${(catalog.areas || []).map(a => `<option value="${esc(a.id)}">${esc(a.label)}</option>`).join('')}</select></label>
-          <label>カテゴリ<select id="home-category"><option value="">すべて</option></select></label>
-          <label>検索<input id="home-search" type="search" placeholder="名前・特徴・タグで検索"></label>
+          <label class="home-search-field"><span>検索</span><input id="home-search" type="search" placeholder="名前・特徴・タグで検索"></label>
+          <label><span>エリア</span><select id="home-area"><option value="">すべて</option>${(catalog.areas || []).map(a => `<option value="${esc(a.id)}">${esc(a.label)}</option>`).join('')}</select></label>
+          <label><span>カテゴリ</span><select id="home-category"><option value="">すべて</option></select></label>
         </div>
       </div>
       <div class="home-summary-row"><div id="home-count" class="home-count"></div></div>
@@ -112,9 +112,21 @@ function cardHtml(item, navigation) {
   const image = item.image_url
     ? `<div class="explorer-thumb"><img src="${esc(item.image_url)}" alt="" loading="lazy" onerror="this.parentElement.remove()"></div>`
     : '';
-  const tags = (item.tags || []).slice(0, 5)
+  const tags = (item.tags || []).slice(0, 3)
     .map(tag => `<span class="ui-badge is-tag">${esc(tag)}</span>`)
     .join('');
 
-  return `<article class="explorer-card">${image}<div class="explorer-body"><div class="explorer-meta"><span class="explorer-type">${esc(typeLabel(item.type))}</span><span class="explorer-id">${esc(item.id)}</span></div><h3><a href="${href}">${esc(item.title)}</a></h3>${item.summary ? `<p>${esc(item.summary)}</p>` : ''}${tags ? `<div class="explorer-tags">${tags}</div>` : ''}</div></article>`;
+  return `<article class="explorer-card ${image ? '' : 'no-thumb'}">
+    <a class="explorer-card-link" href="${href}">
+      ${image}
+      <div class="explorer-body">
+        <div class="explorer-title-row">
+          <h3>${esc(item.title)}</h3>
+          <span class="explorer-id">${esc(item.id)}</span>
+        </div>
+        ${item.summary ? `<p>${esc(item.summary)}</p>` : ''}
+        ${tags ? `<div class="explorer-tags">${tags}</div>` : ''}
+      </div>
+    </a>
+  </article>`;
 }
