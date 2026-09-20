@@ -27,18 +27,20 @@ export async function render({ data: catalog, navigation }) {
     </section>
     <section class="home-explorer" aria-label="レジャー一覧">
       <div class="home-toolbar">
-        <div class="home-tabs" role="tablist" aria-label="表示種別">
-          <button class="home-tab active" data-type="plan" type="button">プラン</button>
-          <button class="home-tab" data-type="route" type="button">ルート</button>
-          <button class="home-tab" data-type="spot" type="button">スポット</button>
+        <div class="home-toolbar-head">
+          <div class="home-tabs" role="tablist" aria-label="表示種別">
+            <button class="home-tab active" data-type="plan" type="button">プラン</button>
+            <button class="home-tab" data-type="route" type="button">ルート</button>
+            <button class="home-tab" data-type="spot" type="button">スポット</button>
+          </div>
+          <div id="home-count" class="home-count"></div>
         </div>
         <div class="home-filters">
-          <label class="home-search-field"><span>検索</span><input id="home-search" type="search" placeholder="名前・特徴・タグで検索"></label>
-          <label><span>エリア</span><select id="home-area"><option value="">すべて</option>${(catalog.areas || []).map(a => `<option value="${esc(a.id)}">${esc(a.label)}</option>`).join('')}</select></label>
-          <label><span>カテゴリ</span><select id="home-category"><option value="">すべて</option></select></label>
+          <input class="home-search-field" id="home-search" type="search" aria-label="名前・特徴・タグで検索" placeholder="名前・特徴・タグで検索">
+          <select id="home-area" aria-label="エリア"><option value="">エリア: すべて</option>${(catalog.areas || []).map(a => `<option value="${esc(a.id)}">エリア: ${esc(a.label)}</option>`).join('')}</select>
+          <select id="home-category" aria-label="カテゴリ"><option value="">カテゴリ: すべて</option></select>
         </div>
       </div>
-      <div class="home-summary-row"><div id="home-count" class="home-count"></div></div>
       <div id="explorer-grid" class="explorer-grid"></div>
     </section>`;
 
@@ -57,8 +59,8 @@ export async function render({ data: catalog, navigation }) {
 
   const rebuildCategory = () => {
     const values = categories();
-    category.innerHTML = '<option value="">すべて</option>' + values
-      .map(value => `<option value="${esc(value)}">${esc(categoryLabel(value))}</option>`)
+    category.innerHTML = '<option value="">カテゴリ: すべて</option>' + values
+      .map(value => `<option value="${esc(value)}">カテゴリ: ${esc(categoryLabel(value))}</option>`)
       .join('');
     if (!values.includes(state.category)) state.category = '';
     category.value = state.category;
@@ -73,7 +75,7 @@ export async function render({ data: catalog, navigation }) {
       .filter(item => !q || [item.title, item.summary, ...(item.tags || [])]
         .filter(Boolean).join(' ').toLowerCase().includes(q));
 
-    count.textContent = `${typeLabel(state.type)} ${rows.length}件`;
+    count.textContent = `${rows.length}件`;
     grid.innerHTML = rows.length
       ? rows.map(item => cardHtml(item, navigation)).join('')
       : '<div class="home-empty">条件に合う項目がありません。</div>';
