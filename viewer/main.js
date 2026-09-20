@@ -32,6 +32,11 @@ const pageLoaders = {
   'concrete-plan': () => import('./concrete-plan/concrete-plan.js')
 };
 
+function finishInitialLoading() {
+  document.body.classList.remove('viewer-loading');
+  document.querySelector('#app')?.classList.remove('initial-loading');
+}
+
 export async function main() {
   loadStyle(new URL('./shared/main.css', import.meta.url).href);
 
@@ -50,6 +55,7 @@ export async function main() {
   const page = await loader();
   await page.render(context);
 
+  finishInitialLoading();
   installDocumentNavigation(context);
 }
 
@@ -57,5 +63,6 @@ try {
   await main();
 } catch (error) {
   console.error('[viewer] bootstrap failed', error);
+  finishInitialLoading();
   renderError(error);
 }
