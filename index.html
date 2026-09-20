@@ -5,13 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
   <title>PersonalOS Viewer</title>
+  <style>
+    .initial-loading{
+      min-height:calc(100dvh - 64px);
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .initial-loading-status{
+      display:grid;
+      justify-items:center;
+      gap:12px;
+      color:#6b7075;
+      font:600 .86rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    .initial-loading-spinner{
+      width:38px;
+      height:38px;
+      border:4px solid rgba(26,115,232,.18);
+      border-top-color:#1a73e8;
+      border-radius:50%;
+      animation:initial-loading-spin .75s linear infinite;
+    }
+    @keyframes initial-loading-spin{to{transform:rotate(360deg)}}
+    @media(prefers-reduced-motion:reduce){
+      .initial-loading-spinner{animation-duration:1.5s}
+    }
+    @media(prefers-color-scheme:dark){
+      .initial-loading-status{color:#bdc1c6}
+      .initial-loading-spinner{border-color:rgba(138,180,248,.22);border-top-color:#8ab4f8}
+    }
+  </style>
 </head>
 <body class="leisure-app">
   <header class="site-header app-header">
     <a class="brand" href="?">PersonalOS Leisure</a>
     <nav id="breadcrumb" class="breadcrumb" aria-label="breadcrumb"></nav>
   </header>
-  <main id="app" class="shell app-main"><p class="loading">読み込み中…</p></main>
+  <main id="app" class="shell app-main initial-loading">
+    <div class="initial-loading-status" role="status" aria-live="polite">
+      <span class="initial-loading-spinner" aria-hidden="true"></span>
+      <span>読み込み中…</span>
+    </div>
+  </main>
   <script type="module" src="./viewer/main.js"></script>
 </body>
 </html>
