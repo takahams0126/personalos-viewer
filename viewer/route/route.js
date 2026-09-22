@@ -47,32 +47,42 @@ function renderHeroSpots(spots = [], navigation) {
   })).join('')}</div>`;
 }
 
-function renderBadges(badges = []) {
+function renderSemanticBadge(value, semantic) {
+  if (!value?.label) return '';
+  return `<small class="route-role-badge semantic-${escapeHtml(semantic)}" data-code="${escapeHtml(value.code || '')}">${escapeHtml(value.label)}</small>`;
+}
+
+function renderSequenceBadges(item) {
+  const badges = [
+    renderSemanticBadge(item.visit_purpose, 'visit-purpose'),
+    renderSemanticBadge(item.inclusion_requirement, 'inclusion')
+  ].filter(Boolean);
   if (!badges.length) return '';
-  return `<span class="route-stop-badges">${badges.map(badge => `<small class="route-role-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</small>`).join('')}</span>`;
+  return `<span class="route-stop-badges">${badges.join('')}</span>`;
 }
 
-function buildFallbackMap(sequence = []) {
-  const fallbackMap = new Map();
-  sequence.forEach(item => {
-    const targetId = item?.fallback_for?.id;
-    if (!targetId || !item?.spot?.id) return;
-    const current = fallbackMap.get(targetId) || [];
-    current.push(item.spot);
-    fallbackMap.set(targetId, current);
-  });
-  return fallbackMap;
-}
-
-function renderFallbackRefs(fallbacks = [], navigation) {
-  if (!fallbacks.length) return '';
-  return `<div class="route-stop-detail route-stop-fallback">
-    <b>代替</b>
-    <span>${fallbacks.map(ref => routeRefLink(ref, navigation)).join(' / ')}</span>
+function renderCondition(condition) {
+  if (!condition?.text) return '';
+  return `<div class="route-stop-detail route-stop-condition">
+    <b>条件</b>
+    <span>${escapeHtml(condition.text)}</span>
   </div>`;
 }
 
-function renderRouteStop(item, navigation, fallbacks = []) {
+function renderAlternatives(alternatives = [], navigation) {
+  if (!alternatives.length) return '';
+  return `<div class="route-stop-detail route-stop-alternative">
+    <b>代替</b>
+    <div class="route-stop-alternative-body">
+      ${alternatives.map(item => `<div class="route-stop-alternative-item">
+        <div class="route-stop-alternative-title">${routeRefLink(item.spot, navigation)}</div>
+        ${item.selection_condition?.text ? `<div class="route-stop-alternative-condition">条件 ${escapeHtml(item.selection_condition.text)}</div>` : ''}
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderRouteStop(item, navigation) {
   const spot = item.spot || {};
   const title = routeRefLink(spot, navigation);
 
@@ -81,11 +91,10 @@ function renderRouteStop(item, navigation, fallbacks = []) {
     <div class="route-stop-content">
       <div class="route-stop-title-row">
         ${title}
-        ${renderBadges(item.badges || [])}
+        ${renderSequenceBadges(item)}
       </div>
-      ${item.summary ? `<p class="route-stop-summary">${escapeHtml(item.summary)}</p>` : ''}
-      ${item.condition_text ? `<div class="route-stop-detail route-stop-condition"><b>条件</b><span>${escapeHtml(item.condition_text)}</span></div>` : ''}
-      ${renderFallbackRefs(fallbacks, navigation)}
+      ${renderCondition(item.condition)}
+      ${renderAlternatives(item.alternatives || [], navigation)}
     </div>
   </article>`;
 }
@@ -137,7 +146,7 @@ function joinRouteMapPoints(mapArtifact, sequence = []) {
       entityId,
       entityType: point.entity_ref?.entity_type || 'spot',
       name: routeItem.spot?.label || entityId || 'Point',
-      summary: routeItem.summary || '',
+      summary: routeItem.map_popup_summary || '',
       order: point.order,
       lat: point.position?.lat,
       lon: point.position?.lon,
@@ -187,10 +196,9 @@ function renderRouteHtml(data, navigation) {
     : '';
 
   const sequence = data.sequence || [];
-  const fallbackMap = buildFallbackMap(sequence);
   const sequenceSection = `<section class="section" data-route-section="sequence">
     <h2>立ち寄り順</h2>
-    <div class="route-stops vertical">${sequence.map(item => renderRouteStop(item, navigation, fallbackMap.get(item?.spot?.id) || [])).join('')}</div>
+    <div class="route-stops vertical">${sequence.map(item => renderRouteStop(item, navigation)).join('')}</div>
   </section>`;
 
   const constraints = (data.constraints || []).length

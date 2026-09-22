@@ -5,7 +5,7 @@
     "entity_type": "route",
     "id": "R011"
   },
-  "generated_at": "2026-09-20T04:15:00+09:00",
+  "generated_at": "2026-09-22T13:12:00+09:00",
   "points": [
     {
       "entity_ref": {"entity_type": "spot", "id": "S0037"},
@@ -38,34 +38,28 @@
       "external_ref": {"provider_code": "google_place", "id": "ChIJP3cKZ2Q6PTURxP0sh-ZfBFM"}
     },
     {
-      "entity_ref": {"entity_type": "spot", "id": "S0034"},
-      "order": 6,
-      "position": {"lat": 30.2505858, "lon": 130.5908327},
-      "external_ref": {"provider_code": "google_place", "id": "ChIJpZ4RCOMmPTURIa4QaPRlDmg"}
-    },
-    {
-      "entity_ref": {"entity_type": "spot", "id": "S0035"},
-      "order": 7,
-      "position": {"lat": 30.2623292, "lon": 130.5822033},
-      "external_ref": {"provider_code": "google_place", "id": "ChIJl0Cun-MmPTURDr7kcFzAe1I"}
-    },
-    {
       "entity_ref": {"entity_type": "spot", "id": "S0040"},
-      "order": 8,
+      "order": 6,
       "position": {"lat": 30.2558865, "lon": 130.4326218},
       "external_ref": {"provider_code": "google_place", "id": "ChIJIeCs_RwxPTURKZ8R6zv8hQM"}
     },
     {
       "entity_ref": {"entity_type": "spot", "id": "S0028"},
-      "order": 9,
+      "order": 7,
       "position": {"lat": 30.2309522, "lon": 130.4839206},
       "external_ref": {"provider_code": "google_place", "id": "ChIJQfhGO_AvPTUR9nspFzmOv84"}
     },
     {
-      "entity_ref": {"entity_type": "spot", "id": "S0026"},
-      "order": 10,
-      "position": {"lat": 30.2403862, "lon": 130.5487159},
-      "external_ref": {"provider_code": "google_place", "id": "ChIJw6nTUdklPTURRwWJ_T8Apsk"}
+      "entity_ref": {"entity_type": "spot", "id": "S0035"},
+      "order": 8,
+      "position": {"lat": 30.2623292, "lon": 130.5822033},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJl0Cun-MmPTURDr7kcFzAe1I"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0034"},
+      "order": 9,
+      "position": {"lat": 30.2505858, "lon": 130.5908327},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJpZ4RCOMmPTURIa4QaPRlDmg"}
     }
   ]
 }
