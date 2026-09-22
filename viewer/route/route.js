@@ -3,7 +3,10 @@ import {
   makeCollapsible,
   renderEntityRefCard
 } from '../shared/component-contracts.js';
-import { renderGoogleMap } from '../shared/google-map.js';
+import {
+  buildGoogleMapsSearchUrl,
+  renderGoogleMap
+} from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
 
 function renderChips(items = []) {
@@ -90,18 +93,34 @@ function renderRouteStop(item, navigation, fallbacks = []) {
 function buildPopupData(point, navigation) {
   const target = point.entityId ? { type: point.entityType || 'spot', id: point.entityId } : null;
   const personalHref = target ? navigation.href(target) : '';
+  const googleHref = buildGoogleMapsSearchUrl({
+    name: point.name,
+    placeId: point.placeId
+  });
 
-  return {
-    title: point.name,
-    summary: point.summary,
-    actions: personalHref
-      ? [{
+  const actions = [
+    personalHref
+      ? {
           kind: 'primary',
           label: 'PersonalOSで詳しく見る',
           href: personalHref,
           external: false
-        }]
-      : []
+        }
+      : null,
+    googleHref
+      ? {
+          kind: 'secondary',
+          label: 'Google Mapsで開く',
+          href: googleHref,
+          external: true
+        }
+      : null
+  ].filter(Boolean);
+
+  return {
+    title: point.name,
+    summary: point.summary,
+    actions
   };
 }
 
@@ -113,6 +132,7 @@ function joinRouteMapPoints(mapArtifact, sequence = []) {
   return (mapArtifact?.points || []).map(point => {
     const entityId = point.entity_ref?.id || '';
     const routeItem = byId.get(entityId) || {};
+    const externalRef = point.external_ref || {};
     return {
       entityId,
       entityType: point.entity_ref?.entity_type || 'spot',
@@ -120,7 +140,8 @@ function joinRouteMapPoints(mapArtifact, sequence = []) {
       summary: routeItem.summary || '',
       order: point.order,
       lat: point.position?.lat,
-      lon: point.position?.lon
+      lon: point.position?.lon,
+      placeId: externalRef.provider_code === 'google_place' ? externalRef.id || '' : ''
     };
   });
 }
