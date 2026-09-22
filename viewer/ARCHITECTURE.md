@@ -18,6 +18,22 @@ Modern production
   viewer/**
 ```
 
+## Upstream authority
+
+Display semantics and HTML Boundary are defined upstream in the Leisure Display / Layer-State contracts. Viewer implementation must use the current upstream authority before implementing an incomplete page.
+
+For Plan / ConcretePlan whole-Day reorder, the current required inputs are:
+
+```text
+Obsidian
+80_Memo/Leisure-Display-Pipeline/Final-Display/Leisure-Day-Reorder-Display-Closure.md
+80_Memo/Leisure-Layer-State/02_Display-Transformation/Handoff/Day-Reorder-Canonical-Display-Handoff.md
+80_Memo/Leisure-Layer-State/03_HTML-Viewer/Day-Reorder-Implementation-Amendment.md
+```
+
+These contracts supersede older Viewer assumptions based on pairwise DaySwap or `slot ↔ source_day` placement mapping.
+Viewer code must not recreate Domain meaning that these upstream contracts already resolve.
+
 ## Coexistence invariants
 
 1. Root `index.html` is the single Modern production entrypoint.
@@ -29,6 +45,7 @@ Modern production
 7. Current Modern page build state is owned by `/viewer-build-status.json`.
 8. Display semantics and HTML Boundary are defined upstream. Modern Renderer consumes that boundary rather than inferring Domain meaning from Legacy DOM or old PoC code.
 9. Legacy visual behavior may be used as comparison evidence, but it does not override current contracts or explicit user review.
+10. Plan / ConcretePlan reorder UI must consume completed Boundary semantics; it must not infer reorder groups, Day titles, or current placement from Canonical/Legacy data.
 
 ## System-level optimization principles
 
@@ -50,7 +67,7 @@ Resource composition
 = allowed in Viewer from explicit references
 ```
 
-Viewer must not fetch Manifest, related Entity JSON, Canonical data, or other sources merely to discover missing labels, relationships, summaries, warnings, or other display meaning.
+Viewer must not fetch Manifest, related Entity JSON, Canonical data, or other sources merely to discover missing labels, relationships, summaries, warnings, reorder options, or other display meaning.
 
 Explicitly referenced artifacts may be loaded independently when separation improves change locality, reuse, cache behavior, failure isolation, or rebuild cost.
 
@@ -217,7 +234,36 @@ Plan            skeleton
 ConcretePlan    skeleton
 ```
 
-This foundation change does not implement Plan or ConcretePlan display.
+This architecture change does not implement Plan or ConcretePlan display.
+
+## Plan / ConcretePlan reorder renderer rule
+
+When Plan / ConcretePlan reorder rendering is implemented later:
+
+```text
+Boundary provides
+- position/date display semantic
+- completed Day labels/titles
+- allowed options
+- selected/displayed option
+- date-bound Weather/etc semantic
+
+Viewer owns
+- select/dropdown presentation
+- local interaction state
+- switching already-completed display content
+```
+
+Viewer must not:
+
+```text
+- runtime-fetch source Plan to discover reorderability
+- construct `slot/source_day` mappings
+- infer options from pairwise relations
+- generate Day titles
+- move Weather/date-bound facts with selected Day content
+- persist local selector state as Canonical truth
+```
 
 ## Failure behavior
 
