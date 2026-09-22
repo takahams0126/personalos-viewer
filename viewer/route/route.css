@@ -28,14 +28,14 @@
 .route-stop{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;min-width:0;padding:12px 13px;border:1px solid #cfd8df;border-radius:12px;background:#fff;box-shadow:0 1px 5px rgba(60,64,67,.08)}
 .stop-no{display:inline-grid;place-items:center;width:25px;height:25px;margin-top:1px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#4285f4);color:#fff;font-size:.72rem;font-weight:800;box-shadow:0 2px 5px rgba(26,115,232,.20)}
 .route-stop-content{min-width:0}
-.route-stop-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.route-stop-title-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:0}
 .route-stop-title-row>a,.route-stop-title-row>span{min-width:0;color:#0b57d0;font-size:.92rem;font-weight:760;text-decoration:none}
 .route-stop-title-row>a:hover{text-decoration:underline}
-.route-stop-badges{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
-.route-role-badge{padding:2px 6px;border-radius:999px;background:#f3f4f5;color:#5f6368;font-size:.66rem;font-weight:800;line-height:1.45}
-.route-role-badge.semantic-visit-purpose{background:#e8f0fe;color:#174ea6}
-.route-role-badge.semantic-inclusion[data-code="required"]{background:#fff3cd;color:#725400}
-.route-role-badge.semantic-inclusion[data-code="optional"]{background:#eef1f4;color:#687078}
+.route-stop-badges{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.route-role-badge{display:inline-flex;align-items:center;min-height:22px;padding:3px 8px;border:1px solid transparent;border-radius:999px;background:#f1f3f4;color:#4d5156;font-size:.74rem;font-weight:800;line-height:1.25;letter-spacing:.01em}
+.route-role-badge.semantic-visit-purpose{background:#e8f0fe;border-color:#aecbfa;color:#174ea6}
+.route-role-badge.semantic-inclusion[data-code="required"]{background:#fff3cd;border-color:#f4c95d;color:#664d03}
+.route-role-badge.semantic-inclusion[data-code="optional"]{background:#f1f3f4;border-color:#d7dce0;color:#4d5156}
 .route-stop-detail{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;align-items:start;margin-top:9px;line-height:1.55}
 .route-stop-detail b{padding-top:2px;color:#6d7379;font-size:.72rem;letter-spacing:.02em}
 .route-stop-condition>span{min-width:0;color:#3c4043;font-size:.9rem;font-weight:600}
@@ -67,6 +67,7 @@
   .route-stop{grid-template-columns:25px minmax(0,1fr);gap:8px;padding:10px 9px}
   .stop-no{width:23px;height:23px}
   .route-stop-title-row>a,.route-stop-title-row>span{font-size:.88rem}
+  .route-role-badge{min-height:21px;padding:3px 7px;font-size:.72rem}
   .route-stop-detail{grid-template-columns:38px minmax(0,1fr);gap:8px;margin-top:8px}
   .route-stop-condition>span{font-size:.88rem}
   .route-stop-alternative-title a,.route-stop-alternative-title span{font-size:.88rem}
@@ -85,5 +86,8 @@
   .route-stop-title-row>a,.route-stop-alternative-title a{color:#8ab4f8}
   .route-stop-condition>span{color:#e8eaed}
   .route-stop-alternative-condition{color:#bdc1c6}
-  .route-role-badge{background:#2d2f31;color:#bdc1c6}
+  .route-role-badge{background:#303134;border-color:#5f6368;color:#e8eaed}
+  .route-role-badge.semantic-visit-purpose{background:#1f3358;border-color:#5f8dd3;color:#aecbfa}
+  .route-role-badge.semantic-inclusion[data-code="required"]{background:#4a3b12;border-color:#a88428;color:#fdd663}
+  .route-role-badge.semantic-inclusion[data-code="optional"]{background:#303134;border-color:#5f6368;color:#e8eaed}
 }
