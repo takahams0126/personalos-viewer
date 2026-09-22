@@ -172,8 +172,6 @@ function initCarousel(root) {
 
     let index = 0;
     let gestureStart = null;
-    let suppressImageClick = false;
-    let suppressTimer = null;
 
     const show = next => {
       index = (next + slides.length) % slides.length;
@@ -184,11 +182,6 @@ function initCarousel(root) {
     };
 
     const openLightbox = () => openSpotLightbox(slides, index, show);
-    const suppressNextImageClick = () => {
-      suppressImageClick = true;
-      window.clearTimeout(suppressTimer);
-      suppressTimer = window.setTimeout(() => { suppressImageClick = false; }, 400);
-    };
 
     carousel.querySelector('.prev')?.addEventListener('click', event => {
       event.preventDefault();
@@ -201,14 +194,6 @@ function initCarousel(root) {
     thumbs.forEach((thumb, thumbIndex) => thumb.addEventListener('click', event => {
       event.preventDefault();
       show(thumbIndex);
-    }));
-    slides.forEach(slide => slide.querySelector('img')?.addEventListener('click', event => {
-      event.preventDefault();
-      if (suppressImageClick) {
-        suppressImageClick = false;
-        return;
-      }
-      openLightbox();
     }));
 
     stage.addEventListener('keydown', event => {
@@ -228,18 +213,27 @@ function initCarousel(root) {
 
     stage.addEventListener('pointerdown', event => {
       if (event.target.closest('button')) return;
-      gestureStart = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+      gestureStart = {
+        x: event.clientX,
+        y: event.clientY,
+        pointerId: event.pointerId,
+        startedOnImage: Boolean(event.target.closest('.spot-carousel-slide img'))
+      };
       stage.setPointerCapture?.(event.pointerId);
     });
     stage.addEventListener('pointerup', event => {
       if (!gestureStart || gestureStart.pointerId !== event.pointerId) return;
       const dx = event.clientX - gestureStart.x;
       const dy = event.clientY - gestureStart.y;
+      const startedOnImage = gestureStart.startedOnImage;
       gestureStart = null;
 
       if (Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy)) {
-        suppressNextImageClick();
         show(index + (dx < 0 ? 1 : -1));
+        return;
+      }
+      if (startedOnImage && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+        openLightbox();
       }
     });
     stage.addEventListener('pointercancel', () => {
