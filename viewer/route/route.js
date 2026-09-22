@@ -1,7 +1,6 @@
 import {
   escapeHtml,
-  makeCollapsible,
-  renderEntityRefCard
+  makeCollapsible
 } from '../shared/component-contracts.js';
 import { renderGoogleMap } from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
@@ -28,13 +27,19 @@ function renderInlineFacts(facts = []) {
   return `<div class="route-inline-facts">${facts.map(fact => `<span class="route-inline-fact"><b>${escapeHtml(fact.label)}</b><span>${escapeHtml(fact.value)}</span></span>`).join('')}</div>`;
 }
 
+function routeRefLink(ref, navigation) {
+  if (!ref?.id) return '';
+  const href = navigation.href({ type: ref.entity_type || 'spot', id: ref.id });
+  const label = escapeHtml(ref.label || ref.id);
+  return href ? `<a href="${escapeHtml(href)}">${label}</a>` : `<span>${label}</span>`;
+}
+
 function renderHeroSpots(spots = [], navigation) {
   if (!spots.length) return '';
-  return `<div class="route-hero-refs">${spots.map(spot => renderEntityRefCard({
-    kind: '主役Spot',
-    title: spot.label || spot.id || '',
-    href: navigation.href({ type: spot.entity_type || 'spot', id: spot.id })
-  })).join('')}</div>`;
+  return `<div class="route-hero-spots">
+    <span class="route-hero-spots-label">主役スポット</span>
+    <div class="route-hero-spot-links">${spots.map(spot => routeRefLink(spot, navigation)).join('<i aria-hidden="true">｜</i>')}</div>
+  </div>`;
 }
 
 function renderBadges(badges = []) {
@@ -42,17 +47,42 @@ function renderBadges(badges = []) {
   return `<span class="route-stop-badges">${badges.map(badge => `<small class="route-role-badge tone-${escapeHtml(badge.tone || 'neutral')}">${escapeHtml(badge.label)}</small>`).join('')}</span>`;
 }
 
-function renderRouteStop(item, navigation) {
-  const spot = item.spot || {};
-  const href = spot.id ? navigation.href({ type: spot.entity_type || 'spot', id: spot.id }) : '';
-  const title = escapeHtml(spot.label || spot.id || '');
-  const label = href ? `<a href="${escapeHtml(href)}">${title}</a>` : `<span>${title}</span>`;
+function buildFallbackMap(sequence = []) {
+  const fallbackMap = new Map();
+  sequence.forEach(item => {
+    const targetId = item?.fallback_for?.id;
+    if (!targetId || !item?.spot?.id) return;
+    const current = fallbackMap.get(targetId) || [];
+    current.push(item.spot);
+    fallbackMap.set(targetId, current);
+  });
+  return fallbackMap;
+}
 
-  return `<div class="route-stop">
-    <span class="stop-no">${escapeHtml(String(item.order ?? ''))}</span>
-    ${label}
-    ${renderBadges(item.badges || [])}
+function renderFallbackRefs(fallbacks = [], navigation) {
+  if (!fallbacks.length) return '';
+  return `<div class="route-stop-detail route-stop-fallback">
+    <b>代替</b>
+    <span>${fallbacks.map(ref => routeRefLink(ref, navigation)).join(' / ')}</span>
   </div>`;
+}
+
+function renderRouteStop(item, navigation, fallbacks = []) {
+  const spot = item.spot || {};
+  const title = routeRefLink(spot, navigation);
+
+  return `<article class="route-stop">
+    <span class="stop-no">${escapeHtml(String(item.order ?? ''))}</span>
+    <div class="route-stop-content">
+      <div class="route-stop-title-row">
+        ${title}
+        ${renderBadges(item.badges || [])}
+      </div>
+      ${item.summary ? `<p class="route-stop-summary">${escapeHtml(item.summary)}</p>` : ''}
+      ${item.condition_text ? `<div class="route-stop-detail route-stop-condition"><b>条件</b><span>${escapeHtml(item.condition_text)}</span></div>` : ''}
+      ${renderFallbackRefs(fallbacks, navigation)}
+    </div>
+  </article>`;
 }
 
 function buildPopupData(point, navigation) {
@@ -133,9 +163,11 @@ function renderRouteHtml(data, navigation) {
       </section>`
     : '';
 
+  const sequence = data.sequence || [];
+  const fallbackMap = buildFallbackMap(sequence);
   const sequenceSection = `<section class="section" data-route-section="sequence">
     <h2>立ち寄り順</h2>
-    <div class="route-stops vertical">${(data.sequence || []).map(item => renderRouteStop(item, navigation)).join('')}</div>
+    <div class="route-stops vertical">${sequence.map(item => renderRouteStop(item, navigation, fallbackMap.get(item?.spot?.id) || [])).join('')}</div>
   </section>`;
 
   const constraints = (data.constraints || []).length
