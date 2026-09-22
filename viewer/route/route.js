@@ -1,6 +1,7 @@
 import {
   escapeHtml,
-  makeCollapsible
+  makeCollapsible,
+  renderEntityRefCard
 } from '../shared/component-contracts.js';
 import { renderGoogleMap } from '../shared/google-map.js';
 import { loadStyle } from '../shared/load-style.js';
@@ -36,10 +37,11 @@ function routeRefLink(ref, navigation) {
 
 function renderHeroSpots(spots = [], navigation) {
   if (!spots.length) return '';
-  return `<div class="route-hero-spots">
-    <span class="route-hero-spots-label">主役スポット</span>
-    <div class="route-hero-spot-links">${spots.map(spot => routeRefLink(spot, navigation)).join('<i aria-hidden="true">｜</i>')}</div>
-  </div>`;
+  return `<div class="route-hero-refs">${spots.map(spot => renderEntityRefCard({
+    kind: '主役Spot',
+    title: spot.label || spot.id || '',
+    href: navigation.href({ type: spot.entity_type || 'spot', id: spot.id })
+  })).join('')}</div>`;
 }
 
 function renderBadges(badges = []) {
