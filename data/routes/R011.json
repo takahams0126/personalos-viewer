@@ -1,0 +1,158 @@
+{
+  "schema_version": 2,
+  "view_type": "route",
+  "id": "R011",
+  "title": "屋久島一周ドライブ",
+  "summary": "西部林道を主役に海岸・滝・亜熱帯の植生・温泉をつなぎ、海・深い森・大瀑布・入浴体験の近さを一日で感じる反時計回りの屋久島一周ドライブ。",
+  "theme_chips": [
+    "ドライブ",
+    "西部林道",
+    "海・森・滝",
+    "温泉"
+  ],
+  "family_label": "屋久島一周ドライブ",
+  "variant": {
+    "code": "counterclockwise",
+    "label": "反時計回り"
+  },
+  "hero_spots": [
+    {
+      "entity_type": "spot",
+      "id": "S0038",
+      "label": "永田いなか浜"
+    },
+    {
+      "entity_type": "spot",
+      "id": "S0039",
+      "label": "西部林道"
+    },
+    {
+      "entity_type": "spot",
+      "id": "S0036",
+      "label": "大川の滝"
+    }
+  ],
+  "hero_facts": [
+    {
+      "semantic": "movement",
+      "label": "移動",
+      "value": "ドライブ"
+    }
+  ],
+  "appeal": {
+    "summary": "永田いなか浜から西部林道、大川の滝、南部の植生・滝・温泉へ進み、山だけではない屋久島の景観と体験の振れ幅を一日で味わう。",
+    "strengths": [
+      "海岸から深い森林、大瀑布、温泉へと体験が連続して変化し、海・森・滝・入浴体験が近接する屋久島らしさを一日で感じられる。"
+    ]
+  },
+  "map": {
+    "artifact_ref": "./maps/routes/R011/points.json"
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0037",
+        "label": "志戸子ガジュマル公園"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      }
+    },
+    {
+      "order": 2,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0038",
+        "label": "永田いなか浜"
+      }
+    },
+    {
+      "order": 3,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0039",
+        "label": "西部林道"
+      },
+      "inclusion_requirement": {
+        "code": "required",
+        "label": "必須"
+      }
+    },
+    {
+      "order": 4,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0036",
+        "label": "大川の滝"
+      }
+    },
+    {
+      "order": 5,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0045",
+        "label": "手打ちそば 松竹"
+      },
+      "visit_purpose": {
+        "code": "lunch",
+        "label": "昼食"
+      }
+    },
+    {
+      "order": 6,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0040",
+        "label": "中間ガジュマル"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      }
+    },
+    {
+      "order": 7,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0028",
+        "label": "平内海中温泉"
+      },
+      "visit_purpose": {
+        "code": "bath",
+        "label": "入浴"
+      },
+      "condition": {
+        "text": "潮位・波・風条件が合う場合"
+      },
+      "alternatives": [
+        {
+          "spot": {
+            "entity_type": "spot",
+            "id": "S0026",
+            "label": "尾之間温泉"
+          }
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0035",
+        "label": "千尋の滝"
+      }
+    },
+    {
+      "order": 9,
+      "spot": {
+        "entity_type": "spot",
+        "id": "S0034",
+        "label": "トローキの滝"
+      }
+    }
+  ],
+  "constraints": []
+}
