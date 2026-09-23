@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "view_type": "concrete_plan",
+  "id": "CP001",
+  "title": "屋久島 4泊5日 実施Plan",
+  "summary": "P001を2026年10月19日〜23日の実施日、確定航空便、レンタカー、登山バス、道路所要時間などへ具体化した屋久島4泊5日の実施Plan。",
+  "period": {
+    "start": "2026-10-19",
+    "end": "2026-10-23",
+    "label": "2026年10月19日〜10月23日"
+  },
+  "source_plan": {
+    "entity_type": "plan",
+    "id": "P001",
+    "label": "屋久島 4泊5日基本Plan"
+  },
+  "execution_facts": [
+    {
+      "label": "人数",
+      "value": "2名",
+      "semantic": "party_size"
+    },
+    {
+      "label": "レンタカー利用期間",
+      "value": "10月19日 15:00〜10月23日 14:00",
+      "semantic": "rental_car_period"
+    },
+    {
+      "label": "レンタカー実道路距離",
+      "value": "196.3km",
+      "semantic": "road_distance"
+    }
+  ],
+  "days": [
+    {
+      "execution_day_id": "CP001:day:1",
+      "fixed_context": {
+        "execution_ordinal": 1,
+        "date": "2026-10-19",
+        "weekday_label": "月曜日"
+      },
+      "initial_content_id": "CP001:content:day1",
+      "content_options": [
+        {
+          "content_id": "CP001:content:day1",
+          "source_plan_day_id": "P001:day:1",
+          "source_day_ordinal": 1,
+          "title": "屋久島へ移動・旅の準備",
+          "summary": "羽田・鹿児島を経由して屋久島へ入り、レンタカーを受け取って宮之浦の宿へ移動し、翌日の縄文杉登山に備える。",
+          "label": "Day 1 屋久島へ移動・旅の準備",
+          "variants": [
+            {
+              "variant_id": "CP001:D1:baseline",
+              "label": "標準",
+              "flow": [
+                {
+                  "element_id": "CP1-01",
+                  "type": "transfer",
+                  "transport": {"code": "train", "label": "電車"},
+                  "source_flow_id": "F1-01"
+                },
+                {
+                  "element_id": "CP1-02",
+                  "type": "destination",
+                  "target": {"entity_type": "travel_point", "id": "T0002", "label": "羽田空港"},
+                  "source_flow_id": "F1-02"
+                },
+                {
+                  "element_id": "CP1-03",
+                  "type": "transfer",
+                  "transport": {"code": "airplane", "label": "飛行機"},
+                  "source_flow_id": "F1-03",
+                  "depart_label": "10:00",
+                  "arrive_label": "11:45",
+                  "duration_label": "1時間45分",
+                  "service": {"mode": {"code": "airplane", "label": "飛行機"}, "label": "JAL645 羽田→鹿児島", "operator": "JAL", "service_label": "JAL645", "reservation_label": "予約確定"},
+                  "from": {"entity_type": "travel_point", "id": "T0002", "label": "羽田空港"},
+                  "to": {"entity_type": "travel_point", "id": "T0007", "label": "鹿児島空港"}
+                },
+                {
+                  "element_id": "CP1-04",
+                  "type": "destination",
+                  "target": {"entity_type": "travel_point", "id": "T0007", "label": "鹿児島空港"},
+                  "source_flow_id": "F1-03",
+                  "arrive_label": "11:45"
+                },
+                {
+                  "element_id": "CP1-05",
+                  "type": "transfer",
+                  "transport": {"code": "airplane", "label": "飛行機"},
+                  "source_flow_id": "F1-03",
+                  "depart_label": "13:25",
+                  "arrive_label": "14:05",
+                  "duration_label": "40分",
+                  "service": {"mode": {"code": "airplane", "label": "飛行機"}, "label": "JAL3745 鹿児島→屋久島", "operator": "JAL/JAC", "service_label": "JAL3745", "reservation_label": "予約確定"},
+                  "from": {"entity_type": "travel_point", "id": "T0007", "label": "鹿児島空港"},
+                  "to": {"entity_type": "travel_point", "id": "T0003", "label": "屋久島空港"}
+                },
+                {
+                  "element_id": "CP1-06",
+                  "type": "destination",
+                  "target": {"entity_type": "travel_point", "id": "T0003", "label": "屋久島空港"},
+                  "source_flow_id": "F1-04",
+                  "arrive_label": "14:05"
+                },
+                {
+                  "element_id": "CP1-07",
+                  "type": "transfer",
+                  "transport": {"code": "walk", "label": "徒歩"},
+                  "source_flow_id": "F1-05",
+                  "duration_label": "約7分"
+                },
+                {
+                  "element_id": "CP1-08",
+                  "type": "destination",
+                  "target": {"entity_type": "travel_point", "id": "T0005", "label": "タイムズカーレンタル 屋久島空港店"},
+                  "source_flow_id": "F1-06",
+                  "time_label": "15:00",
+                  "activities": ["レンタカーを受け取る"]
+                },
+                {
+                  "element_id": "CP1-09",
+                  "type": "transfer",
+                  "transport": {"code": "rental_car", "label": "レンタカー"},
+                  "duration_label": "約13分"
+                },
+                {
+                  "element_id": "CP1-10",
+                  "type": "destination",
+                  "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"},
+                  "source_flow_id": "F1-10",
+                  "activities": ["チェックインする", "翌日の縄文杉登山に必要な買い出し・準備を済ませる", "夕食は自炊または軽食へ切り替える"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "execution_day_id": "CP001:day:2",
+      "fixed_context": {"execution_ordinal": 2, "date": "2026-10-20", "weekday_label": "火曜日"},
+      "initial_content_id": "CP001:content:day2",
+      "content_options": [
+        {
+          "content_id": "CP001:content:day2",
+          "source_plan_day_id": "P001:day:2",
+          "source_day_ordinal": 2,
+          "title": "縄文杉トレッキング",
+          "summary": "屋久杉自然館前から荒川登山バスで登山口へ入り、縄文杉往復を実施する。完遂が厳しい場合はウィルソン株往復へ短縮する。",
+          "label": "Day 2 縄文杉トレッキング",
+          "variants": [
+            {
+              "variant_id": "CP001:D2:baseline",
+              "label": "縄文杉往復",
+              "flow": [
+                {"element_id": "CP2-01", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F2-01", "duration_label": "約30分"},
+                {"element_id": "CP2-02", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "source_flow_id": "F2-01", "activities": ["レンタカーを駐車する", "荒川登山バスへ乗り換える"]},
+                {"element_id": "CP2-03", "type": "transfer", "transport": {"code": "bus", "label": "バス"}, "source_flow_id": "F2-01", "depart_label": "05:40", "arrive_label": "06:15", "duration_label": "35分", "service": {"mode": {"code": "bus", "label": "バス"}, "label": "荒川登山バス 往路", "operator": "荒川登山バス", "service_label": "屋久杉自然館前→荒川登山口"}, "from": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "to": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}},
+                {"element_id": "CP2-04", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}, "source_flow_id": "F2-01", "arrive_label": "06:15"},
+                {"element_id": "CP2-05", "type": "route", "route": {"entity_type": "route", "id": "R005", "label": "縄文杉ルート・縄文杉往復"}, "source_flow_id": "F2-02", "depart_label": "06:15", "arrive_label": "16:43", "duration_label": "10時間28分", "facts": [{"label": "復路バス時刻", "value": "17:00"}, {"label": "計画上の余裕", "value": "17分"}]},
+                {"element_id": "CP2-06", "type": "transfer", "transport": {"code": "bus", "label": "バス"}, "source_flow_id": "F2-03", "depart_label": "17:00", "arrive_label": "17:35", "duration_label": "35分", "service": {"mode": {"code": "bus", "label": "バス"}, "label": "荒川登山バス 復路", "operator": "荒川登山バス", "service_label": "荒川登山口→屋久杉自然館前"}, "from": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}, "to": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}},
+                {"element_id": "CP2-07", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "source_flow_id": "F2-03", "arrive_label": "17:35"},
+                {"element_id": "CP2-08", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F2-03", "duration_label": "約30分"},
+                {"element_id": "CP2-09", "type": "destination", "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"}, "source_flow_id": "F2-04"}
+              ]
+            },
+            {
+              "variant_id": "CP2-V1",
+              "label": "ウィルソン株往復",
+              "summary": "天候・体調・進行状況に応じて山行を短縮する。",
+              "flow": [
+                {"element_id": "CP2-V1:CP2-01", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F2-01", "duration_label": "約30分"},
+                {"element_id": "CP2-V1:CP2-02", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "source_flow_id": "F2-01", "activities": ["レンタカーを駐車する", "荒川登山バスへ乗り換える"]},
+                {"element_id": "CP2-V1:CP2-03", "type": "transfer", "transport": {"code": "bus", "label": "バス"}, "source_flow_id": "F2-01", "depart_label": "05:40", "arrive_label": "06:15", "duration_label": "35分", "service": {"mode": {"code": "bus", "label": "バス"}, "label": "荒川登山バス 往路", "operator": "荒川登山バス", "service_label": "屋久杉自然館前→荒川登山口"}, "from": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "to": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}},
+                {"element_id": "CP2-V1:CP2-04", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}, "source_flow_id": "F2-01", "arrive_label": "06:15"},
+                {"element_id": "CP2-V1-01", "type": "route", "route": {"entity_type": "route", "id": "R007", "label": "縄文杉ルート・ウィルソン株往復"}, "depart_label": "06:15", "arrive_label": "13:29", "duration_label": "7時間14分"},
+                {"element_id": "CP2-V1:CP2-06", "type": "transfer", "transport": {"code": "bus", "label": "バス"}, "source_flow_id": "F2-03", "depart_label": "17:00", "arrive_label": "17:35", "duration_label": "35分", "service": {"mode": {"code": "bus", "label": "バス"}, "label": "荒川登山バス 復路", "operator": "荒川登山バス", "service_label": "荒川登山口→屋久杉自然館前"}, "from": {"entity_type": "travel_point", "id": "T0010", "label": "荒川登山口"}, "to": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}},
+                {"element_id": "CP2-V1:CP2-07", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0009", "label": "屋久杉自然館前登山バス乗り場"}, "source_flow_id": "F2-03", "arrive_label": "17:35"},
+                {"element_id": "CP2-V1:CP2-08", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F2-03", "duration_label": "約30分"},
+                {"element_id": "CP2-V1:CP2-09", "type": "destination", "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"}, "source_flow_id": "F2-04"}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "execution_day_id": "CP001:day:3",
+      "fixed_context": {"execution_ordinal": 3, "date": "2026-10-21", "weekday_label": "水曜日"},
+      "initial_content_id": "CP001:content:day3",
+      "content_options": [
+        {
+          "content_id": "CP001:content:day3",
+          "source_plan_day_id": "P001:day:3",
+          "source_day_ordinal": 3,
+          "title": "屋久島一周ドライブ",
+          "summary": "屋久島一周ドライブを基本とし、豪雨・強風時は南部中心の雨天ドライブへ切り替える。",
+          "label": "Day 3 屋久島一周ドライブ",
+          "variants": [
+            {"variant_id": "CP001:D3:baseline", "label": "島一周", "flow": [
+              {"element_id": "CP3-01", "type": "route", "route": {"entity_type": "route", "id": "R011", "label": "屋久島一周ドライブ"}, "source_flow_id": "F3-01"},
+              {"element_id": "CP3-02", "type": "destination", "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"}, "source_flow_id": "F3-02"}
+            ]},
+            {"variant_id": "CP3-V1", "label": "南部雨天ドライブ", "summary": "豪雨・強風時に島一周へこだわらず南部中心へ切り替える。", "flow": [
+              {"element_id": "CP3-V1-01", "type": "route", "route": {"entity_type": "route", "id": "R010", "label": "屋久島南部雨天ドライブ"}},
+              {"element_id": "CP3-V1:CP3-02", "type": "destination", "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"}, "source_flow_id": "F3-02"}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "execution_day_id": "CP001:day:4",
+      "fixed_context": {"execution_ordinal": 4, "date": "2026-10-22", "weekday_label": "木曜日"},
+      "initial_content_id": "CP001:content:day4",
+      "content_options": [
+        {
+          "content_id": "CP001:content:day4",
+          "source_plan_day_id": "P001:day:4",
+          "source_day_ordinal": 4,
+          "title": "白谷雲水峡・太鼓岩ハイク",
+          "summary": "白谷雲水峡・太鼓岩を歩き、下山後に楠川温泉とPANORAMAへ立ち寄って宮之浦の宿へ戻る。",
+          "label": "Day 4 白谷雲水峡・太鼓岩ハイク",
+          "variants": [
+            {"variant_id": "CP001:D4:baseline", "label": "標準", "flow": [
+              {"element_id": "CP4-01", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F4-01", "duration_label": "約20分"},
+              {"element_id": "CP4-02", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0004", "label": "白谷雲水峡入口駐車場"}, "source_flow_id": "F4-01", "activities": ["白谷雲水峡入口でレンタカーを駐車する"]},
+              {"element_id": "CP4-03", "type": "route", "route": {"entity_type": "route", "id": "R004", "label": "白谷雲水峡ルート・太鼓岩往復"}, "source_flow_id": "F4-02", "facts": [{"label": "実施条件", "value": "県道白谷雲水峡宮之浦線が通行可能で、白谷雲水峡が入山可能であること"}]},
+              {"element_id": "CP4-04", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F4-03", "duration_label": "約24分"},
+              {"element_id": "CP4-05", "type": "destination", "target": {"entity_type": "spot", "id": "S0030", "label": "楠川温泉"}, "source_flow_id": "F4-04", "activities": ["入浴する"], "facility_facts": [{"label": "営業時間", "value": "09:00〜20:00"}, {"label": "実施日", "value": "2026-10-22は通常営業日"}]},
+              {"element_id": "CP4-06", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F4-05", "duration_label": "約7分"},
+              {"element_id": "CP4-07", "type": "destination", "target": {"entity_type": "spot", "id": "S0046", "label": "PANORAMA"}, "source_flow_id": "F4-06", "activities": ["夕食をとる"], "facility_facts": [{"label": "営業時間", "value": "18:00〜23:00"}, {"label": "実施日", "value": "2026-10-22（木）は通常営業日"}]},
+              {"element_id": "CP4-08", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F4-07", "duration_label": "約1分"},
+              {"element_id": "CP4-09", "type": "destination", "target": {"entity_type": "spot", "id": "S0025", "label": "素泊民宿 ふれんど"}, "source_flow_id": "F4-08"}
+            ]}
+          ]
+        }
+      ]
+    },
+    {
+      "execution_day_id": "CP001:day:5",
+      "fixed_context": {"execution_ordinal": 5, "date": "2026-10-23", "weekday_label": "金曜日"},
+      "initial_content_id": "CP001:content:day5",
+      "content_options": [
+        {
+          "content_id": "CP001:content:day5",
+          "source_plan_day_id": "P001:day:5",
+          "source_day_ordinal": 5,
+          "title": "帰路",
+          "summary": "余裕時間を確保したうえでレンタカーを14:00までに返却し、大阪（伊丹）経由で羽田へ戻る。",
+          "label": "Day 5 帰路",
+          "variants": [
+            {"variant_id": "CP001:D5:baseline", "label": "標準", "flow": [
+              {"element_id": "CP5-01", "type": "free_time", "purpose": "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する", "source_flow_id": "F5-01"},
+              {"element_id": "CP5-02", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}, "source_flow_id": "F5-02", "duration_label": "約13分"},
+              {"element_id": "CP5-03", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0005", "label": "タイムズカーレンタル 屋久島空港店"}, "source_flow_id": "F5-03", "arrive_label": "14:00", "actions": [{"action_id": "CP5-A1", "label": "レンタカーを返却する", "deadline_label": "14:00"}]},
+              {"element_id": "CP5-04", "type": "transfer", "transport": {"code": "bus", "label": "バス"}, "source_flow_id": "F5-04", "duration_label": "約2分"},
+              {"element_id": "CP5-05", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0003", "label": "屋久島空港"}, "source_flow_id": "F5-05"},
+              {"element_id": "CP5-06", "type": "transfer", "transport": {"code": "airplane", "label": "飛行機"}, "source_flow_id": "F5-06", "depart_label": "14:35", "arrive_label": "16:15", "duration_label": "1時間40分", "service": {"mode": {"code": "airplane", "label": "飛行機"}, "label": "JAL2450 屋久島→大阪（伊丹）", "operator": "JAL/JAC", "service_label": "JAL2450", "reservation_label": "予約確定"}, "from": {"entity_type": "travel_point", "id": "T0003", "label": "屋久島空港"}, "to": {"entity_type": "travel_point", "id": "T0008", "label": "大阪国際空港（伊丹空港）"}},
+              {"element_id": "CP5-07", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0008", "label": "大阪国際空港（伊丹空港）"}, "source_flow_id": "F5-06", "arrive_label": "16:15"},
+              {"element_id": "CP5-08", "type": "transfer", "transport": {"code": "airplane", "label": "飛行機"}, "source_flow_id": "F5-06", "depart_label": "16:35", "arrive_label": "17:50", "duration_label": "1時間15分", "service": {"mode": {"code": "airplane", "label": "飛行機"}, "label": "JAL126 大阪（伊丹）→羽田", "operator": "JAL", "service_label": "JAL126", "reservation_label": "予約確定"}, "from": {"entity_type": "travel_point", "id": "T0008", "label": "大阪国際空港（伊丹空港）"}, "to": {"entity_type": "travel_point", "id": "T0002", "label": "羽田空港"}},
+              {"element_id": "CP5-09", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0002", "label": "羽田空港"}, "source_flow_id": "F5-07", "arrive_label": "17:50"},
+              {"element_id": "CP5-10", "type": "transfer", "transport": {"code": "train", "label": "電車"}, "source_flow_id": "F5-08"},
+              {"element_id": "CP5-11", "type": "destination", "target": {"entity_type": "travel_point", "id": "T0001", "label": "自宅"}, "source_flow_id": "F5-09"}
+            ]}
+          ]
+        }
+      ]
+    }
+  ],
+  "cost": {
+    "total_label": "349,737円＋未確定費用",
+    "items": [
+      {"label": "航空券＋民宿ふれんど4泊（大人2名）", "amount_label": "319,400円", "state_label": "確定"},
+      {"label": "タイムズカーレンタル", "amount_label": "22,737円", "state_label": "確定"},
+      {"label": "楠川温泉（大人2名）", "amount_label": "600円", "state_label": "概算"},
+      {"label": "PANORAMA夕食（大人2名）", "amount_label": "7,000円", "state_label": "概算"},
+      {"label": "荒川登山バス往復（大人2名）", "amount_label": "未確定", "state_label": "未確定"},
+      {"label": "レンタカー燃料", "amount_label": "未確定", "state_label": "未確定"}
+    ]
+  }
+}
