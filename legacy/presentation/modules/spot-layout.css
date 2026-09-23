@@ -1,0 +1,42 @@
+.spot-hero-related-grid{
+  grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+}
+.spot-hero-related-grid .ui-entity-ref-card{
+  min-width:0;
+}
+.spot-hero-related-grid .ui-entity-ref-title{
+  min-width:0;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:clip;
+  line-height:1.35;
+}
+
+.spot-demo-hero-copy>.ui-hero-facts{
+  grid-template-columns:minmax(0,.9fr) minmax(0,.9fr) minmax(0,.9fr) minmax(112px,1.35fr);
+}
+.spot-demo-hero-copy>.ui-hero-facts>.ui-hero-fact{
+  padding:9px 8px;
+}
+.spot-demo-hero-copy .ui-season-icons{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:2px;
+  min-width:0;
+}
+.spot-demo-hero-copy .ui-season-icon{
+  flex:0 0 20px;
+  width:20px;
+  height:20px;
+}
+
+@media(max-width:980px){
+  .spot-hero-related-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .spot-demo-hero-copy>.ui-hero-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spot-demo-hero-copy>.ui-hero-facts>.ui-hero-fact:nth-child(odd){border-left:0}
+  .spot-demo-hero-copy>.ui-hero-facts>.ui-hero-fact:nth-child(n+3){border-top:1px solid #e4e9ee}
+  .spot-demo-hero-copy>.ui-hero-facts>.ui-hero-fact:nth-child(4){border-left:1px solid #e4e9ee}
+}
+@media(max-width:520px){
+  .spot-hero-related-grid{grid-template-columns:1fr}
+}

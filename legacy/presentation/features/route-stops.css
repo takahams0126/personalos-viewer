@@ -1,0 +1,19 @@
+/* Canonical Route stops presentation feature. */
+.route-stops{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:12px}
+.route-stops.vertical{display:grid;gap:10px}
+.route-stop{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid #cfd8df;border-radius:12px;background:#fff;box-shadow:0 1px 5px rgba(60,64,67,.08)}
+.route-stop small{color:var(--text-soft)}
+.stop-no{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#4285f4);color:#fff;font-size:.72rem;font-weight:800;box-shadow:0 2px 5px rgba(26,115,232,.20)}
+.route-arrow{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:999px;background:linear-gradient(135deg,#ffd84d,var(--yellow));color:#5f4300;font-size:0;box-shadow:0 2px 8px rgba(251,188,4,.28)}
+.route-arrow::before{content:"➜";font-size:18px;font-weight:900;line-height:1}
+.vertical .route-arrow{display:none}
+
+@media(max-width:640px){
+  .route-stops{align-items:flex-start}
+  .route-arrow{min-width:26px;height:26px;padding:0 6px}
+  .route-arrow::before{font-size:15px}
+}
+
+@media(prefers-color-scheme:dark){
+  .route-stop{background:#202124;border-color:#3c4043;box-shadow:none}
+}

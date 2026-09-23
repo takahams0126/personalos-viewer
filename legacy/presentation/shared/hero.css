@@ -1,0 +1,43 @@
+/* Canonical entity Hero surface.
+   Spot keeps its two-column visual variant, but shares the semantic ui-entity-hero contract. */
+.ui-entity-hero:not(.is-spot-hero){
+  position:relative;
+  overflow:hidden;
+  padding:34px 36px;
+  margin-bottom:22px;
+  border:1px solid #d5dce3;
+  border-radius:20px;
+  background:linear-gradient(135deg,#fff 0%,#f4f8fc 60%,#e9f2fb 100%);
+  box-shadow:var(--ui-shadow);
+}
+.ui-entity-hero:not(.is-spot-hero)::after{
+  content:"";
+  position:absolute;
+  width:230px;
+  height:230px;
+  right:-80px;
+  top:-95px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(26,115,232,.15),rgba(26,115,232,0) 68%);
+  pointer-events:none;
+}
+.ui-entity-hero:not(.is-spot-hero)>h1{
+  position:relative;
+  margin:2px 0 10px;
+  line-height:1.2;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  letter-spacing:-.035em;
+}
+@media(max-width:640px){
+  .ui-entity-hero:not(.is-spot-hero){padding:24px 20px;border-radius:16px}
+}
+@media(prefers-color-scheme:light){
+  .ui-entity-hero:not(.is-spot-hero){
+    background:linear-gradient(135deg,#eaf2f9 0%,#f2f7fb 58%,#e4eef7 100%);
+    border-color:#b8c8d7;
+    box-shadow:0 8px 24px rgba(45,67,88,.14),0 1px 3px rgba(45,67,88,.10);
+  }
+}
+@media(prefers-color-scheme:dark){
+  .ui-entity-hero:not(.is-spot-hero){background:linear-gradient(135deg,#202124,#252b33);border-color:#3c4043}
+}

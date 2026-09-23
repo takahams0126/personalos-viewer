@@ -1,0 +1,50 @@
+/* Canonical internal entity reference card. */
+.ui-entity-ref-card{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"kind icon" "title icon";
+  gap:1px 8px;
+  align-items:center;
+  padding:10px 12px;
+  border:1px solid #cdddf3;
+  border-radius:12px;
+  background:rgba(247,251,255,.9);
+  color:inherit;
+  text-decoration:none;
+}
+.ui-entity-ref-card:hover{
+  background:#f2f7ff;
+  border-color:#a9c6ef;
+  text-decoration:none;
+}
+.ui-entity-ref-kind{
+  grid-area:kind;
+  color:#1a73e8;
+  font-size:.66rem;
+  font-weight:800;
+}
+.ui-entity-ref-title{
+  grid-area:title;
+  min-width:0;
+  font-size:.88rem;
+  line-height:1.35;
+}
+.ui-entity-ref-icon{
+  grid-area:icon;
+  width:30px;
+  height:16px;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transition:transform .16s ease;
+}
+.ui-entity-ref-icon path:nth-child(1){stroke:#c8dcfa}
+.ui-entity-ref-icon path:nth-child(2){stroke:#8db8ef}
+.ui-entity-ref-icon path:nth-child(3){stroke:#3f8de4}
+.ui-entity-ref-card:hover .ui-entity-ref-icon{transform:translateX(3px)}
+.ui-entity-ref-card.is-disabled{opacity:.58}
+@media(prefers-color-scheme:dark){
+  .ui-entity-ref-card{background:linear-gradient(180deg,#202b3a,#202124);border-color:#3f5878}
+  .ui-entity-ref-card:hover{background:#243449;border-color:#5879a4}
+  .ui-entity-ref-title{color:#e8eaed}
+}

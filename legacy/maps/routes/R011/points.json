@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "artifact_type": "conceptual_map",
+  "source": {
+    "entity_type": "route",
+    "id": "R011"
+  },
+  "generated_at": "2026-09-20T04:15:00+09:00",
+  "points": [
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0037"},
+      "order": 1,
+      "position": {"lat": 30.4489032, "lon": 130.5200634},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJzzOYXnoZPTURCTI7PYsTiFI"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0038"},
+      "order": 2,
+      "position": {"lat": 30.4065904, "lon": 130.4331373},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJq4lOOgE9PTURhysN4ntEzgw"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0039"},
+      "order": 3,
+      "position": {"lat": 30.3354821, "lon": 130.3966833},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJUffvv0k6PTURxZGT4susESE"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0036"},
+      "order": 4,
+      "position": {"lat": 30.2998495, "lon": 130.4137052},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJnzqBwks6PTURAlWO4qP4q8g"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0045"},
+      "order": 5,
+      "position": {"lat": 30.2742215, "lon": 130.4249112},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJP3cKZ2Q6PTURxP0sh-ZfBFM"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0034"},
+      "order": 6,
+      "position": {"lat": 30.2505858, "lon": 130.5908327},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJpZ4RCOMmPTURIa4QaPRlDmg"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0035"},
+      "order": 7,
+      "position": {"lat": 30.2623292, "lon": 130.5822033},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJl0Cun-MmPTURDr7kcFzAe1I"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0040"},
+      "order": 8,
+      "position": {"lat": 30.2558865, "lon": 130.4326218},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJIeCs_RwxPTURKZ8R6zv8hQM"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0028"},
+      "order": 9,
+      "position": {"lat": 30.2309522, "lon": 130.4839206},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJQfhGO_AvPTUR9nspFzmOv84"}
+    },
+    {
+      "entity_ref": {"entity_type": "spot", "id": "S0026"},
+      "order": 10,
+      "position": {"lat": 30.2403862, "lon": 130.5487159},
+      "external_ref": {"provider_code": "google_place", "id": "ChIJw6nTUdklPTURRwWJ_T8Apsk"}
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+/* Canonical body/header/main shell. Structural only: no entity-specific presentation. */
+body.leisure-app{
+  margin:0;
+  font-family:var(--ui-font-sans);
+  color:var(--ui-color-text);
+  background:linear-gradient(180deg,#f4f8fc 0,var(--ui-page-background) 240px,var(--ui-page-background) 100%);
+  line-height:1.65;
+}
+
+.leisure-app .app-header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  gap:22px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:12px 22px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid #d1d7dd;
+  box-shadow:0 1px 8px rgba(60,64,67,.09);
+}
+.leisure-app .brand{
+  font-weight:800;
+  color:var(--ui-color-text);
+  letter-spacing:-.01em;
+}
+.leisure-app .brand::before{
+  content:"◉";
+  color:var(--ui-color-primary);
+  margin-right:8px;
+}
+.leisure-app .breadcrumb{
+  display:flex;
+  gap:8px;
+  font-size:.9rem;
+  color:#6b7075;
+}
+
+.leisure-app .app-main{
+  width:min(100%,var(--ui-content-max));
+  margin-inline:auto;
+  padding:var(--ui-page-pad-top) var(--ui-page-pad-x) var(--ui-page-pad-bottom);
+}
+.leisure-app .app-main > :first-child{margin-top:0}
+.leisure-app .app-main > :last-child{margin-bottom:0}
+
+@media(max-width:640px){
+  :root{
+    --ui-page-pad-x:10px;
+    --ui-page-pad-top:18px;
+    --ui-page-pad-bottom:52px;
+  }
+  .leisure-app .app-header{padding:10px 14px}
+}
+
+@media(prefers-color-scheme:light){
+  .leisure-app .app-header{border-bottom-color:#cbd3db;box-shadow:0 1px 8px rgba(45,55,65,.09)}
+}
+
+@media(prefers-color-scheme:dark){
+  body.leisure-app{background:var(--ui-page-background)}
+  .leisure-app .app-header{background:#202124;border-color:#3c4043}
+  .leisure-app .brand{color:#e8eaed}
+  .leisure-app .breadcrumb{color:#bdc1c6}
+}

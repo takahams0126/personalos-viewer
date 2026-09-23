@@ -1,20 +1,49 @@
 /* Formal Leisure Presentation stylesheet entrypoint.
-   index.html loads only this file for Presentation-specific styling. */
+   Import order is intentional: base -> shared -> features -> page-specific modules. */
+
+/* Base: page-agnostic tokens, shell and primitives. */
+@import url('./base/tokens.css');
+@import url('./base/shell.css');
+@import url('./base/primitives.css');
+
+/* Shared components and reusable layouts. */
+@import url('./shared/hero.css');
+@import url('./shared/section.css');
+@import url('./shared/card.css');
+@import url('./shared/badge.css');
+@import url('./shared/collapsible-section.css');
+@import url('./shared/entity-reference.css');
+@import url('./shared/hero-copy.css');
+@import url('./shared/hero-facts.css');
+@import url('./shared/content-layout.css');
+@import url('./shared/flow-icons.css');
+
+/* Cross-page presentation features. */
+@import url('./features/day.css');
+@import url('./features/flow.css');
+@import url('./features/route-stops.css');
+@import url('./features/map.css');
+
+/* Page / feature presentation. */
 @import url('./modules/home-explorer.css');
-@import url('./modules/execution-demo.css');
-@import url('./modules/execution-meta-poc.css');
-@import url('./modules/execution-detail-poc.css');
-@import url('./modules/execution-feasibility-poc.css');
-@import url('./modules/execution-fuel-poc.css');
-@import url('./modules/execution-weather-poc.css');
-@import url('./modules/spot-demo.css');
+@import url('./modules/concrete-plan.css');
+@import url('./modules/execution-day-header.css');
+@import url('./modules/execution-overview.css');
+@import url('./modules/execution-meta.css');
+@import url('./modules/execution-detail.css');
+@import url('./modules/execution-feasibility.css');
+@import url('./modules/execution-fuel.css');
+@import url('./modules/execution-weather.css');
+@import url('./modules/spot.css');
 @import url('./modules/spot-editorial.css');
 @import url('./modules/spot-card-groups.css');
-@import url('./modules/route-demo.css');
+@import url('./modules/spot-layout.css');
+@import url('./modules/route.css');
 @import url('./modules/route-metrics.css');
-@import url('./modules/plan-demo.css');
+@import url('./modules/plan.css');
 @import url('./modules/plan-flow-hierarchy.css');
 @import url('./modules/plan-flow-icons.css');
 @import url('./modules/light-contrast.css');
 @import url('./modules/mode-switch-compact.css');
-@import url('./modules/day-decision-demo.css');
+@import url('./modules/day-decisions.css');
+@import url('./modules/execution-flow-compact.css');

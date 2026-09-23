@@ -1,0 +1,60 @@
+/* Canonical Leisure Presentation design tokens.
+   Keep these semantic and page-agnostic. Page CSS must consume tokens instead of redefining surfaces. */
+:root{
+  --ui-font-sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  --ui-color-text:#202124;
+  --ui-color-text-soft:#5f6368;
+  --ui-color-link:#0b57d0;
+  --ui-color-primary:#1a73e8;
+  --ui-color-primary-dark:#174ea6;
+  --ui-color-success:#188038;
+  --ui-color-accent:#fbbc04;
+  --ui-color-accent-strong:#f9ab00;
+  --ui-color-accent-soft:#fff1c2;
+
+  --ui-surface:#fff;
+  --ui-surface-soft:#f2f5f7;
+  --ui-page-background:#eef2f5;
+  --ui-border:#d2d9df;
+
+  --ui-radius-sm:8px;
+  --ui-radius-md:14px;
+  --ui-radius-lg:20px;
+  --ui-radius-pill:999px;
+
+  --ui-shadow:0 9px 30px rgba(60,64,67,.14),0 1px 4px rgba(60,64,67,.10);
+  --ui-shadow-soft:0 3px 12px rgba(60,64,67,.11);
+
+  --ui-content-max:1180px;
+  --ui-page-pad-x:20px;
+  --ui-page-pad-top:30px;
+  --ui-page-pad-bottom:72px;
+
+  /* Compatibility aliases while legacy style.css is being decomposed. */
+  --blue:var(--ui-color-primary);
+  --blue-dark:var(--ui-color-primary-dark);
+  --green:var(--ui-color-success);
+  --yellow:var(--ui-color-accent);
+  --yellow-soft:var(--ui-color-accent-soft);
+  --orange:var(--ui-color-accent-strong);
+  --surface:var(--ui-surface);
+  --surface-soft:var(--ui-surface-soft);
+  --border:var(--ui-border);
+  --text-soft:var(--ui-color-text-soft);
+  --shadow:var(--ui-shadow);
+  --shadow-soft:var(--ui-shadow-soft);
+}
+
+@media(prefers-color-scheme:dark){
+  :root{
+    --ui-color-text:#e8eaed;
+    --ui-color-text-soft:#bdc1c6;
+    --ui-surface:#202124;
+    --ui-surface-soft:#252629;
+    --ui-page-background:#171717;
+    --ui-border:#3c4043;
+    --ui-shadow:0 8px 28px rgba(0,0,0,.28);
+    --ui-shadow-soft:0 2px 10px rgba(0,0,0,.2);
+  }
+}

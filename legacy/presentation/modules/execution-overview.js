@@ -7,7 +7,7 @@ async function initExecutionOverview(){
   const id = qs.get('id');
   let spec;
   try {
-    const response = await fetch(`./data/concrete-plans/${encodeURIComponent(id)}-meta-poc.json`, {cache:'no-store'});
+    const response = await fetch(`./data/concrete-plans/${encodeURIComponent(id)}.json`, {cache:'no-store'});
     if (!response.ok) return;
     spec = await response.json();
   } catch { return; }
@@ -30,7 +30,7 @@ async function initExecutionOverview(){
 const esc = value => String(value ?? '').replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
 
 function renderOverview(spec, overview){
-  const period = formatPeriod(spec.execution_window) || overviewPeriod(overview.weather_daily || []);
+  const period = formatPeriod(spec.execution_window);
   const state = stateLabel(spec.status);
   const verified = spec.last_verified_at ? formatDateTime(spec.last_verified_at) : '未確認';
   const weather = (overview.weather_daily || []).map(renderWeatherDay).join('');
@@ -80,14 +80,6 @@ function formatPeriod(windowSpec = {}){
   if (!start && !end) return '';
   if (windowSpec.start_date === windowSpec.end_date) return start;
   return `${start || '—'} 〜 ${end || '—'}`;
-}
-
-function overviewPeriod(days = []){
-  const first = days[0];
-  const last = days[days.length - 1];
-  if (!first && !last) return '';
-  const label = day => day ? `${day.date_label || ''}${day.weekday ? `(${day.weekday})` : ''}` : '—';
-  return days.length === 1 ? label(first) : `${label(first)} 〜 ${label(last)}`;
 }
 
 function formatDateWithWeekday(value){

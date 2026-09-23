@@ -1,0 +1,82 @@
+/* Canonical badge presentation.
+   Badge meaning is explicit in the DOM: tag/status/role/priority/type/season/impact/constraint.
+   Context-specific CSS may adjust spacing, but semantic color/shape ownership stays here. */
+.ui-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px 9px;
+  margin-left:6px;
+  border:1px solid rgba(26,115,232,.14);
+  border-radius:var(--ui-radius-pill);
+  background:#e4eefc;
+  color:#345;
+  font-size:.73rem;
+  font-weight:700;
+  vertical-align:middle;
+  line-height:1.35;
+}
+.ui-badge.is-tag{
+  margin-left:0;
+  background:#fff7d6;
+  border-color:#f4d35e;
+  color:#6d5200;
+}
+.ui-badge.is-status{
+  background:#e8f0fe;
+  border-color:#cbdcf6;
+  color:#174ea6;
+}
+.ui-badge.is-role{
+  background:#fff3cd;
+  border-color:#efcf66;
+  color:#725400;
+}
+.ui-badge.is-priority{
+  background:#fff0df;
+  border-color:#efc48c;
+  color:#8a4b00;
+}
+.ui-badge.is-type{
+  background:#eceff2;
+  border-color:#d7dde2;
+  color:#555;
+}
+.ui-badge.is-season{
+  margin-left:0;
+  background:#eef5ea;
+  border-color:#cfe0c8;
+  color:#376b2c;
+}
+.ui-badge.is-impact{
+  background:#fff3cd;
+  border-color:#efcf66;
+  color:#725400;
+}
+.ui-badge.is-impact.is-high{
+  background:#fde7e9;
+  border-color:#efb3b8;
+  color:#a50e0e;
+}
+.ui-badge.is-impact.is-low{
+  background:#e6f4ea;
+  border-color:#c7e3ce;
+  color:#137333;
+}
+.ui-badge.is-constraint{
+  margin-left:0;
+  background:#f3f4f5;
+  border-color:#d9dde1;
+  color:#5f6368;
+}
+
+@media(prefers-color-scheme:dark){
+  .ui-badge{background:#243449;color:#8ab4f8;border-color:#3f5878}
+  .ui-badge.is-tag,.ui-badge.is-role,.ui-badge.is-impact{background:#3b3524;color:#fdd663;border-color:#796b35}
+  .ui-badge.is-status{background:#243449;color:#8ab4f8;border-color:#3f5878}
+  .ui-badge.is-priority{background:#3c3025;color:#f6b26b;border-color:#765334}
+  .ui-badge.is-type,.ui-badge.is-constraint{background:#2d2f31;color:#bdc1c6;border-color:#4a4d50}
+  .ui-badge.is-season{background:#263728;color:#81c995;border-color:#456549}
+  .ui-badge.is-impact.is-high{background:#492627;color:#f28b82;border-color:#7b3b3d}
+  .ui-badge.is-impact.is-low{background:#20382a;color:#81c995;border-color:#345c43}
+}
