@@ -3,7 +3,6 @@
 ## Purpose
 
 Modern Viewerは、**確定済みHTML Boundaryを描画・操作へ変換する④ HTML Viewer層の実装**です。
-
 Legacy Viewerの移植ではありません。
 
 ```text
@@ -11,6 +10,7 @@ Obsidian正式契約
 01_chatgpt/03_Data/Leisure/00_UserAgreement.md
 01_chatgpt/03_Data/Leisure/00_ViewArchitecture.md
 01_chatgpt/03_Data/Leisure/00_PublicProjection.md
+01_chatgpt/03_Data/Leisure/00_Presentation.md
 01_chatgpt/03_Data/Leisure/PublicSchemas/**
         ↓
 Boundary JSON / explicit artifact
@@ -22,8 +22,6 @@ HTML / CSS / interaction
 
 ## Upstream authority
 
-Viewer実装が参照する現在のauthority:
-
 ```text
 ユーザ最終合意
 → 01_chatgpt/03_Data/Leisure/00_UserAgreement.md
@@ -33,6 +31,9 @@ Viewer実装が参照する現在のauthority:
 
 HTML Boundary意味
 → 01_chatgpt/03_Data/Leisure/00_PublicProjection.md
+
+Presentation / interaction grammar
+→ 01_chatgpt/03_Data/Leisure/00_Presentation.md
 
 物理JSON
 → 01_chatgpt/03_Data/Leisure/PublicSchemas/**
@@ -47,7 +48,6 @@ HTML Boundary意味
 ## Core responsibility
 
 Viewerが行う:
-
 - DOM / CSS / responsive layout
 - accordion / selector / tab / carousel / map interaction
 - Viewer内navigation
@@ -56,7 +56,6 @@ Viewerが行う:
 - local interaction state
 
 Viewerが行わない:
-
 - Canonical / related Entityを意味補完目的でruntime fetch
 - label / summary / Day title / warning / reorder option生成
 - Domain / Display semantic推測
@@ -91,10 +90,7 @@ viewer/main.js
 
 ```js
 {
-  request: {
-    type: string,
-    id: string | null
-  },
+  request: { type: string, id: string | null },
   data: Object,
   navigation: {
     source: { type, id, title } | null,
