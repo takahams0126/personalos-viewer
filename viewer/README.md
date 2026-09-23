@@ -18,6 +18,9 @@ Obsidian側の正式契約:
 HTML Boundary
 01_chatgpt/03_Data/Leisure/00_PublicProjection.md
 01_chatgpt/03_Data/Leisure/PublicSchemas/**
+
+Presentation
+01_chatgpt/03_Data/Leisure/00_Presentation.md
 ```
 
 最新の状態・作業計画:
@@ -44,7 +47,7 @@ ConcretePlan    skeleton
 進行順:
 
 ```text
-HTML Boundary semantic
+ConcretePlan whole-Day Execution切替範囲の合意
 → physical Public Schema
 → fixture JSON
 → Plan Renderer
