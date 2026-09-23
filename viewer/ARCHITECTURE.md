@@ -7,10 +7,10 @@ Legacy Viewerの移植ではありません。
 
 ```text
 Obsidian正式契約
-01_chatgpt/03_Data/Leisure/00_UserAgreement.md
-01_chatgpt/03_Data/Leisure/00_DisplayArchitecture.md
-01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_InputContract.md
-01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_Presentation.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_UserAgreement.md
+01_chatgpt/03_Data/Leisure/01_Canonical/00_DisplayArchitecture.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_InputContract.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
 01_chatgpt/03_Data/Leisure/PublicSchemas/**
         ↓
 Boundary JSON / explicit artifact
@@ -24,16 +24,16 @@ HTML / CSS / interaction
 
 ```text
 ユーザ最終合意
-→ 01_chatgpt/03_Data/Leisure/00_UserAgreement.md
+→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_UserAgreement.md
 
 表示系4領域責務
-→ 01_chatgpt/03_Data/Leisure/00_DisplayArchitecture.md
+→ 01_chatgpt/03_Data/Leisure/01_Canonical/00_DisplayArchitecture.md
 
 HTML Viewer入力意味
-→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_InputContract.md
+→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_InputContract.md
 
 Presentation / interaction grammar
-→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_Presentation.md
+→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
 
 物理JSON
 → 01_chatgpt/03_Data/Leisure/PublicSchemas/**
@@ -177,7 +177,7 @@ Weather/date-bound Factの付替え
 local stateのCanonical化
 ```
 
-ConcretePlanのDay切替時にどのExecution packageまで切り替えるかは、`00_UserAgreement.md` / `04_HTMLViewer/00_InputContract.md` で未確定のまま保持し、Viewer側で独自決定しません。
+ConcretePlanのDay切替時にどのExecution packageまで切り替えるかは、`04_HTMLViewer/00_UserAgreement.md` / `04_HTMLViewer/01_InputContract.md` で未確定のまま保持し、Viewer側で独自決定しません。
 
 ## Testing / CI
 
