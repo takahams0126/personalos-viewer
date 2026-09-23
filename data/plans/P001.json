@@ -1,0 +1,851 @@
+{
+  "schema_version": 1,
+  "view_type": "plan",
+  "id": "P001",
+  "title": "屋久島 4泊5日基本Plan",
+  "summary": "屋久島への移動と準備、縄文杉トレッキング、島一周ドライブ、白谷雲水峡・太鼓岩ハイク、余裕を持たせた帰路を4泊5日で組み合わせる基本Plan。",
+  "navigation": {
+    "current": {
+      "entity_type": "plan",
+      "id": "P001",
+      "label": "計画"
+    },
+    "concrete_plan_target": {
+      "entity_type": "concrete_plan",
+      "id": "CP001",
+      "label": "実施"
+    }
+  },
+  "appeal": {
+    "summary": "縄文杉の長距離山行、海・森・滝・温泉をつなぐ島一周、苔の森から太鼓岩へ抜けるハイクを軸に、屋久島の異なる体験を5日間で重ねる。",
+    "main_routes": [
+      {
+        "route": {
+          "entity_type": "route",
+          "id": "R005",
+          "label": "縄文杉ルート・縄文杉往復",
+          "family_label": "縄文杉ルート",
+          "variant_label": "縄文杉往復"
+        },
+        "summary": "林業史と巨木の森をたどり、縄文杉への到達を一日の山場にする長距離Route。"
+      },
+      {
+        "route": {
+          "entity_type": "route",
+          "id": "R011",
+          "label": "屋久島一周ドライブ",
+          "family_label": "屋久島一周ドライブ",
+          "variant_label": "反時計回り"
+        },
+        "summary": "西部林道を主役に、海岸・滝・亜熱帯の植生・温泉を反時計回りにつなぐ一周Route。"
+      },
+      {
+        "route": {
+          "entity_type": "route",
+          "id": "R004",
+          "label": "白谷雲水峡ルート・太鼓岩往復",
+          "family_label": "白谷雲水峡ルート",
+          "variant_label": "太鼓岩往復"
+        },
+        "summary": "白谷雲水峡の渓流と苔の森を進み、太鼓岩の大展望をクライマックスにするRoute。"
+      }
+    ]
+  },
+  "reorder_controls": [
+    {
+      "control_id": "P001:reorder:weather:position:2",
+      "position_ordinal": 2,
+      "position_label": "2日目",
+      "current_day_id": "P001:day:2",
+      "available_options": [
+        {
+          "day_id": "P001:day:2",
+          "title": "縄文杉トレッキング",
+          "label": "Day 2 縄文杉トレッキング"
+        },
+        {
+          "day_id": "P001:day:3",
+          "title": "屋久島一周ドライブ",
+          "label": "Day 3 屋久島一周ドライブ"
+        },
+        {
+          "day_id": "P001:day:4",
+          "title": "白谷雲水峡・太鼓岩ハイク",
+          "label": "Day 4 白谷雲水峡・太鼓岩ハイク"
+        }
+      ]
+    },
+    {
+      "control_id": "P001:reorder:weather:position:3",
+      "position_ordinal": 3,
+      "position_label": "3日目",
+      "current_day_id": "P001:day:3",
+      "available_options": [
+        {
+          "day_id": "P001:day:2",
+          "title": "縄文杉トレッキング",
+          "label": "Day 2 縄文杉トレッキング"
+        },
+        {
+          "day_id": "P001:day:3",
+          "title": "屋久島一周ドライブ",
+          "label": "Day 3 屋久島一周ドライブ"
+        },
+        {
+          "day_id": "P001:day:4",
+          "title": "白谷雲水峡・太鼓岩ハイク",
+          "label": "Day 4 白谷雲水峡・太鼓岩ハイク"
+        }
+      ]
+    },
+    {
+      "control_id": "P001:reorder:weather:position:4",
+      "position_ordinal": 4,
+      "position_label": "4日目",
+      "current_day_id": "P001:day:4",
+      "available_options": [
+        {
+          "day_id": "P001:day:2",
+          "title": "縄文杉トレッキング",
+          "label": "Day 2 縄文杉トレッキング"
+        },
+        {
+          "day_id": "P001:day:3",
+          "title": "屋久島一周ドライブ",
+          "label": "Day 3 屋久島一周ドライブ"
+        },
+        {
+          "day_id": "P001:day:4",
+          "title": "白谷雲水峡・太鼓岩ハイク",
+          "label": "Day 4 白谷雲水峡・太鼓岩ハイク"
+        }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day_id": "P001:day:1",
+      "ordinal": 1,
+      "title": "屋久島へ移動・旅の準備",
+      "summary": "自宅から屋久島へ移動し、レンタカー受取、任意の夕食、宿へのチェックインと翌日の登山準備までを整える。",
+      "start": {
+        "entity_type": "travel_point",
+        "id": "T0001",
+        "label": "自宅"
+      },
+      "end": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "flow": [
+        {
+          "flow_id": "F1-01",
+          "type": "transfer",
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "flow_id": "F1-02",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002",
+            "label": "羽田空港"
+          }
+        },
+        {
+          "flow_id": "F1-03",
+          "type": "transfer",
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "flow_id": "F1-04",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003",
+            "label": "屋久島空港"
+          }
+        },
+        {
+          "flow_id": "F1-05",
+          "type": "transfer",
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "flow_id": "F1-06",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005",
+            "label": "タイムズカーレンタル 屋久島空港店"
+          },
+          "activities": [
+            "レンタカーを受け取る"
+          ]
+        },
+        {
+          "flow_id": "F1-07",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F1-08",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0050",
+            "label": "お食事処 樹"
+          },
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          },
+          "inclusion_requirement": {
+            "code": "optional",
+            "label": "任意"
+          }
+        },
+        {
+          "flow_id": "F1-09",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F1-10",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025",
+            "label": "素泊民宿 ふれんど"
+          },
+          "activities": [
+            "チェックインする",
+            "翌日の登山に必要な買い出し・準備を済ませる"
+          ]
+        }
+      ]
+    },
+    {
+      "day_id": "P001:day:2",
+      "ordinal": 2,
+      "title": "縄文杉トレッキング",
+      "summary": "宿を基点に縄文杉ルートを歩き、小杉谷の歴史から巨木の森へ進んで縄文杉を目指す。天候・体調・進行に応じて短縮Routeへ切り替えられる。",
+      "start": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "end": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "flow": [
+        {
+          "flow_id": "F2-01",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F2-02",
+          "type": "route",
+          "route": {
+            "entity_type": "route",
+            "id": "R005",
+            "label": "縄文杉ルート・縄文杉往復",
+            "family_label": "縄文杉ルート",
+            "variant_label": "縄文杉往復"
+          },
+          "sequence": [
+            {
+              "occurrence_id": "R005:occ:1",
+              "order": 1,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0019",
+                "label": "小杉谷集落跡"
+              }
+            },
+            {
+              "occurrence_id": "R005:occ:2",
+              "order": 2,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0017",
+                "label": "ウィルソン株"
+              }
+            },
+            {
+              "occurrence_id": "R005:occ:3",
+              "order": 3,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0020",
+                "label": "大王杉"
+              }
+            },
+            {
+              "occurrence_id": "R005:occ:4",
+              "order": 4,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0016",
+                "label": "縄文杉"
+              }
+            }
+          ],
+          "alternatives": [
+            {
+              "route": {
+                "entity_type": "route",
+                "id": "R007",
+                "label": "縄文杉ルート・ウィルソン株往復",
+                "family_label": "縄文杉ルート",
+                "variant_label": "ウィルソン株往復"
+              },
+              "selection_condition": {
+                "text": "天候悪化・体調低下・進行遅れで縄文杉往復の完遂が厳しい場合"
+              },
+              "sequence": [
+                {
+                  "occurrence_id": "R007:occ:1",
+                  "order": 1,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0019",
+                    "label": "小杉谷集落跡"
+                  }
+                },
+                {
+                  "occurrence_id": "R007:occ:2",
+                  "order": 2,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0017",
+                    "label": "ウィルソン株"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "flow_id": "F2-03",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F2-04",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025",
+            "label": "素泊民宿 ふれんど"
+          }
+        }
+      ]
+    },
+    {
+      "day_id": "P001:day:3",
+      "ordinal": 3,
+      "title": "屋久島一周ドライブ",
+      "summary": "西部林道を主役に、海岸・滝・亜熱帯の植生・温泉を反時計回りでつなぐ。豪雨・強風時は南部中心の雨天Routeへ切り替える。",
+      "start": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "end": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "flow": [
+        {
+          "flow_id": "F3-01",
+          "type": "route",
+          "route": {
+            "entity_type": "route",
+            "id": "R011",
+            "label": "屋久島一周ドライブ",
+            "family_label": "屋久島一周ドライブ",
+            "variant_label": "反時計回り"
+          },
+          "sequence": [
+            {
+              "occurrence_id": "R011:occ:1",
+              "order": 1,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0037",
+                "label": "志戸子ガジュマル公園"
+              },
+              "inclusion_requirement": {
+                "code": "optional",
+                "label": "任意"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:2",
+              "order": 2,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0038",
+                "label": "永田いなか浜"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:3",
+              "order": 3,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0039",
+                "label": "西部林道"
+              },
+              "inclusion_requirement": {
+                "code": "required",
+                "label": "必須"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:4",
+              "order": 4,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0036",
+                "label": "大川の滝"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:5",
+              "order": 5,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0045",
+                "label": "手打ちそば 松竹"
+              },
+              "visit_purpose": {
+                "code": "lunch",
+                "label": "昼食"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:6",
+              "order": 6,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0040",
+                "label": "中間ガジュマル"
+              },
+              "inclusion_requirement": {
+                "code": "optional",
+                "label": "任意"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:7",
+              "order": 7,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0028",
+                "label": "平内海中温泉"
+              },
+              "visit_purpose": {
+                "code": "bath",
+                "label": "入浴"
+              },
+              "condition": {
+                "text": "潮位・波・風条件が合う場合"
+              },
+              "alternatives": [
+                {
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0026",
+                    "label": "尾之間温泉"
+                  }
+                }
+              ]
+            },
+            {
+              "occurrence_id": "R011:occ:8",
+              "order": 8,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0035",
+                "label": "千尋の滝"
+              }
+            },
+            {
+              "occurrence_id": "R011:occ:9",
+              "order": 9,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0034",
+                "label": "トローキの滝"
+              }
+            }
+          ],
+          "alternatives": [
+            {
+              "route": {
+                "entity_type": "route",
+                "id": "R010",
+                "label": "屋久島南部雨天ドライブ",
+                "family_label": "屋久島南部雨天ドライブ",
+                "variant_label": "標準"
+              },
+              "selection_condition": {
+                "text": "豪雨・強風で島一周ドライブに適さない場合"
+              },
+              "sequence": [
+                {
+                  "occurrence_id": "R010:occ:1",
+                  "order": 1,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0032",
+                    "label": "屋久杉自然館"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:2",
+                  "order": 2,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0033",
+                    "label": "屋久島世界遺産センター"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:3",
+                  "order": 3,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0034",
+                    "label": "トローキの滝"
+                  },
+                  "inclusion_requirement": {
+                    "code": "optional",
+                    "label": "任意"
+                  },
+                  "condition": {
+                    "text": "雨が弱い場合"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:4",
+                  "order": 4,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0035",
+                    "label": "千尋の滝"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:5",
+                  "order": 5,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0026",
+                    "label": "尾之間温泉"
+                  },
+                  "visit_purpose": {
+                    "code": "bath",
+                    "label": "入浴"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:6",
+                  "order": 6,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0028",
+                    "label": "平内海中温泉"
+                  },
+                  "visit_purpose": {
+                    "code": "bath",
+                    "label": "入浴"
+                  },
+                  "inclusion_requirement": {
+                    "code": "optional",
+                    "label": "任意"
+                  },
+                  "condition": {
+                    "text": "潮位・波・風・足元条件が良い場合"
+                  }
+                },
+                {
+                  "occurrence_id": "R010:occ:7",
+                  "order": 7,
+                  "spot": {
+                    "entity_type": "spot",
+                    "id": "S0036",
+                    "label": "大川の滝"
+                  },
+                  "inclusion_requirement": {
+                    "code": "optional",
+                    "label": "任意"
+                  },
+                  "condition": {
+                    "text": "天候・道路状況が立ち寄りに支障なく、時間に余裕がある場合"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "flow_id": "F3-02",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025",
+            "label": "素泊民宿 ふれんど"
+          }
+        }
+      ]
+    },
+    {
+      "day_id": "P001:day:4",
+      "ordinal": 4,
+      "title": "白谷雲水峡・太鼓岩ハイク",
+      "summary": "白谷雲水峡の渓流と苔の森を歩いて太鼓岩の展望へ進み、下山後は楠川温泉で入浴し、PANORAMAで夕食をとって宿へ戻る。",
+      "start": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "end": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "flow": [
+        {
+          "flow_id": "F4-01",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F4-02",
+          "type": "route",
+          "route": {
+            "entity_type": "route",
+            "id": "R004",
+            "label": "白谷雲水峡ルート・太鼓岩往復",
+            "family_label": "白谷雲水峡ルート",
+            "variant_label": "太鼓岩往復"
+          },
+          "sequence": [
+            {
+              "occurrence_id": "R004:occ:1",
+              "order": 1,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0014",
+                "label": "白谷雲水峡"
+              }
+            },
+            {
+              "occurrence_id": "R004:occ:2",
+              "order": 2,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0021",
+                "label": "苔むす森"
+              }
+            },
+            {
+              "occurrence_id": "R004:occ:3",
+              "order": 3,
+              "spot": {
+                "entity_type": "spot",
+                "id": "S0015",
+                "label": "太鼓岩"
+              }
+            }
+          ]
+        },
+        {
+          "flow_id": "F4-03",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F4-04",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0030",
+            "label": "楠川温泉"
+          },
+          "visit_purpose": {
+            "code": "bath",
+            "label": "入浴"
+          }
+        },
+        {
+          "flow_id": "F4-05",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F4-06",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0046",
+            "label": "PANORAMA"
+          },
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          }
+        },
+        {
+          "flow_id": "F4-07",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F4-08",
+          "type": "destination",
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025",
+            "label": "素泊民宿 ふれんど"
+          }
+        }
+      ]
+    },
+    {
+      "day_id": "P001:day:5",
+      "ordinal": 5,
+      "title": "帰路・予備時間",
+      "summary": "旅の疲労や買い忘れを吸収する余裕を残し、レンタカーを返却して屋久島空港から羽田へ戻り、自宅へ帰着する。",
+      "start": {
+        "entity_type": "spot",
+        "id": "S0025",
+        "label": "素泊民宿 ふれんど"
+      },
+      "end": {
+        "entity_type": "travel_point",
+        "id": "T0001",
+        "label": "自宅"
+      },
+      "flow": [
+        {
+          "flow_id": "F5-01",
+          "type": "free_time",
+          "purpose": "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"
+        },
+        {
+          "flow_id": "F5-02",
+          "type": "transfer",
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "flow_id": "F5-03",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005",
+            "label": "タイムズカーレンタル 屋久島空港店"
+          },
+          "activities": [
+            "レンタカーを返却する"
+          ]
+        },
+        {
+          "flow_id": "F5-04",
+          "type": "transfer",
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "flow_id": "F5-05",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003",
+            "label": "屋久島空港"
+          }
+        },
+        {
+          "flow_id": "F5-06",
+          "type": "transfer",
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "flow_id": "F5-07",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002",
+            "label": "羽田空港"
+          }
+        },
+        {
+          "flow_id": "F5-08",
+          "type": "transfer",
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "flow_id": "F5-09",
+          "type": "destination",
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0001",
+            "label": "自宅"
+          }
+        }
+      ]
+    }
+  ]
+}
