@@ -22,7 +22,7 @@ Presentation
 01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
 
 物理JSON
-01_chatgpt/03_Data/Leisure/PublicSchemas/**
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/Schemas/**
 ```
 
 最新の状態・作業計画:
