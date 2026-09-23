@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "areas": [
+    {
+      "id": "A008",
+      "label": "九州"
+    },
+    {
+      "id": "A013",
+      "label": "屋久島"
+    },
+    {
+      "id": "A014",
+      "label": "屋久島・宮之浦・白谷側"
+    },
+    {
+      "id": "A015",
+      "label": "屋久島・安房・中央山岳側"
+    }
+  ],
+  "items": [
+    {
+      "entity_type": {
+        "code": "plan",
+        "label": "計画"
+      },
+      "id": "P001",
+      "title": "屋久島 4泊5日基本Plan",
+      "area_ids": [
+        "A013",
+        "A014",
+        "A015"
+      ],
+      "category": {
+        "code": "multi_day_trip",
+        "label": "複数日旅行"
+      },
+      "summary": "縄文杉、屋久島一周ドライブ、白谷雲水峡・太鼓岩を5日間で組み合わせ、山・森・海・滝・温泉を体験する基本Plan。",
+      "tags": [
+        "5日間",
+        "ハイキング",
+        "ドライブ",
+        "入浴"
+      ],
+      "data_path": "data/plans/P001.json"
+    },
+    {
+      "entity_type": {
+        "code": "route",
+        "label": "ルート"
+      },
+      "id": "R011",
+      "title": "屋久島一周ドライブ",
+      "area_ids": [
+        "A008",
+        "A013"
+      ],
+      "category": {
+        "code": "driving",
+        "label": "ドライブ"
+      },
+      "summary": "西部林道を主役に、海岸・大川の滝・南部の植生・温泉を反時計回りにつなぎ、海・深い森・大瀑布・入浴体験の近さを一日で味わう屋久島一周ドライブ。",
+      "tags": [
+        "ドライブ",
+        "入浴"
+      ],
+      "data_path": "data/routes/R011.json"
+    },
+    {
+      "entity_type": {
+        "code": "spot",
+        "label": "スポット"
+      },
+      "id": "S0036",
+      "title": "大川の滝",
+      "area_ids": [
+        "A008",
+        "A013"
+      ],
+      "category": {
+        "code": "attraction",
+        "label": "観光スポット"
+      },
+      "summary": "落差88mで日本の滝100選に選ばれ、滝壺近くで水しぶきと音、水量の迫力を体感できる屋久島南西部の滝。",
+      "image": {
+        "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-okawa-no-taki-01.jpg",
+        "alt": "大川の滝"
+      },
+      "tags": [
+        "自然景観",
+        "屋外",
+        "無料"
+      ],
+      "data_path": "data/spots/S0036.json"
+    }
+  ]
+}
