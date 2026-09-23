@@ -10,16 +10,16 @@ Obsidian側の正式契約:
 
 ```text
 ユーザ合意
-01_chatgpt/03_Data/Leisure/00_UserAgreement.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_UserAgreement.md
 
 表示系4領域責務
-01_chatgpt/03_Data/Leisure/00_DisplayArchitecture.md
+01_chatgpt/03_Data/Leisure/01_Canonical/00_DisplayArchitecture.md
 
 HTML Viewer入力意味
-01_chatgpt/03_Data/Leisure/04_HTMLViewer/00_InputContract.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_InputContract.md
 
 Presentation
-01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_Presentation.md
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
 
 物理JSON
 01_chatgpt/03_Data/Leisure/PublicSchemas/**
