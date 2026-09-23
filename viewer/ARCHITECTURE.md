@@ -24,11 +24,10 @@ Viewer実装が参照する現在の設計authorityは次だけです。
 ```text
 80_Memo/Leisure-Display-Pipeline/Final-Display/Leisure-Final-Display-HTML-Boundary-Contract.md
 80_Memo/Leisure-Layer-State/04_HTML-Viewer/README.md
-80_Memo/Leisure-Layer-State/04_HTML-Viewer/Implementation-Plan.md
 ```
 
 `80_Memo/Leisure-History/**` は参照禁止です。
-Closure / Amendment / Audit等の旧差分資料からViewer仕様を復元しません。
+Closure / Amendment / Audit / old Plan等からViewer仕様を復元しません。
 
 ## Core responsibility
 
@@ -97,23 +96,12 @@ viewer/main.js
 
 ## Responsibilities
 
-- `viewer/main.js`
-  - composition root
-  - request解決
-  - primary input load
-  - PageContext生成
-  - page dispatch
-- `viewer/core/request.js`
-  - URLのtype / id解析
-- `viewer/core/navigation.js`
-  - Viewer navigation / history context
-- `viewer/core/data.js`
-  - JSON resource access
-- `viewer/<page>/`
-  - page-specific presentation / interaction
-- `viewer/shared/`
-  - cross-page presentation component
-  - Domain meaningを所有しない
+- `viewer/main.js`: composition root / request解決 / primary input load / PageContext / page dispatch
+- `viewer/core/request.js`: URLのtype / id解析
+- `viewer/core/navigation.js`: Viewer navigation / history context
+- `viewer/core/data.js`: JSON resource access
+- `viewer/<page>/`: page-specific presentation / interaction
+- `viewer/shared/`: cross-page presentation component。Domain meaningを所有しない
 
 ## Data rule
 

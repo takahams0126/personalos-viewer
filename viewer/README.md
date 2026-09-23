@@ -6,14 +6,14 @@ Modern ViewerはLegacy Viewerの移植先ではなく、**現在のHTML Boundary
 
 ## Current authority
 
-Obsidian側の現在の入力契約:
+Obsidian側の現在の入力契約・実行計画:
 
 ```text
 80_Memo/Leisure-Display-Pipeline/Final-Display/Leisure-Final-Display-HTML-Boundary-Contract.md
-80_Memo/Leisure-Layer-State/04_HTML-Viewer/Implementation-Plan.md
+80_Memo/Leisure-Layer-State/04_HTML-Viewer/README.md
 ```
 
-History / old Closure / Amendment / Auditは参照しません。
+History / old Closure / Amendment / Audit / Planは参照しません。
 
 ## Current build state
 
