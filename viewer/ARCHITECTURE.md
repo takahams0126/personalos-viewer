@@ -11,7 +11,7 @@ Obsidian正式契約
 01_chatgpt/03_Data/Leisure/01_Canonical/00_DisplayArchitecture.md
 01_chatgpt/03_Data/Leisure/04_HTMLViewer/01_InputContract.md
 01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
-01_chatgpt/03_Data/Leisure/PublicSchemas/**
+01_chatgpt/03_Data/Leisure/04_HTMLViewer/Schemas/**
         ↓
 Boundary JSON / explicit artifact
         ↓
@@ -36,7 +36,7 @@ Presentation / interaction grammar
 → 01_chatgpt/03_Data/Leisure/04_HTMLViewer/02_Presentation.md
 
 物理JSON
-→ 01_chatgpt/03_Data/Leisure/PublicSchemas/**
+→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/Schemas/**
 
 最新進捗
 → 01_chatgpt/01_Context/03_Active/Leisure/00_Current.md
