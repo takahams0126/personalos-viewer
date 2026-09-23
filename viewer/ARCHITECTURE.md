@@ -7,8 +7,11 @@ Modern Viewerは、**確定済みHTML Boundaryを描画・操作へ変換する�
 Legacy Viewerの移植ではありません。
 
 ```text
-Obsidian側
-Final Display / HTML Boundary Contract
+Obsidian正式契約
+01_chatgpt/03_Data/Leisure/00_UserAgreement.md
+01_chatgpt/03_Data/Leisure/00_ViewArchitecture.md
+01_chatgpt/03_Data/Leisure/00_PublicProjection.md
+01_chatgpt/03_Data/Leisure/PublicSchemas/**
         ↓
 Boundary JSON / explicit artifact
         ↓
@@ -19,15 +22,27 @@ HTML / CSS / interaction
 
 ## Upstream authority
 
-Viewer実装が参照する現在の設計authorityは次だけです。
+Viewer実装が参照する現在のauthority:
 
 ```text
-80_Memo/Leisure-Display-Pipeline/Final-Display/Leisure-Final-Display-HTML-Boundary-Contract.md
-80_Memo/Leisure-Layer-State/04_HTML-Viewer/README.md
+ユーザ最終合意
+→ 01_chatgpt/03_Data/Leisure/00_UserAgreement.md
+
+4領域責務
+→ 01_chatgpt/03_Data/Leisure/00_ViewArchitecture.md
+
+HTML Boundary意味
+→ 01_chatgpt/03_Data/Leisure/00_PublicProjection.md
+
+物理JSON
+→ 01_chatgpt/03_Data/Leisure/PublicSchemas/**
+
+最新進捗
+→ 01_chatgpt/01_Context/03_Active/Leisure/00_Current.md
+→ 01_chatgpt/01_Context/03_Active/Leisure/Work/04_HTML-Viewer-Progress.md
 ```
 
-`80_Memo/Leisure-History/**` は参照禁止です。
-Closure / Amendment / Audit / old Plan等からViewer仕様を復元しません。
+`80_Memo/**`、History、old Closure / Amendment / Audit / PlanからViewer仕様を復元しません。
 
 ## Core responsibility
 
@@ -125,7 +140,7 @@ Plan            skeleton
 ConcretePlan    skeleton
 ```
 
-現在の優先はPlan / ConcretePlanをBoundary-firstで完成させ、④ HTML ViewerをCLOSEDすることです。
+詳細な最新進捗はObsidian Active Contextをauthorityとし、本Architectureへ進捗履歴を蓄積しません。
 
 ## Plan / ConcretePlan whole-Day reorder
 
@@ -165,6 +180,8 @@ Day title生成
 Weather/date-bound Factの付替え
 local stateのCanonical化
 ```
+
+ConcretePlanのDay切替時にどのExecution packageまで切り替えるかは、`00_UserAgreement.md` / `00_PublicProjection.md` で未確定のまま保持し、Viewer側で独自決定しません。
 
 ## Testing / CI
 

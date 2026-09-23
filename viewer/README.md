@@ -6,14 +6,28 @@ Modern ViewerはLegacy Viewerの移植先ではなく、**現在のHTML Boundary
 
 ## Current authority
 
-Obsidian側の現在の入力契約・実行計画:
+Obsidian側の正式契約:
 
 ```text
-80_Memo/Leisure-Display-Pipeline/Final-Display/Leisure-Final-Display-HTML-Boundary-Contract.md
-80_Memo/Leisure-Layer-State/04_HTML-Viewer/README.md
+ユーザ合意
+01_chatgpt/03_Data/Leisure/00_UserAgreement.md
+
+4領域責務
+01_chatgpt/03_Data/Leisure/00_ViewArchitecture.md
+
+HTML Boundary
+01_chatgpt/03_Data/Leisure/00_PublicProjection.md
+01_chatgpt/03_Data/Leisure/PublicSchemas/**
 ```
 
-History / old Closure / Amendment / Audit / Planは参照しません。
+最新の状態・作業計画:
+
+```text
+01_chatgpt/01_Context/03_Active/Leisure/00_Current.md
+01_chatgpt/01_Context/03_Active/Leisure/Work/04_HTML-Viewer-Progress.md
+```
+
+`80_Memo/**` / History / old Closure / Amendment / Audit / Planは参照しません。
 
 ## Current build state
 
