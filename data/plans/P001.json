@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "entity_type": "plan",
+  "id": "P001",
+  "title": "屋久島 4泊5日基本Plan",
+  "summary": "屋久島への移動と準備、縄文杉トレッキング、島一周ドライブ、白谷雲水峡・太鼓岩ハイク、帰路の余裕を5日間に組み合わせた日付非依存の基本Plan。",
+  "navigation": {
+    "concrete_plan_ref": {
+      "entity_type": "concrete_plan",
+      "id": "CP001"
+    }
+  },
+  "appeal": {
+    "summary": "縄文杉の長距離山行、海・森・滝・温泉をつなぐ島一周、苔の森から太鼓岩へ抜けるハイクを軸に、屋久島の異なる体験を5日間で重ねる。",
+    "main_routes": [
+      {"entity_type": "route", "id": "R005"},
+      {"entity_type": "route", "id": "R011"},
+      {"entity_type": "route", "id": "R004"}
+    ]
+  },
+  "reorder_controls": [
+    {
+      "control_id": "P001:reorder:weather:position:2",
+      "position_ordinal": 2,
+      "position_label": "2日目",
+      "current_day_id": "P001:day:2",
+      "available_options": [
+        {"day_id": "P001:day:2", "label": "Day 2 縄文杉トレッキング"},
+        {"day_id": "P001:day:3", "label": "Day 3 屋久島一周ドライブ"},
+        {"day_id": "P001:day:4", "label": "Day 4 白谷雲水峡・太鼓岩ハイク"}
+      ]
+    },
+    {
+      "control_id": "P001:reorder:weather:position:3",
+      "position_ordinal": 3,
+      "position_label": "3日目",
+      "current_day_id": "P001:day:3",
+      "available_options": [
+        {"day_id": "P001:day:2", "label": "Day 2 縄文杉トレッキング"},
+        {"day_id": "P001:day:3", "label": "Day 3 屋久島一周ドライブ"},
+        {"day_id": "P001:day:4", "label": "Day 4 白谷雲水峡・太鼓岩ハイク"}
+      ]
+    },
+    {
+      "control_id": "P001:reorder:weather:position:4",
+      "position_ordinal": 4,
+      "position_label": "4日目",
+      "current_day_id": "P001:day:4",
+      "available_options": [
+        {"day_id": "P001:day:2", "label": "Day 2 縄文杉トレッキング"},
+        {"day_id": "P001:day:3", "label": "Day 3 屋久島一周ドライブ"},
+        {"day_id": "P001:day:4", "label": "Day 4 白谷雲水峡・太鼓岩ハイク"}
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day_id": "P001:day:1",
+      "ordinal": 1,
+      "title": "屋久島へ移動・旅の準備",
+      "summary": "自宅から屋久島へ移動し、レンタカー受取、任意の夕食、宿へのチェックインと翌日の登山準備までを整える。",
+      "start_ref": {"entity_type": "travel_point", "id": "T0001"},
+      "end_ref": {"entity_type": "spot", "id": "S0025"},
+      "flow": [
+        {"flow_id": "P001-D1-LR1-A1-T", "type": "transfer", "transport": {"code": "train", "label": "電車"}},
+        {"flow_id": "P001-D1-LR1-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0002"}},
+        {"flow_id": "P001-D1-LR2-A1-T", "type": "transfer", "transport": {"code": "airplane", "label": "飛行機"}},
+        {"flow_id": "P001-D1-LR2-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0003"}},
+        {"flow_id": "P001-D1-LR3-A1-T", "type": "transfer", "transport": {"code": "walk", "label": "徒歩"}},
+        {"flow_id": "P001-D1-LR3-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0005"}, "activities": ["レンタカーを受け取る"]},
+        {"flow_id": "P001-D1-LR4-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D1-LR4-A2-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0050"}, "visit_purpose": {"code": "dinner", "label": "夕食"}, "inclusion_requirement": {"code": "optional", "label": "任意"}},
+        {"flow_id": "P001-D1-LR4-A2-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D1-LR4-A3-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0025"}, "activities": ["チェックインする", "翌日の登山に必要な買い出し・準備を済ませる"]}
+      ]
+    },
+    {
+      "day_id": "P001:day:2",
+      "ordinal": 2,
+      "title": "縄文杉トレッキング",
+      "summary": "宿からRouteの起点へ移動して縄文杉ルートを歩き、天候・体調・進行に応じて短縮Routeへ切り替えられる。",
+      "start_ref": {"entity_type": "spot", "id": "S0025"},
+      "end_ref": {"entity_type": "spot", "id": "S0025"},
+      "flow": [
+        {"flow_id": "P001-D2-LR1-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D2-LR1-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0010"}},
+        {"flow_id": "P001-D2-LR2-R", "type": "route", "route_ref": {"entity_type": "route", "id": "R005"}, "alternatives": [{"route_ref": {"entity_type": "route", "id": "R007"}, "selection_condition": {"text": "天候悪化・体調低下・進行遅れのいずれかにより縄文杉までの完遂が厳しい場合"}}]},
+        {"flow_id": "P001-D2-LR3-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D2-LR3-A2-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0025"}}
+      ]
+    },
+    {
+      "day_id": "P001:day:3",
+      "ordinal": 3,
+      "title": "屋久島一周ドライブ",
+      "summary": "レンタカーで屋久島一周Routeをめぐり、豪雨・強風時は南部中心のRouteへ切り替えて宿へ戻る。",
+      "start_ref": {"entity_type": "spot", "id": "S0025"},
+      "end_ref": {"entity_type": "spot", "id": "S0025"},
+      "flow": [
+        {"flow_id": "P001-D3-LR1-R", "type": "route", "route_ref": {"entity_type": "route", "id": "R011"}, "alternatives": [{"route_ref": {"entity_type": "route", "id": "R010"}, "selection_condition": {"text": "豪雨・強風で島一周ドライブに適さない場合"}}]}
+      ]
+    },
+    {
+      "day_id": "P001:day:4",
+      "ordinal": 4,
+      "title": "白谷雲水峡・太鼓岩ハイク",
+      "summary": "宿からRouteの起点へ移動して白谷雲水峡・太鼓岩を歩き、下山後に入浴と夕食を組み合わせて宿へ戻る。",
+      "start_ref": {"entity_type": "spot", "id": "S0025"},
+      "end_ref": {"entity_type": "spot", "id": "S0025"},
+      "flow": [
+        {"flow_id": "P001-D4-LR1-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D4-LR1-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0004"}},
+        {"flow_id": "P001-D4-LR2-R", "type": "route", "route_ref": {"entity_type": "route", "id": "R004"}},
+        {"flow_id": "P001-D4-LR3-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D4-LR3-A2-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0030"}, "visit_purpose": {"code": "bath", "label": "入浴"}},
+        {"flow_id": "P001-D4-LR3-A2-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D4-LR3-A3-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0046"}, "visit_purpose": {"code": "dinner", "label": "夕食"}},
+        {"flow_id": "P001-D4-LR3-A3-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D4-LR3-A4-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0025"}}
+      ]
+    },
+    {
+      "day_id": "P001:day:5",
+      "ordinal": 5,
+      "title": "帰路・予備時間",
+      "summary": "旅の疲労や買い忘れを吸収する余裕を確保し、レンタカー返却後に屋久島空港から帰路につく。",
+      "start_ref": {"entity_type": "spot", "id": "S0025"},
+      "end_ref": {"entity_type": "travel_point", "id": "T0001"},
+      "flow": [
+        {"flow_id": "P001-D5-LR1-A1-D", "type": "destination", "target_ref": {"entity_type": "spot", "id": "S0025"}, "activities": ["旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"]},
+        {"flow_id": "P001-D5-LR1-A1-T", "type": "transfer", "transport": {"code": "rental_car", "label": "レンタカー"}},
+        {"flow_id": "P001-D5-LR1-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0005"}, "activities": ["レンタカーを返却する"]},
+        {"flow_id": "P001-D5-LR2-A1-T", "type": "transfer", "transport": {"code": "walk", "label": "徒歩"}},
+        {"flow_id": "P001-D5-LR2-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0003"}},
+        {"flow_id": "P001-D5-LR3-A1-T", "type": "transfer", "transport": {"code": "airplane", "label": "飛行機"}},
+        {"flow_id": "P001-D5-LR3-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0002"}},
+        {"flow_id": "P001-D5-LR4-A1-T", "type": "transfer", "transport": {"code": "train", "label": "電車"}},
+        {"flow_id": "P001-D5-LR4-A2-D", "type": "destination", "target_ref": {"entity_type": "travel_point", "id": "T0001"}}
+      ]
+    }
+  ]
+}
