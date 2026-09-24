@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0001",
+  "title": "自宅",
+  "point_type": {
+    "code": "home",
+    "label": "自宅"
+  },
+  "location": {
+    "text": "東京都小金井市"
+  }
+}
