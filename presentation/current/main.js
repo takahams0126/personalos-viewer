@@ -5,6 +5,7 @@ import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
+import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './ui/carousel.js';
@@ -28,6 +29,10 @@ async function loadSourcePlan(concretePlan) {
 async function renderRequestedEntity(request, data) {
   if (request.type === 'spot') {
     return renderSpot({ spot: data, resolver });
+  }
+
+  if (request.type === 'route') {
+    return renderRoute({ route: data, resolver });
   }
 
   if (request.type === 'plan') {
@@ -66,7 +71,7 @@ async function main() {
     hydrateCarousels(app);
   }
 
-  if (request.type === 'concrete_plan') {
+  if (request.type === 'route' || request.type === 'concrete_plan') {
     await hydrateMapViews({ root: app, artifactLoader, resolver });
   }
 }
