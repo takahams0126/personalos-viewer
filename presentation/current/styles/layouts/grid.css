@@ -26,6 +26,7 @@
   html[data-layout="grid"] .action-header {
     grid-column: 1;
     grid-row: 1 / span 4;
+    min-width: 0;
   }
 
   html[data-layout="grid"] .action-times,
@@ -37,7 +38,19 @@
   html[data-layout="grid"] .next-move {
     grid-column: 3;
     grid-row: 1 / span 4;
-    margin-block-end: 0;
+    margin: 0;
+    padding: 0 0 0 var(--space-4);
+    border: 0;
+    border-inline-start: var(--border-width) solid var(--line);
+  }
+
+  html[data-layout="grid"] .next-move h5 {
+    margin-block-end: var(--space-2);
+    color: var(--muted);
+  }
+
+  html[data-layout="grid"] .next-move p {
+    margin-block-end: var(--space-1);
   }
 
   @container (max-width: 52rem) {
@@ -46,7 +59,10 @@
     }
 
     html[data-layout="grid"] .next-move {
-      margin-block-end: var(--space-3);
+      margin-block-start: var(--space-3);
+      padding: var(--space-3) 0 0;
+      border-inline-start: 0;
+      border-block-start: var(--border-width) solid var(--line);
     }
   }
 }
