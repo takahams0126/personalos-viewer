@@ -16,14 +16,16 @@ concurrency:
 
 jobs:
   architecture:
-    name: Viewer Architecture Guard
+    name: Viewer Distribution Guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Check modern Viewer architecture
-        run: python tools/check_viewer_architecture.py
+      - name: Check presentation isolation and frozen Legacy
+        run: python tools/check_presentation_layout.py
 
   deploy:
     needs: architecture
@@ -35,10 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build complete presentation input
-        run: python tools/build_presentation_input.py
-
-      - name: Build static site
+      - name: Build static site from delivered boundary
         shell: bash
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
@@ -46,36 +45,37 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir _site
-          cp -R index.html app.js manifest.json data maps legacy presentation viewer _site/
-          if [ -d _generated/data ]; then
-            # Modern/current Viewer build input only. Frozen Legacy remains isolated.
-            cp -R _generated/data/. _site/data/
-          fi
-          mkdir -p _site/_prototype
-          cp -R _prototype/poc _site/_prototype/
 
-          # Modern Viewer injects the browser key directly into its Google Maps adapter.
+          # Presentation generations are isolated under presentation/**.
+          # Published Boundary data is already delivered by Publish and is copied
+          # without regeneration or overlay in the Pages build.
+          cp index.html manifest.json _site/
+          cp -R data maps presentation _site/
+
+          # The previous Modern reference still injects its browser Maps key into
+          # its own isolated adapter. Current may choose a different binding later.
           python - <<'PY'
           import json
           import os
           from pathlib import Path
 
-          path = Path('_site/viewer/shared/google-map.js')
-          source = path.read_text(encoding='utf-8')
-          marker = "const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';"
-          if source.count(marker) != 1:
-              raise RuntimeError('Google Maps API key injection marker is missing or duplicated.')
-
-          key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
-          replacement = f'const GOOGLE_MAPS_API_KEY = {json.dumps(key)};'
-          path.write_text(source.replace(marker, replacement), encoding='utf-8')
+          path = Path('_site/presentation/modern/viewer/shared/google-map.js')
+          if path.exists():
+              source = path.read_text(encoding='utf-8')
+              marker = "const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';"
+              if source.count(marker) != 1:
+                  raise RuntimeError('Modern reference Google Maps API key marker is missing or duplicated.')
+              key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+              replacement = f'const GOOGLE_MAPS_API_KEY = {json.dumps(key)};'
+              path.write_text(source.replace(marker, replacement), encoding='utf-8')
           PY
 
-          # Legacy Viewer compatibility (legacy/index.html -> ./config.js).
-          printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/legacy/config.js
+          # Frozen Legacy keeps its historical local config contract. This is an
+          # environment binding only; no Legacy data/presentation files are rebuilt.
+          printf 'window.PERSONALOS_CONFIG = {\n  googleMapsApiKey: "%s"\n};\n' "$GOOGLE_MAPS_API_KEY" > _site/presentation/legacy/config.js
           touch _site/.nojekyll
 
-      - name: Version Viewer assets
+      - name: Version mutable presentation assets
         run: python tools/version_presentation_assets.py _site "$GITHUB_SHA"
 
       - name: Configure Pages

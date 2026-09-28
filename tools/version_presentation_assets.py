@@ -10,7 +10,6 @@ STATIC_JS_IMPORT = re.compile(r'(?P<prefix>(?:from\s+|import\s*)["\'])(?P<path>\
 DYNAMIC_JS_IMPORT = re.compile(r'(?P<prefix>import\s*\(\s*["\'])(?P<path>\.[^"\']+\.js)(?P<query>\?v=[^"\']*)?(?P<suffix>["\']\s*\))')
 JS_URL_ASSET = re.compile(r'(?P<prefix>new\s+URL\(\s*["\'])(?P<path>\.[^"\']+\.(?:js|css))(?P<query>\?v=[^"\']*)?(?P<suffix>["\']\s*,\s*import\.meta\.url\s*\))')
 CSS_IMPORT = re.compile(r'(?P<prefix>@import\s+url\(["\'])(?P<path>\.[^"\']+\.css)(?P<query>\?v=[^"\']*)?(?P<suffix>["\']\))')
-MAIN_VERSION = re.compile(r"const\s+PRESENTATION_VERSION\s*=\s*['\"][^'\"]+['\"];")
 
 
 def version_match(match: re.Match[str], version: str) -> str:
@@ -22,20 +21,16 @@ def rewrite_patterns(path: Path, patterns: tuple[re.Pattern[str], ...], version:
     updated = text
     for pattern in patterns:
         updated = pattern.sub(lambda match: version_match(match, version), updated)
-
-    # Legacy presentation/main.js used this constant before Modern Viewer existed.
-    # Keep supporting it while the legacy tree remains published for comparison.
-    if path.name == 'main.js':
-        updated = MAIN_VERSION.sub(f"const PRESENTATION_VERSION = '{version}';", updated)
-
     if updated != text:
         path.write_text(updated, encoding='utf-8')
 
 
-def version_asset_tree(root: Path, version: str) -> None:
+def version_presentation(root: Path, version: str) -> None:
     if not root.is_dir():
         return
 
+    for path in root.rglob('*.html'):
+        rewrite_patterns(path, (HTML_ASSET,), version)
     for path in root.rglob('*.js'):
         rewrite_patterns(path, (STATIC_JS_IMPORT, DYNAMIC_JS_IMPORT, JS_URL_ASSET), version)
     for path in root.rglob('*.css'):
@@ -46,24 +41,20 @@ def main() -> None:
     if len(sys.argv) != 3:
         raise SystemExit('usage: version_presentation_assets.py <site-root> <version>')
 
-    root = Path(sys.argv[1])
+    site_root = Path(sys.argv[1])
     version = sys.argv[2].strip()
-    if not root.is_dir() or not version:
+    if not site_root.is_dir() or not version:
         raise SystemExit('site root and version are required')
 
-    index = root / 'index.html'
-    if index.exists():
-        rewrite_patterns(index, (HTML_ASSET,), version)
+    presentation_root = site_root / 'presentation'
 
-    # Legacy comparison assets.
-    version_asset_tree(root / 'presentation', version)
+    # Mutable presentation generations get deploy-SHA cache busting.
+    # Frozen Legacy is intentionally excluded: its presentation files are never
+    # rewritten during deployment. Shared JSON/Map data is also outside this tool.
+    version_presentation(presentation_root / 'current', version)
+    version_presentation(presentation_root / 'modern', version)
 
-    # Modern Viewer assets. Versioning must propagate from index.html through
-    # module imports and page-local styles so mobile browsers cannot retain an
-    # older child module after a new Pages deployment.
-    version_asset_tree(root / 'viewer', version)
-
-    print(f'viewer asset version: {version}')
+    print(f'presentation asset version: {version}')
 
 
 if __name__ == '__main__':

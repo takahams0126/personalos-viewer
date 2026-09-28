@@ -5,11 +5,16 @@ const ENTITY_DIRS = {
   'concrete-plan': 'concrete-plans'
 };
 
+// This Modern tree is presentation-only reference code. Published Boundary data
+// remains shared at the repository/site root so presentation generations never
+// own or overwrite it.
+const PUBLIC_ROOT = new URL('../../', document.baseURI);
+
 export function createResourceManager({ fetchImpl = globalThis.fetch.bind(globalThis) } = {}) {
   const jsonLoads = new Map();
 
   async function loadJson(path, { cache = 'no-store' } = {}) {
-    const url = new URL(path, document.baseURI).href;
+    const url = new URL(path, PUBLIC_ROOT).href;
     const key = `${cache}:${url}`;
     if (jsonLoads.has(key)) return jsonLoads.get(key);
 
@@ -43,7 +48,7 @@ export function entityPath(type, id) {
   const dir = ENTITY_DIRS[type];
   if (!dir) throw new Error(`Unsupported entity type: ${type}`);
   if (!id) throw new Error(`Missing entity id for ${type}`);
-  return `./data/${dir}/${encodeURIComponent(id)}.json`;
+  return `data/${dir}/${encodeURIComponent(id)}.json`;
 }
 
 export function loadEntity(type, id) {
@@ -51,7 +56,7 @@ export function loadEntity(type, id) {
 }
 
 export function loadManifest() {
-  return resources.loadJson('./manifest.json');
+  return resources.loadJson('manifest.json');
 }
 
 export function loadPageData(type, id) {
