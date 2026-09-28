@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0003",
+  "title": "乳頭温泉郷",
+  "summary": "山間に複数の温泉宿が集まり、宿ごとに湯と浴場の性格が異なる。 複数の湯と山間の静かな温泉環境を味わう。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "秋田県仙北市田沢湖周辺"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "recommended"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/n/nexusuica/20180926/20180926235933.png"
+    },
+    {
+      "url": "https://chinetsu.net/broom/akita/nyuto/kuroyu/IMG_0092.jpg"
+    },
+    {
+      "url": "https://precious.ismcdn.jp/mwimgs/7/0/1440/img_707472d23ca16555974f58e2caad11ce380945.jpg"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "山間に複数の温泉宿が集まり、宿ごとに湯と浴場の性格が異なる。"
+    ],
+    "review": {
+      "positives": [
+        "複数の湯と山間の静かな温泉環境を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://nyuto-onsenkyo.com/"
+    },
+    "supplemental": {
+      "url": "https://nyuto-onsenkyo.com/"
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "areas": [
+    {
+      "id": "A001",
+      "label": "北海道"
+    },
+    {
+      "id": "A002",
+      "label": "東北"
+    },
+    {
+      "id": "A003",
+      "label": "関東"
+    },
+    {
+      "id": "A004",
+      "label": "中部"
+    },
+    {
+      "id": "A005",
+      "label": "近畿"
+    },
+    {
+      "id": "A006",
+      "label": "中国"
+    },
+    {
+      "id": "A007",
+      "label": "四国"
+    },
+    {
+      "id": "A008",
+      "label": "九州"
+    },
+    {
+      "id": "A009",
+      "label": "沖縄"
+    },
+    {
+      "id": "A010",
+      "label": "白神山地"
+    },
+    {
+      "id": "A011",
+      "label": "白神山地・西目屋側"
+    },
+    {
+      "id": "A012",
+      "label": "白神山地・深浦・十二湖側"
+    },
+    {
+      "id": "A013",
+      "label": "屋久島"
+    },
+    {
+      "id": "A014",
+      "label": "屋久島・宮之浦・白谷側"
+    },
+    {
+      "id": "A015",
+      "label": "屋久島・安房・中央山岳側"
+    },
+    {
+      "id": "A016",
+      "label": "屋久島・南〜南西側"
+    },
+    {
+      "id": "A017",
+      "label": "屋久島・西〜北西側"
+    }
+  ],
+  "entities": [
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0003"
+      },
+      "title": "乳頭温泉郷",
+      "data_path": "data/spots/S0003.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "山間に複数の温泉宿が集まり、宿ごとに湯と浴場の性格が異なる。 複数の湯と山間の静かな温泉環境を味わう。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A002"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/n/nexusuica/20180926/20180926235933.png",
+          "alt": "乳頭温泉郷"
+        }
+      }
+    }
+  ]
+}
