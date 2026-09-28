@@ -1,123 +1,93 @@
-# PersonalOS Leisure Viewer — Repository Architecture
+# Viewer Repository Architecture
 
-## Purpose
+This repository contains the published Leisure HTML Boundary plus isolated presentation generations.
 
-このファイルは `personalos-viewer` リポジトリ全体の現在構造を説明する入口です。
+Authoritative Viewer contracts live in Obsidian under `01_chatgpt/03_Data/Leisure/04_HTMLViewer/**`. This file owns only repository/runtime layout.
 
-Modern Viewerの詳細な実装契約は [`viewer/ARCHITECTURE.md`](viewer/ARCHITECTURE.md) を正とします。
-
-## Rebuild strategy
-
-現在のModern Viewerは、旧Viewerを段階的に移し替えるプロジェクトではありません。
+## Physical layout
 
 ```text
-Legacy / Prototype
-  = frozen comparison evidence
-  ≠ implementation source
-  ≠ runtime fallback
-  ≠ source to port
-
-Current Display contracts
-  ↓
-Modern Viewer clean rebuild
+/
+├─ index.html                  # default presentation router only
+├─ manifest.json               # shared published directory
+├─ data/**                     # shared published Public Entity JSON
+├─ maps/**                     # shared published artifacts
+└─ presentation/
+   ├─ current/                 # current Viewer implementation
+   ├─ modern/                  # previous Modern reference presentation
+   └─ legacy/                  # frozen Legacy comparison snapshot
 ```
 
-旧Viewerから再利用してよいのは、明示的に再採用した一般的UI知見・比較材料だけです。LegacyのDOM構造、後付けpatch、self-bootstrap、sidecar merge、entity固有条件をModernへ引き継ぎません。
+Presentation generations do not own the shared published Boundary.
 
-## Repository zones
+## Current Viewer direction
+
+`presentation/current/` is rebuilt from the current HTML Boundary JSON. Previous Modern and Legacy code are reference only and must not be imported by Current.
+
+Normal flow:
 
 ```text
-Modern production zone
-  index.html
-  viewer/**
-  data/**
-  maps/**
-  manifest.json
-
-Frozen Legacy comparison zone
-  legacy/index.html
-  legacy/**
-  root app.js
-  root config.js
-  root style.css
-  presentation/**
-
-Prototype / validation history
-  _prototype/**
+manifest.json
++ data/**
++ maps/**
+    ↓
+Current runtime
+  ManifestStore
+  EntityResolver
+  EntityCache
+  ArtifactLoader
+  Router
+    ↓
+semantic DOM
+    ↓
+layout CSS + theme/design tokens + generic UI components
 ```
 
-### Modern zone
+Current rules:
 
-- root `index.html` が唯一の正規production entrypoint。
-- `viewer/main.js` がcomposition root。
-- `viewer/**` が現在の正規実装。
-- 新しいPlan / ConcretePlanもModern側で新規実装する。
+- JSON is the Viewer input boundary; do not create a persistent intermediate ViewModel/derived JSON layer.
+- JS resolves/fetches published data and emits semantic DOM.
+- HTML classes/attributes describe meaning, not visual placement.
+- CSS owns layout, responsive behavior, density, and theme as far as possible.
+- Generic interaction/accessibility may be delegated to mature component libraries.
+- Domain meaning must not be reconstructed from CSS or presentation code.
+- If semantic meaning is missing, fix the upstream HTML Boundary rather than inventing it in Viewer.
 
-### Legacy zone
+## Generation roles
 
-- 表示・挙動比較のために凍結保持する。
-- Modern未完成ページのruntime代替として使わない。
-- Modern rootをLegacyへ戻さない。
-- Legacyの修復をModern開発のNormal Pathにしない。
+### current
 
-### Prototype zone
+Only active development target. It may consume `/manifest.json`, `/data/**`, and `/maps/**`.
 
-- 過去検証の履歴。
-- production runtimeから参照しない。
-- 現在の設計正本として扱わない。
+### modern
 
-## End-to-end display contract
+Reference snapshot of the previous Modern Viewer. It may read the shared current Boundary on a best-effort basis, but compatibility is not guaranteed and it is not an implementation source for Current.
+
+### legacy
+
+Frozen comparison snapshot. Its source tree is mechanically guarded. Normal build/deploy must not regenerate or overlay Legacy data/presentation. Only deployment-time environment binding such as its historical Maps key config is allowed.
+
+## Default routing
+
+Root `index.html` owns only the default presentation selection. While Current is not yet minimally usable, default routing remains `presentation/modern/`. Promotion to Current is a one-line router change after Current reaches the agreed minimum surface.
+
+## Publishing
+
+Public Entity publish delivers `manifest.json`, `data/**`, and `maps/**` into this repository before Pages deployment.
+
+Pages deployment must copy those delivered artifacts as-is. It must not rebuild, transform, or overlay published Boundary data.
+
+## Cache busting
+
+Deploy-SHA query versioning applies only to mutable presentation assets under:
 
 ```text
-Canonical
-  ↓
-ViewModel Builder
-  ↓
-ViewModel
-  ↓
-HTML Viewer Build
-  ↓
-HTML Boundary JSON / Map Artifact
-  ↓
-Modern Viewer Renderer
+presentation/current/**
+presentation/modern/**
 ```
 
-ViewerはHTML Boundaryより上流のDomain意味を推論・再計算しません。
+`presentation/legacy/**` is excluded so the frozen snapshot is not rewritten during deploy.
 
-## Current build state
+Shared JSON/Map data is not presentation-versioned. Runtime data fetching/caching is owned by Current runtime and HTTP semantics, not by CSS/JS asset versioning.
 
-機械可読な状態は [`viewer-build-status.json`](viewer-build-status.json) を正とします。
-
-現時点:
-
-- Top: implemented
-- Spot: implemented
-- Route: implemented
-- Plan: skeleton
-- ConcretePlan: skeleton
-
-これはLegacyからの移行率ではなく、**Modern新規実装の完成状況**です。
-
-## Current work phase
-
-Obsidian `80_Memo/Leisure-Display-Pipeline/` のPhase 2:
-
-```text
-HTML Boundary
-  ↓
-fixture JSON
-  ↓
-Modern Renderer
-  ↓
-Final Display
-```
-
-Phase 2では上流Canonical / Builderを先に変更せず、Boundaryだけで画面が成立することを先に証明します。
-
-## Authority
-
-- Display semantic / HTML Boundary: Obsidian `80_Memo/Leisure-Display-Pipeline/`
-- Modern Viewer architecture: `viewer/ARCHITECTURE.md`
-- Modern implementation state: `viewer-build-status.json`
-- Legacy boundary: `legacy/README.md`
-- old visual comparison baseline: `BASELINE.md`
+Third-party libraries should use explicit pinned versions. The deploy versioner only rewrites local relative JS/CSS references.
