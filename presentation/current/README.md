@@ -2,9 +2,11 @@
 
 Current Viewer is rebuilt directly from the published HTML Boundary JSON.
 
-## Current development slices
+## Status
 
-Current technical validation covers the shared runtime with Plan and ConcretePlan, plus direct Map Artifact rendering:
+Technical validation is **CLOSED**.
+
+Validated surfaces:
 
 ```text
 ?type=concrete_plan&id=CP001
@@ -25,7 +27,7 @@ Current technical validation covers the shared runtime with Plan and ConcretePla
   → semantic DOM
 ```
 
-The Current entry still defaults to `concrete_plan / CP001` while technical validation is in progress. Root production routing still points to `presentation/modern/`.
+The Current entry still defaults to `concrete_plan / CP001` while normal implementation/design continues. Root production routing still points to `presentation/modern/` until Current reaches the minimum usable surface.
 
 ## Runtime principles
 
@@ -61,4 +63,50 @@ Map hydration happens after semantic DOM insertion. Baseline maps load immediate
 
 Layout CSS may reposition semantic blocks, but source DOM order remains the reading/focus order. Responsive presentation must not reconstruct Domain meaning.
 
-No generic UI/component library is introduced yet. Native controls remain sufficient for the current technical slices; a library should be added only where concrete interaction or rendering boilerplate justifies the dependency.
+## Map interaction direction
+
+Modern and `_prototype/poc/**` are **Evidence**, not Current implementation authority.
+
+Current direction after technical validation:
+
+```text
+Adopt
+- Map popup as Viewer presentation interaction
+- Google Maps OverlayView-style custom popup is valid implementation evidence
+- desktop anchored popup / mobile touch-friendly presentation
+- popup content is presentation data assembled from explicit owner/boundary information
+
+Re-evaluate during design
+- segment color differentiation
+- legend ↔ map segment hover/focus emphasis
+- one-color vs multi-color route presentation
+
+Do not carry forward
+- Legacy map data paths
+- geometry-to-waypoint re-segmentation used only by old PoC
+- Modern/PoC-specific fetch conventions
+```
+
+Current Execution Road Map Artifact already owns ordered `segments[]`, so future segment styling must bind directly to those published segments instead of reconstructing segment identity from geometry.
+
+The current `InfoWindow` in the validation slice is not a final popup design requirement. Final popup composition belongs to the normal implementation/design phase.
+
+## Generic UI library policy
+
+No generic UI/component library is required by the validated architecture.
+
+Use native semantic HTML and small presentation adapters by default. Introduce a third-party interaction component only when a concrete Current interaction shows enough implementation/accessibility cost to justify the dependency. Library adoption must not change Domain meaning, Boundary shape, or semantic DOM ownership.
+
+## Next phase
+
+Technical validation is complete. Normal Current implementation/design now proceeds toward:
+
+```text
+Spot / Route / TOP renderers
+shared semantic presentation primitives
+Map popup and map interaction design
+image / carousel only where required
+responsive visual design / theme
+minimum usable Current surface
+root default promotion: modern → current
+```
