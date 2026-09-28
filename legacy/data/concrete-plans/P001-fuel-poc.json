@@ -1,0 +1,122 @@
+{
+  "schema_version": 2,
+  "poc": true,
+  "source_plan_id": "P001",
+  "purpose": "Concrete Planでの給油候補TravelPoint・給油日・返却前給油・燃料費算定・代替案費用差分の表示仕様を検証する一時PoC。正式Canonical schemaではない。",
+  "source_policy": "station情報は公開情報をPoC入力として使用。planned_refuelsの時刻・採用判断・費用差分はplanning_assumption。正式化前に再確認する。",
+  "travel_point_candidates": [
+    {
+      "poc_id": "FUEL-MIYANOURA-ARATA",
+      "type": "travel_point",
+      "point_type": "gas_station",
+      "label": "ENEOS 荒田SS",
+      "area": "宮之浦",
+      "address": "鹿児島県熊毛郡屋久島町宮之浦366-3",
+      "hours": "07:30–18:00（曜日により異なるため実施前再確認）",
+      "phone": "0997-42-0427",
+      "role": "mid_trip_primary",
+      "canonical_id": null
+    },
+    {
+      "poc_id": "FUEL-KOSEDA-AIRPORT",
+      "type": "travel_point",
+      "point_type": "gas_station",
+      "label": "ENEOS 小瀬田SS候補",
+      "area": "小瀬田・屋久島空港周辺",
+      "address": "鹿児島県熊毛郡屋久島町小瀬田815-85",
+      "hours": "08:00–18:00（曜日により異なるため実施前再確認）",
+      "phone": "0997-43-5321",
+      "role": "return_refuel_primary",
+      "canonical_id": null
+    }
+  ],
+  "fuel_cost": {
+    "status": "needs_input",
+    "estimated_distance_km": null,
+    "fuel_economy_km_per_l": null,
+    "unit_price_yen_per_l": null,
+    "estimated_liters": null,
+    "estimated_cost_yen": null,
+    "formula": "estimated_distance_km / fuel_economy_km_per_l * unit_price_yen_per_l",
+    "display_note": "総走行距離・車両燃費・現地単価が揃った時点で自動算定"
+  },
+  "planned_refuels": [
+    {
+      "day": 3,
+      "kind": "recommended",
+      "required": false,
+      "timeline": false,
+      "station_poc_id": "FUEL-MIYANOURA-ARATA",
+      "timing": "Day3終了後〜Day4開始前",
+      "reason": "島内周遊・山行日の走行に備えて残量を安全側へ戻す",
+      "status": "planning_assumption",
+      "checks": ["燃料残量", "営業時間", "翌日の走行予定"]
+    },
+    {
+      "day": 5,
+      "kind": "return_refuel",
+      "required": true,
+      "timeline": true,
+      "station_poc_id": "FUEL-KOSEDA-AIRPORT",
+      "timing": "レンタカー14:00返却前",
+      "reason": "返却前給油を実行手順として確保する",
+      "status": "planning_assumption",
+      "constraint": {
+        "label": "レンタカー返却",
+        "at": "14:00",
+        "planned_refuel_at": "13:10",
+        "planned_refuel_end_at": "13:25",
+        "slack": "35分（返却店舗までの移動時間を除く仮値）"
+      },
+      "checks": ["営業中であること", "給油後に14:00返却へ間に合うこと", "レシート等の返却条件確認"]
+    }
+  ],
+  "day5_flow_patch": {
+    "free_time": {
+      "time": "午前",
+      "label": "自由時間",
+      "note": "Planの自由時間枠を保持。買い物・散策・休憩など当日判断。"
+    },
+    "refuel": {
+      "time": "13:10",
+      "station_poc_id": "FUEL-KOSEDA-AIRPORT",
+      "activity": "返却前給油",
+      "duration": "約15分",
+      "required": true
+    },
+    "rental_return": {
+      "time": "14:00",
+      "label": "タイムズレンタカー",
+      "activity": "レンタカー返却"
+    }
+  },
+  "cost_policy": {
+    "baseline": "standard_variants",
+    "display_rule": "旅行全体は標準案を基準総額として表示し、代替案は原則として基準との差額を表示する。大きく構造が変わる代替のみ総額再計算対象。"
+  },
+  "alternative_cost_impacts": [
+    {
+      "day": 2,
+      "variant_id": "short",
+      "label": "R007 ウィルソン株往復へ短縮",
+      "delta_yen": -600,
+      "test": true,
+      "note": "PoC表示確認用の仮値"
+    },
+    {
+      "day": 3,
+      "variant_id": "alternative",
+      "label": "R010 屋久島南部雨天ドライブへ変更",
+      "delta_yen": -1200,
+      "test": true,
+      "note": "PoC表示確認用の仮値"
+    },
+    {
+      "day": 3,
+      "variant_id": "standard",
+      "label": "標準案",
+      "delta_yen": 0,
+      "test": true
+    }
+  ]
+}
