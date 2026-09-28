@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0035",
+  "title": "千尋の滝",
+  "summary": "巨大な花崗岩の一枚岩と滝を眺められる展望地。 岩壁と滝がつくる地形の大きさを眺める。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町南東部"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://stat.ameba.jp/user_images/20220518/14/kiiroitori-sennin/7a/dc/p/o0620040015119705191.png",
+      "source_url": "https://ameblo.jp/kiiroitori-sennin/entry-12743449944.html"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/tourism_attractions/10712/responsive_images/ZSlnzkkO6ZzRA2nadtNXgOFZOuV5ZGEqZyFg8drV__716_479.jpeg",
+      "source_url": "https://www.kagoshima-kankou.com/guide/10712"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-senpiro-no-taki-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7001.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "巨大な花崗岩の一枚岩と滝を眺められる展望地。"
+    ],
+    "review": {
+      "positives": [
+        "岩壁と滝がつくる地形の大きさを眺める。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/kanko/kankospot/taki/2637.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7001.html"
+    }
+  }
+}

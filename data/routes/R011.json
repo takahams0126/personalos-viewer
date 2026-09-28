@@ -1,0 +1,123 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R011",
+  "title": "屋久島一周ドライブ",
+  "summary": "登山をしない晴れ〜曇りの日に、西部林道を一日の主役として海岸・滝・亜熱帯の植生・温泉をつなぎ、「山だけではない屋久島」を一周で体験する 永田いなか浜から西部林道、大川の滝、南部の植生・滝・温泉へ進み、海・深い森・大瀑布・入浴体験が近接する屋久島の振れ幅を一日で感じられる。",
+  "theme_chips": [
+    "ドライブ"
+  ],
+  "family_label": "屋久島一周ドライブ",
+  "variant": {
+    "code": "counterclockwise",
+    "label": "反時計回り"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "登山をしない晴れ〜曇りの日に、西部林道を一日の主役として海岸・滝・亜熱帯の植生・温泉をつなぎ、「山だけではない屋久島」を一周で体験する",
+    "strengths": [
+      "永田いなか浜から西部林道、大川の滝、南部の植生・滝・温泉へ進み、海・深い森・大瀑布・入浴体験が近接する屋久島の振れ幅を一日で感じられる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0037"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0038"
+      }
+    },
+    {
+      "order": 3,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0039"
+      },
+      "inclusion_requirement": {
+        "code": "required",
+        "label": "必須"
+      }
+    },
+    {
+      "order": 4,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0036"
+      }
+    },
+    {
+      "order": 5,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0045"
+      },
+      "visit_purpose": {
+        "code": "lunch",
+        "label": "昼食"
+      }
+    },
+    {
+      "order": 6,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0040"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      }
+    },
+    {
+      "order": 7,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0028"
+      },
+      "visit_purpose": {
+        "code": "bath",
+        "label": "入浴"
+      },
+      "condition": {
+        "text": "潮位・波・風条件が合う場合"
+      },
+      "alternatives": [
+        {
+          "spot_ref": {
+            "entity_type": "spot",
+            "id": "S0026"
+          }
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0035"
+      }
+    },
+    {
+      "order": 9,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0034"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R011/R011-conceptual-map.json"
+  }
+}

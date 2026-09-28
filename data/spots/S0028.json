@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0028",
+  "title": "平内海中温泉",
+  "summary": "海岸の岩場のくぼみを浴槽に利用した、男女混浴の天然露天温泉。 海景色と波音を身近に感じながら天然温泉に入浴する。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町平内"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥300"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://assets.st-note.com/img/1749448208-P7bomBUIMGfN3Q25gkxHWwR1.jpg",
+      "source_url": "https://note.com/tec_note1133/n/n78550cc9a133"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/special_feature_paragraph_contents/3450/responsive_images/88vLiphRdsJ5BicTbys03LqiEmmIAVBCWdZrUuh7__600_400.jpeg",
+      "source_url": "https://www.kagoshima-kankou.com/for/highlights/onsen"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-hirauchi-kaichu-onsen-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7015.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "海岸の岩場のくぼみを浴槽に利用した、男女混浴の天然露天温泉。"
+    ],
+    "review": {
+      "positives": [
+        "海景色と波音を身近に感じながら天然温泉に入浴する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7015.html"
+    },
+    "supplemental": {
+      "url": "https://www.facebook.com/hirauchiku"
+    }
+  }
+}

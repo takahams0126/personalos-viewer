@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0037",
+  "title": "志戸子ガジュマル公園",
+  "summary": "複雑に幹と根を広げる巨大なガジュマル群を歩いて観察できる公園。 ガジュマルの樹形と亜熱帯の植生を近距離で観察する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町志戸子"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://images.keizai.biz/yakushima_keizai/photonews/1742862558_b.jpg",
+      "source_url": "https://yakushima.keizai.biz/photoflash/1864/"
+    },
+    {
+      "url": "https://komc.visit-kyushu.com/assets/photo/9/large/97bc96fc29ea0f9e3848d006fa2d0f6f.jpg",
+      "source_url": "https://komc.visit-kyushu.com/library/detail/6966"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-shitoko-gajumaru-park-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6987.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "複雑に幹と根を広げる巨大なガジュマル群を歩いて観察できる公園。"
+    ],
+    "review": {
+      "positives": [
+        "ガジュマルの樹形と亜熱帯の植生を近距離で観察する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/kankoshisetu/829.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6987.html"
+    }
+  }
+}

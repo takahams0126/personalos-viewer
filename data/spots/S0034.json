@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0034",
+  "title": "トローキの滝",
+  "summary": "山からの水が直接海へ流れ落ちる滝。 滝と海のつながりを眺め、島の地形を体感する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町南東部"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/a/aranciarossa/20211025/20211025205754.jpg",
+      "source_url": "https://www.aranciarossa.work/entry/yakushimakanko"
+    },
+    {
+      "url": "https://www.airial.travel/_next/image?q=70&url=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-w%2F28%2Fbc%2F69%2F81%2Fcaption.jpg&w=3840",
+      "source_url": "https://www.airial.travel/attractions/japan/yakushima/toroki-no-taki-2zLFuQFV"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-toroki-no-taki-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7000.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "山からの水が直接海へ流れ落ちる滝。"
+    ],
+    "review": {
+      "positives": [
+        "滝と海のつながりを眺め、島の地形を体感する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/taki/871.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7000.html"
+    }
+  }
+}

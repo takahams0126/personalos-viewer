@@ -73,6 +73,29 @@
   "entities": [
     {
       "ref": {
+        "entity_type": "route",
+        "id": "R011"
+      },
+      "title": "屋久島一周ドライブ",
+      "data_path": "data/routes/R011.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "登山をしない晴れ〜曇りの日に、西部林道を一日の主役として海岸・滝・亜熱帯の植生・温泉をつなぎ、「山だけではない屋久島」を一周で体験する 永田いなか浜から西部林道、大川の滝、南部の植生・滝・温泉へ進み、海・深い森・大瀑布・入浴体験が近接する屋久島の振れ幅を一日で感じられる。",
+        "tags": [
+          "ドライブ"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "driving",
+          "label": "ドライブ"
+        }
+      }
+    },
+    {
+      "ref": {
         "entity_type": "spot",
         "id": "S0003"
       },
@@ -94,6 +117,276 @@
         "image": {
           "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/n/nexusuica/20180926/20180926235933.png",
           "alt": "乳頭温泉郷"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0026"
+      },
+      "title": "尾之間温泉",
+      "data_path": "data/spots/S0026.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "350年以上前の開湯伝承を持つ共同湯。 玉石が敷かれた浴槽底から源泉が湧く、熱めの単純硫黄泉の共同浴場。 足元から湧く湯に入り、地元共同湯の雰囲気を味わう。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://118940.up.seesaa.net/00864771N000000000/163538560128346643892.jpeg",
+          "alt": "尾之間温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0028"
+      },
+      "title": "平内海中温泉",
+      "data_path": "data/spots/S0028.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "海岸の岩場のくぼみを浴槽に利用した、男女混浴の天然露天温泉。 海景色と波音を身近に感じながら天然温泉に入浴する。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://assets.st-note.com/img/1749448208-P7bomBUIMGfN3Q25gkxHWwR1.jpg",
+          "alt": "平内海中温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0034"
+      },
+      "title": "トローキの滝",
+      "data_path": "data/spots/S0034.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "山からの水が直接海へ流れ落ちる滝。 滝と海のつながりを眺め、島の地形を体感する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/a/aranciarossa/20211025/20211025205754.jpg",
+          "alt": "トローキの滝"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0035"
+      },
+      "title": "千尋の滝",
+      "data_path": "data/spots/S0035.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "巨大な花崗岩の一枚岩と滝を眺められる展望地。 岩壁と滝がつくる地形の大きさを眺める。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://stat.ameba.jp/user_images/20220518/14/kiiroitori-sennin/7a/dc/p/o0620040015119705191.png",
+          "alt": "千尋の滝"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0036"
+      },
+      "title": "大川の滝",
+      "data_path": "data/spots/S0036.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "落差88mの滝で、日本の滝100選に選ばれている。 滝壺近くで水しぶきと音、水量の迫力を体感する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/tcs/t/tips/pict/src/122/855/src_12285504.jpg?updated_at=1415521738",
+          "alt": "大川の滝"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0037"
+      },
+      "title": "志戸子ガジュマル公園",
+      "data_path": "data/spots/S0037.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "複雑に幹と根を広げる巨大なガジュマル群を歩いて観察できる公園。 ガジュマルの樹形と亜熱帯の植生を近距離で観察する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://images.keizai.biz/yakushima_keizai/photonews/1742862558_b.jpg",
+          "alt": "志戸子ガジュマル公園"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0038"
+      },
+      "title": "永田いなか浜",
+      "data_path": "data/spots/S0038.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "約1kmの白砂の海岸で、重要なアカウミガメ産卵地でありラムサール条約湿地に含まれる。 白砂の浜から東シナ海を眺め、広い海岸の開放感を味わう。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://www.kagoshima-kankou.com/storage/special_feature_paragraph_contents/4676/responsive_images/Tau1HOQUh47LnPm7rxdrjUJ5YQi6yrBdGqXA6ubJ__1542_1028.jpg",
+          "alt": "永田いなか浜"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0039"
+      },
+      "title": "西部林道",
+      "data_path": "data/spots/S0039.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島の世界自然遺産地域を車で通れる道路で、照葉樹林が広がりヤクザル・ヤクシカが生息する。 深い森林を通過しながら植生の連続性と野生動物の気配を観察する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
+          "alt": "西部林道"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0040"
+      },
+      "title": "中間ガジュマル",
+      "data_path": "data/spots/S0040.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "太い枝と根が道路をまたぐ形に広がるガジュマル。 道路をまたぐ樹形を近くで観察し、亜熱帯の植生を感じる。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://sasaki-tosou.up.seesaa.net/image/IMG_1270.jpg",
+          "alt": "中間ガジュマル"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0045"
+      },
+      "title": "手打ちそば 松竹",
+      "data_path": "data/spots/S0045.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "栗生の古民家で、手打ちそば、天ぷらそば、とろろそば、天丼やトビウオの棒寿司系料理を提供する。 古民家の座敷の雰囲気と、そばや島の食材を味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_pict/23/63/11/650x_23631149.jpg?updated_at=1321202284",
+          "alt": "手打ちそば 松竹"
         }
       }
     }

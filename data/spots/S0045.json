@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0045",
+  "title": "手打ちそば 松竹",
+  "summary": "栗生の古民家で、手打ちそば、天ぷらそば、とろろそば、天丼やトビウオの棒寿司系料理を提供する。 古民家の座敷の雰囲気と、そばや島の食材を味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町栗生1684"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "recommended"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_pict/23/63/11/650x_23631149.jpg?updated_at=1321202284",
+      "source_url": "https://4travel.jp/travelogue/10614880"
+    },
+    {
+      "url": "https://tblg.k-img.com/restaurant/images/Rvw/245203/640x640_rect_95e20ebf4582714bd42bc0da1fe81167.jpg",
+      "source_url": "https://tabelog.com/kagoshima/A4605/A460501/46008235/"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-handmade-soba-matsutake-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6927.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "栗生の古民家で、手打ちそば、天ぷらそば、とろろそば、天丼やトビウオの棒寿司系料理を提供する。"
+    ],
+    "review": {
+      "positives": [
+        "古民家の座敷の雰囲気と、そばや島の食材を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "http://sobaya-matutake.com/menu.htm"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6927.html"
+    }
+  }
+}

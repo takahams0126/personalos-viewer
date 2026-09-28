@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0038",
+  "title": "永田いなか浜",
+  "summary": "約1kmの白砂の海岸で、重要なアカウミガメ産卵地でありラムサール条約湿地に含まれる。 白砂の浜から東シナ海を眺め、広い海岸の開放感を味わう。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町永田"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/special_feature_paragraph_contents/4676/responsive_images/Tau1HOQUh47LnPm7rxdrjUJ5YQi6yrBdGqXA6ubJ__1542_1028.jpg",
+      "source_url": "https://www.kagoshima-kankou.com/for/highlights/cycle-tourism/yakushima"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-nagata-inakahama-beach-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7002.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-nagata-inakahama-beach-03.jpg",
+      "source_url": "https://yakukan.jp/spot/7002.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "約1kmの白砂の海岸で、重要なアカウミガメ産卵地でありラムサール条約湿地に含まれる。"
+    ],
+    "review": {
+      "positives": [
+        "白砂の浜から東シナ海を眺め、広い海岸の開放感を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7002.html"
+    },
+    "supplemental": {
+      "url": "https://www.env.go.jp/park/yakushima/ywhcc/np/kansatu.html"
+    }
+  }
+}

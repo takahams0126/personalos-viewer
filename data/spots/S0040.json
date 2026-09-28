@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0040",
+  "title": "中間ガジュマル",
+  "summary": "太い枝と根が道路をまたぐ形に広がるガジュマル。 道路をまたぐ樹形を近くで観察し、亜熱帯の植生を感じる。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町中間"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://sasaki-tosou.up.seesaa.net/image/IMG_1270.jpg",
+      "source_url": "https://sasaki-tosou.seesaa.net/article/498398609.html"
+    },
+    {
+      "url": "https://stat.ameba.jp/user_images/20220502/16/harimanob/43/28/j/o1080081015111579243.jpg",
+      "source_url": "https://ameblo.jp/harimanob/entry-12740605581.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-nakama-gajumaru-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7009.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "太い枝と根が道路をまたぐ形に広がるガジュマル。"
+    ],
+    "review": {
+      "positives": [
+        "道路をまたぐ樹形を近くで観察し、亜熱帯の植生を感じる。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/kankoshisetu/835.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7009.html"
+    }
+  }
+}

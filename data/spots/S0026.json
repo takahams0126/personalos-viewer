@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0026",
+  "title": "尾之間温泉",
+  "summary": "350年以上前の開湯伝承を持つ共同湯。 玉石が敷かれた浴槽底から源泉が湧く、熱めの単純硫黄泉の共同浴場。 足元から湧く湯に入り、地元共同湯の雰囲気を味わう。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町尾之間1291"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥300"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://118940.up.seesaa.net/00864771N000000000/163538560128346643892.jpeg",
+      "source_url": "https://118940.seesaa.net/article/202110article_5.html"
+    },
+    {
+      "url": "https://hamusarakun.com/wp-content/uploads/2023/06/IMG00104_HDR2.jpg",
+      "source_url": "https://hamusarakun.com/yakusima/onoaida/"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-onoaida-onsen-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7013.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "350年以上前の開湯伝承を持つ共同湯。",
+      "玉石が敷かれた浴槽底から源泉が湧く、熱めの単純硫黄泉の共同浴場。"
+    ],
+    "review": {
+      "positives": [
+        "足元から湧く湯に入り、地元共同湯の雰囲気を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7013.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7013.html"
+    }
+  }
+}

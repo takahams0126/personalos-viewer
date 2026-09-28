@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0039",
+  "title": "西部林道",
+  "summary": "屋久島の世界自然遺産地域を車で通れる道路で、照葉樹林が広がりヤクザル・ヤクシカが生息する。 深い森林を通過しながら植生の連続性と野生動物の気配を観察する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町西部"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
+      "source_url": "https://4travel.jp/travelogue/10040066"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/tourism_attractions/10739/responsive_images/ub0X66W11ejWJv8sfExHXW0OwblY04GszdsUVshA__1652_1239.jpg",
+      "source_url": "https://www.kagoshima-kankou.com/guide/10739"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-western-forest-road-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7003.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島の世界自然遺産地域を車で通れる道路で、照葉樹林が広がりヤクザル・ヤクシカが生息する。"
+    ],
+    "review": {
+      "positives": [
+        "深い森林を通過しながら植生の連続性と野生動物の気配を観察する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7003.html"
+    },
+    "supplemental": {
+      "url": "https://www.env.go.jp/nature/nationalparks/list/yakushima/manner/"
+    }
+  }
+}
