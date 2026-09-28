@@ -52,22 +52,30 @@ jobs:
           cp index.html manifest.json _site/
           cp -R data maps presentation _site/
 
-          # The previous Modern reference still injects its browser Maps key into
-          # its own isolated adapter. Current may choose a different binding later.
+          # Presentation-specific Google Maps bindings are injected only into each
+          # presentation adapter. Shared Boundary JSON/Map artifacts are not rewritten.
           python - <<'PY'
           import json
           import os
           from pathlib import Path
 
-          path = Path('_site/presentation/modern/viewer/shared/google-map.js')
-          if path.exists():
-              source = path.read_text(encoding='utf-8')
+          key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+
+          modern_path = Path('_site/presentation/modern/viewer/shared/google-map.js')
+          if modern_path.exists():
+              source = modern_path.read_text(encoding='utf-8')
               marker = "const GOOGLE_MAPS_API_KEY = '__GOOGLE_MAPS_API_KEY__';"
               if source.count(marker) != 1:
                   raise RuntimeError('Modern reference Google Maps API key marker is missing or duplicated.')
-              key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
               replacement = f'const GOOGLE_MAPS_API_KEY = {json.dumps(key)};'
-              path.write_text(source.replace(marker, replacement), encoding='utf-8')
+              modern_path.write_text(source.replace(marker, replacement), encoding='utf-8')
+
+          current_config = Path('_site/presentation/current/config.js')
+          if current_config.parent.is_dir():
+              current_config.write_text(
+                  'window.PERSONALOS_CONFIG = { googleMapsApiKey: ' + json.dumps(key) + ' };\n',
+                  encoding='utf-8',
+              )
           PY
 
           # Frozen Legacy keeps its historical local config contract. This is an

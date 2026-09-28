@@ -5,6 +5,7 @@ import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
+import { hydrateMapViews } from './map/google-map.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -50,9 +51,14 @@ async function main() {
   });
 
   const page = await renderRequestedEntity(request, loaded.data);
+  const app = document.querySelector('#app');
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
-  document.querySelector('#app').replaceChildren(page);
+  app.replaceChildren(page);
+
+  if (request.type === 'concrete_plan') {
+    await hydrateMapViews({ root: app, artifactLoader, resolver });
+  }
 }
 
 try {
