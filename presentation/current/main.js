@@ -4,6 +4,7 @@ import { EntityResolver } from './core/entity-resolver.js';
 import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
+import { renderPlan } from './render/plan.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -21,27 +22,36 @@ async function loadSourcePlan(concretePlan) {
   }
 }
 
+async function renderRequestedEntity(request, data) {
+  if (request.type === 'plan') {
+    return renderPlan({ plan: data, resolver });
+  }
+
+  if (request.type === 'concrete_plan') {
+    const sourcePlan = await loadSourcePlan(data);
+    return renderConcretePlan({
+      concretePlan: data,
+      sourcePlan,
+      resolver,
+      artifactLoader
+    });
+  }
+
+  throw new Error(`Current technical slice supports plan / concrete_plan only: ${request.type}`);
+}
+
 async function main() {
   const request = readRequest();
-  if (request.type !== 'concrete_plan') {
-    throw new Error(`Current vertical slice supports concrete_plan only: ${request.type}`);
-  }
+  document.documentElement.dataset.pageType = request.type;
 
   const loaded = await resolver.load({
     entity_type: request.type,
     id: request.id
   });
-  const concretePlan = loaded.data;
-  const sourcePlan = await loadSourcePlan(concretePlan);
 
-  const page = await renderConcretePlan({
-    concretePlan,
-    sourcePlan,
-    resolver,
-    artifactLoader
-  });
+  const page = await renderRequestedEntity(request, loaded.data);
 
-  document.title = `${concretePlan.title} | PersonalOS Viewer`;
+  document.title = `${loaded.data.title} | PersonalOS Viewer`;
   document.querySelector('#app').replaceChildren(page);
 }
 

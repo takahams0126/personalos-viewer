@@ -24,6 +24,10 @@
     padding-block-start: var(--space-4);
   }
 
+  html:not([data-page-type="concrete_plan"]) .layout-switcher {
+    display: none;
+  }
+
   .layout-switcher button[aria-pressed="true"] {
     font-weight: 700;
   }
