@@ -1,13 +1,17 @@
-const DEFAULT_REQUEST = Object.freeze({
-  type: 'concrete_plan',
-  id: 'CP001'
-});
-
 export function readRequest(search = window.location.search) {
   const params = new URLSearchParams(search);
-  const type = params.get('type') || DEFAULT_REQUEST.type;
-  const id = params.get('id') || DEFAULT_REQUEST.id;
-  return Object.freeze({ type, id });
+  const type = params.get('type');
+  const id = params.get('id');
+
+  if (!type && !id) {
+    return Object.freeze({ kind: 'top' });
+  }
+
+  if (!type || !id) {
+    throw new Error('Entity request requires both type and id.');
+  }
+
+  return Object.freeze({ kind: 'entity', type, id });
 }
 
 export function hrefFor(ref) {
