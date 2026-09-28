@@ -66,10 +66,10 @@ async function renderHeroSpots(refs = [], resolver) {
 function renderIdentity(route) {
   const items = [];
   if (route.family_label) {
-    items.push(h('div', {}, h('dt', { text: 'Family' }), h('dd', { text: route.family_label })));
+    items.push(h('div', {}, h('dt', { text: 'ルート系統' }), h('dd', { text: route.family_label })));
   }
   if (route.variant?.label) {
-    items.push(h('div', {}, h('dt', { text: 'Variant' }), h('dd', { text: route.variant.label })));
+    items.push(h('div', {}, h('dt', { text: 'バリエーション' }), h('dd', { text: route.variant.label })));
   }
   if (!items.length) return null;
 
