@@ -1,0 +1,1 @@
+window.PERSONALOS_CONFIG = window.PERSONALOS_CONFIG || {};

@@ -152,13 +152,24 @@ async function renderMapPreview(artifactRef, artifactLoader, resolver) {
       h('li', { text: segment.mode?.label || '移動' })
     );
 
-    return h('figure', { className: 'map-semantic-preview', dataset: { semantic: 'map' } },
-      h('figcaption', { text: '移動地図データ' }),
+    return h('figure', {
+      className: 'map-semantic-preview map-view',
+      dataset: {
+        semantic: 'map',
+        mapArtifactId: artifactRef.artifact_id
+      }
+    },
+      h('figcaption', { text: '移動地図' }),
+      h('div', {
+        className: 'map-canvas',
+        attrs: { role: 'img', 'aria-label': '移動地図' }
+      }),
+      h('p', { className: 'map-state', text: '地図を読み込み中…' }),
       pointItems.length
-        ? h('div', {}, h('h5', { text: '地点' }), h('ol', {}, pointItems))
+        ? h('div', { className: 'map-data-fallback' }, h('h5', { text: '地点' }), h('ol', {}, pointItems))
         : null,
       segmentItems.length
-        ? h('div', {}, h('h5', { text: '区間' }), h('ol', {}, segmentItems))
+        ? h('div', { className: 'map-data-fallback' }, h('h5', { text: '区間' }), h('ol', {}, segmentItems))
         : null
     );
   } catch {
