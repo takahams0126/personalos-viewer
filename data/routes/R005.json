@@ -1,0 +1,58 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R005",
+  "title": "縄文杉ルート・縄文杉往復",
+  "summary": "屋久島の林業史と巨木の森を長い一日の中でたどり、最後に【縄文杉】へ到達する達成体験を旅の大きな山場にする 小杉谷の歴史からウィルソン株・大王杉・縄文杉へ進み、林業史から巨木の森へ体験が連続して変化する。 長い行程を歩き切って縄文杉へ到達する過程そのものが、Route全体の強い達成体験になる。",
+  "theme_chips": [
+    "ハイキング"
+  ],
+  "family_label": "縄文杉ルート",
+  "variant": {
+    "code": "full",
+    "label": "縄文杉往復"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "屋久島の林業史と巨木の森を長い一日の中でたどり、最後に【縄文杉】へ到達する達成体験を旅の大きな山場にする",
+    "strengths": [
+      "小杉谷の歴史からウィルソン株・大王杉・縄文杉へ進み、林業史から巨木の森へ体験が連続して変化する。",
+      "長い行程を歩き切って縄文杉へ到達する過程そのものが、Route全体の強い達成体験になる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      }
+    },
+    {
+      "order": 3,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0020"
+      }
+    },
+    {
+      "order": 4,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0016"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R005/R005-conceptual-map.json"
+  }
+}

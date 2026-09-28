@@ -73,6 +73,119 @@
   "entities": [
     {
       "ref": {
+        "entity_type": "plan",
+        "id": "P001"
+      },
+      "title": "屋久島 4泊5日基本Plan",
+      "data_path": "data/plans/P001.json",
+      "explorer": {
+        "type_label": "プラン",
+        "summary": "縄文杉と白谷雲水峡の山行を軸に、屋久島一周ドライブや温泉を組み合わせる4泊5日の基本旅行プラン。",
+        "tags": [],
+        "area_ids": [
+          "A013",
+          "A014",
+          "A015"
+        ]
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R004"
+      },
+      "title": "白谷雲水峡ルート・太鼓岩往復",
+      "data_path": "data/routes/R004.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "苔と渓流に包まれた白谷雲水峡を歩き、森の奥深さを味わったあと、太鼓岩で一気に開ける大展望をクライマックスにする 森に包まれ続けたあと太鼓岩で山並みが一気に開け、Route全体に明確なクライマックスが生まれる。 白谷の渓流と原生林から苔むす森へ進むにつれ、苔の密度と森の深さが増していく。",
+        "tags": [
+          "ハイキング"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "hiking",
+          "label": "ハイキング"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R005"
+      },
+      "title": "縄文杉ルート・縄文杉往復",
+      "data_path": "data/routes/R005.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "屋久島の林業史と巨木の森を長い一日の中でたどり、最後に【縄文杉】へ到達する達成体験を旅の大きな山場にする 小杉谷の歴史からウィルソン株・大王杉・縄文杉へ進み、林業史から巨木の森へ体験が連続して変化する。 長い行程を歩き切って縄文杉へ到達する過程そのものが、Route全体の強い達成体験になる。",
+        "tags": [
+          "ハイキング"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "hiking",
+          "label": "ハイキング"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R007"
+      },
+      "title": "縄文杉ルート・ウィルソン株往復",
+      "data_path": "data/routes/R007.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "縄文杉ルート前半のトロッコ道・小杉谷・巨木体験を残しながら、【ウィルソン株】で折り返して終日行動の負荷を抑える 小杉谷集落跡からウィルソン株へ進み、縄文杉ルート前半の林業史から巨木へ移る体験を独立したRouteとして味わえる。",
+        "tags": [
+          "ハイキング"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "hiking",
+          "label": "ハイキング"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R010"
+      },
+      "title": "屋久島南部雨天ドライブ",
+      "data_path": "data/routes/R010.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "登山が難しい雨の日でも「何もできない一日」にせず、屋久杉の文化・滝・温泉を雨の強さに合わせて組み替え、屋久島らしい体験を安全に残す 尾之間温泉を終盤に置くことで、文化・水景観から入浴へつながる締めが生まれる。 雨天でも屋内の屋久杉文化から滝・温泉へつなぎ、天候に合わせて体験量を調整しながら屋久島らしい一日を成立させられる。",
+        "tags": [
+          "ドライブ"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "driving",
+          "label": "ドライブ"
+        }
+      }
+    },
+    {
+      "ref": {
         "entity_type": "route",
         "id": "R011"
       },
@@ -117,6 +230,230 @@
         "image": {
           "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/n/nexusuica/20180926/20180926235933.png",
           "alt": "乳頭温泉郷"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0014"
+      },
+      "title": "白谷雲水峡",
+      "data_path": "data/spots/S0014.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "標高約600〜1,050mの自然休養林に、苔・屋久杉・照葉樹林と白谷川の渓流が分布する。 苔に覆われた原生林と清流を歩き、屋久杉を観察する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://www.jalan.net/jalan/img/9/kuchikomi/5849/KXL/200ad_0005849003_1.jpeg",
+          "alt": "白谷雲水峡"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0015"
+      },
+      "title": "太鼓岩",
+      "data_path": "data/spots/S0015.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "標高約1,050mの巨大な花崗岩で、約180度に山岳景観が開ける。 岩上から屋久島の山並みを見渡し、開放感を味わう。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://d1grca2t3zpuug.cloudfront.net/2025/02/67aba3fbea753-860x500.webp",
+          "alt": "太鼓岩"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0016"
+      },
+      "title": "縄文杉",
+      "data_path": "data/spots/S0016.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "標高約1,300mにある樹高約25.3m・胸高周囲約16.4mの屋久杉で、展望デッキから観察する。 巨大な幹の造形を眺め、長距離を歩いて到達する達成感を得る。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "縄文杉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      },
+      "title": "ウィルソン株",
+      "data_path": "data/spots/S0017.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "内部に入れる空間を持つ巨大な屋久杉の切株。 切株の内部から、かつての屋久杉の太さと空間の大きさを体感する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "http://www.town.yakushima.kagoshima.jp/material/images/group/7/9c94e4a0c48c4dee53ab84387c101177.jpg",
+          "alt": "ウィルソン株"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      },
+      "title": "小杉谷集落跡",
+      "data_path": "data/spots/S0019.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島の林業に関わる旧集落跡で、学校や山中生活の痕跡が残る。 集落跡の痕跡を通じ、人と森林の関わりを知る。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/18/87/83/650x450_18878379.jpg?updated_at=1662531617",
+          "alt": "小杉谷集落跡"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0020"
+      },
+      "title": "大王杉",
+      "data_path": "data/spots/S0020.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "現在も立つ巨大な屋久杉で、かつて最大級として知られていた。 生きた巨木の幹と大きさを間近に観察する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "http://www.town.yakushima.kagoshima.jp/material/images/group/7/8ce1cf0c82cee481d1daf2d77bdc5a99.jpg",
+          "alt": "大王杉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0021"
+      },
+      "title": "苔むす森",
+      "data_path": "data/spots/S0021.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "白谷雲水峡内で、樹木・岩・倒木が苔に覆われた湿潤な原生林。 深い緑と湿った森林の空気を感じながら苔を観察する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://image.asoview-media.com/image/production/acp/3000001472/pln3000003561/1.jpg",
+          "alt": "苔むす森"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "title": "素泊民宿 ふれんど",
+      "data_path": "data/spots/S0025.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "共用キッチンを利用できる。 宮之浦市街地の素泊まり民宿で、周辺に買い出し先や飲食店がある。 洗剤付きの共用洗濯機、Wi-Fi、共用リビングを利用できる。 自炊・洗濯をしながら生活のペースに合わせて滞在する。",
+        "tags": [
+          "宿泊"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "lodging",
+          "label": "宿泊"
+        },
+        "image": {
+          "url": "https://res.klook.com/klook-hotel/image/upload/travelapi/43000000/42080000/42074200/42074130/c5c61e62_z.jpg",
+          "alt": "素泊民宿 ふれんど"
         }
       }
     },
@@ -171,6 +508,90 @@
         "image": {
           "url": "https://assets.st-note.com/img/1749448208-P7bomBUIMGfN3Q25gkxHWwR1.jpg",
           "alt": "平内海中温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0030"
+      },
+      "title": "楠川温泉",
+      "data_path": "data/spots/S0030.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "400年以上の歴史を持つ小規模な共同浴場で、24.5度の冷泉を加温している。 地元の共同湯に入り、小規模な浴場の雰囲気を味わう。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/18/18/49/650x450_18184942.jpg?updated_at=1631879031",
+          "alt": "楠川温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0032"
+      },
+      "title": "屋久杉自然館",
+      "data_path": "data/spots/S0032.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久杉の生態、林業、島の暮らしを扱い、縄文杉の「いのちの枝」などを展示する屋内施設。 屋久杉と人々の関わりを展示から学ぶ。",
+        "tags": [
+          "施設"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "facility",
+          "label": "施設"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_pict/68/92/85/650x_68928534.jpg?updated_at=1615463141",
+          "alt": "屋久杉自然館"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0033"
+      },
+      "title": "屋久島世界遺産センター",
+      "data_path": "data/spots/S0033.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島の自然環境・保全・国立公園に関する展示を持つ屋内施設。 屋久島が世界自然遺産となった理由と自然保全を学ぶ。",
+        "tags": [
+          "施設"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "facility",
+          "label": "施設"
+        },
+        "image": {
+          "url": "https://www.env.go.jp/park/yakushima/ywhcc/common/img/center/center1.jpg",
+          "alt": "屋久島世界遺産センター"
         }
       }
     },
@@ -389,6 +810,110 @@
           "alt": "手打ちそば 松竹"
         }
       }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0046"
+      },
+      "title": "PANORAMA",
+      "data_path": "data/spots/S0046.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "トビカツ、たんかんマーマレードのチーズ料理、バーニャカウダ、屋久島牛カルパッチョ、鹿肉入り水餃子などを扱う。 地魚・島野菜・屋久島牛・鹿などを使う創作料理を、改装した店舗で提供する。 複数の島食材を創作料理として味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-restaurant-panorama-01.jpg",
+          "alt": "PANORAMA"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0051"
+      },
+      "title": "和食の海舟",
+      "data_path": "data/spots/S0051.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "一品料理と定食の両方を提供し、到着日の夕食にも使いやすい。 宮之浦の和食店で、島の旬の魚を使った刺身、トビウオの唐揚げ、首折れサバ、鹿肉など屋久島の山海の幸を扱う。 屋久島らしい地魚やトビウオなどを和食として味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/11/06/38/650x450_11063827.jpg?updated_at=1373634029",
+          "alt": "和食の海舟"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "title": "自宅",
+      "data_path": "data/travel-points/T0001.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0002"
+      },
+      "title": "羽田空港",
+      "data_path": "data/travel-points/T0002.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0003"
+      },
+      "title": "屋久島空港",
+      "data_path": "data/travel-points/T0003.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0004"
+      },
+      "title": "白谷雲水峡入口駐車場",
+      "data_path": "data/travel-points/T0004.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0005"
+      },
+      "title": "タイムズカーレンタル 屋久島空港店",
+      "data_path": "data/travel-points/T0005.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0010"
+      },
+      "title": "荒川登山口",
+      "data_path": "data/travel-points/T0010.json"
     }
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0032",
+  "title": "屋久杉自然館",
+  "summary": "屋久杉の生態、林業、島の暮らしを扱い、縄文杉の「いのちの枝」などを展示する屋内施設。 屋久杉と人々の関わりを展示から学ぶ。",
+  "theme_chips": [
+    "施設"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥600"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_pict/68/92/85/650x_68928534.jpg?updated_at=1615463141",
+      "source_url": "https://4travel.jp/travelogue/11676712"
+    },
+    {
+      "url": "https://www.airial.travel/_next/image?q=70&url=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-w%2F28%2Fea%2F7a%2F78%2Fcaption.jpg&w=3840",
+      "source_url": "https://www.airial.travel/attractions/japan/yakushima/yakusugi-museum-yakushima-CB1pF45Q"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-yakusugi-museum-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6995.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久杉の生態、林業、島の暮らしを扱い、縄文杉の「いのちの枝」などを展示する屋内施設。"
+    ],
+    "review": {
+      "positives": [
+        "屋久杉と人々の関わりを展示から学ぶ。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/kanko/kankospot/5/2603.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6995.html"
+    }
+  }
+}

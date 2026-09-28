@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0015",
+  "title": "太鼓岩",
+  "summary": "標高約1,050mの巨大な花崗岩で、約180度に山岳景観が開ける。 岩上から屋久島の山並みを見渡し、開放感を味わう。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町宮之浦・白谷側"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://d1grca2t3zpuug.cloudfront.net/2025/02/67aba3fbea753-860x500.webp"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-taikoiwa960.jpg",
+      "source_url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/spot-taiko-iwa-rock-01.jpg",
+      "source_url": "https://yakukan.jp/spot/9654.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "標高約1,050mの巨大な花崗岩で、約180度に山岳景観が開ける。"
+    ],
+    "review": {
+      "positives": [
+        "岩上から屋久島の山並みを見渡し、開放感を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/9654.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0033",
+  "title": "屋久島世界遺産センター",
+  "summary": "屋久島の自然環境・保全・国立公園に関する展示を持つ屋内施設。 屋久島が世界自然遺産となった理由と自然保全を学ぶ。",
+  "theme_chips": [
+    "施設"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://www.env.go.jp/park/yakushima/ywhcc/common/img/center/center1.jpg",
+      "source_url": "https://www.env.go.jp/park/yakushima/ywhcc/center/center.html"
+    },
+    {
+      "url": "https://www.env.go.jp/park/yakushima/ywhcc/common/img/center/tenji2-06.jpg",
+      "source_url": "https://www.env.go.jp/park/yakushima/ywhcc/center/tenji.html"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/tourism_attractions/10719/responsive_images/93aRuIV19D0yonGKxRaiEVdDlVZMRNsHQkEtzT8m__599_399.jpeg",
+      "source_url": "https://www.kagoshima-kankou.com/guide/10719"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島の自然環境・保全・国立公園に関する展示を持つ屋内施設。"
+    ],
+    "review": {
+      "positives": [
+        "屋久島が世界自然遺産となった理由と自然保全を学ぶ。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.env.go.jp/park/yakushima/ywhcc/center/center.html"
+    },
+    "supplemental": {
+      "url": "https://www.env.go.jp/park/yakushima/ywhcc/center/center.html"
+    }
+  }
+}

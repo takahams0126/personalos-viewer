@@ -1,0 +1,51 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R004",
+  "title": "白谷雲水峡ルート・太鼓岩往復",
+  "summary": "苔と渓流に包まれた白谷雲水峡を歩き、森の奥深さを味わったあと、太鼓岩で一気に開ける大展望をクライマックスにする 森に包まれ続けたあと太鼓岩で山並みが一気に開け、Route全体に明確なクライマックスが生まれる。 白谷の渓流と原生林から苔むす森へ進むにつれ、苔の密度と森の深さが増していく。",
+  "theme_chips": [
+    "ハイキング"
+  ],
+  "family_label": "白谷雲水峡ルート",
+  "variant": {
+    "code": "full",
+    "label": "太鼓岩往復"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "苔と渓流に包まれた白谷雲水峡を歩き、森の奥深さを味わったあと、太鼓岩で一気に開ける大展望をクライマックスにする",
+    "strengths": [
+      "森に包まれ続けたあと太鼓岩で山並みが一気に開け、Route全体に明確なクライマックスが生まれる。",
+      "白谷の渓流と原生林から苔むす森へ進むにつれ、苔の密度と森の深さが増していく。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0014"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0021"
+      }
+    },
+    {
+      "order": 3,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0015"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R004/R004-conceptual-map.json"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0020",
+  "title": "大王杉",
+  "summary": "現在も立つ巨大な屋久杉で、かつて最大級として知られていた。 生きた巨木の幹と大きさを間近に観察する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "http://www.town.yakushima.kagoshima.jp/material/images/group/7/8ce1cf0c82cee481d1daf2d77bdc5a99.jpg",
+      "source_url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yakusugikyoboku_chomeiki/555.html"
+    },
+    {
+      "url": "https://tabi-photo.com/Short_Travel/Yakushima/20240215_YakushimaTrip_files/DSC_1578.jpg",
+      "source_url": "https://tabi-photo.com/Short_Travel/Yakushima/20240215_YakushimaTrip.html"
+    },
+    {
+      "url": "https://www.codyhou.com/assets/images/posts/2025-07-14-yakushima-travel-log-20.jpg"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "現在も立つ巨大な屋久杉で、かつて最大級として知られていた。"
+    ],
+    "review": {
+      "positives": [
+        "生きた巨木の幹と大きさを間近に観察する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yakusugikyoboku_chomeiki/555.html"
+    },
+    "supplemental": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yakusugikyoboku_chomeiki/555.html"
+    }
+  }
+}

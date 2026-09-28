@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0019",
+  "title": "小杉谷集落跡",
+  "summary": "屋久島の林業に関わる旧集落跡で、学校や山中生活の痕跡が残る。 集落跡の痕跡を通じ、人と森林の関わりを知る。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/18/87/83/650x450_18878379.jpg?updated_at=1662531617",
+      "source_url": "https://4travel.jp/"
+    },
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_pict/70/07/85/650x_70078572.jpg?updated_at=1624330035",
+      "source_url": "https://4travel.jp/"
+    },
+    {
+      "url": "https://www.env.go.jp/nature/nationalparks/images/activityPhoto/act1023_thum.jpg",
+      "source_url": "https://www.env.go.jp/nature/nationalparks/try/all/act1023.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島の林業に関わる旧集落跡で、学校や山中生活の痕跡が残る。"
+    ],
+    "review": {
+      "positives": [
+        "集落跡の痕跡を通じ、人と森林の関わりを知る。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.env.go.jp/nature/nationalparks/list/yakushima/try/course/01/"
+    },
+    "supplemental": {
+      "url": "https://www.env.go.jp/nature/nationalparks/try/all/act1023.html"
+    }
+  }
+}

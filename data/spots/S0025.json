@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0025",
+  "title": "素泊民宿 ふれんど",
+  "summary": "共用キッチンを利用できる。 宮之浦市街地の素泊まり民宿で、周辺に買い出し先や飲食店がある。 洗剤付きの共用洗濯機、Wi-Fi、共用リビングを利用できる。 自炊・洗濯をしながら生活のペースに合わせて滞在する。",
+  "theme_chips": [
+    "宿泊"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦186-2"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥4,000"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "recommended"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://res.klook.com/klook-hotel/image/upload/travelapi/43000000/42080000/42074200/42074130/c5c61e62_z.jpg"
+    },
+    {
+      "url": "https://trvimg.r10s.jp/share/image_up/178277/origin/5d1c5d5537757c40b0a5292825098e1cf9968000.47.1.26.2.jpg?fit=inside%7C786%3A450&interpolation=lanczos-none"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/09/spot-friend-02.jpg",
+      "source_url": "https://yakukan.jp/spot/6949.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "共用キッチンを利用できる。",
+      "宮之浦市街地の素泊まり民宿で、周辺に買い出し先や飲食店がある。",
+      "洗剤付きの共用洗濯機、Wi-Fi、共用リビングを利用できる。"
+    ],
+    "review": {
+      "positives": [
+        "自炊・洗濯をしながら生活のペースに合わせて滞在する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.fk-yakushima.jp/index.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6949.html"
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "artifact_type": "conceptual_map",
+  "source": {
+    "entity_type": "route",
+    "id": "R010"
+  },
+  "points": [
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0032"
+      },
+      "order": 1,
+      "position": {
+        "lat": 30.309053099999996,
+        "lon": 130.6329522
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJWRqJJ3ggPTURgDEmGj7BUps"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0033"
+      },
+      "order": 2,
+      "position": {
+        "lat": 30.308786500000004,
+        "lon": 130.6316354
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJWRqJJ3ggPTUREK3AKzrhmjA"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0034"
+      },
+      "order": 3,
+      "position": {
+        "lat": 30.2505858,
+        "lon": 130.5908327
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJpZ4RCOMmPTURIa4QaPRlDmg"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0035"
+      },
+      "order": 4,
+      "position": {
+        "lat": 30.2623292,
+        "lon": 130.5822033
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJl0Cun-MmPTURDr7kcFzAe1I"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0026"
+      },
+      "order": 5,
+      "position": {
+        "lat": 30.240386199999996,
+        "lon": 130.5487159
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJw6nTUdklPTURRwWJ_T8Apsk"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0028"
+      },
+      "order": 6,
+      "position": {
+        "lat": 30.230952199999997,
+        "lon": 130.4839206
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJQfhGO_AvPTUR9nspFzmOv84"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0036"
+      },
+      "order": 7,
+      "position": {
+        "lat": 30.299849499999993,
+        "lon": 130.41370519999998
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJnzqBwks6PTURAlWO4qP4q8g"
+      }
+    }
+  ]
+}

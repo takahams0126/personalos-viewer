@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0004",
+  "title": "白谷雲水峡入口駐車場",
+  "point_type": {
+    "code": "parking",
+    "label": "駐車場"
+  },
+  "location": {
+    "text": "日本鹿児島県屋久島町白谷雲水峡入口"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0014",
+  "title": "白谷雲水峡",
+  "summary": "標高約600〜1,050mの自然休養林に、苔・屋久杉・照葉樹林と白谷川の渓流が分布する。 苔に覆われた原生林と清流を歩き、屋久杉を観察する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町宮之浦・白谷側"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥800"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://www.jalan.net/jalan/img/9/kuchikomi/5849/KXL/200ad_0005849003_1.jpeg",
+      "source_url": "https://www.jalan.net/kankou/spt_46503ab2040006167/kuchikomi/"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-shiratani-unsuikyo-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6985.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-taikoiwa960.jpg",
+      "source_url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "標高約600〜1,050mの自然休養林に、苔・屋久杉・照葉樹林と白谷川の渓流が分布する。"
+    ],
+    "review": {
+      "positives": [
+        "苔に覆われた原生林と清流を歩き、屋久杉を観察する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6985.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    }
+  }
+}

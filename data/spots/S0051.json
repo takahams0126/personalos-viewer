@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0051",
+  "title": "和食の海舟",
+  "summary": "一品料理と定食の両方を提供し、到着日の夕食にも使いやすい。 宮之浦の和食店で、島の旬の魚を使った刺身、トビウオの唐揚げ、首折れサバ、鹿肉など屋久島の山海の幸を扱う。 屋久島らしい地魚やトビウオなどを和食として味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦2367-7"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "recommended"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/11/06/38/650x450_11063827.jpg?updated_at=1373634029",
+      "source_url": "https://4travel.jp/dm_shisetsu/10215100"
+    },
+    {
+      "url": "https://tblg.k-img.com/restaurant/images/Rvw/232774/d2ba1c9d8bc1c289f83e58fe7e701efe.jpg",
+      "source_url": "https://tabelog.com/kagoshima/A4605/A460501/46000293/dtlphotolst/smp2/"
+    },
+    {
+      "url": "https://ximg.retty.me/crop/s400x400/q80/das/-/retty/img_repo/2l/01/12647415.jpg",
+      "source_url": "https://retty.me/area/PRE46/ARE287/SUB28702/100000077340/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "一品料理と定食の両方を提供し、到着日の夕食にも使いやすい。",
+      "宮之浦の和食店で、島の旬の魚を使った刺身、トビウオの唐揚げ、首折れサバ、鹿肉など屋久島の山海の幸を扱う。"
+    ],
+    "review": {
+      "positives": [
+        "屋久島らしい地魚やトビウオなどを和食として味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://kaisyu.wixsite.com/kaisyu/meal"
+    },
+    "supplemental": {
+      "url": "https://yakushima-shoko.or.jp/members/restaurant/"
+    }
+  }
+}

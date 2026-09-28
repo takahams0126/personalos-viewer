@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0016",
+  "title": "縄文杉",
+  "summary": "標高約1,300mにある樹高約25.3m・胸高周囲約16.4mの屋久杉で、展望デッキから観察する。 巨大な幹の造形を眺め、長距離を歩いて到達する達成感を得る。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房・中央山岳側"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥1,000"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+      "source_url": "https://yakukan.jp/feature/jomonsugi-course.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/spot-jomon-sugi-cedar-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7006.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/spot-jomon-sugi-cedar-03.jpg",
+      "source_url": "https://yakukan.jp/spot/7006.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "標高約1,300mにある樹高約25.3m・胸高周囲約16.4mの屋久杉で、展望デッキから観察する。"
+    ],
+    "review": {
+      "positives": [
+        "巨大な幹の造形を眺め、長距離を歩いて到達する達成感を得る。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7006.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/feature/jomonsugi-course.html"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R010",
+  "title": "屋久島南部雨天ドライブ",
+  "summary": "登山が難しい雨の日でも「何もできない一日」にせず、屋久杉の文化・滝・温泉を雨の強さに合わせて組み替え、屋久島らしい体験を安全に残す 尾之間温泉を終盤に置くことで、文化・水景観から入浴へつながる締めが生まれる。 雨天でも屋内の屋久杉文化から滝・温泉へつなぎ、天候に合わせて体験量を調整しながら屋久島らしい一日を成立させられる。",
+  "theme_chips": [
+    "ドライブ"
+  ],
+  "family_label": "屋久島南部雨天ドライブ",
+  "variant": {
+    "code": "standard",
+    "label": "標準"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "登山が難しい雨の日でも「何もできない一日」にせず、屋久杉の文化・滝・温泉を雨の強さに合わせて組み替え、屋久島らしい体験を安全に残す",
+    "strengths": [
+      "尾之間温泉を終盤に置くことで、文化・水景観から入浴へつながる締めが生まれる。",
+      "雨天でも屋内の屋久杉文化から滝・温泉へつなぎ、天候に合わせて体験量を調整しながら屋久島らしい一日を成立させられる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0032"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0033"
+      }
+    },
+    {
+      "order": 3,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0034"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      },
+      "condition": {
+        "text": "雨が弱い場合"
+      }
+    },
+    {
+      "order": 4,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0035"
+      }
+    },
+    {
+      "order": 5,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0026"
+      },
+      "visit_purpose": {
+        "code": "bath",
+        "label": "入浴"
+      }
+    },
+    {
+      "order": 6,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0028"
+      },
+      "visit_purpose": {
+        "code": "bath",
+        "label": "入浴"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      },
+      "condition": {
+        "text": "潮位・波・風・足元条件が良い場合"
+      }
+    },
+    {
+      "order": 7,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0036"
+      },
+      "inclusion_requirement": {
+        "code": "optional",
+        "label": "任意"
+      },
+      "condition": {
+        "text": "天候が立ち寄りに適する場合 かつ 道路状況が立ち寄りに支障ない場合 かつ 立ち寄る時間に余裕がある場合"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R010/R010-conceptual-map.json"
+  }
+}

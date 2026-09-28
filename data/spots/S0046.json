@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0046",
+  "title": "PANORAMA",
+  "summary": "トビカツ、たんかんマーマレードのチーズ料理、バーニャカウダ、屋久島牛カルパッチョ、鹿肉入り水餃子などを扱う。 地魚・島野菜・屋久島牛・鹿などを使う創作料理を、改装した店舗で提供する。 複数の島食材を創作料理として味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦60-1"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥3,500"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "recommended"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-restaurant-panorama-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6915.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-restaurant-panorama-02.jpg",
+      "source_url": "https://yakukan.jp/spot/6915.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-restaurant-panorama-03.jpg",
+      "source_url": "https://yakukan.jp/spot/6915.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "トビカツ、たんかんマーマレードのチーズ料理、バーニャカウダ、屋久島牛カルパッチョ、鹿肉入り水餃子などを扱う。",
+      "地魚・島野菜・屋久島牛・鹿などを使う創作料理を、改装した店舗で提供する。"
+    ],
+    "review": {
+      "positives": [
+        "複数の島食材を創作料理として味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "http://panoramayakushima.com/"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6915.html"
+    }
+  }
+}

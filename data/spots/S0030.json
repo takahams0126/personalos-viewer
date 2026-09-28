@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0030",
+  "title": "楠川温泉",
+  "summary": "400年以上の歴史を持つ小規模な共同浴場で、24.5度の冷泉を加温している。 地元の共同湯に入り、小規模な浴場の雰囲気を味わう。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町楠川1364-5"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "fee",
+      "label": "料金",
+      "value": "¥300"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/18/18/49/650x450_18184942.jpg?updated_at=1631879031",
+      "source_url": "https://4travel.jp/dm_shisetsu/10603528"
+    },
+    {
+      "url": "https://www.town.yakushima.kagoshima.jp/material/images/group/7/kusugawa2.jpg",
+      "source_url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankosite_English/2/2/366.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-kusugawa-onsen-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7011.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "400年以上の歴史を持つ小規模な共同浴場で、24.5度の冷泉を加温している。"
+    ],
+    "review": {
+      "positives": [
+        "地元の共同湯に入り、小規模な浴場の雰囲気を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7011.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7011.html"
+    }
+  }
+}

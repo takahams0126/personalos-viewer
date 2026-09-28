@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0017",
+  "title": "ウィルソン株",
+  "summary": "内部に入れる空間を持つ巨大な屋久杉の切株。 切株の内部から、かつての屋久杉の太さと空間の大きさを体感する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房・中央山岳側"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "http://www.town.yakushima.kagoshima.jp/material/images/group/7/9c94e4a0c48c4dee53ab84387c101177.jpg",
+      "source_url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yakusugikyoboku_chomeiki/302.html"
+    },
+    {
+      "url": "https://www.yakushimaexperience.com/wp-content/uploads/2023/03/IMG_3697-scaled.jpg"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-wilsons-stump-04.jpg",
+      "source_url": "https://yakukan.jp/spot/7007.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "内部に入れる空間を持つ巨大な屋久杉の切株。"
+    ],
+    "review": {
+      "positives": [
+        "切株の内部から、かつての屋久杉の太さと空間の大きさを体感する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/yakusugikyoboku_chomeiki/302.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7007.html"
+    }
+  }
+}

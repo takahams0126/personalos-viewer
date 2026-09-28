@@ -1,0 +1,43 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R007",
+  "title": "縄文杉ルート・ウィルソン株往復",
+  "summary": "縄文杉ルート前半のトロッコ道・小杉谷・巨木体験を残しながら、【ウィルソン株】で折り返して終日行動の負荷を抑える 小杉谷集落跡からウィルソン株へ進み、縄文杉ルート前半の林業史から巨木へ移る体験を独立したRouteとして味わえる。",
+  "theme_chips": [
+    "ハイキング"
+  ],
+  "family_label": "縄文杉ルート",
+  "variant": {
+    "code": "short",
+    "label": "ウィルソン株往復"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "縄文杉ルート前半のトロッコ道・小杉谷・巨木体験を残しながら、【ウィルソン株】で折り返して終日行動の負荷を抑える",
+    "strengths": [
+      "小杉谷集落跡からウィルソン株へ進み、縄文杉ルート前半の林業史から巨木へ移る体験を独立したRouteとして味わえる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R007/R007-conceptual-map.json"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "entity_type": "spot",
+  "id": "S0021",
+  "title": "苔むす森",
+  "summary": "白谷雲水峡内で、樹木・岩・倒木が苔に覆われた湿潤な原生林。 深い緑と湿った森林の空気を感じながら苔を観察する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町白谷雲水峡"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "unnecessary"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://image.asoview-media.com/image/production/acp/3000001472/pln3000003561/1.jpg"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-shiratani-unsuikyo-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6985.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-taikoiwa960.jpg",
+      "source_url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "白谷雲水峡内で、樹木・岩・倒木が苔に覆われた湿潤な原生林。"
+    ],
+    "review": {
+      "positives": [
+        "深い緑と湿った森林の空気を感じながら苔を観察する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6985.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/feature/taikoiwa-course.html"
+    }
+  }
+}

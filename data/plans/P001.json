@@ -1,0 +1,490 @@
+{
+  "schema_version": 4,
+  "entity_type": "plan",
+  "id": "P001",
+  "title": "屋久島 4泊5日基本Plan",
+  "summary": "縄文杉と白谷雲水峡の山行を軸に、屋久島一周ドライブや温泉を組み合わせる4泊5日の基本旅行プラン。",
+  "days": [
+    {
+      "ordinal": 1,
+      "title": "屋久島到着・宮之浦入り",
+      "summary": "東京から屋久島へ移動し、レンタカー受取・宿チェックイン・翌日の登山準備と夕食を整える日。",
+      "start_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "actions": [
+            "レンタカーを受け取る"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "actions": [
+            "チェックインする",
+            "翌日の登山に必要な買い出し・準備を済ませる"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0051"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0051"
+          },
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          },
+          "inclusion_requirement": {
+            "code": "optional",
+            "label": "任意"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0051"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        }
+      ]
+    },
+    {
+      "ordinal": 2,
+      "title": "縄文杉ルート・縄文杉往復",
+      "summary": "縄文杉ルートを歩き、縄文杉を往復して宮之浦の宿へ戻る山行日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R005"
+          },
+          "entry_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "exit_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "alternatives": [
+            {
+              "route_ref": {
+                "entity_type": "route",
+                "id": "R007"
+              },
+              "replacement_intent": "縄文杉までの完遂が厳しい場合でも、森と巨木の体験を残しながら山行を短縮する",
+              "selection_condition": {
+                "text": "天候悪化により縄文杉まで進む余裕が小さい状態 または 体調低下により長時間行動の継続が適切でない状態 または 進行遅れにより縄文杉往復の完遂が厳しい状態"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        }
+      ]
+    },
+    {
+      "ordinal": 3,
+      "title": "屋久島一周ドライブ",
+      "summary": "宮之浦を起点に屋久島を一周し、島の景観を巡って宿へ戻るドライブ日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R011"
+          },
+          "entry_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "exit_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "alternatives": [
+            {
+              "route_ref": {
+                "entity_type": "route",
+                "id": "R010"
+              },
+              "replacement_intent": "豪雨・強風時に島一周へこだわらず、南部中心のドライブへ切り替えて屋久島の景観体験を残す",
+              "selection_condition": {
+                "text": "豪雨・強風で島一周ドライブに適さない状態"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ordinal": 4,
+      "title": "白谷雲水峡・太鼓岩と温泉・夕食",
+      "summary": "白谷雲水峡ルート・太鼓岩往復を歩き、温泉と夕食を楽しんで宿へ戻る日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R004"
+          },
+          "entry_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "exit_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "visit_purpose": {
+            "code": "bath",
+            "label": "入浴"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        }
+      ]
+    },
+    {
+      "ordinal": 5,
+      "title": "屋久島出発・東京帰着",
+      "summary": "宮之浦の宿を出てレンタカーを返却し、屋久島から東京へ戻る帰路の日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "sequence": [
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "actions": [
+            "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "actions": [
+            "レンタカーを返却する"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        }
+      ]
+    }
+  ],
+  "reorder_groups": [
+    {
+      "factor": {
+        "code": "weather",
+        "label": "天候"
+      },
+      "day_ordinals": [
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "status": {
+    "state": {
+      "code": "complete",
+      "label": "完了"
+    }
+  }
+}

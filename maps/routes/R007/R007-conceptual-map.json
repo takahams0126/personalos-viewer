@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "artifact_type": "conceptual_map",
+  "source": {
+    "entity_type": "route",
+    "id": "R007"
+  },
+  "points": [
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      },
+      "order": 1,
+      "position": {
+        "lat": 30.352445499999995,
+        "lon": 130.5783429
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgSddNgAhPTUR1rG37QfoVa8"
+      }
+    },
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      },
+      "order": 2,
+      "position": {
+        "lat": 30.356558399999994,
+        "lon": 130.5421957
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJK3BIjRciPTUR2S8_5yCwnUI"
+      }
+    }
+  ]
+}

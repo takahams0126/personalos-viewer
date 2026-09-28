@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0002",
+  "title": "羽田空港",
+  "point_type": {
+    "code": "airport",
+    "label": "空港"
+  },
+  "location": {
+    "text": "日本東京都大田区羽田空港"
+  }
+}
