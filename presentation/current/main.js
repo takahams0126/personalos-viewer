@@ -7,8 +7,10 @@ import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
+import { renderTop } from './render/top.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './ui/carousel.js';
+import { hydrateExplorer } from './ui/explorer.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -52,8 +54,23 @@ async function renderRequestedEntity(request, data) {
   throw new Error(`Current Viewer does not support this page type yet: ${request.type}`);
 }
 
+async function renderTopPage(app) {
+  const manifest = await manifestStore.ensure();
+  document.documentElement.dataset.pageType = 'top';
+  document.title = 'レジャー | PersonalOS Viewer';
+  app.replaceChildren(renderTop({ manifest }));
+  hydrateExplorer(app);
+}
+
 async function main() {
   const request = readRequest();
+  const app = document.querySelector('#app');
+
+  if (request.kind === 'top') {
+    await renderTopPage(app);
+    return;
+  }
+
   document.documentElement.dataset.pageType = request.type;
 
   const loaded = await resolver.load({
@@ -62,7 +79,6 @@ async function main() {
   });
 
   const page = await renderRequestedEntity(request, loaded.data);
-  const app = document.querySelector('#app');
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
