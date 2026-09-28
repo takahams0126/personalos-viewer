@@ -1,0 +1,2057 @@
+{
+  "schema_version": 5,
+  "entity_type": "concrete_plan",
+  "id": "CP001",
+  "title": "屋久島 4泊5日基本Plan 2026-10-19〜2026-10-23",
+  "period": {
+    "start": "2026-10-19",
+    "end": "2026-10-23",
+    "label": "2026-10-19〜2026-10-23"
+  },
+  "source_plan_ref": {
+    "entity_type": "plan",
+    "id": "P001"
+  },
+  "days": [
+    {
+      "ordinal": 1,
+      "source_plan_day_ordinal": 1,
+      "date": "2026-10-19",
+      "weekday_label": "月曜日",
+      "start_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "next_move": {
+            "transport": {
+              "code": "train",
+              "label": "電車"
+            }
+          },
+          "arrival_label": "05:20",
+          "departure_label": "05:20"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          }
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "next_move": {
+            "transport": {
+              "code": "airplane",
+              "label": "飛行機"
+            },
+            "service": {
+              "operator": "JAL",
+              "service_number": "JAL645",
+              "depart_label": "10:00",
+              "arrive_label": "11:45"
+            },
+            "depart_label": "10:00",
+            "arrive_label": "11:45"
+          }
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0007"
+          },
+          "next_move": {
+            "transport": {
+              "code": "airplane",
+              "label": "飛行機"
+            },
+            "service": {
+              "operator": "JAL/JAC",
+              "service_number": "JAL3745",
+              "depart_label": "13:25",
+              "arrive_label": "14:05"
+            },
+            "depart_label": "13:25",
+            "arrive_label": "14:05"
+          },
+          "arrival_label": "11:45",
+          "departure_label": "11:45"
+        },
+        {
+          "order": 5,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "arrival_label": "14:05",
+          "departure_label": "14:05"
+        },
+        {
+          "order": 6,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "next_move": {
+            "transport": {
+              "code": "walk",
+              "label": "徒歩"
+            },
+            "duration_label": "6分",
+            "distance_label": "472m"
+          },
+          "arrival_label": "14:05",
+          "departure_label": "14:05"
+        },
+        {
+          "order": 7,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "todos": [
+            "レンタカーを受け取る"
+          ],
+          "arrival_label": "14:11"
+        },
+        {
+          "order": 8,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "12分",
+            "distance_label": "9.9km"
+          }
+        },
+        {
+          "order": 9,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "todos": [
+            "チェックインする",
+            "翌日の縄文杉登山に必要な買い出し・準備を済ませる"
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "2分",
+            "distance_label": "884m"
+          },
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "18:00"
+            }
+          ]
+        },
+        {
+          "order": 10,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0051"
+          },
+          "stay_label": "1時間15分",
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          },
+          "inclusion_requirement": {
+            "code": "optional",
+            "label": "任意"
+          },
+          "todos": [
+            "夕食をとる"
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "2分",
+            "distance_label": "884m"
+          },
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "22:00"
+            }
+          ]
+        },
+        {
+          "order": 11,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          }
+        }
+      ],
+      "start_time_label": "05:20",
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP001/CP001-day01-road-map.json",
+        "kind": "execution_road_map"
+      }
+    },
+    {
+      "ordinal": 2,
+      "source_plan_day_ordinal": 2,
+      "date": "2026-10-20",
+      "weekday_label": "火曜日",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "30分",
+            "distance_label": "22.4km"
+          },
+          "arrival_label": "05:05",
+          "departure_label": "05:05"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0009"
+          },
+          "todos": [
+            "レンタカーを駐車する",
+            "荒川登山バスへ乗り換える"
+          ],
+          "arrival_label": "05:35",
+          "facility_executions": [
+            {
+              "facility_key": "parking",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0009"
+          },
+          "next_move": {
+            "transport": {
+              "code": "bus",
+              "label": "バス"
+            },
+            "service": {
+              "operator": "荒川登山バス",
+              "route_name": "屋久杉自然館前→荒川登山口",
+              "depart_label": "05:40",
+              "arrive_label": "06:15"
+            },
+            "depart_label": "05:40",
+            "arrive_label": "06:15"
+          },
+          "facility_executions": [
+            {
+              "facility_key": "parking",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 5,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 6,
+          "target": {
+            "kind": "route_local",
+            "label": "橋"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 7,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0019"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 8,
+          "target": {
+            "kind": "route_local",
+            "label": "楠川分れ"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 9,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 10,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 11,
+          "target": {
+            "kind": "route_local",
+            "label": "仁王杉"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 12,
+          "target": {
+            "kind": "route_local",
+            "label": "大株歩道入口"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 13,
+          "target": {
+            "kind": "route_local",
+            "label": "トロッコ道終点トイレ"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 14,
+          "target": {
+            "kind": "route_local",
+            "label": "大株歩道入口"
+          },
+          "arrival_label": "06:15",
+          "departure_label": "06:15"
+        },
+        {
+          "order": 15,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0017"
+          },
+          "stay_label": "20分",
+          "arrival_label": "06:15",
+          "departure_label": "06:35"
+        },
+        {
+          "order": 16,
+          "target": {
+            "kind": "route_local",
+            "label": "水場"
+          },
+          "arrival_label": "06:35",
+          "departure_label": "06:35"
+        },
+        {
+          "order": 17,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0020"
+          },
+          "arrival_label": "06:35",
+          "departure_label": "06:35"
+        },
+        {
+          "order": 18,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0016"
+          },
+          "stay_label": "45分",
+          "arrival_label": "06:35",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 19,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0020"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 20,
+          "target": {
+            "kind": "route_local",
+            "label": "水場"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 21,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0017"
+          },
+          "stay_label": "0分",
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 22,
+          "target": {
+            "kind": "route_local",
+            "label": "大株歩道入口"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 23,
+          "target": {
+            "kind": "route_local",
+            "label": "トロッコ道終点トイレ"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 24,
+          "target": {
+            "kind": "route_local",
+            "label": "大株歩道入口"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 25,
+          "target": {
+            "kind": "route_local",
+            "label": "仁王杉"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 26,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 27,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 28,
+          "target": {
+            "kind": "route_local",
+            "label": "楠川分れ"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 29,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0019"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 30,
+          "target": {
+            "kind": "route_local",
+            "label": "橋"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 31,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20",
+          "time_constraints": [
+            {
+              "kind": "latest_safe",
+              "time_label": "17:45"
+            }
+          ]
+        },
+        {
+          "order": 32,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "next_move": {
+            "transport": {
+              "code": "bus",
+              "label": "バス"
+            },
+            "service": {
+              "operator": "荒川登山バス",
+              "route_name": "荒川登山口→屋久杉自然館前",
+              "depart_label": "17:45",
+              "arrive_label": "18:20"
+            },
+            "depart_label": "17:45",
+            "arrive_label": "18:20"
+          },
+          "arrival_label": "07:20",
+          "departure_label": "07:20"
+        },
+        {
+          "order": 33,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0009"
+          },
+          "arrival_label": "18:20",
+          "departure_label": "18:20",
+          "facility_executions": [
+            {
+              "facility_key": "parking",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "order": 34,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0009"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "29分",
+            "distance_label": "22.4km"
+          },
+          "arrival_label": "18:20",
+          "departure_label": "18:20",
+          "facility_executions": [
+            {
+              "facility_key": "parking",
+              "usable": true
+            }
+          ]
+        },
+        {
+          "order": 35,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "arrival_label": "18:49",
+          "departure_label": "18:49"
+        }
+      ],
+      "start_time_label": "05:05",
+      "routes": [
+        {
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R005"
+          },
+          "from_action_order": 5,
+          "to_action_order": 31
+        }
+      ],
+      "variants": [
+        {
+          "variant_id": "CP2-V1",
+          "actions": [
+            {
+              "order": 1,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0010"
+              }
+            },
+            {
+              "order": 2,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0019"
+              }
+            },
+            {
+              "order": 3,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0017"
+              }
+            },
+            {
+              "order": 4,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0019"
+              }
+            },
+            {
+              "order": 5,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0010"
+              }
+            }
+          ],
+          "intent": "縄文杉までの完遂が厳しい場合でも、森と巨木の体験を残しながら山行を短縮する",
+          "selection_condition": {
+            "text": "天候悪化により縄文杉まで進む余裕が小さい状態 または 体調低下により長時間行動の継続が適切でない状態 または 進行遅れにより縄文杉往復の完遂が厳しい状態"
+          },
+          "map_artifact_ref": {
+            "artifact_id": "maps/concrete/CP001/CP001-day02-variant01-road-map.json",
+            "kind": "execution_road_map"
+          }
+        }
+      ],
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP001/CP001-day02-road-map.json",
+        "kind": "execution_road_map"
+      }
+    },
+    {
+      "ordinal": 3,
+      "source_plan_day_ordinal": 3,
+      "date": "2026-10-21",
+      "weekday_label": "水曜日",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "10分",
+            "distance_label": "6.9km"
+          },
+          "arrival_label": "09:30",
+          "departure_label": "09:30"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0037"
+          },
+          "stay_label": "20分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "18分",
+            "distance_label": "13.1km"
+          },
+          "arrival_label": "09:40",
+          "departure_label": "10:00"
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0038"
+          },
+          "stay_label": "30分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "25分",
+            "distance_label": "16.5km"
+          },
+          "arrival_label": "10:19",
+          "departure_label": "10:49"
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0039"
+          },
+          "stay_label": "20分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "8分",
+            "distance_label": "6.8km"
+          },
+          "arrival_label": "11:14",
+          "departure_label": "11:34"
+        },
+        {
+          "order": 5,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0036"
+          },
+          "stay_label": "30分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "6分",
+            "distance_label": "4.3km"
+          },
+          "arrival_label": "11:43",
+          "departure_label": "12:13"
+        },
+        {
+          "order": 6,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0045"
+          },
+          "stay_label": "1時間",
+          "visit_purpose": {
+            "code": "lunch",
+            "label": "昼食"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "4分",
+            "distance_label": "2.7km"
+          },
+          "arrival_label": "12:20",
+          "departure_label": "13:20"
+        },
+        {
+          "order": 7,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0040"
+          },
+          "stay_label": "20分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "11分",
+            "distance_label": "7.4km"
+          },
+          "arrival_label": "13:24",
+          "departure_label": "13:44"
+        },
+        {
+          "order": 8,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0028"
+          },
+          "stay_label": "45分",
+          "visit_purpose": {
+            "code": "bath",
+            "label": "入浴"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "17分",
+            "distance_label": "11.9km"
+          },
+          "arrival_label": "13:56",
+          "departure_label": "14:41"
+        },
+        {
+          "order": 9,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0035"
+          },
+          "stay_label": "50分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "7分",
+            "distance_label": "3.4km"
+          },
+          "arrival_label": "14:58",
+          "departure_label": "15:48"
+        },
+        {
+          "order": 10,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0034"
+          },
+          "stay_label": "20分",
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "37分",
+            "distance_label": "29km"
+          },
+          "arrival_label": "15:56",
+          "departure_label": "16:16"
+        },
+        {
+          "order": 11,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "arrival_label": "16:53",
+          "departure_label": "16:53"
+        }
+      ],
+      "start_time_label": "09:30",
+      "routes": [
+        {
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R011"
+          },
+          "from_action_order": 1,
+          "to_action_order": 11
+        }
+      ],
+      "variants": [
+        {
+          "variant_id": "CP3-V1",
+          "actions": [
+            {
+              "order": 1,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0025"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "1分",
+                "distance_label": "440m"
+              }
+            },
+            {
+              "order": 2,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0032"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "14分",
+                "distance_label": "9.2km"
+              }
+            },
+            {
+              "order": 3,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0033"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "7分",
+                "distance_label": "3.4km"
+              }
+            },
+            {
+              "order": 4,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0034"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "11分",
+                "distance_label": "5km"
+              }
+            },
+            {
+              "order": 5,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0035"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "12分",
+                "distance_label": "7.8km"
+              }
+            },
+            {
+              "order": 6,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0026"
+              },
+              "visit_purpose": {
+                "code": "bath",
+                "label": "入浴"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "18分",
+                "distance_label": "13.8km"
+              }
+            },
+            {
+              "order": 7,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0028"
+              },
+              "visit_purpose": {
+                "code": "bath",
+                "label": "入浴"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "1時間",
+                "distance_label": "42.5km"
+              }
+            },
+            {
+              "order": 8,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0036"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "rental_car",
+                  "label": "レンタカー"
+                },
+                "duration_label": "30分",
+                "distance_label": "22.6km"
+              }
+            },
+            {
+              "order": 9,
+              "target": {
+                "entity_type": "spot",
+                "id": "S0025"
+              }
+            }
+          ],
+          "intent": "豪雨・強風時に島一周へこだわらず、南部中心のドライブへ切り替えて屋久島の景観体験を残す",
+          "selection_condition": {
+            "text": "豪雨・強風で島一周ドライブに適さない状態"
+          },
+          "map_artifact_ref": {
+            "artifact_id": "maps/concrete/CP001/CP001-day03-variant01-road-map.json",
+            "kind": "execution_road_map"
+          }
+        }
+      ],
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP001/CP001-day03-road-map.json",
+        "kind": "execution_road_map"
+      }
+    },
+    {
+      "ordinal": 4,
+      "source_plan_day_ordinal": 4,
+      "date": "2026-10-22",
+      "weekday_label": "木曜日",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "20分"
+          },
+          "arrival_label": "07:30",
+          "departure_label": "07:30"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "todos": [
+            "白谷雲水峡入口でレンタカーを駐車する"
+          ],
+          "arrival_label": "07:50"
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          }
+        },
+        {
+          "order": 4,
+          "target": {
+            "kind": "route_local",
+            "label": "さつき吊橋"
+          }
+        },
+        {
+          "order": 5,
+          "target": {
+            "kind": "route_local",
+            "label": "白谷小屋"
+          }
+        },
+        {
+          "order": 6,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0021"
+          },
+          "stay_label": "20分"
+        },
+        {
+          "order": 7,
+          "target": {
+            "kind": "route_local",
+            "label": "辻峠"
+          }
+        },
+        {
+          "order": 8,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0015"
+          },
+          "stay_label": "20分"
+        },
+        {
+          "order": 9,
+          "target": {
+            "kind": "route_local",
+            "label": "辻峠"
+          }
+        },
+        {
+          "order": 10,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0021"
+          },
+          "stay_label": "0分"
+        },
+        {
+          "order": 11,
+          "target": {
+            "kind": "route_local",
+            "label": "白谷小屋"
+          }
+        },
+        {
+          "order": 12,
+          "target": {
+            "kind": "route_local",
+            "label": "さつき吊橋"
+          }
+        },
+        {
+          "order": 13,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          }
+        },
+        {
+          "order": 14,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "24分"
+          }
+        },
+        {
+          "order": 15,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "stay_label": "1時間",
+          "visit_purpose": {
+            "code": "bath",
+            "label": "入浴"
+          },
+          "todos": [
+            "入浴する"
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "7分"
+          },
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "20:00"
+            }
+          ]
+        },
+        {
+          "order": 16,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "stay_label": "1時間30分",
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          },
+          "todos": [
+            "夕食をとる"
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "1分"
+          },
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "23:00"
+            }
+          ]
+        },
+        {
+          "order": 17,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          }
+        }
+      ],
+      "start_time_label": "07:30",
+      "routes": [
+        {
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R004"
+          },
+          "from_action_order": 3,
+          "to_action_order": 13
+        }
+      ],
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP001/CP001-day04-road-map.json",
+        "kind": "execution_road_map"
+      }
+    },
+    {
+      "ordinal": 5,
+      "source_plan_day_ordinal": 5,
+      "date": "2026-10-23",
+      "weekday_label": "金曜日",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "todos": [
+            "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "13分"
+          },
+          "arrival_label": "10:00"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "todos": [
+            "レンタカーを返却する"
+          ],
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "14:00"
+            }
+          ]
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "next_move": {
+            "transport": {
+              "code": "bus",
+              "label": "バス"
+            },
+            "duration_label": "2分"
+          }
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          }
+        },
+        {
+          "order": 5,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "next_move": {
+            "transport": {
+              "code": "airplane",
+              "label": "飛行機"
+            },
+            "service": {
+              "operator": "JAL/JAC",
+              "service_number": "JAL2450",
+              "depart_label": "14:35",
+              "arrive_label": "16:15"
+            },
+            "depart_label": "14:35",
+            "arrive_label": "16:15"
+          }
+        },
+        {
+          "order": 6,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0008"
+          },
+          "next_move": {
+            "transport": {
+              "code": "airplane",
+              "label": "飛行機"
+            },
+            "service": {
+              "operator": "JAL",
+              "service_number": "JAL126",
+              "depart_label": "16:35",
+              "arrive_label": "17:50"
+            },
+            "depart_label": "16:35",
+            "arrive_label": "17:50"
+          },
+          "arrival_label": "16:15",
+          "departure_label": "16:15"
+        },
+        {
+          "order": 7,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "arrival_label": "17:50",
+          "departure_label": "17:50"
+        },
+        {
+          "order": 8,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "next_move": {
+            "transport": {
+              "code": "train",
+              "label": "電車"
+            }
+          },
+          "arrival_label": "17:50",
+          "departure_label": "17:50"
+        },
+        {
+          "order": 9,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          }
+        }
+      ],
+      "start_time_label": "10:00",
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP001/CP001-day05-road-map.json",
+        "kind": "execution_road_map"
+      }
+    }
+  ],
+  "status": {
+    "state": {
+      "code": "blocked",
+      "label": "ブロック"
+    },
+    "attention": [
+      {
+        "semantic": "core.weather",
+        "level": "attention",
+        "text": "表示確認用synthetic weatherは保存済みだが、2026-10-19〜10-23の実施判断に必要な実予報ではないため、本番Weatherは後日再取得が必要。"
+      },
+      {
+        "semantic": "core.days.day1.logical_routes.CP001-D1-LR1",
+        "level": "attention",
+        "text": "自宅から羽田空港までの実施日列車接続・所要時間を今回の利用可能resolverで根拠付きに確定できていないため、schedule LogicalRouteResolutionが未解決。"
+      },
+      {
+        "semantic": "core.days.day4.logical_routes.CP001-D4-LR2",
+        "level": "attention",
+        "text": "2026-09-17時点で白谷雲水峡は台風24号被害により県道通行止め・園内未整備のため閉園継続。2026-10-22実施可否は開通後の安全確認を再確認する必要がある。"
+      },
+      {
+        "semantic": "core.days.day5.logical_routes.CP001-D5-LR4",
+        "level": "attention",
+        "text": "羽田17:50到着後の自宅までの実施日列車接続・所要時間を根拠付きに確定できていないため、schedule LogicalRouteResolutionが未解決。"
+      }
+    ]
+  },
+  "weather": {
+    "state": {
+      "code": "synthetic",
+      "label": "表示確認用"
+    },
+    "notice": "表示確認用テストデータ。WR20260927Aで取得した2026-09-28〜2026-10-02の実予報値を、CP001の実施日2026-10-19〜2026-10-23へDay順に日付リマップしたもので、実施判断には使用しない。",
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-10-19",
+        "condition": {
+          "code": "rain",
+          "label": "雨"
+        },
+        "temperature_min_label": "17.4℃",
+        "temperature_max_label": "18.6℃",
+        "precipitation_probability_label": "84%",
+        "precipitation_amount_label": "30.9mm",
+        "wind_label": "3.6m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "17.7℃",
+            "precipitation_probability_label": "29%",
+            "precipitation_amount_label": "1.6mm",
+            "wind_label": "2.9m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "17.5℃",
+            "precipitation_probability_label": "36%",
+            "precipitation_amount_label": "1.7mm",
+            "wind_label": "2.9m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "17.7℃",
+            "precipitation_probability_label": "46%",
+            "precipitation_amount_label": "3mm",
+            "wind_label": "3m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "18.4℃",
+            "precipitation_probability_label": "69%",
+            "precipitation_amount_label": "9.3mm",
+            "wind_label": "3.2m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "18.3℃",
+            "precipitation_probability_label": "83%",
+            "precipitation_amount_label": "8.5mm",
+            "wind_label": "3.6m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "18.1℃",
+            "precipitation_probability_label": "84%",
+            "precipitation_amount_label": "3.6mm",
+            "wind_label": "3.1m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "17.8℃",
+            "precipitation_probability_label": "73%",
+            "precipitation_amount_label": "1.6mm",
+            "wind_label": "2.5m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "18℃",
+            "precipitation_probability_label": "20%",
+            "precipitation_amount_label": "1.6mm",
+            "wind_label": "2.5m/s"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "date": "2026-10-20",
+        "condition": {
+          "code": "rain",
+          "label": "雨"
+        },
+        "temperature_min_label": "15.1℃",
+        "temperature_max_label": "21.2℃",
+        "precipitation_probability_label": "85%",
+        "precipitation_amount_label": "20.5mm",
+        "wind_label": "3.4m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "17.9℃",
+            "precipitation_probability_label": "22%",
+            "precipitation_amount_label": "1.7mm",
+            "wind_label": "2.5m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "17.9℃",
+            "precipitation_probability_label": "25%",
+            "precipitation_amount_label": "2.4mm",
+            "wind_label": "2.8m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "17.8℃",
+            "precipitation_probability_label": "34%",
+            "precipitation_amount_label": "3.9mm",
+            "wind_label": "2.9m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "18.4℃",
+            "precipitation_probability_label": "71%",
+            "precipitation_amount_label": "6.4mm",
+            "wind_label": "3.4m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "rain",
+              "label": "雨"
+            },
+            "temperature_label": "19.8℃",
+            "precipitation_probability_label": "85%",
+            "precipitation_amount_label": "3.7mm",
+            "wind_label": "2.6m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "18.9℃",
+            "precipitation_probability_label": "80%",
+            "precipitation_amount_label": "1.7mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.9℃",
+            "precipitation_probability_label": "65%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.3℃",
+            "precipitation_probability_label": "27%",
+            "precipitation_amount_label": "0.6mm",
+            "wind_label": "0.6m/s"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "date": "2026-10-21",
+        "condition": {
+          "code": "drizzle",
+          "label": "霧雨"
+        },
+        "temperature_min_label": "14℃",
+        "temperature_max_label": "21.3℃",
+        "precipitation_probability_label": "78%",
+        "precipitation_amount_label": "3.1mm",
+        "wind_label": "1.1m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "14.9℃",
+            "precipitation_probability_label": "31%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "0.8m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.2℃",
+            "precipitation_probability_label": "32%",
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "0.9m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.7℃",
+            "precipitation_probability_label": "40%",
+            "precipitation_amount_label": "1mm",
+            "wind_label": "1.1m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "18.6℃",
+            "precipitation_probability_label": "59%",
+            "precipitation_amount_label": "0.5mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "21.1℃",
+            "precipitation_probability_label": "76%",
+            "precipitation_amount_label": "0.4mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "19.3℃",
+            "precipitation_probability_label": "78%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "15.5℃",
+            "precipitation_probability_label": "63%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "14.3℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.1m/s"
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "date": "2026-10-22",
+        "condition": {
+          "code": "cloudy",
+          "label": "曇り"
+        },
+        "temperature_min_label": "12.5℃",
+        "temperature_max_label": "21℃",
+        "precipitation_probability_label": "33%",
+        "precipitation_amount_label": "0mm",
+        "wind_label": "1.7m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "13.6℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.4m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "12.9℃",
+            "precipitation_probability_label": "25%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "14.2℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.5m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "18.8℃",
+            "precipitation_probability_label": "29%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.7m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "20.8℃",
+            "precipitation_probability_label": "33%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "17.8℃",
+            "precipitation_probability_label": "33%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.3m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "partly_cloudy",
+              "label": "晴れ時々曇り"
+            },
+            "temperature_label": "13.9℃",
+            "precipitation_probability_label": "22%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "12.7℃",
+            "precipitation_probability_label": "10%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.6m/s"
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "date": "2026-10-23",
+        "condition": {
+          "code": "cloudy",
+          "label": "曇り"
+        },
+        "temperature_min_label": "8℃",
+        "temperature_max_label": "17.3℃",
+        "precipitation_probability_label": "47%",
+        "precipitation_amount_label": "0mm",
+        "wind_label": "1.3m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "11.8℃",
+            "precipitation_probability_label": "6%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "9.6℃",
+            "precipitation_probability_label": "6%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.6m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "10℃",
+            "precipitation_probability_label": "6%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "15.8℃",
+            "precipitation_probability_label": "17%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "partly_cloudy",
+              "label": "晴れ時々曇り"
+            },
+            "temperature_label": "17.2℃",
+            "precipitation_probability_label": "38%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "15.4℃",
+            "precipitation_probability_label": "47%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.3m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "12.4℃",
+            "precipitation_probability_label": "47%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "10.3℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
+          }
+        ]
+      }
+    ]
+  },
+  "fuel": {
+    "distance_label": "198.074km"
+  },
+  "cost": {
+    "total_label": "算定済み分 ¥360,737",
+    "items": [
+      {
+        "meaning": "航空券＋民宿ふれんど4泊 ダイナミックパッケージ・大人2名",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "amount_label": "¥319,400"
+      },
+      {
+        "meaning": "タイムズカーレンタル 屋久島空港 2026-10-19 15:00〜2026-10-23 14:00",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "amount_label": "¥22,737"
+      },
+      {
+        "meaning": "楠川温泉 大人2名",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        },
+        "amount_label": "¥600",
+        "reason": "Spot Canonicalの参考料金300円/人を2名分として計算"
+      },
+      {
+        "meaning": "PANORAMA 夕食 大人2名",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        },
+        "amount_label": "¥7,000",
+        "reason": "Spot Canonicalの参考平均3,500円/人を2名分として計算"
+      },
+      {
+        "meaning": "荒川登山バス往復＋山岳部環境保全協力金 大人2名",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "amount_label": "¥6,000"
+      },
+      {
+        "meaning": "レンタカー燃料",
+        "amount_state": {
+          "code": "unpriced",
+          "label": "未算定"
+        },
+        "reason": "baselineの実道路distanceは198.074kmまで確定したが、貸出車両の実燃費・給油量・給油単価は現時点で確定していないため"
+      },
+      {
+        "meaning": "和食の海舟 Day1夕食 大人2名",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        },
+        "amount_label": "¥5,000",
+        "reason": "S0051の夕食参考価格2,000〜3,000円/人から2名分の計画値として中間値を採用"
+      }
+    ]
+  }
+}

@@ -73,6 +73,14 @@
   "entities": [
     {
       "ref": {
+        "entity_type": "concrete_plan",
+        "id": "CP001"
+      },
+      "title": "屋久島 4泊5日基本Plan 2026-10-19〜2026-10-23",
+      "data_path": "data/concrete-plans/CP001.json"
+    },
+    {
+      "ref": {
         "entity_type": "plan",
         "id": "P001"
       },
@@ -906,6 +914,30 @@
       },
       "title": "タイムズカーレンタル 屋久島空港店",
       "data_path": "data/travel-points/T0005.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0007"
+      },
+      "title": "鹿児島空港",
+      "data_path": "data/travel-points/T0007.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0008"
+      },
+      "title": "大阪国際空港（伊丹空港）",
+      "data_path": "data/travel-points/T0008.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0009"
+      },
+      "title": "屋久杉自然館前 荒川登山バス乗り場",
+      "data_path": "data/travel-points/T0009.json"
     },
     {
       "ref": {

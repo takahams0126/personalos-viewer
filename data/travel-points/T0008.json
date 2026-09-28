@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0008",
+  "title": "大阪国際空港（伊丹空港）",
+  "point_type": {
+    "code": "airport",
+    "label": "空港"
+  },
+  "location": {
+    "text": "大阪府豊中市蛍池西町3-555"
+  }
+}

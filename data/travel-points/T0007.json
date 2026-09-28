@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0007",
+  "title": "鹿児島空港",
+  "point_type": {
+    "code": "airport",
+    "label": "空港"
+  },
+  "location": {
+    "text": "鹿児島県霧島市溝辺町麓822番地"
+  }
+}
