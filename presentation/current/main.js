@@ -5,7 +5,9 @@ import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
+import { renderSpot } from './render/spot.js';
 import { hydrateMapViews } from './map/google-map.js';
+import { hydrateCarousels } from './ui/carousel.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -24,6 +26,10 @@ async function loadSourcePlan(concretePlan) {
 }
 
 async function renderRequestedEntity(request, data) {
+  if (request.type === 'spot') {
+    return renderSpot({ spot: data, resolver });
+  }
+
   if (request.type === 'plan') {
     return renderPlan({ plan: data, resolver });
   }
@@ -38,7 +44,7 @@ async function renderRequestedEntity(request, data) {
     });
   }
 
-  throw new Error(`Current technical slice supports plan / concrete_plan only: ${request.type}`);
+  throw new Error(`Current Viewer does not support this page type yet: ${request.type}`);
 }
 
 async function main() {
@@ -55,6 +61,10 @@ async function main() {
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
+
+  if (request.type === 'spot') {
+    hydrateCarousels(app);
+  }
 
   if (request.type === 'concrete_plan') {
     await hydrateMapViews({ root: app, artifactLoader, resolver });
