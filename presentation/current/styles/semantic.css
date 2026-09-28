@@ -44,7 +44,6 @@
 
   .semantic-label::after { content: ':'; }
 
-  .next-move,
   .map-semantic-preview,
   .day-variant {
     padding: var(--space-4);
