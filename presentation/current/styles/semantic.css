@@ -20,22 +20,6 @@
     margin-block-end: var(--space-6);
   }
 
-  .execution-flow {
-    display: grid;
-    gap: var(--space-4);
-    list-style-position: outside;
-    margin-block: 0 var(--space-6);
-  }
-
-  .execution-action {
-    padding-inline-start: var(--space-2);
-  }
-
-  .action-body {
-    padding-block-end: var(--space-4);
-    border-block-end: var(--border-width) solid var(--line);
-  }
-
   .action-header,
   .action-times,
   .action-todos,

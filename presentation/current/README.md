@@ -31,11 +31,16 @@ The Current entry defaults to `concrete_plan / CP001` while this slice is under 
 ## Presentation separation
 
 ```text
-styles/tokens.css    design tokens only
-styles/base.css      document-level baseline
-styles/semantic.css  minimal structural readability
+styles/tokens.css             design tokens only
+styles/base.css               document-level baseline
+styles/semantic.css           semantic component readability
+styles/layouts/timeline.css   timeline composition
+styles/layouts/grid.css       grid/table-like composition
+ui/layout-mode.js             presentation-only layout selection
 ```
 
-Future layout and theme CSS should remain separate from semantic rendering. The current CSS is intentionally minimal and is not the final visual design.
+The same ConcretePlan semantic DOM is used for both layout modes. `?layout=grid` selects the grid composition; timeline is the default. The layout switcher only changes `html[data-layout]` and URL state. It does not rebuild or reinterpret Boundary data.
 
-No generic UI/component library is introduced in this first slice. We will add one only where the semantic slice shows concrete interaction or DOM boilerplate worth delegating.
+Layout CSS may reposition semantic blocks, but source DOM order remains the reading/focus order. On narrow containers the grid layout collapses back to normal block flow.
+
+No generic UI/component library is introduced yet. Native controls remain sufficient for the current slice; a library should be added only where concrete interaction or rendering boilerplate justifies the dependency.

@@ -1,0 +1,43 @@
+@layer layout {
+  html[data-layout="timeline"] .execution-flow {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin-block: 0 var(--space-6);
+    padding-inline-start: 0;
+  }
+
+  html[data-layout="timeline"] .execution-action {
+    position: relative;
+    padding-inline-start: var(--space-8);
+  }
+
+  html[data-layout="timeline"] .execution-action::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--space-2);
+    inset-block-start: 0.6rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    background: var(--surface);
+  }
+
+  html[data-layout="timeline"] .execution-action:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: calc(var(--space-2) + 0.3rem);
+    inset-block-start: 1.3rem;
+    inset-block-end: -0.1rem;
+    border-inline-start: var(--border-width) solid var(--line);
+  }
+
+  html[data-layout="timeline"] .action-body {
+    padding-block-end: var(--space-6);
+  }
+
+  html[data-layout="timeline"] .next-move {
+    margin-inline-start: var(--space-2);
+  }
+}
