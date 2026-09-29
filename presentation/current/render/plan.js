@@ -1,3 +1,4 @@
+import { hrefFor } from '../core/router.js';
 import { h } from './dom.js';
 
 function machineLabel(ref) {
@@ -12,6 +13,26 @@ async function describeRef(ref, resolver) {
   } catch {
     return { title: machineLabel(ref), unavailable: true };
   }
+}
+
+function concretePlanRef(manifestEntry) {
+  const relations = (manifestEntry?.relations || []).filter(
+    relation => relation.kind === 'concrete_plan' && relation.target_ref
+  );
+  if (relations.length > 1) {
+    throw new Error(`Plan ${manifestEntry?.ref?.id || ''} has multiple concrete_plan relations.`);
+  }
+  return relations[0]?.target_ref || null;
+}
+
+function renderPlanNavigation(manifestEntry) {
+  const executionRef = concretePlanRef(manifestEntry);
+  return h('nav', { className: 'plan-navigation', attrs: { 'aria-label': 'Plan表示' } },
+    h('span', { attrs: { 'aria-current': 'page' }, text: '計画' }),
+    executionRef
+      ? h('a', { attrs: { href: hrefFor(executionRef) }, text: '実施' })
+      : null
+  );
 }
 
 function renderOptionalList(title, values, className) {
@@ -204,7 +225,7 @@ function renderReorderGroups(plan) {
   );
 }
 
-export async function renderPlan({ plan, resolver }) {
+export async function renderPlan({ plan, manifestEntry, resolver }) {
   const openByDefault = (plan.days || []).length === 1;
   const days = await Promise.all(
     (plan.days || []).map(day => renderDay(day, resolver, openByDefault))
@@ -214,9 +235,7 @@ export async function renderPlan({ plan, resolver }) {
     className: 'plan-page',
     dataset: { semantic: 'plan' }
   },
-    h('nav', { className: 'plan-navigation', attrs: { 'aria-label': 'Plan表示' } },
-      h('span', { attrs: { 'aria-current': 'page' }, text: '計画' })
-    ),
+    renderPlanNavigation(manifestEntry),
     h('header', { className: 'plan-overview' },
       h('h1', { text: plan.title }),
       plan.summary ? h('p', { text: plan.summary }) : null

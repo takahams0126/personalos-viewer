@@ -1,18 +1,20 @@
 @layer layout {
   html[data-page-type="plan"] .plan-navigation,
-  html[data-page-type="plan"] .plan-overview,
-  html[data-page-type="plan"] .plan-reorder,
-  html[data-page-type="plan"] .plan-days {
+  html[data-page-type="concrete_plan"] .plan-navigation {
     margin-block-end: var(--space-8);
-  }
-
-  html[data-page-type="plan"] .plan-navigation {
     display: flex;
     gap: var(--space-3);
   }
 
-  html[data-page-type="plan"] .plan-navigation [aria-current="page"] {
+  html[data-page-type="plan"] .plan-navigation [aria-current="page"],
+  html[data-page-type="concrete_plan"] .plan-navigation [aria-current="page"] {
     font-weight: 700;
+  }
+
+  html[data-page-type="plan"] .plan-overview,
+  html[data-page-type="plan"] .plan-reorder,
+  html[data-page-type="plan"] .plan-days {
+    margin-block-end: var(--space-8);
   }
 
   html[data-page-type="plan"] .plan-reorder-group {
