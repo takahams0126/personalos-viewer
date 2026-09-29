@@ -1,18 +1,6 @@
 @layer layout {
   html[data-page-type="spot"] main {
-    width: min(100% - 2rem, 78rem);
-  }
-
-  .visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
+    width: min(100% - 2rem, var(--measure-detail));
   }
 
   .spot-page {
@@ -114,7 +102,7 @@
   .spot-reference-links a {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: var(--space-1);
     margin-block-start: var(--space-2);
     text-underline-offset: 0.16em;
   }
@@ -259,7 +247,7 @@
 
   .spot-review-positive,
   .spot-review-caution {
-    padding: var(--space-5, 1.25rem);
+    padding: var(--space-5);
     border: var(--border-width) solid var(--line);
     border-radius: var(--radius-md);
   }
@@ -343,7 +331,7 @@
 
   @media (max-width: 38rem) {
     html[data-page-type="spot"] main {
-      width: min(100% - 1rem, 78rem);
+      width: min(100% - 1rem, var(--measure-detail));
       padding-block-start: var(--space-4);
     }
 
