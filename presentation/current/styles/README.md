@@ -4,14 +4,14 @@ This directory implements the visual resources composed by the Leisure HTML View
 
 ```text
 styles/
-├─ foundation/                 shared theme-independent scales and measures
+├─ foundation/                 preset-independent atomic scales only
 ├─ themes/
 │  └─ <theme-id>.css           visual role values: color, typography, radius, shadow
 ├─ primitives/                 shared generic document/control presentation
 ├─ patterns/
-│  └─ <pattern-set-id>/**      reusable presentation grammar bundle
+│  └─ <pattern-set-id>/**      reusable presentation grammar / component treatment
 └─ layouts/
-   └─ <layout-set-id>/**       page/spatial composition and responsive reflow bundle
+   └─ <layout-set-id>/**       page measure / composition / responsive reflow
 ```
 
 The Viewer-level composition authority is outside this directory:
@@ -67,14 +67,19 @@ CSS layer order is fixed as:
 tokens → theme → primitives → patterns → layout → overrides
 ```
 
-Rules:
+Current-authored CSS should normally belong to one of these explicit layers. Do not use unlayered CSS as a convenient high-priority override path.
 
-- `foundation/**` must not contain Spot / Route / Plan / ConcretePlan-specific values.
-- `themes/**` supplies role tokens and must not select Domain/page classes.
+## Ownership rules
+
+- `foundation/**` owns atomic, preset-independent scales only. It is not the shared-value bucket for the Default design.
+- Foundation must not contain Spot / Route / Plan / ConcretePlan-specific values.
+- Foundation must not freeze values such as page/detail/explorer measure, component density, control-height role, or component gap merely because Default pages share them.
+- `themes/**` supplies skin role tokens and must not select Domain/page classes.
 - `primitives/**` styles generic HTML/control behavior and must not depend on page identity.
-- `patterns/<set>/**` styles reusable UI grammar and must not fetch, infer, or redefine Domain meaning.
-- `layouts/<set>/**` owns placement, width, flow, grid/flex, sticky behavior, and responsive reflow. New theme-specific colors, font families, radius, and shadow values should not be introduced here.
+- `patterns/<set>/**` styles reusable UI grammar and may own component treatment/density roles; it must not fetch, infer, or redefine Domain meaning.
+- `layouts/<set>/**` owns page measure, placement, flow, grid/flex, sticky behavior, and responsive reflow. Theme-specific colors, font families, radius, and shadow values should not be introduced here.
 - `render/**` remains the owner of Semantic Structure; styling must not compensate for missing Domain semantics.
+- repeated Semantic DOM grammar may move to a thin `render/components/**` helper only after actual repetition is demonstrated; such helpers do not fetch or infer Domain meaning.
 - a Presentation Preset must form a usable Viewer-wide set; do not create page-only presets.
 
 ## Default preset and migration debt
@@ -87,6 +92,25 @@ patternSet = default
 layoutSet  = default
 ```
 
-The page layout files originated during technical validation and still contain provisional visual declarations such as raw color mixing, radius, font sizing, and surface treatment. Those declarations are not the definition of the `default` Theme. They are migration debt inside the current default Layout Set.
+The page layout files originated during technical validation and still contain provisional visual declarations such as raw color mixing, radius, font sizing, surface treatment, and repeated component grammar. Those declarations are not the definition of the `default` Theme. They are migration debt inside the current Default presentation.
 
-As design work proceeds, classify each visual declaration and move reusable skin values into Theme / Primitive / Pattern while keeping Layout focused on spatial composition. Do not preserve the debt as a second theme system.
+Convergence order:
+
+```text
+stable atomic scale
+→ Foundation
+
+skin role
+→ Theme
+
+reusable component grammar / component density
+→ Pattern
+
+page measure / composition / reflow
+→ Layout
+
+repeated Semantic DOM grammar
+→ shared renderer component, only when proven by repetition
+```
+
+Do not preserve the debt as a second theme system and do not create speculative tokens/components just to make files look uniform.
