@@ -28,7 +28,9 @@ async function loadSourcePlan(concretePlan) {
   }
 }
 
-async function renderRequestedEntity(request, data) {
+async function renderRequestedEntity(request, loaded) {
+  const data = loaded.data;
+
   if (request.type === 'spot') {
     return renderSpot({ spot: data, resolver });
   }
@@ -38,7 +40,7 @@ async function renderRequestedEntity(request, data) {
   }
 
   if (request.type === 'plan') {
-    return renderPlan({ plan: data, resolver });
+    return renderPlan({ plan: data, manifestEntry: loaded.entry, resolver });
   }
 
   if (request.type === 'concrete_plan') {
@@ -78,7 +80,7 @@ async function main() {
     id: request.id
   });
 
-  const page = await renderRequestedEntity(request, loaded.data);
+  const page = await renderRequestedEntity(request, loaded);
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
