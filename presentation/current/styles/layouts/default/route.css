@@ -1,6 +1,6 @@
 @layer layout {
   html[data-page-type="route"] main {
-    width: min(100% - 2rem, 78rem);
+    width: min(100% - 2rem, var(--measure-detail));
   }
 
   .route-page {
@@ -327,7 +327,7 @@
 
   @media (max-width: 38rem) {
     html[data-page-type="route"] main {
-      width: min(100% - 1rem, 78rem);
+      width: min(100% - 1rem, var(--measure-detail));
       padding-block-start: var(--space-4);
     }
 
