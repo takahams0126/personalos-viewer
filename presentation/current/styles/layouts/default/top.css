@@ -18,14 +18,14 @@
 
   .top-hero .entity-kind {
     margin-block-end: var(--space-2);
-    font-size: 0.78rem;
-    font-weight: 750;
-    letter-spacing: 0.08em;
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-kicker);
   }
 
   .top-hero h1 {
     margin-block-end: var(--space-3);
-    font-size: clamp(2.2rem, 5vw, 4.8rem);
+    font-size: var(--font-size-display-large);
     line-height: 1.02;
     letter-spacing: -0.04em;
   }
@@ -34,7 +34,7 @@
     max-width: 44rem;
     margin: 0;
     color: var(--muted);
-    font-size: clamp(1rem, 1.6vw, 1.18rem);
+    font-size: var(--font-size-lead-compact);
   }
 
   .top-controls {
@@ -44,8 +44,8 @@
     align-items: end;
     padding: var(--space-4);
     border: var(--border-width) solid var(--line);
-    border-radius: 1rem;
-    background: color-mix(in srgb, CanvasText 2.5%, Canvas);
+    border-radius: var(--radius-lg);
+    background: var(--surface-subtle);
   }
 
   .top-search-field,
@@ -58,9 +58,9 @@
   .top-select-field label,
   .top-type-filter legend {
     color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 750;
-    letter-spacing: 0.04em;
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label);
   }
 
   .top-search-field input,
@@ -69,15 +69,15 @@
     min-height: 2.75rem;
     padding: 0.55rem 0.72rem;
     border: var(--border-width) solid var(--line);
-    border-radius: 0.7rem;
-    background: Canvas;
-    color: CanvasText;
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    color: var(--text);
     font: inherit;
   }
 
   .top-select-field select:disabled {
     color: var(--muted);
-    background: color-mix(in srgb, CanvasText 4%, Canvas);
+    background: var(--surface-disabled);
   }
 
   .top-type-filter {
@@ -114,20 +114,20 @@
     place-items: center;
     padding-inline: 0.55rem;
     border: var(--border-width) solid var(--line);
-    border-radius: 0.7rem;
-    background: Canvas;
-    font-size: 0.88rem;
-    font-weight: 650;
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-medium);
     cursor: pointer;
   }
 
   .top-type-option input:checked + span {
-    background: CanvasText;
-    color: Canvas;
+    background: var(--surface-selected);
+    color: var(--text-inverse);
   }
 
   .top-type-option input:focus-visible + span {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
   }
 
@@ -140,7 +140,7 @@
   .top-result-count {
     margin: 0;
     color: var(--muted);
-    font-size: 0.88rem;
+    font-size: var(--font-size-note);
   }
 
   .top-card-grid {
@@ -155,8 +155,8 @@
     grid-template-rows: auto 1fr;
     min-height: 100%;
     border: var(--border-width) solid var(--line);
-    border-radius: 1rem;
-    background: Canvas;
+    border-radius: var(--radius-lg);
+    background: var(--surface);
     color: inherit;
     text-decoration: none;
     transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
@@ -165,14 +165,14 @@
   .top-entity-card:hover,
   .top-entity-card:focus-visible {
     transform: translateY(-2px);
-    border-color: color-mix(in srgb, CanvasText 45%, Canvas);
-    box-shadow: 0 0.8rem 2rem color-mix(in srgb, CanvasText 9%, transparent);
+    border-color: var(--line-interactive);
+    box-shadow: var(--shadow-raised);
   }
 
   .top-card-media {
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    background: color-mix(in srgb, CanvasText 5%, Canvas);
+    background: var(--surface-soft);
   }
 
   .top-card-media img {
@@ -185,8 +185,8 @@
     display: grid;
     place-items: center;
     color: var(--muted);
-    font-size: 0.82rem;
-    font-weight: 750;
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
     letter-spacing: 0.06em;
   }
 
@@ -199,14 +199,14 @@
   .top-card-meta {
     margin: 0 0 var(--space-2);
     color: var(--muted);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-size: var(--font-size-meta-sm);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
   }
 
   .top-card-body h2 {
     margin-block-end: var(--space-3);
-    font-size: 1.18rem;
+    font-size: var(--font-size-title);
     line-height: 1.35;
   }
 
@@ -216,8 +216,8 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     margin: 0;
-    color: color-mix(in srgb, CanvasText 78%, Canvas);
-    font-size: 0.9rem;
+    color: var(--text-summary);
+    font-size: var(--font-size-body-sm);
     line-height: 1.65;
   }
 
@@ -233,16 +233,16 @@
   .top-card-tags li {
     padding: 0.25rem 0.55rem;
     border: var(--border-width) solid var(--line);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     color: var(--muted);
-    font-size: 0.75rem;
+    font-size: var(--font-size-meta-sm);
   }
 
   .top-empty-state {
     margin: 0;
     padding: var(--space-8);
     border: var(--border-width) dashed var(--line);
-    border-radius: 1rem;
+    border-radius: var(--radius-lg);
     color: var(--muted);
     text-align: center;
   }
