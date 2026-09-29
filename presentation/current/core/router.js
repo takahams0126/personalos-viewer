@@ -1,3 +1,5 @@
+const DETAIL_PAGE_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
+
 export function readRequest(search = window.location.search) {
   const params = new URLSearchParams(search);
   const type = params.get('type');
@@ -12,6 +14,10 @@ export function readRequest(search = window.location.search) {
   }
 
   return Object.freeze({ kind: 'entity', type, id });
+}
+
+export function isDetailPageRef(ref) {
+  return Boolean(ref?.entity_type && ref?.id && DETAIL_PAGE_TYPES.has(ref.entity_type));
 }
 
 export function hrefFor(ref) {

@@ -1,4 +1,4 @@
-import { hrefFor } from '../core/router.js';
+import { hrefFor, isDetailPageRef } from '../core/router.js';
 import { h, textRow } from './dom.js';
 
 const CONSTRAINT_LABELS = {
@@ -9,23 +9,31 @@ const CONSTRAINT_LABELS = {
 
 async function describeTarget(target, resolver) {
   if (target?.kind === 'route_local') {
-    return { title: target.label || 'ルート内地点', kind: 'route_local' };
+    return { title: target.label || 'ルート内地点', kind: 'route_local', ref: null };
   }
 
   if (target?.entity_type && target?.id) {
     try {
       const described = await resolver.describe(target);
-      return { title: described.title, kind: target.entity_type };
+      return { title: described.title, kind: target.entity_type, ref: target };
     } catch {
       return {
         title: `${target.entity_type}:${target.id}`,
         kind: target.entity_type,
+        ref: target,
         unavailable: true
       };
     }
   }
 
-  return { title: '地点情報なし', kind: 'unknown', unavailable: true };
+  return { title: '地点情報なし', kind: 'unknown', ref: null, unavailable: true };
+}
+
+function entityTitle(ref, title, unavailable = false) {
+  if (!unavailable && isDetailPageRef(ref)) {
+    return h('a', { attrs: { href: hrefFor(ref) }, text: title });
+  }
+  return h('span', { text: title });
 }
 
 function renderTimeFacts(action) {
@@ -96,7 +104,7 @@ async function renderAction(action, resolver) {
     h('article', { className: 'action-body' },
       h('header', { className: 'action-header' },
         h('p', { className: 'action-order', text: `#${action.order}` }),
-        h('h4', { text: target.title }),
+        h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
         target.unavailable
           ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
           : null,
@@ -121,14 +129,16 @@ async function renderRouteRelations(routes, resolver) {
 
   const items = await Promise.all(routes.map(async relation => {
     let title;
+    let unavailable = false;
     try {
       const loaded = await resolver.load(relation.route_ref);
       title = loaded.data.title || loaded.entry.title;
     } catch {
       title = `${relation.route_ref.entity_type}:${relation.route_ref.id}`;
+      unavailable = true;
     }
     return h('li', {},
-      h('strong', { text: title }),
+      h('strong', {}, entityTitle(relation.route_ref, title, unavailable)),
       ` — Action ${relation.from_action_order}〜${relation.to_action_order}`
     );
   }));
@@ -146,7 +156,7 @@ async function renderMapPreview(artifactRef, artifactLoader, resolver) {
     const artifact = await artifactLoader.load(artifactRef);
     const pointItems = await Promise.all((artifact.points || []).map(async point => {
       const target = await describeTarget(point.entity_ref, resolver);
-      return h('li', { text: target.title });
+      return h('li', {}, entityTitle(target.ref, target.title, target.unavailable));
     }));
 
     const segmentItems = (artifact.segments || []).map(segment =>
