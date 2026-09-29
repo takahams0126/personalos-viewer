@@ -3,6 +3,7 @@ import { ManifestStore } from './core/manifest-store.js';
 import { EntityResolver } from './core/entity-resolver.js';
 import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
+import { createNavigationContext, installNavigationCapture } from './core/navigation-context.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
@@ -11,6 +12,7 @@ import { renderTop } from './render/top.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './ui/carousel.js';
 import { hydrateExplorer } from './ui/explorer.js';
+import { renderAppShell } from './ui/app-shell.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -67,9 +69,13 @@ async function renderTopPage(app) {
 async function main() {
   const request = readRequest();
   const app = document.querySelector('#app');
+  const shell = document.querySelector('#viewer-shell');
+  const navigation = createNavigationContext();
 
   if (request.kind === 'top') {
     await renderTopPage(app);
+    renderAppShell({ request, navigation }, shell);
+    installNavigationCapture({ request, data: null });
     return;
   }
 
@@ -84,6 +90,8 @@ async function main() {
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
+  renderAppShell({ request, navigation }, shell);
+  installNavigationCapture({ request, data: loaded.data });
 
   if (request.type === 'spot') {
     hydrateCarousels(app);
