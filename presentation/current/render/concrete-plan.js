@@ -2,9 +2,10 @@ import { hrefFor, isDetailPageRef } from '../core/router.js';
 import { h, textRow } from './dom.js';
 
 const CONSTRAINT_LABELS = {
-  hard_limit: '期限',
-  latest_safe: '安全側の最終時刻',
-  earliest: '最早時刻'
+  target: '目標',
+  latest_safe: '安心ライン',
+  hard_limit: '最終制約',
+  next_service: '次の便'
 };
 
 async function describeTarget(target, resolver) {
@@ -52,13 +53,30 @@ function renderTodos(todos) {
   );
 }
 
+function serviceIdentity(service) {
+  if (!service) return '';
+  return [service.operator, service.route_name, service.service_number].filter(Boolean).join(' ');
+}
+
+function serviceTime(service) {
+  if (!service) return '';
+  return [service.depart_label, service.arrive_label].filter(Boolean).join(' → ');
+}
+
 function renderConstraints(constraints) {
   if (!constraints?.length) return null;
   return h('section', { className: 'action-constraints' },
     h('h5', { text: '時間上の注意' }),
     h('ul', {}, constraints.map(item => {
       const label = CONSTRAINT_LABELS[item.kind] || '時刻制約';
-      return h('li', {}, `${label} ${item.time_label || ''}`.trim());
+      const identity = serviceIdentity(item.service);
+      const times = serviceTime(item.service);
+      return h('li', { dataset: { constraintKind: item.kind || '' } },
+        h('strong', { text: [label, item.time_label].filter(Boolean).join(' ') }),
+        identity ? h('p', { className: 'constraint-service', text: identity }) : null,
+        times ? h('p', { className: 'constraint-service-time', text: times }) : null,
+        item.margin_label ? h('p', { className: 'constraint-margin', text: item.margin_label }) : null
+      );
     }))
   );
 }
@@ -72,19 +90,14 @@ function renderMove(move) {
     move.distance_label
   ].filter(Boolean).join(' ・ ');
 
-  const service = move.service
-    ? [move.service.operator, move.service.service_number].filter(Boolean).join(' ')
-    : null;
-
-  const serviceTime = move.service
-    ? [move.service.depart_label, move.service.arrive_label].filter(Boolean).join(' → ')
-    : null;
+  const service = serviceIdentity(move.service);
+  const times = serviceTime(move.service);
 
   return h('aside', { className: 'next-move', dataset: { semantic: 'next-move' } },
     h('h5', { text: '次の移動' }),
     summary ? h('p', { text: summary }) : null,
     service ? h('p', { text: service }) : null,
-    serviceTime ? h('p', { text: serviceTime }) : null
+    times ? h('p', { text: times }) : null
   );
 }
 
@@ -305,7 +318,6 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
       h('p', { className: 'entity-kind', text: 'Concrete Plan' }),
       h('h1', { text: concretePlan.title }),
       concretePlan.period?.label ? h('p', { className: 'plan-period', text: concretePlan.period.label }) : null,
-      sourcePlan?.title ? h('p', {}, `元Plan: ${sourcePlan.title}`) : null,
       concretePlan.weather?.notice ? h('p', { className: 'weather-notice', text: concretePlan.weather.notice }) : null
     ),
     renderStatus(concretePlan),
