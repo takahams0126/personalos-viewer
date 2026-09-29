@@ -2,7 +2,9 @@
 
 This repository contains the published Leisure HTML Boundary plus isolated presentation generations.
 
-Authoritative Viewer contracts live in Obsidian under `01_chatgpt/03_Data/Leisure/04_HTMLViewer/**`. This file owns only repository/runtime layout.
+Authoritative Viewer contracts live in Obsidian under `01_chatgpt/03_Data/Leisure/04_HTMLViewer/**`.
+The non-authoritative North Star / orientation entry is `04_HTMLViewer/README.md`.
+This file owns only repository/runtime layout and implementation-facing boundaries.
 
 ## Physical layout
 
@@ -22,7 +24,7 @@ Presentation generations do not own the shared published Boundary.
 
 ## Current Viewer direction
 
-`presentation/current/` is rebuilt from the current HTML Boundary JSON. Previous Modern and Legacy code are reference only and must not be imported by Current.
+`presentation/current/` is rebuilt from the current HTML Boundary JSON. Previous Modern and Legacy code are evidence/reference only and must not be imported by Current.
 
 Normal flow:
 
@@ -31,27 +33,107 @@ manifest.json
 + data/**
 + maps/**
     ↓
-Current runtime
+Current Runtime Core
   ManifestStore
+  ResourceStore
   EntityResolver
-  EntityCache
   ArtifactLoader
   Router
+  NavigationContext
+    ↓
+Page Semantic Assembly
+    ↓
+optional shared semantic presentation components
     ↓
 semantic DOM
     ↓
-layout CSS + theme/design tokens + generic UI components
+Presentation Preset
+  Theme + Pattern Set + Layout Set
+    ↓
+Interaction / Map Presentation
 ```
+
+Shared semantic presentation components are transient DOM helpers only. They may remove repeated HTML grammar but must not fetch entities, inspect Manifest relations, infer Domain meaning, or become a persistent ViewModel.
 
 Current rules:
 
 - JSON is the Viewer input boundary; do not create a persistent intermediate ViewModel/derived JSON layer.
 - JS resolves/fetches published data and emits semantic DOM.
+- Page renderers own Page semantic assembly; shared renderer components may only render already-resolved semantic input.
 - HTML classes/attributes describe meaning, not visual placement.
-- CSS owns layout, responsive behavior, density, and theme as far as possible.
-- Generic interaction/accessibility may be delegated to mature component libraries.
+- Presentation is selected Viewer-wide through an explicit Presentation Preset.
+- Theme owns skin roles; Pattern owns reusable visual grammar; Layout owns page composition/measure/reflow.
+- Foundation contains preset-independent atomic scales only; it must not silently freeze Default page width/density/personality for every future preset.
+- Current-authored CSS belongs to an explicit cascade layer; unlayered CSS is not the normal override mechanism.
+- Generic interaction/accessibility may be delegated to mature component libraries when a concrete bottleneck justifies it.
 - Domain meaning must not be reconstructed from CSS or presentation code.
 - If semantic meaning is missing, fix the upstream HTML Boundary rather than inventing it in Viewer.
+
+## Current physical boundaries
+
+```text
+presentation/current/
+├─ core/**
+│  └─ runtime resolution / routing / navigation context
+├─ render/**
+│  ├─ page semantic renderers
+│  └─ components/**             # only when real cross-page DOM grammar exists
+├─ structure/**
+│  └─ Viewer-level shell structure
+├─ presentation/**
+│  ├─ registry.js               # explicit Viewer-wide Preset composition
+│  └─ bootstrap.js              # active resource activation
+├─ interaction/**
+│  └─ local UI behavior
+├─ map/**
+│  └─ explicit Map Artifact presentation adapter
+└─ styles/
+   ├─ foundation/**             # preset-independent atomic scales
+   ├─ themes/<theme-id>.css
+   ├─ primitives/**
+   ├─ patterns/<pattern-set-id>/**
+   └─ layouts/<layout-set-id>/**
+```
+
+A `render/components/**` boundary is optional until a real repeated semantic grammar is extracted. Do not create speculative components just to satisfy the directory shape.
+
+## Presentation Presets
+
+One active Preset applies to the whole Current Viewer.
+
+```text
+config.presentationPreset
+        ↓
+presentation/registry.js
+        ↓
+Preset
+├─ Theme
+├─ Pattern Set
+└─ Layout Set
+        ↓
+TOP / Spot / Route / Plan / ConcretePlan
+```
+
+Unknown explicit Preset IDs fail; they do not silently fall back to `default`.
+A new design can explicitly reuse an existing Theme / Pattern Set / Layout Set, but page-specific partial fallback is not a Preset model.
+
+## Map boundary
+
+Current consumes explicit Map Artifacts only.
+
+```text
+Route Conceptual Map
+→ ordered points
+→ no inferred road geometry
+
+ConcretePlan Execution Map
+→ ordered points
+→ ordered segments[].path
+→ no geometry-to-segment reconstruction
+```
+
+Google Places / Routes resolution stays upstream. The browser adapter only renders published positions/paths and presentation interaction.
+The current validation marker/popup implementation is not the final Current Map presentation contract; marker API/accessibility/popup/mobile behavior are a pre-promotion convergence scope.
 
 ## Generation roles
 
@@ -69,7 +151,9 @@ Frozen comparison snapshot. Its source tree is mechanically guarded. Normal buil
 
 ## Default routing
 
-Root `index.html` owns only the default presentation selection. While Current is not yet minimally usable, default routing remains `presentation/modern/`. Promotion to Current is a one-line router change after Current reaches the agreed minimum surface.
+Root `index.html` owns only the default presentation selection. While Current has not completed its promotion gate, default routing remains `presentation/modern/`.
+
+Promotion requires an explicit decision after Current architecture/documentation coherence, Default Preset convergence, Map/accessibility finishing, and minimum usable cross-page review are closed.
 
 ## Publishing
 
