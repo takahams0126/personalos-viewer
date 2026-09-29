@@ -35,6 +35,10 @@
     font-size: var(--font-size-section);
   }
 
+  .content-section--roomy > h2 {
+    margin-block-end: var(--space-6);
+  }
+
   .emphasis-card-list {
     display: grid;
     gap: var(--space-3);
