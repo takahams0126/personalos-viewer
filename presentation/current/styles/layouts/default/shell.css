@@ -42,7 +42,7 @@
   }
 
   .layout-switcher button[aria-pressed="true"] {
-    font-weight: 700;
+    font-weight: var(--font-weight-strong);
   }
 
   main {
