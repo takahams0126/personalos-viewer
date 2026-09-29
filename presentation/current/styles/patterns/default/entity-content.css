@@ -1,0 +1,81 @@
+@layer patterns {
+  .entity-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .entity-chip {
+    padding: 0.32rem 0.72rem;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface-disabled);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .entity-chip-list--compact .entity-chip {
+    padding: 0.2rem 0.5rem;
+    background: transparent;
+    color: var(--muted);
+    font-size: var(--font-size-meta-sm);
+    font-weight: inherit;
+  }
+
+  .content-section {
+    padding-block-start: clamp(1.5rem, 3vw, 2.5rem);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .content-section > h2 {
+    margin-block-end: var(--space-5);
+    font-size: var(--font-size-section);
+  }
+
+  .emphasis-card-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .emphasis-card {
+    position: relative;
+    padding: var(--space-6);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface-subtle);
+  }
+
+  .emphasis-card::before {
+    content: '';
+    position: absolute;
+    inset: var(--space-4) auto var(--space-4) 0;
+    width: 0.22rem;
+    border-radius: var(--radius-pill);
+    background: var(--line-accent);
+  }
+
+  .emphasis-card > p {
+    margin: 0;
+    line-height: 1.75;
+  }
+
+  .entity-link-card {
+    overflow: hidden;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .entity-link-card:hover,
+  .entity-link-card:focus-visible {
+    background: var(--surface-hover-strong);
+  }
+}
