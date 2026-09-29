@@ -1,5 +1,6 @@
 @layer theme {
   :root {
+    color-scheme: light dark;
     --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
     --font-size-display: clamp(2rem, 4.4vw, 4.2rem);
