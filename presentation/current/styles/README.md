@@ -87,6 +87,39 @@ patternSet = default
 layoutSet  = default
 ```
 
-The page layout files originated during technical validation and still contain provisional visual declarations such as raw color mixing, radius, font sizing, and surface treatment. Those declarations are not the definition of the `default` Theme. They are migration debt inside the current default Layout Set.
+The technical-validation CSS originally mixed four kinds of responsibility inside page-local layout files:
 
-As design work proceeds, classify each visual declaration and move reusable skin values into Theme / Primitive / Pattern while keeping Layout focused on spatial composition. Do not preserve the debt as a second theme system.
+```text
+Foundation
+→ shared measure / spacing / control size / border width / motion scale
+
+Theme
+→ color / surface / typography role / radius / shadow
+
+Pattern
+→ reusable card / chip / facts / hero / section / sequence grammar
+
+Layout
+→ page composition / placement / reflow
+```
+
+Default convergence is incremental, but the target classification is authoritative. Do not preserve old page-local declarations as a second visual system.
+
+### Convergence status
+
+First convergence batch completed:
+
+- shared detail / explorer measures, `space-5`, control height, strong border width, and fast motion now live in `foundation/tokens.css`
+- Default color/surface roles, typography roles, radius, shadow, and color-scheme now live in `themes/default.css`
+- TOP / Spot / Route / Plan / ConcretePlan timeline / AppShell layouts consume shared Foundation / Theme roles instead of defining their own raw theme values for those concerns
+- generic `visually-hidden` remains Primitive-owned; page layout must not redefine it
+
+Remaining debt is primarily **Pattern extraction**, not a hidden Theme:
+
+- repeated entity hero grammar across Spot / Route
+- repeated chip / badge grammar
+- repeated fact-card / related-card / strength-card grammar
+- repeated section-divider / section-heading grammar
+- component-specific typography that should be promoted only when a stable reusable role is demonstrated
+
+Do not create speculative tokens for every numeric value. Promote a value to Foundation / Theme only when it represents a stable cross-page role; otherwise keep it in the owning Pattern or Layout.
