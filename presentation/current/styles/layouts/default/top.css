@@ -115,6 +115,10 @@
     gap: var(--space-2);
   }
 
+  .top-filter-fields[data-category-active="false"] {
+    grid-template-columns: minmax(18rem, 2fr) minmax(10rem, 0.8fr);
+  }
+
   .top-search-field,
   .top-select-field {
     display: grid;
@@ -276,7 +280,8 @@
   }
 
   @media (max-width: 56rem) {
-    .top-filter-fields {
+    .top-filter-fields,
+    .top-filter-fields[data-category-active="false"] {
       grid-template-columns: 1fr 1fr;
     }
 
@@ -295,7 +300,8 @@
       padding: var(--space-5);
     }
 
-    .top-filter-fields {
+    .top-filter-fields,
+    .top-filter-fields[data-category-active="false"] {
       grid-template-columns: 1fr;
     }
 
