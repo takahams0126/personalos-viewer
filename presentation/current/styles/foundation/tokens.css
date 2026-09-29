@@ -2,10 +2,6 @@
 
 @layer tokens {
   :root {
-    --measure-page: 72rem;
-    --measure-detail: 78rem;
-    --measure-explorer: 82rem;
-
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;
@@ -14,9 +10,8 @@
     --space-6: 1.5rem;
     --space-8: 2rem;
 
-    --control-height: 2.75rem;
     --border-width: 1px;
     --border-width-strong: 2px;
-    --motion-fast: 120ms;
+    --duration-1: 120ms;
   }
 }
