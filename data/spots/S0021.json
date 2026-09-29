@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0021",
   "title": "苔むす森",
@@ -8,14 +8,16 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町白谷雲水峡"
+    "location_text": "鹿児島県屋久島町白谷雲水峡",
+    "google_place_id": "ChIJMa9HuGEfPTURwUMr1OEKbyQ",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E8%8B%94%E3%82%80%E3%81%99%E6%A3%AE&query_place_id=ChIJMa9HuGEfPTURwUMr1OEKbyQ"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [

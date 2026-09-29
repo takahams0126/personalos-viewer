@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0026",
   "title": "尾之間温泉",
@@ -8,19 +8,16 @@
     "温泉"
   ],
   "access": {
-    "location_text": "鹿児島県熊毛郡屋久島町尾之間1291"
+    "location_text": "鹿児島県熊毛郡屋久島町尾之間1291",
+    "google_place_id": "ChIJw6nTUdklPTURRwWJ_T8Apsk",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%B0%BE%E4%B9%8B%E9%96%93%E6%B8%A9%E6%B3%89&query_place_id=ChIJw6nTUdklPTURRwWJ_T8Apsk"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥300"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [
@@ -48,6 +45,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：円/人",
+        "pricing": {
+          "label": "¥300（円/人）",
+          "amount": 300,
+          "currency": "JPY",
+          "charging_basis": "円/人"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

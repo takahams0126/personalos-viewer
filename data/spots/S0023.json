@@ -1,0 +1,74 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0023",
+  "title": "素泊民宿 里町",
+  "summary": "共用キッチンを利用できる。 安房にある素泊まりの民宿。 民宿形式。 共用キッチンを利用し、自炊をしながら滞在する。",
+  "theme_chips": [
+    "宿泊"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房",
+    "google_place_id": "ChIJbwexMurfPDUR22W17HNS2k4",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%B4%A0%E6%B3%8A%E6%B0%91%E5%AE%BF+%E9%87%8C%E7%94%BA&query_place_id=ChIJbwexMurfPDUR22W17HNS2k4"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://image.kkday.com/v2/image/get/h_650%2Cc_fit/s1.kkday.com/product_190165/20240907133120_bkQOa/png"
+    },
+    {
+      "url": "https://travel.rakuten.co.jp/share/image_up/151335/LARGE/de3ad1e97d81b0525719932c88145597950bac86.47.1.26.2.jpg",
+      "source_url": "https://dom-hotel.jal.co.jp/j_hotel/39508/"
+    },
+    {
+      "url": "https://trvimg.r10s.jp/share/HOTEL/151335/151335.jpg?fit=inside%7C500:390",
+      "source_url": "https://www.tour.ne.jp/j_hotel/39508/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "共用キッチンを利用できる。",
+      "安房にある素泊まりの民宿。",
+      "民宿形式。"
+    ],
+    "review": {
+      "positives": [
+        "共用キッチンを利用し、自炊をしながら滞在する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：円/人泊",
+        "pricing": {
+          "label": "¥3,500（円/人泊）",
+          "amount": 3500,
+          "currency": "JPY",
+          "charging_basis": "円/人泊"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6968.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6968.html"
+    }
+  }
+}

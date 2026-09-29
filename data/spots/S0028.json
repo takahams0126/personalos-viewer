@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0028",
   "title": "平内海中温泉",
@@ -8,19 +8,16 @@
     "温泉"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町平内"
+    "location_text": "鹿児島県屋久島町平内",
+    "google_place_id": "ChIJQfhGO_AvPTUR9nspFzmOv84",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%B9%B3%E5%86%85%E6%B5%B7%E4%B8%AD%E6%B8%A9%E6%B3%89&query_place_id=ChIJQfhGO_AvPTUR9nspFzmOv84"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥300"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [
@@ -47,6 +44,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：円/人_協力金",
+        "pricing": {
+          "label": "¥300（円/人_協力金）",
+          "amount": 300,
+          "currency": "JPY",
+          "charging_basis": "円/人_協力金"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

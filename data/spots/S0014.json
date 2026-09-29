@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0014",
   "title": "白谷雲水峡",
@@ -8,19 +8,16 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町宮之浦・白谷側"
+    "location_text": "鹿児島県屋久島町宮之浦・白谷側",
+    "google_place_id": "ChIJ2d70aRUfPTURDlCRzuGnAps",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%99%BD%E8%B0%B7%E9%9B%B2%E6%B0%B4%E5%B3%A1&query_place_id=ChIJ2d70aRUfPTURDlCRzuGnAps"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥800"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [
@@ -47,6 +44,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：円/高校生以上・森林環境整備推進協力金参考",
+        "pricing": {
+          "label": "¥800（円/高校生以上・森林環境整備推進協力金参考）",
+          "amount": 800,
+          "currency": "JPY",
+          "charging_basis": "円/高校生以上・森林環境整備推進協力金参考"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0047",
+  "title": "寿し いその香り",
+  "summary": "安房の寿司店で、地魚寿司、首折れサバ系料理、地魚南蛮漬けや縄文牛のにぎりを扱う。 地魚の寿司や屋久島の魚料理を味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房",
+    "google_place_id": "ChIJFbKcZd_fPDURW7ORjIu2iO4",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%AF%BF%E3%81%97+%E3%81%84%E3%81%9D%E3%81%AE%E9%A6%99%E3%82%8A&query_place_id=ChIJFbKcZd_fPDURW7ORjIu2iO4"
+  },
+  "related_spots": [],
+  "hero_facts": [],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-sushi-isonokaori-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6920.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-sushi-isonokaori-02.jpg",
+      "source_url": "https://yakukan.jp/spot/6920.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/spot-sushi-isonokaori-04.jpg",
+      "source_url": "https://yakukan.jp/spot/6920.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "安房の寿司店で、地魚寿司、首折れサバ系料理、地魚南蛮漬けや縄文牛のにぎりを扱う。"
+    ],
+    "review": {
+      "positives": [
+        "地魚の寿司や屋久島の魚料理を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：JPY_per_person_estimate",
+        "pricing": {
+          "label": "¥3,000〜¥5,000（JPY_per_person_estimate）",
+          "min_amount": 3000,
+          "max_amount": 5000,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_estimate"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6920.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6920.html"
+    }
+  }
+}

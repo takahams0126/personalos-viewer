@@ -1,0 +1,72 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0031",
+  "title": "縄文の宿まんてん 日帰り温泉",
+  "summary": "内風呂、露天風呂、露天檜風呂、ドライサウナを備える。 屋久島空港の近く、安房と宮之浦の間に位置する宿泊施設併設の温泉。 大浴場と露天風呂で入浴し、くつろぐ。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町空港周辺",
+    "google_place_id": "ChIJr07JyL7hPDURyhOawYsR88E",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%B8%84%E6%96%87%E3%81%AE%E5%AE%BF%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93+%E6%97%A5%E5%B8%B0%E3%82%8A%E6%B8%A9%E6%B3%89&query_place_id=ChIJr07JyL7hPDURyhOawYsR88E"
+  },
+  "related_spots": [],
+  "hero_facts": [],
+  "images": [
+    {
+      "url": "https://www.arm-manten.co.jp/img/img_head-spa.jpg",
+      "source_url": "https://www.arm-manten.co.jp/onsen/"
+    },
+    {
+      "url": "https://www.arm-manten.co.jp/img/img_spa-1.jpg",
+      "source_url": "https://www.arm-manten.co.jp/onsen/"
+    },
+    {
+      "url": "https://www.arm-manten.co.jp/img/img_spa-2.jpg",
+      "source_url": "https://www.arm-manten.co.jp/onsen/"
+    },
+    {
+      "url": "https://www.arm-manten.co.jp/img/img_spa-3.jpg",
+      "source_url": "https://www.arm-manten.co.jp/onsen/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "内風呂、露天風呂、露天檜風呂、ドライサウナを備える。",
+      "屋久島空港の近く、安房と宮之浦の間に位置する宿泊施設併設の温泉。"
+    ],
+    "review": {
+      "positives": [
+        "大浴場と露天風呂で入浴し、くつろぐ。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "日帰り大人入館料（タオルセットを含む）",
+        "pricing": {
+          "label": "¥1,800（1人）",
+          "amount": 1800,
+          "currency": "JPY",
+          "charging_basis": "1人"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/wp-content/uploads/2026/03/20260326.pdf"
+    }
+  }
+}

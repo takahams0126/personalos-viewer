@@ -1,0 +1,93 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0024",
+  "title": "民宿あんぼう",
+  "summary": "安房中心部にある民宿で、買い出し先が周辺にある。 民宿形式。 素泊まりを基本とし、連泊数に応じて1泊あたり料金が変わる。 安房の街を利用しながら民宿に滞在する。",
+  "theme_chips": [
+    "宿泊"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房",
+    "google_place_id": "ChIJ6ePv6sHfPDUR4Cs1-1cDyvs",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%B0%91%E5%AE%BF%E3%81%82%E3%82%93%E3%81%BC%E3%81%86&query_place_id=ChIJ6ePv6sHfPDUR4Cs1-1cDyvs"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://static.wixstatic.com/media/ede3eb_11eb0b1283d64f5bafff291dee255b2b~mv2.jpg/v1/fill/w_424%2Ch_318%2Cal_c%2Cq_80%2Cenc_avif%2Cquality_auto/ede3eb_11eb0b1283d64f5bafff291dee255b2b~mv2.jpg",
+      "source_url": "https://qq275fm9k.wixsite.com/mysite-1"
+    },
+    {
+      "url": "https://static.wixstatic.com/media/ede3eb_2c5aa4c38e2f4bac9450926c85ffbf6e~mv2.jpeg/v1/fill/w_980%2Ch_1307%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/ede3eb_2c5aa4c38e2f4bac9450926c85ffbf6e~mv2.jpeg",
+      "source_url": "https://qq275fm9k.wixsite.com/mysite-1"
+    },
+    {
+      "url": "https://static.wixstatic.com/media/ede3eb_aaa636dad40d435fa686fe9618fe3f9b~mv2_d_3024_4032_s_4_2.jpg/v1/fill/w_980%2Ch_1307%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/ede3eb_aaa636dad40d435fa686fe9618fe3f9b~mv2_d_3024_4032_s_4_2.jpg",
+      "source_url": "https://qq275fm9k.wixsite.com/mysite-1"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "安房中心部にある民宿で、買い出し先が周辺にある。",
+      "民宿形式。",
+      "素泊まりを基本とし、連泊数に応じて1泊あたり料金が変わる。"
+    ],
+    "review": {
+      "positives": [
+        "安房の街を利用しながら民宿に滞在する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "宿泊（素泊まり・1泊）",
+        "pricing": {
+          "label": "¥4,300（1名1泊）",
+          "amount": 4300,
+          "currency": "JPY",
+          "charging_basis": "1名1泊"
+        }
+      },
+      {
+        "scope": "宿泊（素泊まり・2泊）",
+        "pricing": {
+          "label": "¥3,800（1名1泊）",
+          "amount": 3800,
+          "currency": "JPY",
+          "charging_basis": "1名1泊"
+        }
+      },
+      {
+        "scope": "宿泊（素泊まり・3泊以上）",
+        "pricing": {
+          "label": "¥3,600（1名1泊）",
+          "amount": 3600,
+          "currency": "JPY",
+          "charging_basis": "1名1泊"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6873.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6873.html"
+    }
+  }
+}

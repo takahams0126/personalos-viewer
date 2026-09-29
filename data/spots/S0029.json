@@ -1,0 +1,73 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0029",
+  "title": "湯泊温泉",
+  "summary": "海辺にある共同露天風呂で、男女の浴槽の仕切りは簡素。 潮風と波音を感じながら海辺の温泉に入浴する。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町湯泊",
+    "google_place_id": "ChIJt60H1fwvPTURsbur1XHCc0A",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%B9%AF%E6%B3%8A%E6%B8%A9%E6%B3%89&query_place_id=ChIJt60H1fwvPTURsbur1XHCc0A"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/7Q0A0307.jpg",
+      "source_url": "https://yakukan.jp/spot/7016.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/7Q0A0308.jpg",
+      "source_url": "https://yakukan.jp/spot/7016.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/7Q0A0309.jpg",
+      "source_url": "https://yakukan.jp/spot/7016.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "海辺にある共同露天風呂で、男女の浴槽の仕切りは簡素。"
+    ],
+    "review": {
+      "positives": [
+        "潮風と波音を感じながら海辺の温泉に入浴する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：円/人",
+        "pricing": {
+          "label": "¥300（円/人）",
+          "amount": 300,
+          "currency": "JPY",
+          "charging_basis": "円/人"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7016.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7016.html"
+    }
+  }
+}

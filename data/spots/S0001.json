@@ -1,0 +1,56 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0001",
+  "title": "奥入瀬渓流",
+  "summary": "十和田湖から流れ出る約14kmの渓流沿いに自然林・滝・瀬が連続する。 清流沿いを歩き、滝・瀬・苔・森林景観の変化を連続して楽しむ。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "青森県十和田市奥入瀬",
+    "google_place_id": "ChIJeXTDrw09m18RGrz8MCSK66s",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%A5%A5%E5%85%A5%E7%80%AC%E6%B8%93%E6%B5%81&query_place_id=ChIJeXTDrw09m18RGrz8MCSK66s"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://aomori-tourism.com/lsc/upfile/spot/0000/0339/339_1_l.jpg",
+      "source_url": "https://aomori-tourism.com/spot/detail_339.html"
+    },
+    {
+      "url": "https://www.eco-oirase.com/img/img1.jpg",
+      "source_url": "https://www.eco-oirase.com/ja"
+    },
+    {
+      "url": "https://www.env.go.jp/nature/nationalparks/images/coursePhoto/towada_hachimantai_01_01.jpg",
+      "source_url": "https://www.env.go.jp/nature/nationalparks/list/towada-hachimantai/course/01/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "十和田湖から流れ出る約14kmの渓流沿いに自然林・滝・瀬が連続する。"
+    ],
+    "review": {
+      "positives": [
+        "清流沿いを歩き、滝・瀬・苔・森林景観の変化を連続して楽しむ。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://aomori-tourism.com/spot/detail_339.html"
+    },
+    "supplemental": {
+      "url": "https://www.env.go.jp/nature/nationalparks/list/towada-hachimantai/course/01/"
+    }
+  }
+}

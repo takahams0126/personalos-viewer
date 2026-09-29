@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0032",
   "title": "屋久杉自然館",
@@ -8,19 +8,21 @@
     "施設"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町安房"
+    "location_text": "鹿児島県屋久島町安房",
+    "google_place_id": "ChIJWRqJJ3ggPTURgDEmGj7BUps",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%B1%8B%E4%B9%85%E6%9D%89%E8%87%AA%E7%84%B6%E9%A4%A8&query_place_id=ChIJWRqJJ3ggPTURgDEmGj7BUps"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥600"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "1時間〜2時間"
     }
   ],
   "images": [
@@ -47,6 +49,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：円/大人",
+        "pricing": {
+          "label": "¥600（円/大人）",
+          "amount": 600,
+          "currency": "JPY",
+          "charging_basis": "円/大人"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

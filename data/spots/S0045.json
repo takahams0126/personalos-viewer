@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0045",
   "title": "手打ちそば 松竹",
@@ -8,14 +8,16 @@
     "食事"
   ],
   "access": {
-    "location_text": "鹿児島県熊毛郡屋久島町栗生1684"
+    "location_text": "鹿児島県熊毛郡屋久島町栗生1684",
+    "google_place_id": "ChIJP3cKZ2Q6PTURxP0sh-ZfBFM",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%89%8B%E6%89%93%E3%81%A1%E3%81%9D%E3%81%B0+%E6%9D%BE%E7%AB%B9&query_place_id=ChIJP3cKZ2Q6PTURxP0sh-ZfBFM"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "recommended"
+      "value": "予約推奨"
     }
   ],
   "images": [
@@ -42,6 +44,24 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：JPY_per_person_lunch_reference",
+        "pricing": {
+          "label": "¥1,000〜¥1,999（JPY_per_person_lunch_reference）",
+          "min_amount": 1000,
+          "max_amount": 1999,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_lunch_reference"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

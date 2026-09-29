@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0037",
   "title": "志戸子ガジュマル公園",
@@ -8,14 +8,21 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町志戸子"
+    "location_text": "鹿児島県屋久島町志戸子",
+    "google_place_id": "ChIJzzOYXnoZPTURCTI7PYsTiFI",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%BF%97%E6%88%B8%E5%AD%90%E3%82%AC%E3%82%B8%E3%83%A5%E3%83%9E%E3%83%AB%E5%85%AC%E5%9C%92&query_place_id=ChIJzzOYXnoZPTURCTI7PYsTiFI"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "15分〜30分"
     }
   ],
   "images": [
@@ -42,6 +49,13 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
   },
   "references": {
     "official": {

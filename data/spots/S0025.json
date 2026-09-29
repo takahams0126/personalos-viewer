@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0025",
   "title": "素泊民宿 ふれんど",
@@ -8,19 +8,16 @@
     "宿泊"
   ],
   "access": {
-    "location_text": "鹿児島県熊毛郡屋久島町宮之浦186-2"
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦186-2",
+    "google_place_id": "ChIJtSP8IrwePTURpiyYQTdC4SQ",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%B4%A0%E6%B3%8A%E6%B0%91%E5%AE%BF+%E3%81%B5%E3%82%8C%E3%82%93%E3%81%A9&query_place_id=ChIJtSP8IrwePTURpiyYQTdC4SQ"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥4,000"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "recommended"
+      "value": "予約推奨"
     }
   ],
   "images": [
@@ -47,6 +44,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：円/人泊",
+        "pricing": {
+          "label": "¥4,000（円/人泊）",
+          "amount": 4000,
+          "currency": "JPY",
+          "charging_basis": "円/人泊"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

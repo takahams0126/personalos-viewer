@@ -1,0 +1,74 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0050",
+  "title": "お食事処 樹",
+  "summary": "宮之浦の和食・定食店で、縄文牛の柔らか煮、飛魚の唐揚げ系、黒豚とんかつや御膳を扱う。 島や鹿児島の魚・肉料理を定食や御膳で味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町宮之浦2478-181",
+    "google_place_id": "ChIJ9zI9Q70fPTUR3gKK1_2x-No",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%81%8A%E9%A3%9F%E4%BA%8B%E5%87%A6+%E6%A8%B9&query_place_id=ChIJ9zI9Q70fPTUR3gKK1_2x-No"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/09/spot-itsuki-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7023.html"
+    },
+    {
+      "url": "https://yakushimapain2.up.seesaa.net/image/1118E6A8B9E383A9E383B3E38381_0334.jpg",
+      "source_url": "https://yakushimapain2.seesaa.net/article/471622815.html"
+    },
+    {
+      "url": "https://yakushimapain2.up.seesaa.net/image/1118E6A8B9E383B3E38381_0336.jpg",
+      "source_url": "https://yakushimapain2.seesaa.net/article/471622815.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "宮之浦の和食・定食店で、縄文牛の柔らか煮、飛魚の唐揚げ系、黒豚とんかつや御膳を扱う。"
+    ],
+    "review": {
+      "positives": [
+        "島や鹿児島の魚・肉料理を定食や御膳で味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：JPY_per_person_estimate",
+        "pricing": {
+          "label": "¥1,500〜¥2,500（JPY_per_person_estimate）",
+          "min_amount": 1500,
+          "max_amount": 2500,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_estimate"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7023.html"
+    },
+    "supplemental": {
+      "url": "https://tabelog.com/kagoshima/A4605/A460501/46013494/"
+    }
+  }
+}

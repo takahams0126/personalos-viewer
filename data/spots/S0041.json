@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0041",
+  "title": "竜神の滝",
+  "summary": "照葉樹林に囲まれた落差約30mの直瀑。 森林の緑とまっすぐ落ちる滝を眺める。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町原",
+    "google_place_id": "ChIJUz1AQ-YmPTURr5DRC-qBieM",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%AB%9C%E7%A5%9E%E3%81%AE%E6%BB%9D&query_place_id=ChIJUz1AQ-YmPTURr5DRC-qBieM"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "10分〜20分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://assets.st-note.com/production/uploads/images/199348567/picture_pc_5c38d8db48620a14184aff06aa84888a.jpg?width=1200",
+      "source_url": "https://note.com/chiyo2272/n/nd2c96640a63a"
+    },
+    {
+      "url": "https://thumb.photo-ac.com/6b/6be24eb49bd14a842e8e63db5dadc3a5_w.jpeg",
+      "source_url": "https://www.photo-ac.com/main/detail/24780959"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/tourism_attractions/53698/responsive_images/4h0kMSiAaIuDGDkcgT8Opq6SopOSoWNLYSIyntao__1024_683.jpeg",
+      "source_url": "https://www.kagoshima-kankou.com/guide/53698"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "照葉樹林に囲まれた落差約30mの直瀑。"
+    ],
+    "review": {
+      "positives": [
+        "森林の緑とまっすぐ落ちる滝を眺める。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
+  },
+  "references": {
+    "official": {
+      "url": "https://www.kagoshima-kankou.com/guide/53698"
+    },
+    "supplemental": {
+      "url": "https://www.rinya.maff.go.jp/kyusyu/yakusima_hozen_c/sizen/index.html"
+    }
+  }
+}

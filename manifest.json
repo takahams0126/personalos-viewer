@@ -251,6 +251,33 @@
     {
       "ref": {
         "entity_type": "spot",
+        "id": "S0001"
+      },
+      "title": "奥入瀬渓流",
+      "data_path": "data/spots/S0001.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "十和田湖から流れ出る約14kmの渓流沿いに自然林・滝・瀬が連続する。 清流沿いを歩き、滝・瀬・苔・森林景観の変化を連続して楽しむ。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A001",
+          "A009"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://aomori-tourism.com/lsc/upfile/spot/0000/0339/339_1_l.jpg",
+          "alt": "奥入瀬渓流"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
         "id": "S0003"
       },
       "title": "乳頭温泉郷",
@@ -271,6 +298,60 @@
         "image": {
           "url": "https://cdn-ak.f.st-hatena.com/images/fotolife/n/nexusuica/20180926/20180926235933.png",
           "alt": "乳頭温泉郷"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0004"
+      },
+      "title": "最上川ラフティング",
+      "data_path": "data/spots/S0004.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "最上川の河川環境を利用するラフティング体験。 川の流れに乗りながら最上川流域の自然景観を体感する。",
+        "tags": [
+          "アクティビティ"
+        ],
+        "area_ids": [
+          "A002"
+        ],
+        "category": {
+          "code": "activity",
+          "label": "アクティビティ"
+        },
+        "image": {
+          "url": "https://i0.wp.com/expedition-japan.com/wp-content/uploads/2022/07/61ecc1d7-ae7e-4f04-80b4-b6877d48c1f3_original.jpg?ssl=1&w=2304",
+          "alt": "最上川ラフティング"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0012"
+      },
+      "title": "黄金崎不老ふ死温泉",
+      "data_path": "data/spots/S0012.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "宿泊と海産物を中心とする食事を提供し、海を望める。 日本海の波打ち際に源泉かけ流しの露天風呂がある。 海に近い浴場で、海景色と温泉への入浴を同時に楽しむ。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A002",
+          "A010",
+          "A012"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://aomori-tourism.com/lsc/upfile/spot/0000/1107/1107_11_l.jpg",
+          "alt": "黄金崎不老ふ死温泉"
         }
       }
     },
@@ -389,6 +470,34 @@
     {
       "ref": {
         "entity_type": "spot",
+        "id": "S0018"
+      },
+      "title": "ヤクスギランド",
+      "data_path": "data/spots/S0018.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "原生林に千年杉・くぐり杉・仏陀杉などの屋久杉が分布し、複数の散策コースが設けられている。 巨木を続けて観察し、屋久杉の森を歩く。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/002.jpg",
+          "alt": "ヤクスギランド"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
         "id": "S0019"
       },
       "title": "小杉谷集落跡",
@@ -473,6 +582,90 @@
     {
       "ref": {
         "entity_type": "spot",
+        "id": "S0022"
+      },
+      "title": "太忠岳",
+      "data_path": "data/spots/S0022.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "標高1,497mの山で、山頂に高さ約40mの天柱石がある。 登山道は小花山の森・天文の森を通る。 原生林を登り、山頂の巨岩と展望を眺めて登頂の達成感を得る。",
+        "tags": [
+          "山"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "mountain",
+          "label": "山"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-tachudake960.jpg",
+          "alt": "太忠岳"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0023"
+      },
+      "title": "素泊民宿 里町",
+      "data_path": "data/spots/S0023.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "共用キッチンを利用できる。 安房にある素泊まりの民宿。 民宿形式。 共用キッチンを利用し、自炊をしながら滞在する。",
+        "tags": [
+          "宿泊"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "lodging",
+          "label": "宿泊"
+        },
+        "image": {
+          "url": "https://image.kkday.com/v2/image/get/h_650%2Cc_fit/s1.kkday.com/product_190165/20240907133120_bkQOa/png",
+          "alt": "素泊民宿 里町"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0024"
+      },
+      "title": "民宿あんぼう",
+      "data_path": "data/spots/S0024.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "安房中心部にある民宿で、買い出し先が周辺にある。 民宿形式。 素泊まりを基本とし、連泊数に応じて1泊あたり料金が変わる。 安房の街を利用しながら民宿に滞在する。",
+        "tags": [
+          "宿泊"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "lodging",
+          "label": "宿泊"
+        },
+        "image": {
+          "url": "https://static.wixstatic.com/media/ede3eb_11eb0b1283d64f5bafff291dee255b2b~mv2.jpg/v1/fill/w_424%2Ch_318%2Cal_c%2Cq_80%2Cenc_avif%2Cquality_auto/ede3eb_11eb0b1283d64f5bafff291dee255b2b~mv2.jpg",
+          "alt": "民宿あんぼう"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
         "id": "S0025"
       },
       "title": "素泊民宿 ふれんど",
@@ -528,6 +721,33 @@
     {
       "ref": {
         "entity_type": "spot",
+        "id": "S0027"
+      },
+      "title": "屋久島温泉",
+      "data_path": "data/spots/S0027.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "samana hotel Yakushima内にある。 海を望む大浴場と露天風呂を備えるホテル内のアルカリ性単純温泉。 海景色を眺めながら、とろみのある湯に入浴する。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://prcdn.freetls.fastly.net/release_image/123677/9/123677-9-b5d4fa2e07b48791d4ebdefcaa4cb391-3900x2600.jpg?auto=webp&bg-color=fff&fit=bounds&format=jpeg&height=1350&quality=85%2C65&width=1950",
+          "alt": "屋久島温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
         "id": "S0028"
       },
       "title": "平内海中温泉",
@@ -549,6 +769,33 @@
         "image": {
           "url": "https://assets.st-note.com/img/1749448208-P7bomBUIMGfN3Q25gkxHWwR1.jpg",
           "alt": "平内海中温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0029"
+      },
+      "title": "湯泊温泉",
+      "data_path": "data/spots/S0029.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "海辺にある共同露天風呂で、男女の浴槽の仕切りは簡素。 潮風と波音を感じながら海辺の温泉に入浴する。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/7Q0A0307.jpg",
+          "alt": "湯泊温泉"
         }
       }
     },
@@ -577,6 +824,33 @@
         "image": {
           "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/18/18/49/650x450_18184942.jpg?updated_at=1631879031",
           "alt": "楠川温泉"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0031"
+      },
+      "title": "縄文の宿まんてん 日帰り温泉",
+      "data_path": "data/spots/S0031.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "内風呂、露天風呂、露天檜風呂、ドライサウナを備える。 屋久島空港の近く、安房と宮之浦の間に位置する宿泊施設併設の温泉。 大浴場と露天風呂で入浴し、くつろぐ。",
+        "tags": [
+          "温泉"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "onsen",
+          "label": "温泉"
+        },
+        "image": {
+          "url": "https://www.arm-manten.co.jp/img/img_head-spa.jpg",
+          "alt": "縄文の宿まんてん 日帰り温泉"
         }
       }
     },
@@ -828,6 +1102,115 @@
     {
       "ref": {
         "entity_type": "spot",
+        "id": "S0041"
+      },
+      "title": "竜神の滝",
+      "data_path": "data/spots/S0041.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "照葉樹林に囲まれた落差約30mの直瀑。 森林の緑とまっすぐ落ちる滝を眺める。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://assets.st-note.com/production/uploads/images/199348567/picture_pc_5c38d8db48620a14184aff06aa84888a.jpg?width=1200",
+          "alt": "竜神の滝"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0042"
+      },
+      "title": "一湊海水浴場",
+      "data_path": "data/spots/S0042.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "一湊の天然の入り江にある海水浴場。 入り江と海景色を眺め、海岸で休憩する。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://www.jac.co.jp/tourism/yakushima/img/spot/spot_issou.jpg",
+          "alt": "一湊海水浴場"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0043"
+      },
+      "title": "東シナ海展望所",
+      "data_path": "data/spots/S0043.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "東シナ海に面する展望所で、視界が良ければ口永良部島・黒島・硫黄島・竹島方面を望める。 水平線と離島の景観や夕景を眺める。",
+        "tags": [
+          "観光スポット"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "attraction",
+          "label": "観光スポット"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/19/51/51/650x450_19515144.jpg?updated_at=1698757970",
+          "alt": "東シナ海展望所"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0044"
+      },
+      "title": "屋久島環境文化村センター",
+      "data_path": "data/spots/S0044.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島の自然・文化・暮らしの展示、大型映像と観光案内を備える屋内施設。 展示と映像で屋久島全体の自然や暮らしを理解する。",
+        "tags": [
+          "施設"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "facility",
+          "label": "施設"
+        },
+        "image": {
+          "url": "https://images.keizai.biz/yakushima_keizai/photonews/1710980909_b.jpg",
+          "alt": "屋久島環境文化村センター"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
         "id": "S0045"
       },
       "title": "手打ちそば 松竹",
@@ -877,6 +1260,118 @@
         "image": {
           "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-restaurant-panorama-01.jpg",
           "alt": "PANORAMA"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0047"
+      },
+      "title": "寿し いその香り",
+      "data_path": "data/spots/S0047.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "安房の寿司店で、地魚寿司、首折れサバ系料理、地魚南蛮漬けや縄文牛のにぎりを扱う。 地魚の寿司や屋久島の魚料理を味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-sushi-isonokaori-01.jpg",
+          "alt": "寿し いその香り"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0048"
+      },
+      "title": "鮨居酒屋やしま",
+      "data_path": "data/spots/S0048.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "安房にある寿司と郷土料理の飲食店で、地魚、首折れサバ系、トビウオ系などを扱う。 寿司と島の郷土料理を組み合わせて味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://kansai-onna.com/wp-content/uploads/2021/09/yashima2-768x576.jpg",
+          "alt": "鮨居酒屋やしま"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0049"
+      },
+      "title": "散歩亭",
+      "data_path": "data/spots/S0049.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "安房にあるカフェバー系の飲食店で、トビウオ・首折れサバ・ジビエなどを使った料理を扱う。 気軽な雰囲気で島食材のオリジナル料理を味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A015"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://tblg.k-img.com/restaurant/images/Rvw/108538/108538482.jpg",
+          "alt": "散歩亭"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0050"
+      },
+      "title": "お食事処 樹",
+      "data_path": "data/spots/S0050.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "宮之浦の和食・定食店で、縄文牛の柔らか煮、飛魚の唐揚げ系、黒豚とんかつや御膳を扱う。 島や鹿児島の魚・肉料理を定食や御膳で味わう。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013",
+          "A014"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/09/spot-itsuki-01.jpg",
+          "alt": "お食事処 樹"
         }
       }
     },

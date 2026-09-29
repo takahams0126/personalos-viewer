@@ -1,0 +1,53 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0004",
+  "title": "最上川ラフティング",
+  "summary": "最上川の河川環境を利用するラフティング体験。 川の流れに乗りながら最上川流域の自然景観を体感する。",
+  "theme_chips": [
+    "アクティビティ"
+  ],
+  "access": {
+    "location_text": "山形県最上川流域",
+    "google_place_id": "ChIJ6X8EIXgQi18RARPf8Zf_Slg",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%9C%80%E4%B8%8A%E5%B7%9D%E3%83%A9%E3%83%95%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0&query_place_id=ChIJ6X8EIXgQi18RARPf8Zf_Slg"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約必須"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://i0.wp.com/expedition-japan.com/wp-content/uploads/2022/07/61ecc1d7-ae7e-4f04-80b4-b6877d48c1f3_original.jpg?ssl=1&w=2304",
+      "source_url": "https://expedition-japan.com/"
+    },
+    {
+      "url": "https://i0.wp.com/expedition-japan.com/wp-content/uploads/elementor/thumbs/P5120023-e1656895813897-pr8vdf9xt42kr91fquf3fxhojc3zsac3c9k0aybj7k.jpg?is-pending-load=1&w=690",
+      "source_url": "https://expedition-japan.com/"
+    },
+    {
+      "url": "https://img.activityjapan.com/11/17364/11000001736403_1jZPimXE_4.jpg?version=1694155032",
+      "source_url": "https://activityjapan.com/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "最上川の河川環境を利用するラフティング体験。"
+    ],
+    "review": {
+      "positives": [
+        "川の流れに乗りながら最上川流域の自然景観を体感する。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "supplemental": {
+      "url": "https://yamagatakanko.com/booking/plan_2_1__________.html"
+    }
+  }
+}

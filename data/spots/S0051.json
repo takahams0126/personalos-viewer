@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0051",
   "title": "和食の海舟",
@@ -8,14 +8,16 @@
     "食事"
   ],
   "access": {
-    "location_text": "鹿児島県熊毛郡屋久島町宮之浦2367-7"
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦2367-7",
+    "google_place_id": "ChIJfxtLgr8ePTURHIWqk1HrTDo",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%92%8C%E9%A3%9F%E3%81%AE%E6%B5%B7%E8%88%9F&query_place_id=ChIJfxtLgr8ePTURHIWqk1HrTDo"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "recommended"
+      "value": "予約推奨"
     }
   ],
   "images": [
@@ -43,6 +45,24 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-26時点：夕食 JPY_per_person_estimate",
+        "pricing": {
+          "label": "¥2,000〜¥3,000（JPY_per_person_estimate）",
+          "min_amount": 2000,
+          "max_amount": 3000,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_estimate"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

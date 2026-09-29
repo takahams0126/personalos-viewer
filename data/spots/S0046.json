@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0046",
   "title": "PANORAMA",
@@ -8,19 +8,16 @@
     "食事"
   ],
   "access": {
-    "location_text": "鹿児島県熊毛郡屋久島町宮之浦60-1"
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦60-1",
+    "google_place_id": "ChIJu4lMyb0ePTURp9N5sMgvpLQ",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=PANORAMA&query_place_id=ChIJu4lMyb0ePTURp9N5sMgvpLQ"
   },
   "related_spots": [],
   "hero_facts": [
     {
-      "semantic": "fee",
-      "label": "料金",
-      "value": "¥3,500"
-    },
-    {
       "semantic": "reservation",
       "label": "予約",
-      "value": "recommended"
+      "value": "予約推奨"
     }
   ],
   "images": [
@@ -48,6 +45,23 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-13時点：JPY_per_person_average",
+        "pricing": {
+          "label": "¥3,500（JPY_per_person_average）",
+          "amount": 3500,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_average"
+        }
+      }
+    ]
   },
   "references": {
     "official": {

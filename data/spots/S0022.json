@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0022",
+  "title": "太忠岳",
+  "summary": "標高1,497mの山で、山頂に高さ約40mの天柱石がある。 登山道は小花山の森・天文の森を通る。 原生林を登り、山頂の巨岩と展望を眺めて登頂の達成感を得る。",
+  "theme_chips": [
+    "山"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房・中央山岳側",
+    "google_place_id": "ChIJOZEYdHohPTUR9REmAR_BNEQ",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E5%BF%A0%E5%B2%B3&query_place_id=ChIJOZEYdHohPTUR9REmAR_BNEQ"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "6時間〜7時間"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-tachudake960.jpg",
+      "source_url": "https://yakukan.jp/feature/tachudake-course.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/spot-tachudake-02.jpg",
+      "source_url": "https://yakukan.jp/spot/9652.html"
+    },
+    {
+      "url": "https://ynac.com/images_rwd/tour/mt_taichu/mt_taichu_img_top.jpg"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "標高1,497mの山で、山頂に高さ約40mの天柱石がある。",
+      "登山道は小花山の森・天文の森を通る。"
+    ],
+    "review": {
+      "positives": [
+        "原生林を登り、山頂の巨岩と展望を眺めて登頂の達成感を得る。"
+      ],
+      "cautions": []
+    }
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/9652.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/feature/tachudake-course.html"
+    }
+  }
+}

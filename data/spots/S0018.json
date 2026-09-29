@@ -1,0 +1,78 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0018",
+  "title": "ヤクスギランド",
+  "summary": "原生林に千年杉・くぐり杉・仏陀杉などの屋久杉が分布し、複数の散策コースが設けられている。 巨木を続けて観察し、屋久杉の森を歩く。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房・中央山岳側",
+    "google_place_id": "ChIJQa6eta_hPDURjXgKD9OBDVk",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%83%A4%E3%82%AF%E3%82%B9%E3%82%AE%E3%83%A9%E3%83%B3%E3%83%89&query_place_id=ChIJQa6eta_hPDURjXgKD9OBDVk"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "30分〜3時間30分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/002.jpg",
+      "source_url": "https://yakukan.jp/spot/6986.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/003.jpg",
+      "source_url": "https://yakukan.jp/spot/6986.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/004.jpg",
+      "source_url": "https://yakukan.jp/spot/6986.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "原生林に千年杉・くぐり杉・仏陀杉などの屋久杉が分布し、複数の散策コースが設けられている。"
+    ],
+    "review": {
+      "positives": [
+        "巨木を続けて観察し、屋久杉の森を歩く。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "高校生以上の森林環境整備推進協力金",
+        "pricing": {
+          "label": "¥800（1人）",
+          "amount": 800,
+          "currency": "JPY",
+          "charging_basis": "1人"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6986.html"
+    },
+    "supplemental": {
+      "url": "https://www.yakusugi-museum.com/yakushima-sight-seeing/406-yakusugispot.html"
+    }
+  }
+}

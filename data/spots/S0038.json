@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0038",
   "title": "永田いなか浜",
@@ -8,14 +8,21 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町永田"
+    "location_text": "鹿児島県屋久島町永田",
+    "google_place_id": "ChIJq4lOOgE9PTURhysN4ntEzgw",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%B0%B8%E7%94%B0%E3%81%84%E3%81%AA%E3%81%8B%E6%B5%9C&query_place_id=ChIJq4lOOgE9PTURhysN4ntEzgw"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "20分〜40分"
     }
   ],
   "images": [
@@ -42,6 +49,13 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
   },
   "references": {
     "official": {

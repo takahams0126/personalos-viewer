@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0015",
   "title": "太鼓岩",
@@ -8,14 +8,21 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町宮之浦・白谷側"
+    "location_text": "鹿児島県屋久島町宮之浦・白谷側",
+    "google_place_id": "ChIJ-YHmqVgfPTURNEJCvybQC2s",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%A4%AA%E9%BC%93%E5%B2%A9&query_place_id=ChIJ-YHmqVgfPTURNEJCvybQC2s"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "4時間〜5時間"
     }
   ],
   "images": [
@@ -41,6 +48,13 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
   },
   "references": {
     "official": {

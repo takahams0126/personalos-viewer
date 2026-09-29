@@ -1,0 +1,71 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0048",
+  "title": "鮨居酒屋やしま",
+  "summary": "安房にある寿司と郷土料理の飲食店で、地魚、首折れサバ系、トビウオ系などを扱う。 寿司と島の郷土料理を組み合わせて味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町安房92-1",
+    "google_place_id": "ChIJKxrpferfPDURoUAHNrowiqE",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E9%AE%A8%E5%B1%85%E9%85%92%E5%B1%8B%E3%82%84%E3%81%97%E3%81%BE&query_place_id=ChIJKxrpferfPDURoUAHNrowiqE"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://kansai-onna.com/wp-content/uploads/2021/09/yashima2-768x576.jpg",
+      "source_url": "https://kansai-onna.com/nomitabearuki/area/kagoshima-yakushima-yashima/"
+    },
+    {
+      "url": "https://livedoor.blogimg.jp/yukichisino/imgs/b/8/b8f9aabc.jpg",
+      "source_url": "https://blog.livedoor.jp/yukichisino/archives/59791948.html"
+    },
+    {
+      "url": "https://tblg.k-img.com/restaurant/images/Rvw/263281/df74800019a54d4ffbc72220e67d31fd.jpg",
+      "source_url": "https://tabelog.com/kagoshima/A4605/A460501/46000333/dtlmenu/photo/"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "安房にある寿司と郷土料理の飲食店で、地魚、首折れサバ系、トビウオ系などを扱う。"
+    ],
+    "review": {
+      "positives": [
+        "寿司と島の郷土料理を組み合わせて味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・一般的な夕食利用",
+        "pricing": {
+          "label": "¥3,000〜¥4,999（JPY_per_person_estimate）",
+          "min_amount": 3000,
+          "max_amount": 4999,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_estimate"
+        }
+      }
+    ]
+  },
+  "references": {
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6921.html"
+    }
+  }
+}

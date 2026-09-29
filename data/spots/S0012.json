@@ -1,0 +1,86 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0012",
+  "title": "黄金崎不老ふ死温泉",
+  "summary": "宿泊と海産物を中心とする食事を提供し、海を望める。 日本海の波打ち際に源泉かけ流しの露天風呂がある。 海に近い浴場で、海景色と温泉への入浴を同時に楽しむ。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "青森県深浦町黄金崎",
+    "google_place_id": "ChIJPZBzpGBCml8ReN5y_jMVT5k",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E9%BB%84%E9%87%91%E5%B4%8E%E4%B8%8D%E8%80%81%E3%81%B5%E6%AD%BB%E6%B8%A9%E6%B3%89&query_place_id=ChIJPZBzpGBCml8ReN5y_jMVT5k"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://aomori-tourism.com/lsc/upfile/spot/0000/1107/1107_11_l.jpg",
+      "source_url": "https://aomori-tourism.com/spot/detail_1107.html"
+    },
+    {
+      "url": "https://cdn.jalan.jp/jalan/img/3/kuchikomi/1863/KL/6b113_0001863145_1.jpg",
+      "source_url": "https://www.jalan.net/"
+    },
+    {
+      "url": "https://img01.jalannews.jp/img/2025/03/20250311_tohoku_mook_2_001.jpg"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "宿泊と海産物を中心とする食事を提供し、海を望める。",
+      "日本海の波打ち際に源泉かけ流しの露天風呂がある。"
+    ],
+    "review": {
+      "positives": [
+        "海に近い浴場で、海景色と温泉への入浴を同時に楽しむ。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "日帰り入浴（大人）",
+        "pricing": {
+          "label": "¥1,000（1名）",
+          "amount": 1000,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "日帰り入浴（小学生）",
+        "pricing": {
+          "label": "¥500（1名）",
+          "amount": 500,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "宿泊",
+        "pricing": null
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://www.furofushi.com/"
+    },
+    "supplemental": {
+      "url": "https://www.furofushi.com/"
+    }
+  }
+}

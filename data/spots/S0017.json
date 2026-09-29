@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0017",
   "title": "ウィルソン株",
@@ -8,14 +8,16 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町安房・中央山岳側"
+    "location_text": "鹿児島県屋久島町安房・中央山岳側",
+    "google_place_id": "ChIJK3BIjRciPTUR2S8_5yCwnUI",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%82%A6%E3%82%A3%E3%83%AB%E3%82%BD%E3%83%B3%E6%A0%AA&query_place_id=ChIJK3BIjRciPTUR2S8_5yCwnUI"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [
@@ -41,6 +43,13 @@
       ],
       "cautions": []
     }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
   },
   "references": {
     "official": {

@@ -1,0 +1,87 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0027",
+  "title": "屋久島温泉",
+  "summary": "samana hotel Yakushima内にある。 海を望む大浴場と露天風呂を備えるホテル内のアルカリ性単純温泉。 海景色を眺めながら、とろみのある湯に入浴する。",
+  "theme_chips": [
+    "温泉"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町尾之間周辺",
+    "google_place_id": "ChIJw6nTUdklPTURRwWJ_T8Apsk",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%B1%8B%E4%B9%85%E5%B3%B6%E6%B8%A9%E6%B3%89&query_place_id=ChIJw6nTUdklPTURRwWJ_T8Apsk"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://prcdn.freetls.fastly.net/release_image/123677/9/123677-9-b5d4fa2e07b48791d4ebdefcaa4cb391-3900x2600.jpg?auto=webp&bg-color=fff&fit=bounds&format=jpeg&height=1350&quality=85%2C65&width=1950",
+      "source_url": "https://prtimes.jp/main/html/rd/p/000000009.000123677.html"
+    },
+    {
+      "url": "https://rlx.jp/img/hotelpictures/RP24342_rvVcu.jpg",
+      "source_url": "https://rlx.jp/24342/photo/"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-yakushima-onsen-01.jpg",
+      "source_url": "https://yakukan.jp/spot/7014.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "samana hotel Yakushima内にある。",
+      "海を望む大浴場と露天風呂を備えるホテル内のアルカリ性単純温泉。"
+    ],
+    "review": {
+      "positives": [
+        "海景色を眺めながら、とろみのある湯に入浴する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "日帰り入浴（大人）",
+        "pricing": {
+          "label": "¥1,800（1名）",
+          "amount": 1800,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "日帰り入浴（小学生）",
+        "pricing": {
+          "label": "¥900（1名）",
+          "amount": 900,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "宿泊",
+        "pricing": null
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/7014.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7014.html"
+    }
+  }
+}

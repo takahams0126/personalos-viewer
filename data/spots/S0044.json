@@ -1,0 +1,105 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0044",
+  "title": "屋久島環境文化村センター",
+  "summary": "屋久島の自然・文化・暮らしの展示、大型映像と観光案内を備える屋内施設。 展示と映像で屋久島全体の自然や暮らしを理解する。",
+  "theme_chips": [
+    "施設"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町宮之浦",
+    "google_place_id": "ChIJw2H5fKMePTURi_pcrJuXcI0",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%B1%8B%E4%B9%85%E5%B3%B6%E7%92%B0%E5%A2%83%E6%96%87%E5%8C%96%E6%9D%91%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC&query_place_id=ChIJw2H5fKMePTURi_pcrJuXcI0"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "30分〜1時間30分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://images.keizai.biz/yakushima_keizai/photonews/1710980909_b.jpg",
+      "source_url": "https://yakushima.keizai.biz/photoflash/1766/"
+    },
+    {
+      "url": "https://www.kagoshima-kankou.com/storage/tourism_attractions/10730/responsive_images/lDKl6SrrK8JcpGWGuFFied2FgrLuk3uqTVAw5TG3__1756_1171.jpg",
+      "source_url": "https://www.kagoshima-kankou.com/guide/10730"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-yakushima-kankyo-bunkamura-center-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6994.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島の自然・文化・暮らしの展示、大型映像と観光案内を備える屋内施設。"
+    ],
+    "review": {
+      "positives": [
+        "展示と映像で屋久島全体の自然や暮らしを理解する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "観覧料（展示ホール・大型映像ホール／大人）",
+        "pricing": {
+          "label": "¥530（1名）",
+          "amount": 530,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "観覧料（展示ホール・大型映像ホール／大学生・高校生）",
+        "pricing": {
+          "label": "¥370（1名）",
+          "amount": 370,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "観覧料（展示ホール・大型映像ホール／中学生・小学生）",
+        "pricing": {
+          "label": "¥270（1名）",
+          "amount": 270,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      },
+      {
+        "scope": "観覧料（展示ホール・大型映像ホール／幼児6歳未満）",
+        "pricing": {
+          "label": "¥0（1名）",
+          "amount": 0,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://www.yakushima.or.jp/guide/village.php"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6994.html"
+    }
+  }
+}

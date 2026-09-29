@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0043",
+  "title": "東シナ海展望所",
+  "summary": "東シナ海に面する展望所で、視界が良ければ口永良部島・黒島・硫黄島・竹島方面を望める。 水平線と離島の景観や夕景を眺める。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町吉田",
+    "google_place_id": "ChIJsZD6_L4XPTUR_vlI0WpDyaA",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E3%82%B7%E3%83%8A%E6%B5%B7%E5%B1%95%E6%9C%9B%E6%89%80&query_place_id=ChIJsZD6_L4XPTUR_vlI0WpDyaA"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "10分〜20分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.4travel.jp/img/thumbnails/imk/tips_pict/19/51/51/650x450_19515144.jpg?updated_at=1698757970",
+      "source_url": "https://4travel.jp/dm_shisetsu/11852647"
+    },
+    {
+      "url": "https://image.space.rakuten.co.jp/d/strg/ctrl/9/1a991cf56f39b7e4314e0abb8ec767d2cefddaf0.22.9.9.3.jpeg",
+      "source_url": "https://plaza.rakuten.co.jp/masarus/diary/202105030000/"
+    },
+    {
+      "url": "https://komc.visit-kyushu.com/assets/photo/9/large/ece678bc3b2135259cde208961078323.jpg",
+      "source_url": "https://komc.visit-kyushu.com/library/detail/6977"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "東シナ海に面する展望所で、視界が良ければ口永良部島・黒島・硫黄島・竹島方面を望める。"
+    ],
+    "review": {
+      "positives": [
+        "水平線と離島の景観や夕景を眺める。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/kankoshisetu/914.html"
+    },
+    "supplemental": {
+      "url": "https://www.town.yakushima.kagoshima.jp/soshiki/kanko_machizukuri/kankosushin/kankospot/kankoshisetu/914.html"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0042",
+  "title": "一湊海水浴場",
+  "summary": "一湊の天然の入り江にある海水浴場。 入り江と海景色を眺め、海岸で休憩する。",
+  "theme_chips": [
+    "観光スポット"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町一湊",
+    "google_place_id": "ChIJhVMouuwZPTURCRG7veZXohs",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E4%B8%80%E6%B9%8A%E6%B5%B7%E6%B0%B4%E6%B5%B4%E5%A0%B4&query_place_id=ChIJhVMouuwZPTURCRG7veZXohs"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "15分〜30分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://www.jac.co.jp/tourism/yakushima/img/spot/spot_issou.jpg",
+      "source_url": "https://www.jac.co.jp/tourism/yakushima/spot.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-issou-beach-02.jpg",
+      "source_url": "https://yakukan.jp/spot/7017.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/03/pic-isso-dr.jpg",
+      "source_url": "https://yakukan.jp/tourism-association/photo-download.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "一湊の天然の入り江にある海水浴場。"
+    ],
+    "review": {
+      "positives": [
+        "入り江と海景色を眺め、海岸で休憩する。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
+  },
+  "references": {
+    "official": {
+      "url": "https://www.town.yakushima.kagoshima.jp/kanko/kankospot/4/2587.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/7017.html"
+    }
+  }
+}

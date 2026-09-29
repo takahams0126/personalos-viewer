@@ -1,0 +1,74 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0049",
+  "title": "散歩亭",
+  "summary": "安房にあるカフェバー系の飲食店で、トビウオ・首折れサバ・ジビエなどを使った料理を扱う。 気軽な雰囲気で島食材のオリジナル料理を味わう。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県屋久島町安房",
+    "google_place_id": "ChIJZ41O3urfPDURjC1kiwkwZuM",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%95%A3%E6%AD%A9%E4%BA%AD&query_place_id=ChIJZ41O3urfPDURjC1kiwkwZuM"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://tblg.k-img.com/restaurant/images/Rvw/108538/108538482.jpg",
+      "source_url": "https://tabelog.com/kagoshima/A4605/A460501/46000327/dtlphotolst/smp2/"
+    },
+    {
+      "url": "https://tblg.k-img.com/restaurant/images/Rvw/327308/ca8918dcbef7f4cb013a1d6cd6be07b0.jpg",
+      "source_url": "https://tabelog.com/kagoshima/A4605/A460501/46000327/dtlphotolst/smp2/"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-sampotei-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6919.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "安房にあるカフェバー系の飲食店で、トビウオ・首折れサバ・ジビエなどを使った料理を扱う。"
+    ],
+    "review": {
+      "positives": [
+        "気軽な雰囲気で島食材のオリジナル料理を味わう。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "参考価格・2026-09-12時点：JPY_per_person_estimate",
+        "pricing": {
+          "label": "¥2,000〜¥3,500（JPY_per_person_estimate）",
+          "min_amount": 2000,
+          "max_amount": 3500,
+          "currency": "JPY",
+          "charging_basis": "JPY_per_person_estimate"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://yakukan.jp/spot/6919.html"
+    },
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6919.html"
+    }
+  }
+}
