@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0006",
+  "title": "武蔵小金井駅",
+  "point_type": {
+    "code": "station",
+    "label": "駅"
+  },
+  "location": {
+    "text": "日本東京都小金井市本町6丁目"
+  }
+}

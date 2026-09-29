@@ -87,8 +87,24 @@
       }
     },
     {
-      "point_id": "point-travel_point-T0001",
+      "point_id": "point-travel_point-T0006",
       "order": 6,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0006"
+      },
+      "position": {
+        "lat": 35.7011232,
+        "lon": 139.506912
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJXdsKR73lGGARwm7gGZuJ4x8"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0001",
+      "order": 7,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0001"
@@ -470,6 +486,47 @@
         {
           "lat": 30.38493,
           "lon": 130.65702
+        }
+      ]
+    },
+    {
+      "segment_id": "segment-CP001-D5-LR4B-M01",
+      "order": 2,
+      "flow_element_id": "CP001-D5-LR4B-M01",
+      "from_point_id": "point-travel_point-T0006",
+      "to_point_id": "point-travel_point-T0001",
+      "mode": {
+        "code": "WALK",
+        "label": "徒歩"
+      },
+      "path": [
+        {
+          "lat": 35.70096,
+          "lon": 139.50677
+        },
+        {
+          "lat": 35.70093,
+          "lon": 139.50678
+        },
+        {
+          "lat": 35.70094,
+          "lon": 139.50716
+        },
+        {
+          "lat": 35.70077,
+          "lon": 139.50712
+        },
+        {
+          "lat": 35.70032,
+          "lon": 139.50708
+        },
+        {
+          "lat": 35.70011,
+          "lon": 139.50702
+        },
+        {
+          "lat": 35.69997,
+          "lon": 139.50695
         }
       ]
     }

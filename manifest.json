@@ -951,6 +951,14 @@
     {
       "ref": {
         "entity_type": "travel_point",
+        "id": "T0006"
+      },
+      "title": "武蔵小金井駅",
+      "data_path": "data/travel-points/T0006.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
         "id": "T0007"
       },
       "title": "鹿児島空港",

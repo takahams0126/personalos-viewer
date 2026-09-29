@@ -35,22 +35,57 @@
           },
           "next_move": {
             "transport": {
-              "code": "train",
-              "label": "電車"
-            }
+              "code": "walk",
+              "label": "徒歩"
+            },
+            "duration_label": "20分"
           },
-          "arrival_label": "05:20",
-          "departure_label": "05:20"
+          "arrival_label": "04:45",
+          "departure_label": "04:45"
         },
         {
           "order": 2,
           "target": {
             "entity_type": "travel_point",
-            "id": "T0002"
-          }
+            "id": "T0006"
+          },
+          "arrival_label": "05:05",
+          "departure_label": "05:05"
         },
         {
           "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0006"
+          },
+          "next_move": {
+            "transport": {
+              "code": "bus",
+              "label": "バス"
+            },
+            "service": {
+              "operator": "東京空港交通／京王バス共同運行",
+              "route_name": "武蔵小金井駅→羽田空港第1ターミナル",
+              "depart_label": "05:15",
+              "arrive_label": "06:40"
+            },
+            "depart_label": "05:15",
+            "arrive_label": "06:40"
+          },
+          "arrival_label": "05:05",
+          "departure_label": "05:05"
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "arrival_label": "06:40",
+          "departure_label": "06:40"
+        },
+        {
+          "order": 5,
           "target": {
             "entity_type": "travel_point",
             "id": "T0002"
@@ -68,10 +103,12 @@
             },
             "depart_label": "10:00",
             "arrive_label": "11:45"
-          }
+          },
+          "arrival_label": "06:40",
+          "departure_label": "06:40"
         },
         {
-          "order": 4,
+          "order": 6,
           "target": {
             "entity_type": "travel_point",
             "id": "T0007"
@@ -94,7 +131,7 @@
           "departure_label": "11:45"
         },
         {
-          "order": 5,
+          "order": 7,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
@@ -103,7 +140,7 @@
           "departure_label": "14:05"
         },
         {
-          "order": 6,
+          "order": 8,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
@@ -120,7 +157,7 @@
           "departure_label": "14:05"
         },
         {
-          "order": 7,
+          "order": 9,
           "target": {
             "entity_type": "travel_point",
             "id": "T0005"
@@ -131,7 +168,7 @@
           "arrival_label": "14:11"
         },
         {
-          "order": 8,
+          "order": 10,
           "target": {
             "entity_type": "travel_point",
             "id": "T0005"
@@ -146,7 +183,7 @@
           }
         },
         {
-          "order": 9,
+          "order": 11,
           "target": {
             "entity_type": "spot",
             "id": "S0025"
@@ -171,7 +208,7 @@
           ]
         },
         {
-          "order": 10,
+          "order": 12,
           "target": {
             "entity_type": "spot",
             "id": "S0051"
@@ -204,14 +241,14 @@
           ]
         },
         {
-          "order": 11,
+          "order": 13,
           "target": {
             "entity_type": "spot",
             "id": "S0025"
           }
         }
       ],
-      "start_time_label": "05:20",
+      "start_time_label": "04:45",
       "map_artifact_ref": {
         "artifact_id": "maps/concrete/CP001/CP001-day01-road-map.json",
         "kind": "execution_road_map"
@@ -1413,9 +1450,17 @@
           },
           "next_move": {
             "transport": {
-              "code": "train",
-              "label": "電車"
-            }
+              "code": "bus",
+              "label": "バス"
+            },
+            "service": {
+              "operator": "東京空港交通／京王バス共同運行",
+              "route_name": "羽田空港第1ターミナル→武蔵小金井駅",
+              "depart_label": "18:50",
+              "arrive_label": "20:35"
+            },
+            "depart_label": "18:50",
+            "arrive_label": "20:35"
           },
           "arrival_label": "17:50",
           "departure_label": "17:50"
@@ -1424,8 +1469,35 @@
           "order": 9,
           "target": {
             "entity_type": "travel_point",
+            "id": "T0006"
+          },
+          "arrival_label": "20:35",
+          "departure_label": "20:35"
+        },
+        {
+          "order": 10,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0006"
+          },
+          "next_move": {
+            "transport": {
+              "code": "walk",
+              "label": "徒歩"
+            },
+            "duration_label": "20分"
+          },
+          "arrival_label": "20:35",
+          "departure_label": "20:35"
+        },
+        {
+          "order": 11,
+          "target": {
+            "entity_type": "travel_point",
             "id": "T0001"
-          }
+          },
+          "arrival_label": "20:55",
+          "departure_label": "20:55"
         }
       ],
       "start_time_label": "10:00",
@@ -1447,19 +1519,9 @@
         "text": "表示確認用synthetic weatherは保存済みだが、2026-10-19〜10-23の実施判断に必要な実予報ではないため、本番Weatherは後日再取得が必要。"
       },
       {
-        "semantic": "core.days.day1.logical_routes.CP001-D1-LR1",
-        "level": "attention",
-        "text": "自宅から羽田空港までの実施日列車接続・所要時間を今回の利用可能resolverで根拠付きに確定できていないため、schedule LogicalRouteResolutionが未解決。"
-      },
-      {
         "semantic": "core.days.day4.logical_routes.CP001-D4-LR2",
         "level": "attention",
         "text": "2026-09-17時点で白谷雲水峡は台風24号被害により県道通行止め・園内未整備のため閉園継続。2026-10-22実施可否は開通後の安全確認を再確認する必要がある。"
-      },
-      {
-        "semantic": "core.days.day5.logical_routes.CP001-D5-LR4",
-        "level": "attention",
-        "text": "羽田17:50到着後の自宅までの実施日列車接続・所要時間を根拠付きに確定できていないため、schedule LogicalRouteResolutionが未解決。"
       }
     ]
   },

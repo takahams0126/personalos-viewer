@@ -23,8 +23,24 @@
       }
     },
     {
-      "point_id": "point-travel_point-T0002",
+      "point_id": "point-travel_point-T0006",
       "order": 2,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0006"
+      },
+      "position": {
+        "lat": 35.7011232,
+        "lon": 139.506912
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJXdsKR73lGGARwm7gGZuJ4x8"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0002",
+      "order": 3,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0002"
@@ -40,7 +56,7 @@
     },
     {
       "point_id": "point-travel_point-T0007",
-      "order": 3,
+      "order": 4,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0007"
@@ -56,7 +72,7 @@
     },
     {
       "point_id": "point-travel_point-T0003",
-      "order": 4,
+      "order": 5,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0003"
@@ -72,7 +88,7 @@
     },
     {
       "point_id": "point-travel_point-T0005",
-      "order": 5,
+      "order": 6,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0005"
@@ -88,7 +104,7 @@
     },
     {
       "point_id": "point-spot-S0025",
-      "order": 6,
+      "order": 7,
       "entity_ref": {
         "entity_type": "spot",
         "id": "S0025"
@@ -104,7 +120,7 @@
     },
     {
       "point_id": "point-spot-S0051",
-      "order": 7,
+      "order": 8,
       "entity_ref": {
         "entity_type": "spot",
         "id": "S0051"
@@ -121,8 +137,49 @@
   ],
   "segments": [
     {
-      "segment_id": "segment-CP001-D1-LR3-M01",
+      "segment_id": "segment-CP001-D1-LR1A-M01",
       "order": 1,
+      "flow_element_id": "CP001-D1-LR1A-M01",
+      "from_point_id": "point-travel_point-T0001",
+      "to_point_id": "point-travel_point-T0006",
+      "mode": {
+        "code": "WALK",
+        "label": "徒歩"
+      },
+      "path": [
+        {
+          "lat": 35.69997,
+          "lon": 139.50695
+        },
+        {
+          "lat": 35.70011,
+          "lon": 139.50702
+        },
+        {
+          "lat": 35.70032,
+          "lon": 139.50708
+        },
+        {
+          "lat": 35.70077,
+          "lon": 139.50712
+        },
+        {
+          "lat": 35.70094,
+          "lon": 139.50716
+        },
+        {
+          "lat": 35.70093,
+          "lon": 139.50678
+        },
+        {
+          "lat": 35.70096,
+          "lon": 139.50677
+        }
+      ]
+    },
+    {
+      "segment_id": "segment-CP001-D1-LR3-M01",
+      "order": 2,
       "flow_element_id": "CP001-D1-LR3-M01",
       "from_point_id": "point-travel_point-T0003",
       "to_point_id": "point-travel_point-T0005",
@@ -175,7 +232,7 @@
     },
     {
       "segment_id": "segment-CP001-D1-LR4-M01",
-      "order": 2,
+      "order": 3,
       "flow_element_id": "CP001-D1-LR4-M01",
       "from_point_id": "point-travel_point-T0005",
       "to_point_id": "point-spot-S0025",
@@ -556,7 +613,7 @@
     },
     {
       "segment_id": "segment-CP001-D1-LR4-M02",
-      "order": 3,
+      "order": 4,
       "flow_element_id": "CP001-D1-LR4-M02",
       "from_point_id": "point-spot-S0025",
       "to_point_id": "point-spot-S0051",
@@ -617,7 +674,7 @@
     },
     {
       "segment_id": "segment-CP001-D1-LR4-M03",
-      "order": 4,
+      "order": 5,
       "flow_element_id": "CP001-D1-LR4-M03",
       "from_point_id": "point-spot-S0051",
       "to_point_id": "point-spot-S0025",
