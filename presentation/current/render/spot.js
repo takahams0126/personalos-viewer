@@ -68,6 +68,31 @@ function renderHeroFacts(facts = []) {
   );
 }
 
+function renderFees(fees) {
+  if (!fees?.applicability) return null;
+  const state = fees.applicability.code;
+  if (state === 'not_applicable') return null;
+
+  if (state === 'free' || state === 'unknown') {
+    return h('section', { className: 'spot-hero-detail spot-fees', dataset: { semantic: 'fees' } },
+      h('h2', { text: '料金' }),
+      h('p', { className: 'spot-detail-note', text: fees.applicability.label })
+    );
+  }
+
+  const facts = (fees.items || []).map(item => ({
+    semantic: 'fee',
+    label: item.scope,
+    value: item.pricing === null ? '料金変動' : item.pricing.label
+  }));
+  if (!facts.length) return null;
+
+  return h('section', { className: 'spot-hero-detail spot-fees', dataset: { semantic: 'fees' } },
+    h('h2', { text: '料金' }),
+    renderFacts(facts, 'spot-fee-facts')
+  );
+}
+
 function renderCarousel(images = [], title = '') {
   if (!images.length) return null;
 
@@ -227,6 +252,7 @@ export async function renderSpot({ spot, resolver }) {
         renderChipList(spot.theme_chips, { ariaLabel: 'テーマ', className: 'spot-theme-chips' }),
         h('div', { className: 'spot-hero-details' },
           renderAccess(spot.access),
+          renderFees(spot.fees),
           renderFacilities(spot.facilities),
           renderReferences(spot.references),
           renderHeroFacts(spot.hero_facts)
