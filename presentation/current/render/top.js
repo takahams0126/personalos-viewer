@@ -1,4 +1,5 @@
 import { hrefFor } from '../core/router.js';
+import { renderChipList } from './components/presentation.js';
 import { h } from './dom.js';
 
 const EXPLORER_TYPES = new Set(['spot', 'route', 'plan']);
@@ -77,13 +78,6 @@ function renderFilterPanel(manifest) {
   );
 }
 
-function renderTags(tags = []) {
-  if (!tags.length) return null;
-  return h('ul', { className: 'top-result-tags', attrs: { 'aria-label': 'タグ' } },
-    tags.map(tag => h('li', { text: tag }))
-  );
-}
-
 function renderResult(entry) {
   const explorer = entry.explorer;
   const type = entry.ref.entity_type;
@@ -98,7 +92,7 @@ function renderResult(entry) {
   ].filter(Boolean).join(' ');
 
   return h('a', {
-    className: 'top-result-row',
+    className: 'top-result-row entity-link-card',
     attrs: { href: hrefFor(entry.ref) },
     dataset: {
       explorerCard: '',
@@ -132,7 +126,7 @@ function renderResult(entry) {
       ),
       h('h3', { text: entry.title }),
       explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null,
-      renderTags(explorer.tags)
+      renderChipList(explorer.tags, { ariaLabel: 'タグ', className: 'top-result-tags', compact: true })
     ),
     h('span', { className: 'top-result-arrow', attrs: { 'aria-hidden': 'true' }, text: '›' })
   );
