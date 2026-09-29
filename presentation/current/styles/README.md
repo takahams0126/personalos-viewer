@@ -4,14 +4,14 @@ This directory implements the visual resources composed by the Leisure HTML View
 
 ```text
 styles/
-├─ foundation/                 shared theme-independent scales and measures
+├─ foundation/                 preset-independent atomic scales only
 ├─ themes/
 │  └─ <theme-id>.css           visual role values: color, typography, radius, shadow
 ├─ primitives/                 shared generic document/control presentation
 ├─ patterns/
-│  └─ <pattern-set-id>/**      reusable presentation grammar bundle
+│  └─ <pattern-set-id>/**      reusable presentation grammar / component treatment
 └─ layouts/
-   └─ <layout-set-id>/**       page/spatial composition and responsive reflow bundle
+   └─ <layout-set-id>/**       page measure / composition / responsive reflow
 ```
 
 The Viewer-level composition authority is outside this directory:
@@ -67,14 +67,19 @@ CSS layer order is fixed as:
 tokens → theme → primitives → patterns → layout → overrides
 ```
 
-Rules:
+Current-authored CSS should normally belong to one of these explicit layers. Do not use unlayered CSS as a convenient high-priority override path.
 
-- `foundation/**` must not contain Spot / Route / Plan / ConcretePlan-specific values.
-- `themes/**` supplies role tokens and must not select Domain/page classes.
+## Ownership rules
+
+- `foundation/**` owns atomic, preset-independent scales only. It is not the shared-value bucket for the Default design.
+- Foundation must not contain Spot / Route / Plan / ConcretePlan-specific values.
+- Foundation must not freeze page/detail/explorer measure, component density, control-height role, or component gap merely because Default pages share them.
+- `themes/**` supplies skin role tokens and must not select Domain/page classes.
 - `primitives/**` styles generic HTML/control behavior and must not depend on page identity.
-- `patterns/<set>/**` styles reusable UI grammar and must not fetch, infer, or redefine Domain meaning.
-- `layouts/<set>/**` owns placement, width, flow, grid/flex, sticky behavior, and responsive reflow. New theme-specific colors, font families, radius, and shadow values should not be introduced here.
+- `patterns/<set>/**` styles reusable UI grammar and may own component treatment/density roles; it must not fetch, infer, or redefine Domain meaning.
+- `layouts/<set>/**` owns page measure, placement, flow, grid/flex, sticky behavior, and responsive reflow. Theme-specific colors, font families, radius, and shadow values should not be introduced here.
 - `render/**` remains the owner of Semantic Structure; styling must not compensate for missing Domain semantics.
+- repeated Semantic DOM grammar may move to a thin `render/components/**` helper only after actual repetition is demonstrated; such helpers do not fetch or infer Domain meaning.
 - a Presentation Preset must form a usable Viewer-wide set; do not create page-only presets.
 
 ## Default preset and migration debt
@@ -91,35 +96,38 @@ The technical-validation CSS originally mixed four kinds of responsibility insid
 
 ```text
 Foundation
-→ shared measure / spacing / control size / border width / motion scale
+→ atomic spacing / border / primitive duration scales
 
 Theme
 → color / surface / typography role / radius / shadow
 
 Pattern
-→ reusable card / chip / facts / hero / section / sequence grammar
+→ reusable card / chip / facts / hero / section / sequence grammar and component density
 
 Layout
-→ page composition / placement / reflow
+→ page measure / composition / placement / reflow
 ```
 
 Default convergence is incremental, but the target classification is authoritative. Do not preserve old page-local declarations as a second visual system.
 
 ### Convergence status
 
-First convergence batch completed:
+First visual-role convergence batch:
 
-- shared detail / explorer measures, `space-5`, control height, strong border width, and fast motion now live in `foundation/tokens.css`
-- Default color/surface roles, typography roles, radius, shadow, and color-scheme now live in `themes/default.css`
-- TOP / Spot / Route / Plan / ConcretePlan timeline / AppShell layouts consume shared Foundation / Theme roles instead of defining their own raw theme values for those concerns
-- generic `visually-hidden` remains Primitive-owned; page layout must not redefine it
+- `space-5`, border-width scales, and primitive duration now live in `foundation/tokens.css`
+- Default color/surface roles, typography roles, radius, shadow, and color-scheme live in `themes/default.css`
+- Default control-height role lives with the Default Pattern Set rather than shared Foundation
+- Default page/detail/explorer measures live in `layouts/default/settings.css` rather than shared Foundation
+- TOP / Spot / Route / Plan / ConcretePlan timeline / AppShell layouts consume shared Foundation / Theme / Pattern / Layout roles instead of defining their own copies for those concerns
+- generic `visually-hidden` remains Primitive-owned; page layout does not redefine it
 
-Remaining debt is primarily **Pattern extraction**, not a hidden Theme:
+Remaining debt is primarily **Pattern / shared semantic grammar extraction**, not a hidden Theme:
 
 - repeated entity hero grammar across Spot / Route
 - repeated chip / badge grammar
 - repeated fact-card / related-card / strength-card grammar
 - repeated section-divider / section-heading grammar
+- repeated DOM grammar that should move to a shared renderer component only when the semantic shape is genuinely the same
 - component-specific typography that should be promoted only when a stable reusable role is demonstrated
 
-Do not create speculative tokens for every numeric value. Promote a value to Foundation / Theme only when it represents a stable cross-page role; otherwise keep it in the owning Pattern or Layout.
+Do not create speculative tokens for every numeric value. Promote a value only when it represents a stable owner-correct role.
