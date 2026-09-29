@@ -165,7 +165,7 @@ function renderAppeal(appeal = {}) {
   const review = renderReview(appeal.review);
   if (!highlights.length && !review) return null;
 
-  return h('section', { className: 'spot-appeal content-section', dataset: { semantic: 'appeal' } },
+  return h('section', { className: 'spot-appeal content-section content-section--roomy', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このスポットの魅力' }),
     renderEmphasisList(highlights, { className: 'spot-highlights' }),
     review
@@ -197,7 +197,7 @@ async function renderRelatedSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const items = await Promise.all(refs.map(ref => describeRelated(ref, resolver)));
 
-  return h('section', { className: 'spot-related content-section', dataset: { semantic: 'related-spots' } },
+  return h('section', { className: 'spot-related content-section content-section--roomy', dataset: { semantic: 'related-spots' } },
     h('h2', { text: '関連スポット' }),
     h('div', { className: 'spot-related-grid' },
       items.map(item =>
