@@ -1,12 +1,6 @@
 import { hrefFor } from '../core/router.js';
+import { renderChipList, renderEmphasisList } from './components/presentation.js';
 import { h } from './dom.js';
-
-function renderChips(items = []) {
-  if (!items.length) return null;
-  return h('ul', { className: 'route-theme-chips', attrs: { 'aria-label': 'テーマ' } },
-    items.map(item => h('li', { text: item }))
-  );
-}
 
 function renderFacts(facts = []) {
   if (!facts.length) return null;
@@ -49,7 +43,7 @@ async function renderHeroSpots(refs = [], resolver) {
     h('h2', { text: '主役スポット' }),
     h('div', { className: 'route-hero-spot-grid' },
       spots.map(spot =>
-        h('a', { className: 'route-hero-spot-card', attrs: { href: hrefFor(spot.ref) } },
+        h('a', { className: 'route-hero-spot-card entity-link-card', attrs: { href: hrefFor(spot.ref) } },
           spot.image
             ? h('img', { attrs: { src: spot.image, alt: '', loading: 'lazy', decoding: 'async' } })
             : null,
@@ -81,20 +75,16 @@ function renderAppeal(appeal) {
   const strengths = appeal.strengths || [];
   if (!appeal.summary && !strengths.length) return null;
 
-  return h('section', { className: 'route-appeal', dataset: { semantic: 'appeal' } },
+  return h('section', { className: 'route-appeal content-section', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このルートの魅力' }),
     appeal.summary ? h('p', { className: 'route-appeal-summary', text: appeal.summary }) : null,
-    strengths.length
-      ? h('ul', { className: 'route-strengths' },
-          strengths.map(item => h('li', {}, h('p', { text: item })))
-        )
-      : null
+    renderEmphasisList(strengths, { className: 'route-strengths' })
   );
 }
 
 function renderMap(map) {
   if (!map?.artifact_ref) return null;
-  return h('section', { className: 'route-map-section', dataset: { semantic: 'conceptual-map' } },
+  return h('section', { className: 'route-map-section content-section', dataset: { semantic: 'conceptual-map' } },
     h('h2', { text: 'Conceptual Map' }),
     h('figure', {
       className: 'map-view route-map',
@@ -173,7 +163,7 @@ async function renderSequence(sequence = [], resolver) {
   if (!sequence.length) return null;
   const items = await Promise.all(sequence.map(item => renderSequenceItem(item, resolver)));
 
-  return h('section', { className: 'route-sequence-section', dataset: { semantic: 'sequence' } },
+  return h('section', { className: 'route-sequence-section content-section', dataset: { semantic: 'sequence' } },
     h('h2', { text: '立ち寄り順' }),
     h('ol', { className: 'route-sequence' }, items)
   );
@@ -181,7 +171,7 @@ async function renderSequence(sequence = [], resolver) {
 
 function renderConstraints(constraints = []) {
   if (!constraints.length) return null;
-  return h('section', { className: 'route-constraints', dataset: { semantic: 'constraints' } },
+  return h('section', { className: 'route-constraints content-section', dataset: { semantic: 'constraints' } },
     h('h2', { text: '重要な条件' }),
     h('ul', {}, constraints.map(item => h('li', { text: item })))
   );
@@ -197,7 +187,7 @@ export async function renderRoute({ route, resolver }) {
         h('p', { className: 'entity-kind', text: `Route · ${route.id}` }),
         h('h1', { text: route.title }),
         route.summary ? h('p', { className: 'route-summary', text: route.summary }) : null,
-        renderChips(route.theme_chips),
+        renderChipList(route.theme_chips, { ariaLabel: 'テーマ', className: 'route-theme-chips' }),
         renderIdentity(route),
         renderFacts(route.hero_facts)
       ),
