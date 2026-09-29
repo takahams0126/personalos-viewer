@@ -1,7 +1,12 @@
 @layer layout {
-  .viewer-shell {
+  .viewer-shell,
+  .layout-switcher,
+  main {
     width: min(100% - 2rem, var(--measure-page));
     margin-inline: auto;
+  }
+
+  .viewer-shell {
     padding-block-start: var(--space-4);
   }
 
@@ -23,5 +28,24 @@
 
   .viewer-context-back {
     cursor: pointer;
+  }
+
+  .layout-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-block-start: var(--space-4);
+  }
+
+  html:not([data-page-type="concrete_plan"]) .layout-switcher {
+    display: none;
+  }
+
+  .layout-switcher button[aria-pressed="true"] {
+    font-weight: 700;
+  }
+
+  main {
+    padding-block: var(--space-8);
   }
 }
