@@ -26,19 +26,10 @@ function renderTypeOption(value, label, checked = false) {
   );
 }
 
-function renderControls(manifest) {
-  return h('section', { className: 'top-controls', attrs: { 'aria-label': '検索と絞り込み' } },
-    h('div', { className: 'top-search-field' },
-      h('label', { attrs: { for: 'top-search' }, text: '検索' }),
-      h('input', {
-        attrs: {
-          id: 'top-search',
-          type: 'search',
-          placeholder: '名称・概要・タグで検索',
-          autocomplete: 'off'
-        },
-        dataset: { explorerSearch: '' }
-      })
+function renderFilterPanel(manifest) {
+  return h('aside', { className: 'top-filter-panel', attrs: { 'aria-label': '検索と絞り込み' } },
+    h('div', { className: 'top-filter-heading' },
+      h('h2', { text: '絞り込み' })
     ),
     h('fieldset', { className: 'top-type-filter' },
       h('legend', { text: '種類' }),
@@ -49,7 +40,19 @@ function renderControls(manifest) {
         renderTypeOption('plan', 'プラン')
       )
     ),
-    h('div', { className: 'top-select-field' },
+    h('div', { className: 'top-filter-field top-search-field' },
+      h('label', { attrs: { for: 'top-search' }, text: 'キーワード' }),
+      h('input', {
+        attrs: {
+          id: 'top-search',
+          type: 'search',
+          placeholder: '名称・概要・タグで検索',
+          autocomplete: 'off'
+        },
+        dataset: { explorerSearch: '' }
+      })
+    ),
+    h('div', { className: 'top-filter-field' },
       h('label', { attrs: { for: 'top-area' }, text: 'エリア' }),
       h('select', { attrs: { id: 'top-area' }, dataset: { explorerArea: '' } },
         h('option', { attrs: { value: '' }, text: 'すべてのエリア' }),
@@ -58,7 +61,11 @@ function renderControls(manifest) {
         )
       )
     ),
-    h('div', { className: 'top-select-field' },
+    h('div', {
+      className: 'top-filter-field',
+      attrs: { hidden: true },
+      dataset: { explorerCategoryField: '' }
+    },
       h('label', { attrs: { for: 'top-category' }, text: 'カテゴリ' }),
       h('select', {
         attrs: { id: 'top-category', disabled: true },
@@ -72,12 +79,12 @@ function renderControls(manifest) {
 
 function renderTags(tags = []) {
   if (!tags.length) return null;
-  return h('ul', { className: 'top-card-tags', attrs: { 'aria-label': 'タグ' } },
+  return h('ul', { className: 'top-result-tags', attrs: { 'aria-label': 'タグ' } },
     tags.map(tag => h('li', { text: tag }))
   );
 }
 
-function renderCard(entry) {
+function renderResult(entry) {
   const explorer = entry.explorer;
   const type = entry.ref.entity_type;
   const id = entry.ref.id;
@@ -85,12 +92,13 @@ function renderCard(entry) {
     entry.title,
     explorer.summary,
     explorer.type_label,
+    explorer.category?.label,
     id,
     ...(explorer.tags || [])
   ].filter(Boolean).join(' ');
 
   return h('a', {
-    className: 'top-entity-card',
+    className: 'top-result-row',
     attrs: { href: hrefFor(entry.ref) },
     dataset: {
       explorerCard: '',
@@ -103,7 +111,7 @@ function renderCard(entry) {
     }
   },
     explorer.image?.url
-      ? h('div', { className: 'top-card-media' },
+      ? h('div', { className: 'top-result-thumbnail' },
           h('img', {
             attrs: {
               src: explorer.image.url,
@@ -113,15 +121,20 @@ function renderCard(entry) {
             }
           })
         )
-      : h('div', { className: 'top-card-media top-card-media-fallback', attrs: { 'aria-hidden': 'true' } },
-          h('span', { text: explorer.type_label })
-        ),
-    h('div', { className: 'top-card-body' },
-      h('p', { className: 'top-card-meta', text: `${explorer.type_label} · ${id}` }),
-      h('h2', { text: entry.title }),
-      explorer.summary ? h('p', { className: 'top-card-summary', text: explorer.summary }) : null,
+      : h('div', {
+          className: 'top-result-thumbnail top-result-thumbnail-fallback',
+          attrs: { 'aria-hidden': 'true' }
+        }, h('span', { text: explorer.type_label })),
+    h('div', { className: 'top-result-body' },
+      h('div', { className: 'top-result-meta' },
+        h('span', { className: 'top-result-type', text: explorer.type_label }),
+        h('span', { className: 'top-result-id', text: id })
+      ),
+      h('h3', { text: entry.title }),
+      explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null,
       renderTags(explorer.tags)
-    )
+    ),
+    h('span', { className: 'top-result-arrow', attrs: { 'aria-hidden': 'true' }, text: '›' })
   );
 }
 
@@ -130,25 +143,33 @@ export function renderTop({ manifest }) {
 
   return h('article', { className: 'top-page', dataset: { semantic: 'explorer' } },
     h('header', { className: 'top-hero' },
-      h('p', { className: 'entity-kind', text: 'LEISURE' }),
+      h('p', { className: 'entity-kind', text: 'PERSONALOS LEISURE' }),
       h('h1', { text: '行き先とプランを探す' }),
       h('p', {
         className: 'top-intro',
-        text: 'スポット、ルート、プランから、次に見たいものを探せます。'
+        text: 'スポット、ルート、プランを一覧から探し、条件で絞り込めます。'
       })
     ),
-    renderControls(manifest),
-    h('div', { className: 'top-results-header' },
-      h('p', { className: 'top-result-count', attrs: { 'aria-live': 'polite' }, dataset: { explorerCount: '' }, text: `${entries.length}件` })
-    ),
-    h('section', { className: 'top-card-grid', attrs: { 'aria-label': '検索結果' } },
-      entries.map(renderCard)
-    ),
-    h('p', {
-      className: 'top-empty-state',
-      attrs: { hidden: true },
-      dataset: { explorerEmpty: '' },
-      text: '条件に合う項目がありません。'
-    })
+    h('div', { className: 'top-explorer-layout' },
+      renderFilterPanel(manifest),
+      h('section', { className: 'top-results-panel', attrs: { 'aria-labelledby': 'top-results-title' } },
+        h('header', { className: 'top-results-header' },
+          h('h2', { attrs: { id: 'top-results-title' }, text: '検索結果' }),
+          h('p', {
+            className: 'top-result-count',
+            attrs: { 'aria-live': 'polite' },
+            dataset: { explorerCount: '' },
+            text: `${entries.length}件`
+          })
+        ),
+        h('div', { className: 'top-result-list' }, entries.map(renderResult)),
+        h('p', {
+          className: 'top-empty-state',
+          attrs: { hidden: true },
+          dataset: { explorerEmpty: '' },
+          text: '条件に合う項目がありません。'
+        })
+      )
+    )
   );
 }
