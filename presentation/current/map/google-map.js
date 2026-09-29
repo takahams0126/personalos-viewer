@@ -50,6 +50,46 @@ function infoContent(title) {
   return node;
 }
 
+function drawResolvedSegment(maps, map, segment, bounds) {
+  const path = (segment.path || []).map(latLng);
+  path.forEach(position => bounds.extend(position));
+  new maps.Polyline({
+    map,
+    path,
+    geodesic: true,
+    strokeOpacity: 0.82,
+    strokeWeight: 4
+  });
+}
+
+function drawSemanticConnection(maps, map, connection, pointById, bounds) {
+  if (connection.geometry_segment_id) return;
+  const from = pointById.get(connection.from_point_id);
+  const to = pointById.get(connection.to_point_id);
+  if (!from || !to) return;
+
+  const path = [latLng(from.position), latLng(to.position)];
+  path.forEach(position => bounds.extend(position));
+  new maps.Polyline({
+    map,
+    path,
+    geodesic: true,
+    strokeOpacity: 0,
+    strokeWeight: 2,
+    icons: [
+      {
+        icon: {
+          path: 'M 0,-1 0,1',
+          strokeOpacity: 0.55,
+          scale: 2
+        },
+        offset: '0',
+        repeat: '12px'
+      }
+    ]
+  });
+}
+
 async function hydrateMapView(view, { artifactLoader, resolver }) {
   if (view.dataset.mapState === 'ready' || view.dataset.mapState === 'loading') return;
   view.dataset.mapState = 'loading';
@@ -75,17 +115,14 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     });
 
     const bounds = new maps.LatLngBounds();
+    const pointById = new Map(points.map(point => [point.point_id, point]));
 
     for (const segment of artifact.segments || []) {
-      const path = (segment.path || []).map(latLng);
-      path.forEach(position => bounds.extend(position));
-      new maps.Polyline({
-        map,
-        path,
-        geodesic: true,
-        strokeOpacity: 0.82,
-        strokeWeight: 4
-      });
+      drawResolvedSegment(maps, map, segment, bounds);
+    }
+
+    for (const connection of artifact.connections || []) {
+      drawSemanticConnection(maps, map, connection, pointById, bounds);
     }
 
     const infoWindow = new maps.InfoWindow();
