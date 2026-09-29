@@ -1,0 +1,56 @@
+@layer patterns {
+  .plan-header,
+  .plan-status,
+  .plan-day,
+  .plan-fuel,
+  .plan-cost {
+    margin-block-end: var(--space-8);
+  }
+
+  .plan-day {
+    padding-block-start: var(--space-6);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .day-header,
+  .day-weather,
+  .day-routes,
+  .day-variants,
+  .map-semantic-preview {
+    margin-block-end: var(--space-6);
+  }
+
+  .action-header,
+  .action-times,
+  .action-todos,
+  .action-constraints,
+  .next-move {
+    margin-block-end: var(--space-3);
+  }
+
+  .action-order,
+  .entity-kind,
+  .day-date,
+  .semantic-label,
+  .component-unavailable {
+    color: var(--muted);
+  }
+
+  .semantic-row {
+    display: flex;
+    gap: var(--space-2);
+    margin-block-end: var(--space-1);
+  }
+
+  .semantic-label::after { content: ':'; }
+
+  .map-semantic-preview,
+  .day-variant {
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--line);
+  }
+
+  .day-variant + .day-variant { margin-block-start: var(--space-3); }
+
+  .cost-total { font-weight: 700; }
+}
