@@ -1,0 +1,69 @@
+@layer layout {
+  html[data-layout="grid"] .execution-flow {
+    display: grid;
+    grid-template-columns: minmax(4.5rem, auto) minmax(11rem, 1.4fr) repeat(3, minmax(7rem, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  html[data-layout="grid"] .execution-action {
+    display: contents;
+  }
+
+  html[data-layout="grid"] .action-body {
+    display: contents;
+  }
+
+  html[data-layout="grid"] .action-header,
+  html[data-layout="grid"] .action-times,
+  html[data-layout="grid"] .action-todos,
+  html[data-layout="grid"] .action-constraints,
+  html[data-layout="grid"] .next-move {
+    min-width: 0;
+    margin: 0;
+    padding: var(--space-3);
+    border-inline-end: var(--border-width) solid var(--line);
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  html[data-layout="grid"] .action-header {
+    grid-column: 1 / span 2;
+  }
+
+  html[data-layout="grid"] .action-times {
+    grid-column: 3;
+  }
+
+  html[data-layout="grid"] .action-todos,
+  html[data-layout="grid"] .action-constraints {
+    grid-column: 4;
+  }
+
+  html[data-layout="grid"] .next-move {
+    grid-column: 5;
+  }
+
+  @media (max-width: 58rem) {
+    html[data-layout="grid"] .execution-flow {
+      display: block;
+      border-block-start: 0;
+    }
+
+    html[data-layout="grid"] .execution-action,
+    html[data-layout="grid"] .action-body {
+      display: block;
+    }
+
+    html[data-layout="grid"] .action-header,
+    html[data-layout="grid"] .action-times,
+    html[data-layout="grid"] .action-todos,
+    html[data-layout="grid"] .action-constraints,
+    html[data-layout="grid"] .next-move {
+      border-inline-end: 0;
+      border-block-end: 0;
+    }
+  }
+}
