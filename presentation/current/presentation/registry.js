@@ -20,6 +20,7 @@ export const PRESENTATION_PRESETS = Object.freeze({
     layoutSet: Object.freeze({
       id: 'default',
       stylesheets: Object.freeze([
+        new URL('../styles/layouts/default/settings.css', import.meta.url).href,
         new URL('../styles/layouts/default/timeline.css', import.meta.url).href,
         new URL('../styles/layouts/default/grid.css', import.meta.url).href,
         new URL('../styles/layouts/default/plan.css', import.meta.url).href,
