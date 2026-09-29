@@ -94,7 +94,11 @@
           "A013",
           "A014",
           "A015"
-        ]
+        ],
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "屋久島 4泊5日基本Plan"
+        }
       },
       "relations": [
         {
@@ -127,6 +131,10 @@
         "category": {
           "code": "hiking",
           "label": "ハイキング"
+        },
+        "image": {
+          "url": "https://d1grca2t3zpuug.cloudfront.net/2025/02/67aba3fbea753-860x500.webp",
+          "alt": "白谷雲水峡ルート・太鼓岩往復"
         }
       }
     },
@@ -151,6 +159,10 @@
         "category": {
           "code": "hiking",
           "label": "ハイキング"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "縄文杉ルート・縄文杉往復"
         }
       }
     },
@@ -175,6 +187,10 @@
         "category": {
           "code": "hiking",
           "label": "ハイキング"
+        },
+        "image": {
+          "url": "http://www.town.yakushima.kagoshima.jp/material/images/group/7/9c94e4a0c48c4dee53ab84387c101177.jpg",
+          "alt": "縄文杉ルート・ウィルソン株往復"
         }
       }
     },
@@ -198,6 +214,10 @@
         "category": {
           "code": "driving",
           "label": "ドライブ"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/tcs/t/tips/pict/src/122/855/src_12285504.jpg?updated_at=1415521738",
+          "alt": "屋久島南部雨天ドライブ"
         }
       }
     },
@@ -221,6 +241,10 @@
         "category": {
           "code": "driving",
           "label": "ドライブ"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
+          "alt": "屋久島一周ドライブ"
         }
       }
     },
