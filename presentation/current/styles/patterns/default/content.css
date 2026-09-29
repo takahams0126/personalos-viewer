@@ -52,5 +52,5 @@
 
   .day-variant + .day-variant { margin-block-start: var(--space-3); }
 
-  .cost-total { font-weight: 700; }
+  .cost-total { font-weight: var(--font-weight-strong); }
 }
