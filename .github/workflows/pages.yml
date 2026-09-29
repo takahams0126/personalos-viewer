@@ -71,11 +71,13 @@ jobs:
               modern_path.write_text(source.replace(marker, replacement), encoding='utf-8')
 
           current_config = Path('_site/presentation/current/config.js')
-          if current_config.parent.is_dir():
-              current_config.write_text(
-                  'window.PERSONALOS_CONFIG = { googleMapsApiKey: ' + json.dumps(key) + ' };\n',
-                  encoding='utf-8',
-              )
+          if current_config.exists():
+              source = current_config.read_text(encoding='utf-8')
+              marker = "googleMapsApiKey: '__GOOGLE_MAPS_API_KEY__'"
+              if source.count(marker) != 1:
+                  raise RuntimeError('Current Google Maps API key marker is missing or duplicated.')
+              replacement = 'googleMapsApiKey: ' + json.dumps(key)
+              current_config.write_text(source.replace(marker, replacement), encoding='utf-8')
           PY
 
           # Frozen Legacy keeps its historical local config contract. This is an
