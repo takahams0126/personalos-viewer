@@ -1,6 +1,6 @@
 @layer layout {
   html[data-page-type="route"] main {
-    width: min(100% - 2rem, 78rem);
+    width: min(100% - 2rem, var(--measure-detail));
   }
 
   .route-page {
@@ -19,16 +19,16 @@
 
   .route-hero .entity-kind {
     margin-block-end: var(--space-2);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-kicker);
     text-transform: uppercase;
   }
 
   .route-hero h1 {
     max-width: 58rem;
     margin-block-end: var(--space-4);
-    font-size: clamp(2rem, 4.4vw, 4.2rem);
+    font-size: var(--font-size-display);
     line-height: 1.05;
     letter-spacing: -0.035em;
   }
@@ -36,8 +36,8 @@
   .route-summary {
     max-width: 58rem;
     margin-block-end: var(--space-4);
-    color: color-mix(in srgb, CanvasText 82%, Canvas);
-    font-size: clamp(1.02rem, 1.7vw, 1.22rem);
+    color: var(--text-soft);
+    font-size: var(--font-size-lead);
     line-height: 1.75;
   }
 
@@ -59,19 +59,19 @@
   .route-occurrence-badge {
     padding: 0.32rem 0.72rem;
     border: var(--border-width) solid var(--line);
-    border-radius: 999px;
-    background: color-mix(in srgb, CanvasText 4%, Canvas);
-    font-size: 0.86rem;
-    font-weight: 650;
+    border-radius: var(--radius-pill);
+    background: var(--surface-disabled);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
   }
 
   .route-occurrence-badge {
     padding: 0.22rem 0.6rem;
-    font-size: 0.78rem;
+    font-size: var(--font-size-meta);
   }
 
   .route-occurrence-badge[data-code="required"] {
-    font-weight: 750;
+    font-weight: var(--font-weight-emphasis);
   }
 
   .route-identity,
@@ -91,22 +91,22 @@
     min-width: 10rem;
     padding: var(--space-4);
     border: var(--border-width) solid var(--line);
-    border-radius: 0.9rem;
-    background: color-mix(in srgb, CanvasText 2.5%, Canvas);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
   }
 
   .route-identity dt,
   .route-fact dt {
     color: var(--muted);
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-size: var(--font-size-label);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
   }
 
   .route-identity dd,
   .route-fact dd {
     margin: var(--space-1) 0 0;
-    font-weight: 700;
+    font-weight: var(--font-weight-strong);
   }
 
   .route-hero-spots {
@@ -131,15 +131,15 @@
     grid-template-columns: 6rem minmax(0, 1fr);
     min-height: 6rem;
     border: var(--border-width) solid var(--line);
-    border-radius: 0.9rem;
+    border-radius: var(--radius-md);
     color: inherit;
     text-decoration: none;
-    background: color-mix(in srgb, CanvasText 2%, Canvas);
+    background: var(--surface-faint);
   }
 
   .route-hero-spot-card:hover,
   .route-hero-spot-card:focus-visible {
-    background: color-mix(in srgb, CanvasText 6%, Canvas);
+    background: var(--surface-hover-strong);
   }
 
   .route-hero-spot-card img {
@@ -177,13 +177,13 @@
   .route-sequence-section > h2,
   .route-constraints > h2 {
     margin-block-end: var(--space-5);
-    font-size: clamp(1.45rem, 2.7vw, 2.1rem);
+    font-size: var(--font-size-section);
   }
 
   .route-appeal-summary {
     max-width: 62rem;
     margin-block-end: var(--space-5);
-    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    font-size: var(--font-size-lead);
     line-height: 1.75;
   }
 
@@ -200,8 +200,8 @@
     position: relative;
     padding: var(--space-6);
     border: var(--border-width) solid var(--line);
-    border-radius: 1rem;
-    background: color-mix(in srgb, CanvasText 2.5%, Canvas);
+    border-radius: var(--radius-lg);
+    background: var(--surface-subtle);
   }
 
   .route-strengths li::before {
@@ -209,8 +209,8 @@
     position: absolute;
     inset: var(--space-4) auto var(--space-4) 0;
     width: 0.22rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, CanvasText 55%, Canvas);
+    border-radius: var(--radius-pill);
+    background: var(--line-accent);
   }
 
   .route-strengths p {
@@ -255,18 +255,18 @@
     place-items: center;
     width: 2.7rem;
     height: 2.7rem;
-    border: var(--border-width) solid color-mix(in srgb, CanvasText 65%, Canvas);
-    border-radius: 50%;
-    background: Canvas;
-    font-weight: 750;
+    border: var(--border-width) solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-weight: var(--font-weight-emphasis);
   }
 
   .route-sequence-body {
     min-width: 0;
     padding: var(--space-4) var(--space-5);
     border: var(--border-width) solid var(--line);
-    border-radius: 0.9rem;
-    background: color-mix(in srgb, CanvasText 1.5%, Canvas);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
   }
 
   .route-sequence-header {
@@ -278,7 +278,7 @@
 
   .route-sequence-header h3 {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: var(--font-size-value);
   }
 
   .route-sequence-header a,
@@ -292,7 +292,7 @@
   .route-alternative-condition {
     margin-block: var(--space-3) 0;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: var(--font-size-body-sm);
     line-height: 1.6;
   }
 
@@ -300,10 +300,10 @@
     display: inline-block;
     min-width: 3rem;
     margin-inline-end: var(--space-2);
-    color: CanvasText;
-    font-size: 0.78rem;
-    font-weight: 750;
-    letter-spacing: 0.04em;
+    color: var(--text);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label);
   }
 
   .route-alternatives {
@@ -327,7 +327,7 @@
 
   @media (max-width: 38rem) {
     html[data-page-type="route"] main {
-      width: min(100% - 1rem, 78rem);
+      width: min(100% - 1rem, var(--measure-detail));
       padding-block-start: var(--space-4);
     }
 

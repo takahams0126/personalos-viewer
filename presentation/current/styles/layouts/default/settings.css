@@ -1,0 +1,7 @@
+@layer layout {
+  :root {
+    --measure-page: 72rem;
+    --measure-detail: 78rem;
+    --measure-explorer: 82rem;
+  }
+}

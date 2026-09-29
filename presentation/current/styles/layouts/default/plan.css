@@ -8,7 +8,7 @@
 
   html[data-page-type="plan"] .plan-navigation [aria-current="page"],
   html[data-page-type="concrete_plan"] .plan-navigation [aria-current="page"] {
-    font-weight: 700;
+    font-weight: var(--font-weight-strong);
   }
 
   html[data-page-type="plan"] .plan-overview,
@@ -43,7 +43,7 @@
   }
 
   html[data-page-type="plan"] .plan-day-title {
-    font-weight: 700;
+    font-weight: var(--font-weight-strong);
   }
 
   html[data-page-type="plan"] .plan-day-body {
@@ -71,7 +71,7 @@
     width: 0.65rem;
     height: 0.65rem;
     border: var(--border-width) solid currentColor;
-    border-radius: 50%;
+    border-radius: var(--radius-pill);
     background: var(--surface);
   }
 

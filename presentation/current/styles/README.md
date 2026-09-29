@@ -73,7 +73,7 @@ Current-authored CSS should normally belong to one of these explicit layers. Do 
 
 - `foundation/**` owns atomic, preset-independent scales only. It is not the shared-value bucket for the Default design.
 - Foundation must not contain Spot / Route / Plan / ConcretePlan-specific values.
-- Foundation must not freeze values such as page/detail/explorer measure, component density, control-height role, or component gap merely because Default pages share them.
+- Foundation must not freeze page/detail/explorer measure, component density, control-height role, or component gap merely because Default pages share them.
 - `themes/**` supplies skin role tokens and must not select Domain/page classes.
 - `primitives/**` styles generic HTML/control behavior and must not depend on page identity.
 - `patterns/<set>/**` styles reusable UI grammar and may own component treatment/density roles; it must not fetch, infer, or redefine Domain meaning.
@@ -92,25 +92,42 @@ patternSet = default
 layoutSet  = default
 ```
 
-The page layout files originated during technical validation and still contain provisional visual declarations such as raw color mixing, radius, font sizing, surface treatment, and repeated component grammar. Those declarations are not the definition of the `default` Theme. They are migration debt inside the current Default presentation.
-
-Convergence order:
+The technical-validation CSS originally mixed four kinds of responsibility inside page-local layout files:
 
 ```text
-stable atomic scale
-→ Foundation
+Foundation
+→ atomic spacing / border / primitive duration scales
 
-skin role
-→ Theme
+Theme
+→ color / surface / typography role / radius / shadow
 
-reusable component grammar / component density
-→ Pattern
+Pattern
+→ reusable card / chip / facts / hero / section / sequence grammar and component density
 
-page measure / composition / reflow
-→ Layout
-
-repeated Semantic DOM grammar
-→ shared renderer component, only when proven by repetition
+Layout
+→ page measure / composition / placement / reflow
 ```
 
-Do not preserve the debt as a second theme system and do not create speculative tokens/components just to make files look uniform.
+Default convergence is incremental, but the target classification is authoritative. Do not preserve old page-local declarations as a second visual system.
+
+### Convergence status
+
+First visual-role convergence batch:
+
+- `space-5`, border-width scales, and primitive duration now live in `foundation/tokens.css`
+- Default color/surface roles, typography roles, radius, shadow, and color-scheme live in `themes/default.css`
+- Default control-height role lives with the Default Pattern Set rather than shared Foundation
+- Default page/detail/explorer measures live in `layouts/default/settings.css` rather than shared Foundation
+- TOP / Spot / Route / Plan / ConcretePlan timeline / AppShell layouts consume shared Foundation / Theme / Pattern / Layout roles instead of defining their own copies for those concerns
+- generic `visually-hidden` remains Primitive-owned; page layout does not redefine it
+
+Remaining debt is primarily **Pattern / shared semantic grammar extraction**, not a hidden Theme:
+
+- repeated entity hero grammar across Spot / Route
+- repeated chip / badge grammar
+- repeated fact-card / related-card / strength-card grammar
+- repeated section-divider / section-heading grammar
+- repeated DOM grammar that should move to a shared renderer component only when the semantic shape is genuinely the same
+- component-specific typography that should be promoted only when a stable reusable role is demonstrated
+
+Do not create speculative tokens for every numeric value. Promote a value only when it represents a stable owner-correct role.

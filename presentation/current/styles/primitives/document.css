@@ -1,8 +1,6 @@
 @layer primitives {
   *, *::before, *::after { box-sizing: border-box; }
 
-  html { color-scheme: light dark; }
-
   body {
     margin: 0;
     font-family: var(--font-body);

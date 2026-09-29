@@ -148,6 +148,19 @@ Current-authored CSS should belong to an explicit layer. Unlayered CSS is not th
 
 ## Default preset convergence
 
+Current Default mapping includes:
+
+```text
+styles/foundation/tokens.css           atomic shared scale
+styles/themes/default.css              Default Theme roles
+styles/primitives/document.css         shared document baseline
+styles/patterns/default/content.css    Default component/content grammar + density roles
+styles/patterns/default/map.css        Default Map pattern
+styles/patterns/default/carousel.css   Default Carousel pattern
+styles/layouts/default/settings.css    Default page/detail/explorer measures
+styles/layouts/default/*.css           Default page compositions / reflow
+```
+
 Technical-validation CSS still contains migration debt. Convergence classifies it into the formal ownership model instead of treating page CSS as a hidden second Theme.
 
 The next reusable extraction boundary is not “all similar CSS”. It is:

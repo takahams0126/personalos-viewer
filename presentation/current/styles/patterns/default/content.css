@@ -1,4 +1,8 @@
 @layer patterns {
+  :root {
+    --control-height: 2.75rem;
+  }
+
   .plan-header,
   .plan-status,
   .plan-day,
@@ -52,5 +56,5 @@
 
   .day-variant + .day-variant { margin-block-start: var(--space-3); }
 
-  .cost-total { font-weight: 700; }
+  .cost-total { font-weight: var(--font-weight-strong); }
 }
