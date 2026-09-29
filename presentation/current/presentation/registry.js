@@ -1,36 +1,32 @@
 export const DEFAULT_PRESENTATION_PRESET = 'default';
 
-function stylesheet(relativePath) {
-  return new URL(relativePath, import.meta.url).href;
-}
-
 export const PRESENTATION_PRESETS = Object.freeze({
   default: Object.freeze({
     id: 'default',
     theme: Object.freeze({
       id: 'default',
       stylesheets: Object.freeze([
-        stylesheet('../styles/themes/default.css')
+        new URL('../styles/themes/default.css', import.meta.url).href
       ])
     }),
     patternSet: Object.freeze({
       id: 'default',
       stylesheets: Object.freeze([
-        stylesheet('../styles/patterns/default/content.css'),
-        stylesheet('../styles/patterns/default/map.css'),
-        stylesheet('../styles/patterns/default/carousel.css')
+        new URL('../styles/patterns/default/content.css', import.meta.url).href,
+        new URL('../styles/patterns/default/map.css', import.meta.url).href,
+        new URL('../styles/patterns/default/carousel.css', import.meta.url).href
       ])
     }),
     layoutSet: Object.freeze({
       id: 'default',
       stylesheets: Object.freeze([
-        stylesheet('../styles/layouts/default/timeline.css'),
-        stylesheet('../styles/layouts/default/grid.css'),
-        stylesheet('../styles/layouts/default/plan.css'),
-        stylesheet('../styles/layouts/default/spot.css'),
-        stylesheet('../styles/layouts/default/route.css'),
-        stylesheet('../styles/layouts/default/top.css'),
-        stylesheet('../styles/layouts/default/shell.css')
+        new URL('../styles/layouts/default/timeline.css', import.meta.url).href,
+        new URL('../styles/layouts/default/grid.css', import.meta.url).href,
+        new URL('../styles/layouts/default/plan.css', import.meta.url).href,
+        new URL('../styles/layouts/default/spot.css', import.meta.url).href,
+        new URL('../styles/layouts/default/route.css', import.meta.url).href,
+        new URL('../styles/layouts/default/top.css', import.meta.url).href,
+        new URL('../styles/layouts/default/shell.css', import.meta.url).href
       ])
     })
   })
