@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "artifact_type": "execution_road_map",
   "source": {
     "concrete_plan_id": "CP001",
@@ -134,6 +134,80 @@
         "provider_code": "google_places",
         "id": "ChIJnzqBwks6PTURAlWO4qP4q8g"
       }
+    }
+  ],
+  "connections": [
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M01",
+      "order": 1,
+      "flow_element_id": "CP001-D3-V1-LR1-M01",
+      "from_point_id": "point-spot-S0025",
+      "to_point_id": "point-spot-S0032",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M01"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M02",
+      "order": 2,
+      "flow_element_id": "CP001-D3-V1-LR1-M02",
+      "from_point_id": "point-spot-S0032",
+      "to_point_id": "point-spot-S0033",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M02"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M03",
+      "order": 3,
+      "flow_element_id": "CP001-D3-V1-LR1-M03",
+      "from_point_id": "point-spot-S0033",
+      "to_point_id": "point-spot-S0034",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M03"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M04",
+      "order": 4,
+      "flow_element_id": "CP001-D3-V1-LR1-M04",
+      "from_point_id": "point-spot-S0034",
+      "to_point_id": "point-spot-S0035",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M04"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M05",
+      "order": 5,
+      "flow_element_id": "CP001-D3-V1-LR1-M05",
+      "from_point_id": "point-spot-S0035",
+      "to_point_id": "point-spot-S0026",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M05"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M06",
+      "order": 6,
+      "flow_element_id": "CP001-D3-V1-LR1-M06",
+      "from_point_id": "point-spot-S0026",
+      "to_point_id": "point-spot-S0028",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M06"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M07",
+      "order": 7,
+      "flow_element_id": "CP001-D3-V1-LR1-M07",
+      "from_point_id": "point-spot-S0028",
+      "to_point_id": "point-spot-S0036",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M07"
+    },
+    {
+      "connection_id": "connection-CP001-D3-V1-LR1-M08",
+      "order": 8,
+      "flow_element_id": "CP001-D3-V1-LR1-M08",
+      "from_point_id": "point-spot-S0036",
+      "to_point_id": "point-spot-S0025",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D3-V1-LR1-M08"
     }
   ],
   "segments": [
