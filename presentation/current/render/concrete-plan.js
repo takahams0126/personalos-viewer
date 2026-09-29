@@ -1,3 +1,4 @@
+import { hrefFor } from '../core/router.js';
 import { h, textRow } from './dom.js';
 
 const CONSTRAINT_LABELS = {
@@ -268,6 +269,16 @@ function renderCost(plan) {
   );
 }
 
+function renderExecutionNavigation(concretePlan) {
+  const sourceRef = concretePlan.source_plan_ref;
+  return h('nav', { className: 'plan-navigation', attrs: { 'aria-label': 'Plan表示' } },
+    sourceRef
+      ? h('a', { attrs: { href: hrefFor(sourceRef) }, text: '計画' })
+      : null,
+    h('span', { attrs: { 'aria-current': 'page' }, text: '実施' })
+  );
+}
+
 export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, artifactLoader }) {
   const dayNodes = await Promise.all(
     (concretePlan.days || []).map(day =>
@@ -279,6 +290,7 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
     className: 'concrete-plan',
     dataset: { semantic: 'concrete-plan', entityId: concretePlan.id }
   },
+    renderExecutionNavigation(concretePlan),
     h('header', { className: 'plan-header' },
       h('p', { className: 'entity-kind', text: 'Concrete Plan' }),
       h('h1', { text: concretePlan.title }),
