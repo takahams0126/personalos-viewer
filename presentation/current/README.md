@@ -61,6 +61,39 @@ The Current entry opens TOP when no entity query is supplied. Root production ro
 - do not depend on `../modern/` or `../legacy/`
 - render Map Artifact coordinates/geometry directly; never call Places or Routes from Viewer
 
+## Presentation Preset system
+
+Current has one Viewer-wide Presentation Preset selection.
+
+```text
+config.js
+  presentationPreset: 'default'
+          ↓
+presentation/registry.js
+          ↓
+active preset
+  ├─ Theme
+  ├─ Pattern Set
+  └─ Layout Set
+          ↓
+TOP / Spot / Route / Plan / ConcretePlan
+```
+
+Changing the config value to a future registered preset such as `design2` switches the Presentation resources for every Current page together. Page renderers do not choose independent themes or presets.
+
+`presentation/registry.js` is an explicit registry. It maps a preset ID to concrete Theme / Pattern Set / Layout Set resources and does not infer paths from naming conventions. An explicitly unknown preset is an error; it does not silently fall back to `default`.
+
+The first formal preset is:
+
+```text
+default
+├─ theme = default
+├─ patternSet = default
+└─ layoutSet = default
+```
+
+Theme / Pattern Set / Layout Set remain independently reusable, so a later preset can explicitly share one of those sets instead of duplicating it.
+
 ## Presentation System boundaries
 
 Presentation responsibility is physically separated from Domain rendering.
@@ -69,37 +102,48 @@ Presentation responsibility is physically separated from Domain rendering.
 presentation/current/
 ├─ render/**
 │  └─ Semantic Structure / DOM
+├─ presentation/
+│  ├─ registry.js
+│  │  └─ Presentation Preset composition
+│  └─ bootstrap.js
+│     └─ active preset stylesheet activation before Viewer runtime
 ├─ structure/**
 │  └─ Viewer-level presentation structure such as AppShell
 ├─ interaction/**
 │  └─ local presentation interaction
 ├─ styles/
 │  ├─ foundation/**
-│  │  └─ theme-independent scales / measures
-│  ├─ themes/**
-│  │  └─ color / typography / radius / surface roles
+│  │  └─ shared theme-independent scales / measures
+│  ├─ themes/
+│  │  └─ <theme-id>.css
 │  ├─ primitives/**
-│  │  └─ generic document / control presentation
-│  ├─ patterns/**
-│  │  └─ reusable presentation grammar
-│  └─ layouts/**
-│     └─ spatial composition / responsive reflow
+│  │  └─ shared generic document / control presentation
+│  ├─ patterns/
+│  │  └─ <pattern-set-id>/**
+│  └─ layouts/
+│     └─ <layout-set-id>/**
 ├─ map/**
 │  └─ Map Artifact presentation adapter
 ├─ core/**
 │  └─ runtime resolution / routing / navigation context
 └─ config.js
-   └─ deploy-time browser configuration binding
+   └─ presentation preset selection + deploy-time browser binding
 ```
 
 Dependency direction:
 
 ```text
+Viewer Config
+      ↓
+Presentation Preset Registry
+      ↓
+Theme + Pattern Set + Layout Set
+
 Semantic Structure
       ↓
-Patterns / Layouts
+selected Patterns / Layouts
       ↓
-Foundation / Primitives + Theme
+shared Foundation / Primitives + selected Theme
 
 Interaction
 → existing Semantic Structure / Pattern local state only
@@ -115,27 +159,27 @@ Theme does not own Domain/page selectors or information structure. Layout does n
 
 The detailed style rules and transitional constraints are documented in `styles/README.md`.
 
-## Current style mapping
+## Default preset style mapping
 
 ```text
-styles/foundation/tokens.css   scale / measure tokens
-styles/themes/current.css      Current theme role values
-styles/primitives/document.css document and generic control baseline
-styles/patterns/content.css    reusable semantic-content presentation
-styles/patterns/map.css        Map surface pattern
-styles/patterns/carousel.css   carousel pattern
-styles/layouts/shell.css       AppShell / page frame layout
-styles/layouts/top.css         TOP Explorer composition
-styles/layouts/spot.css        Spot composition
-styles/layouts/route.css       Route composition
-styles/layouts/plan.css        Plan conceptual sequence composition
-styles/layouts/timeline.css    ConcretePlan timeline composition
-styles/layouts/grid.css        ConcretePlan grid/table-like composition
+styles/foundation/tokens.css          shared scale / measure tokens
+styles/themes/default.css             default Theme role values
+styles/primitives/document.css        shared document/control baseline
+styles/patterns/default/content.css   default reusable semantic-content grammar
+styles/patterns/default/map.css       default Map pattern
+styles/patterns/default/carousel.css  default carousel pattern
+styles/layouts/default/shell.css      default AppShell / page frame layout
+styles/layouts/default/top.css        default TOP Explorer composition
+styles/layouts/default/spot.css       default Spot composition
+styles/layouts/default/route.css      default Route composition
+styles/layouts/default/plan.css       default Plan conceptual sequence composition
+styles/layouts/default/timeline.css   default ConcretePlan timeline composition
+styles/layouts/default/grid.css       default ConcretePlan grid/table-like composition
 ```
 
-The page layout files originated during technical validation and may still contain provisional visual declarations. New design work must migrate reusable skin values toward Theme / Primitive / Pattern instead of adding more page-local styling debt.
+The page layout files originated during technical validation and still contain provisional visual declarations. Those declarations are migration debt inside the `default` Layout Set, not a second Theme. Design convergence must classify and migrate reusable skin values toward Theme / Primitive / Pattern rather than expanding page-local styling debt.
 
-ConcretePlan uses the same semantic DOM for timeline and grid modes. `?layout=grid` selects the grid composition; timeline is the default. The layout switcher only changes `html[data-layout]` and URL state. It does not rebuild or reinterpret Boundary data.
+ConcretePlan uses the same semantic DOM for timeline and grid modes. `?layout=grid` selects the grid composition inside the active Layout Set; timeline is the default. The layout switcher only changes `html[data-layout]` and URL state. It does not rebuild or reinterpret Boundary data.
 
 Plan intentionally uses native `<details>` for Day disclosure and keeps `place / movement / route` as explicit semantic sequence kinds. Route detail is loaded only through explicit `route_ref`.
 
@@ -206,13 +250,15 @@ Use native semantic HTML and small presentation adapters by default. Introduce a
 
 ## Next phase
 
-The next work is design convergence inside the new Presentation System boundary:
+The structure for multiple Viewer-wide design sets now exists. The next work is to converge the current visual debt into the formal `default` Presentation Preset before creating additional presets.
 
 ```text
-shared Pattern / Primitive convergence
-Theme refinement
-Map popup and map interaction design
-cross-page responsive visual design
-minimum usable Current surface review
-root default promotion: modern → current
+classify current visual declarations
+→ Theme / Primitive / Pattern / Layout
+→ converge default preset
+→ compare Modern / Legacy as visual Evidence
+→ create additional preset(s) such as design2
+→ switch via config for whole-Viewer comparison
+→ minimum usable Current surface review
+→ root default promotion: modern → current
 ```
