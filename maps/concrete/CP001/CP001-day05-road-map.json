@@ -37,6 +37,70 @@
         "provider_code": "google_places",
         "id": "ChIJhZj9-r7hPDURWZxETKiExHc"
       }
+    },
+    {
+      "point_id": "point-travel_point-T0003",
+      "order": 3,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0003"
+      },
+      "position": {
+        "lat": 30.384526199999996,
+        "lon": 130.66034950000002
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJTb0wi77hPDURbkqF68apQ48"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0008",
+      "order": 4,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0008"
+      },
+      "position": {
+        "lat": 34.786161199999995,
+        "lon": 135.4380483
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJuXeH9W3wAGARzfSdTYcaQQc"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0002",
+      "order": 5,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0002"
+      },
+      "position": {
+        "lat": 35.5482964,
+        "lon": 139.7779951
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJ45IxpAtkGGAR3_hG0anDMg0"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0001",
+      "order": 6,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "position": {
+        "lat": 35.7000051,
+        "lon": 139.50685679999998
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJoZx1yaLlGGARsq_qe7wjQlg"
+      }
     }
   ],
   "segments": [

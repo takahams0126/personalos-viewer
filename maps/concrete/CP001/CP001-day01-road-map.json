@@ -7,8 +7,56 @@
   },
   "points": [
     {
-      "point_id": "point-travel_point-T0003",
+      "point_id": "point-travel_point-T0001",
       "order": 1,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "position": {
+        "lat": 35.7000051,
+        "lon": 139.50685679999998
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJoZx1yaLlGGARsq_qe7wjQlg"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0002",
+      "order": 2,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0002"
+      },
+      "position": {
+        "lat": 35.5482964,
+        "lon": 139.7779951
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJ45IxpAtkGGAR3_hG0anDMg0"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0007",
+      "order": 3,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0007"
+      },
+      "position": {
+        "lat": 31.8007193,
+        "lon": 130.7202592
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJCfZyZNf9PjURaY_MYdsruE4"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0003",
+      "order": 4,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0003"
@@ -24,7 +72,7 @@
     },
     {
       "point_id": "point-travel_point-T0005",
-      "order": 2,
+      "order": 5,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0005"
@@ -40,7 +88,7 @@
     },
     {
       "point_id": "point-spot-S0025",
-      "order": 3,
+      "order": 6,
       "entity_ref": {
         "entity_type": "spot",
         "id": "S0025"
@@ -56,7 +104,7 @@
     },
     {
       "point_id": "point-spot-S0051",
-      "order": 4,
+      "order": 7,
       "entity_ref": {
         "entity_type": "spot",
         "id": "S0051"

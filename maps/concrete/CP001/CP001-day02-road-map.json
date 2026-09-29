@@ -37,6 +37,86 @@
         "provider_code": "google_places",
         "id": "ChIJgwb-AdQhPTURRFmUDP2_DQw"
       }
+    },
+    {
+      "point_id": "point-travel_point-T0010",
+      "order": 3,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0010"
+      },
+      "position": {
+        "lat": 30.339712799999997,
+        "lon": 130.5952632
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJiT6SIjMgPTURw89OuR6DkOA"
+      }
+    },
+    {
+      "point_id": "point-spot-S0019",
+      "order": 4,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      },
+      "position": {
+        "lat": 30.352445499999995,
+        "lon": 130.5783429
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgSddNgAhPTUR1rG37QfoVa8"
+      }
+    },
+    {
+      "point_id": "point-spot-S0017",
+      "order": 5,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      },
+      "position": {
+        "lat": 30.356558399999994,
+        "lon": 130.5421957
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJK3BIjRciPTUR2S8_5yCwnUI"
+      }
+    },
+    {
+      "point_id": "point-spot-S0020",
+      "order": 6,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0020"
+      },
+      "position": {
+        "lat": 30.3597147,
+        "lon": 130.5361062
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJB_w34m4jPTURqMyblSS-a18"
+      }
+    },
+    {
+      "point_id": "point-spot-S0016",
+      "order": 7,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0016"
+      },
+      "position": {
+        "lat": 30.360727200000003,
+        "lon": 130.53179939999998
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJjzW-MqwjPTURaMrzqGi63Ok"
+      }
     }
   ],
   "segments": [

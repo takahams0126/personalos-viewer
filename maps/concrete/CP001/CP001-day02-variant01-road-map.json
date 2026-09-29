@@ -6,6 +6,55 @@
     "day": 2,
     "variant_id": "CP2-V1"
   },
-  "points": [],
+  "points": [
+    {
+      "point_id": "point-travel_point-T0010",
+      "order": 1,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0010"
+      },
+      "position": {
+        "lat": 30.339712799999997,
+        "lon": 130.5952632
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJiT6SIjMgPTURw89OuR6DkOA"
+      }
+    },
+    {
+      "point_id": "point-spot-S0019",
+      "order": 2,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      },
+      "position": {
+        "lat": 30.352445499999995,
+        "lon": 130.5783429
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgSddNgAhPTUR1rG37QfoVa8"
+      }
+    },
+    {
+      "point_id": "point-spot-S0017",
+      "order": 3,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      },
+      "position": {
+        "lat": 30.356558399999994,
+        "lon": 130.5421957
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJK3BIjRciPTUR2S8_5yCwnUI"
+      }
+    }
+  ],
   "segments": []
 }

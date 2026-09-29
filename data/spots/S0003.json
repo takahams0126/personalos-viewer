@@ -8,14 +8,16 @@
     "温泉"
   ],
   "access": {
-    "location_text": "秋田県仙北市田沢湖周辺"
+    "location_text": "秋田県仙北市田沢湖周辺",
+    "google_place_id": "ChIJMy_IqMJmhV8RwCaBe4s4WKo",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E4%B9%B3%E9%A0%AD%E6%B8%A9%E6%B3%89%E9%83%B7&query_place_id=ChIJMy_IqMJmhV8RwCaBe4s4WKo"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "recommended"
+      "value": "予約推奨"
     }
   ],
   "images": [
@@ -42,10 +44,10 @@
   },
   "references": {
     "official": {
-      "url": "https://nyuto-onsenkyo.com/"
+      "url": "http://nyuto-onsenkyo.com/"
     },
     "supplemental": {
-      "url": "https://nyuto-onsenkyo.com/"
+      "url": "http://nyuto-onsenkyo.com/"
     }
   }
 }
