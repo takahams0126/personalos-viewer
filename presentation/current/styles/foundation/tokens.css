@@ -1,0 +1,14 @@
+@layer tokens, theme, primitives, patterns, layout, overrides;
+
+@layer tokens {
+  :root {
+    --measure-page: 72rem;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --border-width: 1px;
+  }
+}
