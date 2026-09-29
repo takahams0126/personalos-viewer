@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "areas": [
     {
       "id": "A001",
@@ -95,7 +95,16 @@
           "A014",
           "A015"
         ]
-      }
+      },
+      "relations": [
+        {
+          "kind": "concrete_plan",
+          "target_ref": {
+            "entity_type": "concrete_plan",
+            "id": "CP001"
+          }
+        }
+      ]
     },
     {
       "ref": {
