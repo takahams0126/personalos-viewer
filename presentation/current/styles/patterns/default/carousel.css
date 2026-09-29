@@ -1,4 +1,4 @@
-@layer layout {
+@layer patterns {
   .image-carousel {
     min-width: 0;
   }
@@ -7,8 +7,8 @@
     position: relative;
     overflow: hidden;
     border: var(--border-width) solid var(--line);
-    border-radius: 1rem;
-    background: color-mix(in srgb, CanvasText 5%, Canvas);
+    border-radius: var(--radius-lg);
+    background: var(--surface-soft);
     outline-offset: 0.2rem;
   }
 
@@ -55,9 +55,9 @@
     height: 2.5rem;
     padding: 0;
     border: var(--border-width) solid var(--line);
-    border-radius: 999px;
-    background: Canvas;
-    color: CanvasText;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text);
     font: inherit;
     font-size: 1.4rem;
     cursor: pointer;
@@ -65,7 +65,7 @@
 
   .carousel-controls button:hover,
   .carousel-controls button:focus-visible {
-    background: color-mix(in srgb, CanvasText 8%, Canvas);
+    background: var(--surface-hover);
   }
 
   .carousel-status {
@@ -91,14 +91,14 @@
     min-width: 4.25rem;
     padding: 0;
     border: 2px solid transparent;
-    border-radius: 0.55rem;
+    border-radius: var(--radius-sm);
     background: transparent;
     cursor: pointer;
     opacity: 0.62;
   }
 
   .carousel-thumb[aria-current="true"] {
-    border-color: CanvasText;
+    border-color: var(--text);
     opacity: 1;
   }
 

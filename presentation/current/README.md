@@ -4,9 +4,13 @@ Current Viewer is rebuilt directly from the published HTML Boundary JSON.
 
 ## Status
 
-Technical validation is **CLOSED**. Normal implementation/design is in progress.
+Technical validation is **CLOSED**. Primary pages, graph drill-down, Plan ↔ ConcretePlan navigation, explicit Map Artifact rendering, and Viewer-wide Presentation Preset composition are implemented.
 
-Implemented surfaces:
+Current work is now **architecture stabilization + presentation convergence**, not another feasibility phase.
+
+Root production routing still points to `presentation/modern/` until the Current promotion gate is explicitly closed.
+
+## Implemented surfaces
 
 ```text
 (no query)
@@ -15,124 +19,226 @@ Implemented surfaces:
   → Spot / Route / Plan navigation
 
 ?type=spot&id=S0014
-  → manifest.json
   → Spot Public JSON
   → explicit related Spot refs
   → image carousel
-  → semantic DOM
 
 ?type=route&id=R011
-  → manifest.json
   → Route Public JSON
   → explicit Spot refs
   → explicit Conceptual Map Artifact
-  → Google Maps marker presentation
-  → semantic DOM
 
 ?type=plan&id=P001
-  → manifest.json
   → Plan Public JSON
-  → explicit Spot / TravelPoint labels
-  → explicit Route Public Entity fetch
-  → native Day disclosure
-  → semantic DOM
+  → explicit Spot / TravelPoint refs
+  → explicit Route fetch / drill-down
+  → ConcretePlan reverse relation from Manifest when published
 
 ?type=concrete_plan&id=CP001
-  → manifest.json
   → ConcretePlan Public JSON
   → source Plan / explicit Route refs
-  → explicit Spot / TravelPoint labels
+  → explicit Spot / TravelPoint refs
   → explicit Execution Road Map Artifact
-  → Google Maps marker / polyline presentation
-  → semantic DOM
 ```
 
-The Current entry now opens TOP when no entity query is supplied. Root production routing still points to `presentation/modern/` until Current reaches the minimum usable surface and is explicitly promoted.
+Main graph path:
+
+```text
+TOP → Plan → Route → Spot
+      ↕
+ ConcretePlan
+```
 
 ## Runtime principles
 
 - start from `/manifest.json`, `/data/**`, and `/maps/**`
-- resolve PublicEntityRef through Manifest; never infer paths from IDs
+- resolve `PublicEntityRef` through Manifest; never infer paths from IDs
 - fetch only explicit referenced entities/artifacts
-- cache same-runtime JSON loads and entity loads
-- render semantic DOM before design work
-- do not create a persistent intermediate ViewModel / derived JSON layer
+- cache same-runtime JSON/entity loads
+- render semantic DOM; do not persist an intermediate ViewModel / derived JSON layer
 - do not depend on `../modern/` or `../legacy/`
 - render Map Artifact coordinates/geometry directly; never call Places or Routes from Viewer
+- do not repair missing Domain semantics in presentation code
 
-## Presentation separation
-
-```text
-styles/tokens.css             design tokens only
-styles/base.css               document-level baseline
-styles/semantic.css           semantic component readability
-styles/layouts/timeline.css   ConcretePlan timeline composition
-styles/layouts/grid.css       ConcretePlan grid/table-like composition
-styles/layouts/plan.css       Plan conceptual sequence composition
-styles/layouts/spot.css       Spot detail composition
-styles/layouts/route.css      Route detail composition
-styles/layouts/top.css        TOP Explorer composition
-styles/components/map.css     generic Map surface sizing/readability
-styles/components/carousel.css generic carousel presentation
-ui/layout-mode.js             ConcretePlan presentation-only layout selection
-ui/carousel.js                generic carousel interaction
-ui/explorer.js                TOP local filtering interaction
-map/google-map.js             Map Artifact → Google Maps presentation adapter
-config.js                     deploy-time browser configuration binding
-```
-
-ConcretePlan uses the same semantic DOM for timeline and grid modes. `?layout=grid` selects the grid composition; timeline is the default. The layout switcher only changes `html[data-layout]` and URL state. It does not rebuild or reinterpret Boundary data.
-
-Plan intentionally uses native `<details>` for Day disclosure and keeps `place / movement / route` as explicit semantic sequence kinds. Route detail is loaded only through explicit `route_ref`.
-
-TOP consumes only the Manifest Explorer facet. ConcretePlan / TravelPoint remain Directory-only and are not promoted into the discovery catalog. Category options are built only from the currently selected Spot or Route explorer category set; switching entity type clears category state, and Plan disables category filtering.
-
-Map hydration happens after semantic DOM insertion. Baseline maps load immediately; maps inside closed native disclosures wait until opened so Google Maps is not initialized in a hidden zero-size container. The adapter consumes only published `points[].position` and `segments[].path`; the Viewer does not perform geographic resolution.
-
-Layout CSS may reposition semantic blocks, but source DOM order remains the reading/focus order. Responsive presentation must not reconstruct Domain meaning.
-
-## Map interaction direction
-
-Modern and `_prototype/poc/**` are **Evidence**, not Current implementation authority.
-
-Current direction after technical validation:
+## Current structure
 
 ```text
-Adopt
-- Map popup as Viewer presentation interaction
-- Google Maps OverlayView-style custom popup is valid implementation evidence
-- desktop anchored popup / mobile touch-friendly presentation
-- popup content is presentation data assembled from explicit owner/boundary information
-
-Re-evaluate during design
-- segment color differentiation
-- legend ↔ map segment hover/focus emphasis
-- one-color vs multi-color route presentation
-
-Do not carry forward
-- Legacy map data paths
-- geometry-to-waypoint re-segmentation used only by old PoC
-- Modern/PoC-specific fetch conventions
+presentation/current/
+├─ core/**
+│  └─ runtime resolution / routing / navigation context
+├─ render/**
+│  ├─ Page semantic assembly
+│  └─ components/**?            # only after real cross-page grammar appears
+├─ structure/**
+│  └─ Viewer-level shell structure
+├─ presentation/**
+│  ├─ registry.js
+│  └─ bootstrap.js
+├─ interaction/**
+│  └─ local UI behavior
+├─ map/**
+│  └─ explicit Map Artifact presentation adapter
+└─ styles/
+   ├─ foundation/**
+   ├─ themes/<theme-id>.css
+   ├─ primitives/**
+   ├─ patterns/<pattern-set-id>/**
+   └─ layouts/<layout-set-id>/**
 ```
 
-Current Execution Road Map Artifact already owns ordered `segments[]`, so future segment styling must bind directly to those published segments instead of reconstructing segment identity from geometry.
+Shared renderer components are transient DOM helpers, not a new ViewModel layer. They may render already-resolved semantic input but must not fetch entities, inspect relations, infer Domain meaning, or choose the active Preset.
 
-The current `InfoWindow` in the validation slice is not a final popup design requirement. Final popup composition belongs to the normal implementation/design phase.
+## Presentation Preset system
 
-## Generic UI library policy
+Current has one Viewer-wide Presentation Preset selection.
 
-No generic UI/component library is required by the validated architecture.
+```text
+config.js
+  presentationPreset: 'default'
+          ↓
+presentation/registry.js
+          ↓
+active preset
+  ├─ Theme
+  ├─ Pattern Set
+  └─ Layout Set
+          ↓
+TOP / Spot / Route / Plan / ConcretePlan
+```
 
-Use native semantic HTML and small presentation adapters by default. Introduce a third-party interaction component only when a concrete Current interaction shows enough implementation/accessibility cost to justify the dependency. Library adoption must not change Domain meaning, Boundary shape, or semantic DOM ownership.
+An explicitly unknown preset is an error; it does not silently fall back to `default`.
+Theme / Pattern Set / Layout Set are independently reusable resources.
+
+Default:
+
+```text
+theme      = default
+patternSet = default
+layoutSet  = default
+```
+
+### Ownership
+
+```text
+Foundation
+→ preset-independent atomic scales only
+
+Theme
+→ color / typography / radius / shadow / surface roles
+
+Pattern Set
+→ reusable visual grammar / component treatment / component density
+
+Layout Set
+→ page measure / composition / placement / responsive reflow
+
+Primitive
+→ generic HTML / control baseline shared by presets
+```
+
+Do not move `page measure / control density / component gap / motion personality` into Foundation merely because Default currently shares a value. Those are allowed to differ materially between future presets.
+
+CSS layer order is fixed:
+
+```text
+tokens → theme → primitives → patterns → layout → overrides
+```
+
+Current-authored CSS should belong to an explicit layer. Unlayered CSS is not the normal override mechanism.
+
+## Default preset convergence
+
+Technical-validation CSS still contains migration debt. Convergence classifies it into the formal ownership model instead of treating page CSS as a hidden second Theme.
+
+The next reusable extraction boundary is not “all similar CSS”. It is:
+
+```text
+repeated semantic DOM grammar
+→ shared renderer component, only when real repetition exists
+
+same grammar visual treatment
+→ Pattern
+
+page placement / measure / reflow
+→ Layout
+
+skin role
+→ Theme
+```
+
+Avoid speculative generic components and speculative tokens.
+
+## Navigation
+
+Current navigation separates:
+
+```text
+Global navigation
+→ Leisure TOP
+
+Context navigation
+→ actual previous Entity in the current browsing path
+
+Domain relation navigation
+→ explicit PublicEntityRef / Manifest relation
+```
+
+No fixed breadcrumb hierarchy is treated as Domain truth.
+TravelPoint and route-local targets remain inline because they do not have independent detail pages.
+
+## Map direction
+
+Current consumes only explicit Map Artifacts.
+
+```text
+Route Conceptual Map
+→ ordered points
+→ no Viewer-inferred road geometry
+
+ConcretePlan Execution Map
+→ ordered points
+→ ordered segments[].path
+→ no geometry-to-segment reconstruction
+```
+
+The current Google Maps marker / `InfoWindow` implementation is a technical-validation implementation, not the final Current presentation requirement.
+Before Current promotion, close one Map modernization scope covering:
+
+```text
+current Google Maps marker API
+marker accessibility
+popup composition
+mobile behavior
+Execution segment presentation
+```
+
+Modern / `_prototype/poc/**` are evidence only. Do not import their data path or fetch convention.
+
+## Accessibility / interaction
+
+Native semantic HTML and small adapters remain the default. Add a third-party component library only when a concrete interaction/accessibility cost justifies the dependency.
+
+Before Current promotion, finish at least:
+- carousel semantics / keyboard / focus behavior
+- touch/responsive behavior
+- Map marker/popup accessibility
+- source DOM reading/focus order across responsive layouts
+
+## Development contract
+
+See `DEVELOPMENT.md` for code/comment/CSS ownership rules.
+See `styles/README.md` for style-boundary details.
+Repository-level physical architecture is in `../../VIEWER_ARCHITECTURE.md`.
 
 ## Next phase
 
-Primary Current pages are now implemented. Next work is cross-page presentation/design convergence:
-
 ```text
-shared semantic presentation primitives
-Map popup and map interaction design
-cross-page responsive visual design / theme
-minimum usable Current surface review
-root default promotion: modern → current
+1. architecture/documentation stabilization
+2. Default Presentation convergence
+3. shared semantic presentation grammar extraction where repetition proves it
+4. Map modernization / interaction finalization
+5. accessibility finishing
+6. additional Preset such as design2 using Modern / Legacy as evidence
+7. minimum usable Current review
+8. explicit root promotion: modern → current
 ```

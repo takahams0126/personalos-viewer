@@ -1,4 +1,4 @@
-@layer layout {
+@layer patterns {
   .map-view {
     margin-block: var(--space-6);
   }

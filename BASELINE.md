@@ -1,31 +1,51 @@
-# Leisure Viewer Baseline
+# Leisure Viewer Baseline — Historical Evidence
 
-## Baseline commit
+## Status
 
-Validated UI recovery baseline:
+**SUPERSEDED AS CURRENT DEVELOPMENT AUTHORITY.**
+
+This file preserves the validated UI recovery baseline fixed on 2026-09-16 JST. It is useful as visual/behavioral evidence when evaluating Modern / Legacy ideas, but it no longer defines Current Viewer's regression or design authority.
+
+Current authority:
+
+```text
+Obsidian Leisure Viewer contracts
+→ 01_chatgpt/03_Data/Leisure/04_HTMLViewer/**
+
+Current repository/runtime structure
+→ VIEWER_ARCHITECTURE.md
+
+Current implementation/development rules
+→ presentation/current/README.md
+→ presentation/current/DEVELOPMENT.md
+```
+
+## Historical baseline commit
 
 - commit: `43086bf4229b84b12df11a1141db75a2896ae367`
 - message: `Restore final validated Plan decision fixture`
 - date fixed: 2026-09-16 JST
 
-This commit is the visual/behavioral regression baseline while the Viewer architecture is normalized.
+At that time the baseline was used to preserve recovered visible behavior while Viewer responsibilities were being normalized.
 
-## What is considered visually recovered at this baseline
+## What was considered recovered
 
-- Home search/explorer flow is usable as the entry point to published Leisure entities.
-- Route presentation is treated as recovered and should not be redesigned during Presentation normalization.
-- Spot presentation is treated as recovered, including hero copy/image split, carousel/lightbox, editorial sections and related links.
-- Plan presentation has the recovered trip-value hierarchy, primary-route cards, collapsible Day cards, semantic SVG flow, route alternatives and decision blocks.
-- Execution presentation is sufficiently recovered to serve as the reference for the shared `Plan ⊂ Execution` Day structure.
+- Home search/explorer flow as the entry point to published Leisure entities.
+- Route presentation.
+- Spot hero copy/image split, carousel/lightbox, editorial sections and related links.
+- Plan trip-value hierarchy, primary-route cards, collapsible Day cards, semantic flow, route alternatives and decision blocks.
+- Execution presentation as evidence for the then-shared Plan / Execution Day concept.
 
-## Baseline rule
+## Current interpretation
 
-Architecture cleanup may change file boundaries, module names, JSON locations and data-loading paths, but must not intentionally change the approved visible layout or interaction behavior.
+These points are **evidence, not a freeze contract**.
 
-Any visible difference from this baseline is a regression unless explicitly approved.
+Current may materially change layout, visual hierarchy, component grammar, interaction, or design through the formal Presentation System as long as current User Agreement / Input Contract / Architecture / Presentation contracts remain satisfied.
 
-## Important temporary debt at baseline
+Do not use this file to:
+- block an approved Current redesign
+- restore retired ViewModel / PoC architecture
+- treat Modern / Legacy implementation as Current source authority
+- infer current Plan / ConcretePlan semantic structure
 
-The baseline still contains recovered validation-era implementation debt, including `demo` / `poc` module names, temporary fixture data and split ConcretePlan auxiliary JSON. These are not part of the target architecture. They exist only so the approved presentation can be preserved while responsibilities are separated.
-
-The normalization goal is to remove those runtime dependencies without changing the approved presentation.
+The historical baseline remains valuable for comparison when extracting useful visual ideas into a Current Presentation Preset.

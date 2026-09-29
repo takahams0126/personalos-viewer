@@ -1,20 +1,33 @@
-@layer base {
-  *, *::before, *::after { box-sizing: border-box; }
-
-  html { color-scheme: light dark; }
-
-  body {
-    margin: 0;
-    font-family: var(--font-body);
-    color: var(--text);
-    background: var(--surface);
-    line-height: 1.55;
-  }
-
+@layer layout {
+  .viewer-shell,
   .layout-switcher,
   main {
     width: min(100% - 2rem, var(--measure-page));
     margin-inline: auto;
+  }
+
+  .viewer-shell {
+    padding-block-start: var(--space-4);
+  }
+
+  .viewer-shell[hidden] {
+    display: none;
+  }
+
+  .viewer-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .viewer-home-link,
+  .viewer-context-back {
+    font: inherit;
+  }
+
+  .viewer-context-back {
+    cursor: pointer;
   }
 
   .layout-switcher {
@@ -35,8 +48,4 @@
   main {
     padding-block: var(--space-8);
   }
-
-  h1, h2, h3, h4, h5, p { margin-block-start: 0; }
-  ul, ol { padding-inline-start: 1.5rem; }
-  details > summary { cursor: pointer; }
 }

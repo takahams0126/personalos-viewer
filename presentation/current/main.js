@@ -10,9 +10,9 @@ import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
 import { renderTop } from './render/top.js';
 import { hydrateMapViews } from './map/google-map.js';
-import { hydrateCarousels } from './ui/carousel.js';
-import { hydrateExplorer } from './ui/explorer.js';
-import { renderAppShell } from './ui/app-shell.js';
+import { hydrateCarousels } from './interaction/carousel.js';
+import { hydrateExplorer } from './interaction/explorer.js';
+import { renderAppShell } from './structure/app-shell.js';
 import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
