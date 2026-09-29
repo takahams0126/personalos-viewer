@@ -18,6 +18,7 @@ function categoryOptions(cards, type) {
 }
 
 function rebuildCategory(root, cards) {
+  const field = root.querySelector('[data-explorer-category-field]');
   const select = root.querySelector('[data-explorer-category]');
   if (!select) return;
 
@@ -25,6 +26,7 @@ function rebuildCategory(root, cards) {
   select.replaceChildren();
 
   if (type === 'spot' || type === 'route') {
+    if (field) field.hidden = false;
     select.disabled = false;
     const all = document.createElement('option');
     all.value = '';
@@ -40,6 +42,7 @@ function rebuildCategory(root, cards) {
     return;
   }
 
+  if (field) field.hidden = true;
   select.disabled = true;
   const option = document.createElement('option');
   option.value = '';
