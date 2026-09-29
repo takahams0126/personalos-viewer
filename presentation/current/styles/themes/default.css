@@ -2,18 +2,58 @@
   :root {
     --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
+    --font-size-display: clamp(2rem, 4.4vw, 4.2rem);
+    --font-size-display-large: clamp(2.2rem, 5vw, 4.8rem);
+    --font-size-section: clamp(1.45rem, 2.7vw, 2.1rem);
+    --font-size-lead: clamp(1.02rem, 1.7vw, 1.22rem);
+    --font-size-lead-compact: clamp(1rem, 1.6vw, 1.18rem);
+    --font-size-title: 1.18rem;
+    --font-size-value: 1.05rem;
+    --font-size-body-sm: 0.9rem;
+    --font-size-note: 0.88rem;
+    --font-size-small: 0.86rem;
+    --font-size-fact-label: 0.84rem;
+    --font-size-caption: 0.82rem;
+    --font-size-meta: 0.78rem;
+    --font-size-label: 0.76rem;
+    --font-size-meta-sm: 0.75rem;
+
+    --font-weight-medium: 650;
+    --font-weight-strong: 700;
+    --font-weight-emphasis: 750;
+    --tracking-label: 0.04em;
+    --tracking-label-wide: 0.05em;
+    --tracking-kicker: 0.08em;
+
     --surface: Canvas;
-    --text: CanvasText;
-    --muted: color-mix(in srgb, CanvasText 62%, Canvas);
-    --line: color-mix(in srgb, CanvasText 20%, Canvas);
+    --surface-faint: color-mix(in srgb, CanvasText 2%, Canvas);
     --surface-subtle: color-mix(in srgb, CanvasText 2.5%, Canvas);
+    --surface-disabled: color-mix(in srgb, CanvasText 4%, Canvas);
     --surface-soft: color-mix(in srgb, CanvasText 5%, Canvas);
+    --surface-hover-strong: color-mix(in srgb, CanvasText 6%, Canvas);
     --surface-hover: color-mix(in srgb, CanvasText 8%, Canvas);
+    --surface-selected: CanvasText;
+    --surface-positive: color-mix(in srgb, #2f9e44 7%, Canvas);
+    --surface-caution: color-mix(in srgb, #d97706 8%, Canvas);
+
+    --text: CanvasText;
+    --text-inverse: Canvas;
+    --text-soft: color-mix(in srgb, CanvasText 82%, Canvas);
+    --text-summary: color-mix(in srgb, CanvasText 78%, Canvas);
+    --muted: color-mix(in srgb, CanvasText 62%, Canvas);
+
+    --line: color-mix(in srgb, CanvasText 20%, Canvas);
+    --line-interactive: color-mix(in srgb, CanvasText 45%, Canvas);
+    --line-accent: color-mix(in srgb, CanvasText 55%, Canvas);
+    --line-strong: color-mix(in srgb, CanvasText 65%, Canvas);
     --focus-ring: color-mix(in srgb, CanvasText 72%, Canvas);
 
     --radius-sm: 0.55rem;
+    --radius-control: 0.7rem;
     --radius-md: 0.9rem;
     --radius-lg: 1rem;
     --radius-pill: 999px;
+
+    --shadow-raised: 0 0.8rem 2rem color-mix(in srgb, CanvasText 9%, transparent);
   }
 }
