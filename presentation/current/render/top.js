@@ -37,7 +37,7 @@ function renderControls(manifest) {
         renderTypeOption('plan', 'プラン')
       )
     ),
-    h('div', { className: 'top-filter-fields' },
+    h('div', { className: 'top-filter-fields', dataset: { categoryActive: 'false' } },
       h('div', { className: 'top-search-field' },
         h('label', { attrs: { for: 'top-search' }, text: '検索' }),
         h('input', {
