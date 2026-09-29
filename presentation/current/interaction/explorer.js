@@ -18,13 +18,17 @@ function categoryOptions(cards, type) {
 }
 
 function rebuildCategory(root, cards) {
+  const field = root.querySelector('[data-explorer-category-field]');
   const select = root.querySelector('[data-explorer-category]');
   if (!select) return;
 
   const type = selectedType(root);
+  const enabled = type === 'spot' || type === 'route';
+  if (field) field.hidden = !enabled;
+
   select.replaceChildren();
 
-  if (type === 'spot' || type === 'route') {
+  if (enabled) {
     select.disabled = false;
     const all = document.createElement('option');
     all.value = '';
