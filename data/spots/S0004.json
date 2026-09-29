@@ -45,6 +45,13 @@
       "cautions": []
     }
   },
+  "fees": {
+    "applicability": {
+      "code": "unknown",
+      "label": "要確認"
+    },
+    "items": []
+  },
   "references": {
     "supplemental": {
       "url": "https://yamagatakanko.com/booking/plan_2_1__________.html"

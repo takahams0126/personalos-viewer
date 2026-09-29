@@ -45,6 +45,13 @@
       "cautions": []
     }
   },
+  "fees": {
+    "applicability": {
+      "code": "unknown",
+      "label": "要確認"
+    },
+    "items": []
+  },
   "references": {
     "official": {
       "url": "https://aomori-tourism.com/spot/detail_339.html"

@@ -50,6 +50,13 @@
       "cautions": []
     }
   },
+  "fees": {
+    "applicability": {
+      "code": "unknown",
+      "label": "要確認"
+    },
+    "items": []
+  },
   "references": {
     "official": {
       "url": "https://yakukan.jp/spot/9652.html"
