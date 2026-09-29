@@ -121,13 +121,21 @@ First visual-role convergence batch:
 - TOP / Spot / Route / Plan / ConcretePlan timeline / AppShell layouts consume shared Foundation / Theme / Pattern / Layout roles instead of defining their own copies for those concerns
 - generic `visually-hidden` remains Primitive-owned; page layout does not redefine it
 
-Remaining debt is primarily **Pattern / shared semantic grammar extraction**, not a hidden Theme:
+First Pattern convergence batch:
+
+- `patterns/default/entity-content.css` owns the proven reusable grammar for chip lists, content-section dividers/headings, emphasis text cards, and the baseline Entity link-card surface
+- TOP / Spot / Route reuse the same chip grammar; TOP uses the compact variant rather than redefining a second tag-pill style
+- Spot highlights and Route strengths share one `EmphasisList` Semantic DOM helper and one Pattern treatment; only their page-specific grid width remains in Layout
+- Spot related links, Route hero Spot links, and TOP result rows share the baseline `entity-link-card` treatment while retaining page-specific spatial layout and interaction behavior
+- `render/components/presentation.js` contains only demonstrated identical DOM grammar (`ChipList`, `EmphasisList`); it does not fetch entities, resolve refs, or infer Domain meaning
+- section divider/heading treatment is Pattern-owned through `content-section`; page renderers opt in explicitly
+
+Remaining debt should be evaluated from actual repetition rather than assumed abstraction. Current candidates include:
 
 - repeated entity hero grammar across Spot / Route
-- repeated chip / badge grammar
-- repeated fact-card / related-card / strength-card grammar
-- repeated section-divider / section-heading grammar
-- repeated DOM grammar that should move to a shared renderer component only when the semantic shape is genuinely the same
+- fact / identity presentation grammar
+- related / hero Entity card content grammar if the DOM shape converges further
+- occurrence badge vs generic chip semantics, which should stay separate unless their meaning and interaction truly align
 - component-specific typography that should be promoted only when a stable reusable role is demonstrated
 
-Do not create speculative tokens for every numeric value. Promote a value only when it represents a stable owner-correct role.
+Do not create speculative tokens or components for every numeric value or similar-looking block. Promote a value or DOM helper only when it represents a stable owner-correct role.
