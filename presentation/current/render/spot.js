@@ -1,12 +1,6 @@
 import { hrefFor } from '../core/router.js';
+import { renderChipList, renderEmphasisList } from './components/presentation.js';
 import { h } from './dom.js';
-
-function renderChips(items = []) {
-  if (!items.length) return null;
-  return h('ul', { className: 'spot-theme-chips', attrs: { 'aria-label': 'テーマ' } },
-    items.map(item => h('li', { text: item }))
-  );
-}
 
 function renderFacts(facts = [], className = 'spot-facts') {
   if (!facts.length) return null;
@@ -171,13 +165,9 @@ function renderAppeal(appeal = {}) {
   const review = renderReview(appeal.review);
   if (!highlights.length && !review) return null;
 
-  return h('section', { className: 'spot-appeal', dataset: { semantic: 'appeal' } },
+  return h('section', { className: 'spot-appeal content-section content-section--roomy', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このスポットの魅力' }),
-    highlights.length
-      ? h('ul', { className: 'spot-highlights' },
-          highlights.map(item => h('li', {}, h('p', { text: item })))
-        )
-      : null,
+    renderEmphasisList(highlights, { className: 'spot-highlights' }),
     review
   );
 }
@@ -207,11 +197,11 @@ async function renderRelatedSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const items = await Promise.all(refs.map(ref => describeRelated(ref, resolver)));
 
-  return h('section', { className: 'spot-related', dataset: { semantic: 'related-spots' } },
+  return h('section', { className: 'spot-related content-section content-section--roomy', dataset: { semantic: 'related-spots' } },
     h('h2', { text: '関連スポット' }),
     h('div', { className: 'spot-related-grid' },
       items.map(item =>
-        h('a', { className: 'spot-related-card', attrs: { href: hrefFor(item.ref) } },
+        h('a', { className: 'spot-related-card entity-link-card', attrs: { href: hrefFor(item.ref) } },
           item.image ? h('img', { attrs: { src: item.image, alt: '', loading: 'lazy', decoding: 'async' } }) : null,
           h('div', { className: 'spot-related-copy' },
             h('h3', { text: item.title }),
@@ -234,7 +224,7 @@ export async function renderSpot({ spot, resolver }) {
         h('p', { className: 'entity-kind', text: `Spot · ${spot.id}` }),
         h('h1', { text: spot.title }),
         spot.summary ? h('p', { className: 'spot-summary', text: spot.summary }) : null,
-        renderChips(spot.theme_chips),
+        renderChipList(spot.theme_chips, { ariaLabel: 'テーマ', className: 'spot-theme-chips' }),
         h('div', { className: 'spot-hero-details' },
           renderAccess(spot.access),
           renderFacilities(spot.facilities),
