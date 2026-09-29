@@ -1,0 +1,141 @@
+@layer layout {
+  html[data-page-type="plan"] .plan-navigation,
+  html[data-page-type="concrete_plan"] .plan-navigation {
+    margin-block-end: var(--space-8);
+    display: flex;
+    gap: var(--space-3);
+  }
+
+  html[data-page-type="plan"] .plan-navigation [aria-current="page"],
+  html[data-page-type="concrete_plan"] .plan-navigation [aria-current="page"] {
+    font-weight: 700;
+  }
+
+  html[data-page-type="plan"] .plan-overview,
+  html[data-page-type="plan"] .plan-reorder,
+  html[data-page-type="plan"] .plan-days {
+    margin-block-end: var(--space-8);
+  }
+
+  html[data-page-type="plan"] .plan-reorder-group {
+    padding: var(--space-3) var(--space-4);
+    border-inline-start: 0.2rem solid var(--line);
+  }
+
+  html[data-page-type="plan"] .plan-reorder-days {
+    color: var(--muted);
+  }
+
+  html[data-page-type="plan"] .plan-day-disclosure {
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  html[data-page-type="plan"] .plan-day-disclosure > summary {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    padding-block: var(--space-4);
+  }
+
+  html[data-page-type="plan"] .plan-day-number {
+    color: var(--muted);
+    min-width: 4.5rem;
+  }
+
+  html[data-page-type="plan"] .plan-day-title {
+    font-weight: 700;
+  }
+
+  html[data-page-type="plan"] .plan-day-body {
+    padding: 0 0 var(--space-6) var(--space-8);
+  }
+
+  html[data-page-type="plan"] .plan-sequence {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+  }
+
+  html[data-page-type="plan"] .plan-sequence-item,
+  html[data-page-type="plan"] .plan-sequence-boundary {
+    position: relative;
+    padding: 0 0 var(--space-5, 1.25rem) var(--space-8);
+  }
+
+  html[data-page-type="plan"] .plan-sequence-item::before,
+  html[data-page-type="plan"] .plan-sequence-boundary::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: var(--space-2);
+    inset-block-start: 0.45rem;
+    width: 0.65rem;
+    height: 0.65rem;
+    border: var(--border-width) solid currentColor;
+    border-radius: 50%;
+    background: var(--surface);
+  }
+
+  html[data-page-type="plan"] .plan-sequence-item:not(:last-child)::after,
+  html[data-page-type="plan"] .plan-sequence-boundary:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: calc(var(--space-2) + 0.3rem);
+    inset-block-start: 1.1rem;
+    inset-block-end: 0;
+    border-inline-start: var(--border-width) solid var(--line);
+  }
+
+  html[data-page-type="plan"] .plan-item-kind,
+  html[data-page-type="plan"] .plan-boundary-label,
+  html[data-page-type="plan"] .plan-item-meta,
+  html[data-page-type="plan"] .plan-item-condition,
+  html[data-page-type="plan"] .plan-route-identity {
+    color: var(--muted);
+  }
+
+  html[data-page-type="plan"] .plan-item-kind {
+    margin-block-end: var(--space-1);
+  }
+
+  html[data-page-type="plan"] .plan-movement {
+    color: var(--muted);
+  }
+
+  html[data-page-type="plan"] .plan-movement-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  html[data-page-type="plan"] .plan-route > article {
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--line);
+  }
+
+  html[data-page-type="plan"] .plan-route-alternatives {
+    margin-block-start: var(--space-4);
+  }
+
+  html[data-page-type="plan"] .plan-sequence-boundary {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  html[data-page-type="plan"] .plan-boundary-label {
+    min-width: 3.5rem;
+    font-size: 0.85em;
+  }
+
+  @media (max-width: 42rem) {
+    html[data-page-type="plan"] .plan-day-body {
+      padding-inline-start: 0;
+    }
+
+    html[data-page-type="plan"] .plan-day-disclosure > summary {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+  }
+}
