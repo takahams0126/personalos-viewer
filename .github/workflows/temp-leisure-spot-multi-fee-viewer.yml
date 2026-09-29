@@ -1,0 +1,37 @@
+name: temp-leisure-spot-multi-fee-viewer
+
+on:
+  push:
+    branches:
+      - work/leisure-spot-multi-fee-migration
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/leisure-spot-multi-fee-migration
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate renderer
+        run: |
+          node --check presentation/current/render/spot.js
+          grep -q "renderFees(spot.fees)" presentation/current/render/spot.js
+          grep -q "pricing === null ? '料金変動'" presentation/current/render/spot.js
+          ! grep -q "fact.semantic.*fee" presentation/current/render/spot.js || true
+      - name: Remove temporary validation workflow
+        run: rm .github/workflows/temp-leisure-spot-multi-fee-viewer.yml
+      - name: Commit clean branch state
+        run: |
+          git config user.name "PersonalOS Migration Worker"
+          git config user.email "personalos-migration@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "Validate structured Spot fee rendering"
+          git push origin HEAD:work/leisure-spot-multi-fee-migration
