@@ -1,4 +1,4 @@
-import { hrefFor } from '../core/router.js';
+import { hrefFor, isDetailPageRef } from '../core/router.js';
 import { h } from './dom.js';
 
 function machineLabel(ref) {
@@ -13,6 +13,13 @@ async function describeRef(ref, resolver) {
   } catch {
     return { title: machineLabel(ref), unavailable: true };
   }
+}
+
+function entityTitle(ref, title, unavailable = false) {
+  if (!unavailable && isDetailPageRef(ref)) {
+    return h('a', { attrs: { href: hrefFor(ref) }, text: title });
+  }
+  return h('span', { text: title });
 }
 
 function concretePlanRef(manifestEntry) {
@@ -65,7 +72,7 @@ async function renderPlace(item, resolver) {
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: '地点' }),
-      h('h4', { text: target.title }),
+      h('h4', {}, entityTitle(item.target_ref, target.title, target.unavailable)),
       target.unavailable
         ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
         : null,
@@ -80,7 +87,6 @@ async function renderMovement(item, resolver) {
     describeRef(item.from_ref, resolver),
     describeRef(item.to_ref, resolver)
   ]);
-  const routeText = `${from.title} → ${to.title}`;
   return h('li', {
     className: 'plan-sequence-item plan-movement',
     dataset: { kind: 'movement' }
@@ -89,7 +95,11 @@ async function renderMovement(item, resolver) {
       h('p', { className: 'plan-item-kind', text: '移動' }),
       h('p', { className: 'plan-movement-main' },
         h('strong', { text: item.transport?.label || '移動' }),
-        h('span', { text: routeText })
+        h('span', {},
+          entityTitle(item.from_ref, from.title, from.unavailable),
+          ' → ',
+          entityTitle(item.to_ref, to.title, to.unavailable)
+        )
       ),
       item.condition?.text
         ? h('p', { className: 'plan-item-condition', text: `条件: ${item.condition.text}` })
@@ -101,7 +111,7 @@ async function renderMovement(item, resolver) {
 async function renderAlternative(alternative, resolver) {
   const route = await describeRef(alternative.route_ref, resolver);
   return h('li', {},
-    h('strong', { text: route.title }),
+    h('strong', {}, entityTitle(alternative.route_ref, route.title, route.unavailable)),
     alternative.replacement_intent
       ? h('p', { text: alternative.replacement_intent })
       : null,
@@ -139,7 +149,7 @@ async function renderRoute(item, resolver) {
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: 'ルート' }),
-      h('h4', { text: title }),
+      h('h4', {}, entityTitle(item.route_ref, title, unavailable)),
       identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
       routeData?.summary ? h('p', { text: routeData.summary }) : null,
       unavailable
@@ -177,7 +187,7 @@ async function renderBoundary(label, ref, resolver) {
     dataset: { semantic: label.toLowerCase() }
   },
     h('span', { className: 'plan-boundary-label', text: label }),
-    h('strong', { text: target.title }),
+    h('strong', {}, entityTitle(ref, target.title, target.unavailable)),
     target.unavailable
       ? h('span', { className: 'component-unavailable', text: ' 参照不可' })
       : null
