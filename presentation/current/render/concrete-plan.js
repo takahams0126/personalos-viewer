@@ -42,12 +42,17 @@ function renderTimeFacts(action) {
   if (action.arrival_label) facts.push(textRow('到着', action.arrival_label));
   if (action.departure_label) facts.push(textRow('出発', action.departure_label));
   if (action.stay_label) facts.push(textRow('滞在', action.stay_label));
-  return facts.length ? h('div', { className: 'action-times' }, facts) : null;
+  return facts.length
+    ? h('section', { className: 'action-times', dataset: { semantic: 'time-facts' } },
+        h('h5', { className: 'visually-hidden', text: '時刻' }),
+        facts
+      )
+    : null;
 }
 
 function renderTodos(todos) {
   if (!todos?.length) return null;
-  return h('section', { className: 'action-todos' },
+  return h('section', { className: 'action-todos', dataset: { semantic: 'todos' } },
     h('h5', { text: 'やること' }),
     h('ul', {}, todos.map(todo => h('li', { text: todo })))
   );
@@ -65,13 +70,13 @@ function serviceTime(service) {
 
 function renderConstraints(constraints) {
   if (!constraints?.length) return null;
-  return h('section', { className: 'action-constraints' },
+  return h('section', { className: 'action-constraints', dataset: { semantic: 'time-constraints' } },
     h('h5', { text: '時間上の注意' }),
     h('ul', {}, constraints.map(item => {
       const label = CONSTRAINT_LABELS[item.kind] || '時刻制約';
       const identity = serviceIdentity(item.service);
       const times = serviceTime(item.service);
-      return h('li', { dataset: { constraintKind: item.kind || '' } },
+      return h('li', { dataset: { semantic: 'time-constraint', constraintKind: item.kind || '' } },
         h('strong', { text: [label, item.time_label].filter(Boolean).join(' ') }),
         identity ? h('p', { className: 'constraint-service', text: identity }) : null,
         times ? h('p', { className: 'constraint-service-time', text: times }) : null,
@@ -141,23 +146,40 @@ async function renderRouteRelations(routes, resolver) {
   if (!routes?.length) return null;
 
   const items = await Promise.all(routes.map(async relation => {
+    let routeData = null;
     let title;
     let unavailable = false;
     try {
       const loaded = await resolver.load(relation.route_ref);
-      title = loaded.data.title || loaded.entry.title;
+      routeData = loaded.data;
+      title = routeData.title || loaded.entry.title;
     } catch {
       title = `${relation.route_ref.entity_type}:${relation.route_ref.id}`;
       unavailable = true;
     }
-    return h('li', {},
-      h('strong', {}, entityTitle(relation.route_ref, title, unavailable)),
-      ` — Action ${relation.from_action_order}〜${relation.to_action_order}`
+
+    const identity = routeData
+      ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join(' / ')
+      : '';
+
+    return h('li', { className: 'day-route-relation', dataset: { semantic: 'route-relation' } },
+      h('article', {},
+        h('h5', {}, entityTitle(relation.route_ref, title, unavailable)),
+        identity ? h('p', { className: 'day-route-identity', text: identity }) : null,
+        h('p', {
+          className: 'day-route-action-range',
+          text: `実施範囲 Action ${relation.from_action_order}〜${relation.to_action_order}`
+        }),
+        unavailable
+          ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
+          : null
+      )
     );
   }));
 
   return h('section', { className: 'day-routes', dataset: { semantic: 'route-relations' } },
     h('h4', { text: 'この日のルート' }),
+    h('p', { className: 'day-routes-note', text: '実際の立ち寄り順・時刻は下の行動順を正とします。' }),
     h('ul', {}, items)
   );
 }
@@ -193,7 +215,7 @@ async function renderMapPreview(artifactRef, artifactLoader, resolver) {
         ? h('div', { className: 'map-data-fallback' }, h('h5', { text: '地点' }), h('ol', {}, pointItems))
         : null,
       segmentItems.length
-        ? h('div', { className: 'map-data-fallback' }, h('h5', { text: '区間' }), h('ol', {}, segmentItems))
+        ? h('div', { className: 'map-data-fallback' }, h('h5', { text: '実経路' }), h('ol', {}, segmentItems))
         : null
     );
   } catch {
@@ -205,7 +227,7 @@ async function renderMapPreview(artifactRef, artifactLoader, resolver) {
 }
 
 async function renderVariant(variant, resolver, artifactLoader) {
-  return h('details', { className: 'day-variant' },
+  return h('details', { className: 'day-variant', dataset: { semantic: 'variant' } },
     h('summary', { text: variant.intent || variant.variant_id || '代替案' }),
     variant.selection_condition?.text
       ? h('p', { className: 'variant-condition', text: variant.selection_condition.text })
@@ -252,7 +274,10 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
     ),
     renderWeather(weatherDay),
     await renderRouteRelations(day.routes, resolver),
-    await renderActions(day.actions, resolver),
+    h('section', { className: 'day-execution', dataset: { semantic: 'actual-actions' } },
+      h('h3', { text: '行動順' }),
+      await renderActions(day.actions, resolver)
+    ),
     await renderMapPreview(day.map_artifact_ref, artifactLoader, resolver),
     variants.length
       ? h('section', { className: 'day-variants', dataset: { semantic: 'variants' } },
@@ -267,9 +292,11 @@ function renderStatus(plan) {
   if (!plan.status) return null;
   return h('section', { className: 'plan-status', dataset: { semantic: 'status' } },
     h('h2', { text: '現在の状態' }),
-    plan.status.state?.label ? h('p', { text: plan.status.state.label }) : null,
+    plan.status.state?.label ? h('p', { className: 'status-state', text: plan.status.state.label }) : null,
     plan.status.attention?.length
-      ? h('ul', {}, plan.status.attention.map(item => h('li', { text: item.text })))
+      ? h('ul', { className: 'status-attention' }, plan.status.attention.map(item =>
+          h('li', { dataset: { level: item.level || '', semantic: item.semantic || '' }, text: item.text })
+        ))
       : null
   );
 }
@@ -314,7 +341,7 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
     dataset: { semantic: 'concrete-plan', entityId: concretePlan.id }
   },
     renderExecutionNavigation(concretePlan),
-    h('header', { className: 'plan-header' },
+    h('header', { className: 'plan-header', dataset: { semantic: 'execution-overview' } },
       h('p', { className: 'entity-kind', text: 'Concrete Plan' }),
       h('h1', { text: concretePlan.title }),
       concretePlan.period?.label ? h('p', { className: 'plan-period', text: concretePlan.period.label }) : null,
