@@ -1,24 +1,20 @@
 @layer patterns {
-  .spot-fact dt,
-  .route-identity dt,
-  .route-fact dt {
-    color: var(--muted);
-    font-weight: var(--font-weight-strong);
-    letter-spacing: var(--tracking-label);
-  }
-
   .spot-fact dt {
+    color: var(--muted);
     font-size: var(--font-size-fact-label);
-  }
-
-  .route-identity dt,
-  .route-fact dt {
-    font-size: var(--font-size-label);
   }
 
   .spot-fact dd {
     margin: 0;
     font-weight: var(--font-weight-medium);
+  }
+
+  .route-identity dt,
+  .route-fact dt {
+    color: var(--muted);
+    font-size: var(--font-size-label);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
   }
 
   .route-identity dd,
