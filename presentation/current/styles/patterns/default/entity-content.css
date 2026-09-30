@@ -1,4 +1,25 @@
 @layer patterns {
+  .entity-kind {
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+  }
+
+  .spot-hero h1,
+  .route-hero h1 {
+    font-size: var(--font-size-display);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .spot-summary,
+  .route-summary {
+    color: var(--text-soft);
+    font-size: var(--font-size-lead);
+    line-height: 1.75;
+  }
+
   .entity-chip-list {
     display: flex;
     flex-wrap: wrap;
@@ -76,5 +97,12 @@
     background: var(--surface-faint);
     color: inherit;
     text-decoration: none;
+  }
+
+  .spot-related-card:hover,
+  .spot-related-card:focus-visible,
+  .route-hero-spot-card:hover,
+  .route-hero-spot-card:focus-visible {
+    background: var(--surface-hover-strong);
   }
 }
