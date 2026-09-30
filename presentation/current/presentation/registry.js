@@ -26,7 +26,6 @@ export const PRESENTATION_PRESETS = Object.freeze({
       stylesheets: Object.freeze([
         new URL('../styles/layouts/default/settings.css', import.meta.url).href,
         new URL('../styles/layouts/default/timeline.css', import.meta.url).href,
-        new URL('../styles/layouts/default/grid.css', import.meta.url).href,
         new URL('../styles/layouts/default/plan.css', import.meta.url).href,
         new URL('../styles/layouts/default/spot.css', import.meta.url).href,
         new URL('../styles/layouts/default/route.css', import.meta.url).href,
