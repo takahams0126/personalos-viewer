@@ -14,6 +14,9 @@ export const PRESENTATION_PRESETS = Object.freeze({
       stylesheets: Object.freeze([
         new URL('../styles/patterns/default/content.css', import.meta.url).href,
         new URL('../styles/patterns/default/entity-content.css', import.meta.url).href,
+        new URL('../styles/patterns/default/facts.css', import.meta.url).href,
+        new URL('../styles/patterns/default/day.css', import.meta.url).href,
+        new URL('../styles/patterns/default/flow.css', import.meta.url).href,
         new URL('../styles/patterns/default/map.css', import.meta.url).href,
         new URL('../styles/patterns/default/carousel.css', import.meta.url).href
       ])
