@@ -1,60 +1,50 @@
 @layer layout {
-  html[data-layout="timeline"] .concrete-day-body {
+  .concrete-day-body {
     container-type: inline-size;
   }
 
-  html[data-layout="timeline"] .action-body {
+  .action-body {
     display: grid;
-    gap: var(--space-2);
-    padding-block-end: var(--space-6);
+    gap: var(--space-3);
   }
 
-  html[data-layout="timeline"] .action-header {
+  .action-header {
     min-width: 0;
   }
 
-  html[data-layout="timeline"] .next-move {
-    position: relative;
+  .next-move {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr);
     gap: var(--space-1) var(--space-3);
     margin: var(--space-1) 0 0;
-    padding: var(--space-2) 0 var(--space-2) var(--space-6);
-    border: 0;
-    border-block-start: var(--border-width) solid var(--line);
+    padding: var(--space-3) 0 var(--space-1) var(--space-6);
   }
 
-  html[data-layout="timeline"] .next-move::before {
-    content: '↓';
-    position: absolute;
-    inset-inline-start: 0;
-    inset-block-start: var(--space-2);
-    color: var(--muted);
+  .next-move::before {
+    inset-block-start: var(--space-3);
   }
 
-  html[data-layout="timeline"] .next-move h5 {
+  .next-move h5 {
     grid-column: 1;
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--font-size-control-label);
   }
 
-  html[data-layout="timeline"] .next-move p {
+  .next-move p,
+  .next-move .service-fact {
     grid-column: 2;
-    margin: 0;
   }
 
   @container (max-width: 42rem) {
-    html[data-layout="timeline"] .next-move {
+    .next-move {
       display: block;
       padding-inline-start: var(--space-6);
     }
 
-    html[data-layout="timeline"] .next-move h5 {
+    .next-move h5 {
       margin-block-end: var(--space-2);
     }
 
-    html[data-layout="timeline"] .next-move p + p {
+    .next-move p + p,
+    .next-move .service-fact {
       margin-block-start: var(--space-1);
     }
   }
