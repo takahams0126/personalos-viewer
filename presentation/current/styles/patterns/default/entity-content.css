@@ -1,5 +1,6 @@
 @layer patterns {
   .entity-kind {
+    color: var(--muted);
     font-size: var(--font-size-meta);
     font-weight: var(--font-weight-strong);
     letter-spacing: var(--tracking-kicker);
