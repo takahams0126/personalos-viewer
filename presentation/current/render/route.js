@@ -38,15 +38,12 @@ async function resolveSpot(ref, resolver) {
 async function renderHeroSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const spots = await Promise.all(refs.map(ref => resolveSpot(ref, resolver)));
-
   return h('section', { className: 'route-hero-spots', dataset: { semantic: 'hero-spots' } },
     h('h2', { text: '主役スポット' }),
     h('div', { className: 'route-hero-spot-grid' },
       spots.map(spot =>
         h('a', { className: 'route-hero-spot-card entity-link-card', attrs: { href: hrefFor(spot.ref) } },
-          spot.image
-            ? h('img', { attrs: { src: spot.image, alt: '', loading: 'lazy', decoding: 'async' } })
-            : null,
+          spot.image ? h('img', { attrs: { src: spot.image, alt: '', loading: 'lazy', decoding: 'async' } }) : null,
           h('div', { className: 'route-hero-spot-copy' },
             h('h3', { text: spot.title }),
             spot.unavailable ? h('small', { text: '詳細を読み込めませんでした' }) : null
@@ -60,21 +57,19 @@ async function renderHeroSpots(refs = [], resolver) {
 function renderIdentity(route) {
   const items = [];
   if (route.family_label) {
-    items.push(h('div', {}, h('dt', { text: 'ルート系統' }), h('dd', { text: route.family_label })));
+    items.push(h('div', {}, h('dt', { text: 'ルート系列' }), h('dd', { text: route.family_label })));
   }
   if (route.variant?.label) {
     items.push(h('div', {}, h('dt', { text: 'バリエーション' }), h('dd', { text: route.variant.label })));
   }
   if (!items.length) return null;
-
-  return h('dl', { className: 'route-identity' }, items);
+  return h('dl', { className: 'route-identity', dataset: { semantic: 'route-identity' } }, items);
 }
 
 function renderAppeal(appeal) {
   if (!appeal) return null;
   const strengths = appeal.strengths || [];
   if (!appeal.summary && !strengths.length) return null;
-
   return h('section', { className: 'route-appeal content-section', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このルートの魅力' }),
     appeal.summary ? h('p', { className: 'route-appeal-summary', text: appeal.summary }) : null,
@@ -86,14 +81,8 @@ function renderMap(map) {
   if (!map?.artifact_ref) return null;
   return h('section', { className: 'route-map-section content-section', dataset: { semantic: 'conceptual-map' } },
     h('h2', { text: 'Conceptual Map' }),
-    h('figure', {
-      className: 'map-view route-map',
-      dataset: { mapArtifactId: map.artifact_ref }
-    },
-      h('div', {
-        className: 'map-canvas',
-        attrs: { role: 'img', 'aria-label': 'ルートのConceptual Map' }
-      }),
+    h('figure', { className: 'map-view route-map', dataset: { mapArtifactId: map.artifact_ref } },
+      h('div', { className: 'map-canvas', attrs: { role: 'img', 'aria-label': 'ルートのConceptual Map' } }),
       h('p', { className: 'map-state', text: '地図を読み込み中…' })
     )
   );
@@ -128,13 +117,11 @@ async function renderAlternatives(alternatives = [], resolver) {
         : null
     );
   }));
-
   return h('ul', { className: 'route-alternatives' }, items);
 }
 
 async function renderSequenceItem(item, resolver) {
   const spot = await resolveSpot(item.spot_ref, resolver);
-
   return h('li', {
     className: 'route-sequence-item',
     dataset: { semantic: 'route-stop', order: item.order }
@@ -145,14 +132,9 @@ async function renderSequenceItem(item, resolver) {
         h('h3', {}, h('a', { attrs: { href: hrefFor(spot.ref) }, text: spot.title })),
         renderBadges(item)
       ),
-      spot.unavailable
-        ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
-        : null,
+      spot.unavailable ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' }) : null,
       item.condition?.text
-        ? h('p', { className: 'route-condition' },
-            h('span', { className: 'route-inline-label', text: '条件' }),
-            item.condition.text
-          )
+        ? h('p', { className: 'route-condition' }, h('span', { className: 'route-inline-label', text: '条件' }), item.condition.text)
         : null,
       await renderAlternatives(item.alternatives, resolver)
     )
@@ -162,7 +144,6 @@ async function renderSequenceItem(item, resolver) {
 async function renderSequence(sequence = [], resolver) {
   if (!sequence.length) return null;
   const items = await Promise.all(sequence.map(item => renderSequenceItem(item, resolver)));
-
   return h('section', { className: 'route-sequence-section content-section', dataset: { semantic: 'sequence' } },
     h('h2', { text: '立ち寄り順' }),
     h('ol', { className: 'route-sequence' }, items)
@@ -178,17 +159,16 @@ function renderConstraints(constraints = []) {
 }
 
 export async function renderRoute({ route, resolver }) {
-  return h('article', {
-    className: 'route-page',
-    dataset: { semantic: 'route', entityId: route.id }
-  },
+  return h('article', { className: 'route-page', dataset: { semantic: 'route', entityId: route.id } },
     h('header', { className: 'route-hero' },
       h('div', { className: 'route-hero-copy' },
-        h('p', { className: 'entity-kind', text: `Route · ${route.id}` }),
+        h('div', { className: 'route-meta', dataset: { semantic: 'route-meta' } },
+          h('p', { className: 'entity-kind', text: `Route · ${route.id}` }),
+          renderIdentity(route)
+        ),
         h('h1', { text: route.title }),
         route.summary ? h('p', { className: 'route-summary', text: route.summary }) : null,
         renderChipList(route.theme_chips, { ariaLabel: 'テーマ', className: 'route-theme-chips' }),
-        renderIdentity(route),
         renderFacts(route.hero_facts)
       ),
       await renderHeroSpots(route.hero_spots, resolver)
