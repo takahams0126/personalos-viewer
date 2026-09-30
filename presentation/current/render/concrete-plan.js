@@ -380,6 +380,21 @@ function renderDayAssignment(day, sourcePlan) {
   );
 }
 
+function renderExecutionReorder(concretePlan, sourcePlan) {
+  const reorderableDays = (concretePlan.days || []).filter(
+    day => reorderCandidates(day, sourcePlan).length > 1
+  );
+  if (!reorderableDays.length) return null;
+
+  return h('section', { className: 'plan-reorder concrete-plan-reorder', dataset: { semantic: 'day-reorder' } },
+    h('h2', { text: '日程調整' }),
+    h('p', { text: '実施日は固定したまま、各日へ割り当てるPlan Day contentを確認・選択します。採用時は日付依存情報を再具体化します。' }),
+    h('div', { className: 'plan-day-assignment-grid' },
+      reorderableDays.map(day => renderDayAssignment(day, sourcePlan))
+    )
+  );
+}
+
 function renderDaySummary(day, sourceDay, weatherDay) {
   return h('summary', { className: 'concrete-day-summary' },
     h('span', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
@@ -403,7 +418,6 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
   },
     renderDaySummary(day, sourceDay, weatherDay),
     h('div', { className: 'plan-day-body concrete-day-body' },
-      renderDayAssignment(day, sourcePlan),
       h('h2', { text: sourceDay?.title || `Day ${day.ordinal}` }),
       sourceDay?.summary ? h('p', { className: 'day-summary', text: sourceDay.summary }) : null,
       day.start_time_label ? textRow('開始', day.start_time_label) : null,
@@ -512,6 +526,7 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
       h('h1', { text: concretePlan.title })
     ),
     renderExecutionOverview(concretePlan, sourcePlan),
+    renderExecutionReorder(concretePlan, sourcePlan),
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
       h('h2', { text: '日程' }),
       dayNodes
