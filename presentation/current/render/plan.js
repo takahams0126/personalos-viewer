@@ -68,7 +68,7 @@ async function renderPlace(item, resolver) {
   const target = await describeRef(item.target_ref, resolver);
   return h('li', {
     className: 'plan-sequence-item plan-place',
-    dataset: { kind: 'place' }
+    dataset: { kind: 'place', semantic: 'place' }
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: '地点' }),
@@ -89,7 +89,7 @@ async function renderMovement(item, resolver) {
   ]);
   return h('li', {
     className: 'plan-sequence-item plan-movement',
-    dataset: { kind: 'movement' }
+    dataset: { kind: 'movement', semantic: 'movement' }
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: '移動' }),
@@ -110,7 +110,7 @@ async function renderMovement(item, resolver) {
 
 async function renderAlternative(alternative, resolver) {
   const route = await describeRef(alternative.route_ref, resolver);
-  return h('li', {},
+  return h('li', { dataset: { semantic: 'alternative-route' } },
     h('strong', {}, entityTitle(alternative.route_ref, route.title, route.unavailable)),
     alternative.replacement_intent
       ? h('p', { text: alternative.replacement_intent })
@@ -118,6 +118,36 @@ async function renderAlternative(alternative, resolver) {
     alternative.selection_condition?.text
       ? h('p', { className: 'plan-item-condition', text: `選択条件: ${alternative.selection_condition.text}` })
       : null
+  );
+}
+
+async function renderRouteStops(routeData, resolver) {
+  const sequence = routeData?.sequence || [];
+  if (!sequence.length) return null;
+
+  const items = await Promise.all(sequence.map(async stop => {
+    const spot = await describeRef(stop.spot_ref, resolver);
+    return h('li', {
+      className: 'plan-route-stop',
+      dataset: { semantic: 'route-stop', order: stop.order }
+    },
+      h('span', { className: 'plan-route-stop-order', text: String(stop.order) }),
+      h('strong', {}, entityTitle(stop.spot_ref, spot.title, spot.unavailable)),
+      stop.visit_purpose?.label
+        ? h('span', { className: 'plan-route-stop-purpose', text: stop.visit_purpose.label })
+        : null,
+      stop.inclusion_requirement?.label
+        ? h('span', { className: 'plan-route-stop-inclusion', text: stop.inclusion_requirement.label })
+        : null
+    );
+  }));
+
+  return h('section', {
+    className: 'plan-route-sequence',
+    dataset: { semantic: 'route-sequence' }
+  },
+    h('h5', { text: 'ルート内の立ち寄り順' }),
+    h('ol', {}, items)
   );
 }
 
@@ -142,24 +172,26 @@ async function renderRoute(item, resolver) {
   const alternatives = await Promise.all(
     (item.alternatives || []).map(alternative => renderAlternative(alternative, resolver))
   );
+  const routeStops = routeData ? await renderRouteStops(routeData, resolver) : null;
 
   return h('li', {
     className: 'plan-sequence-item plan-route',
-    dataset: { kind: 'route' }
+    dataset: { kind: 'route', semantic: 'route-occurrence' }
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: 'ルート' }),
       h('h4', {}, entityTitle(item.route_ref, title, unavailable)),
       identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
-      routeData?.summary ? h('p', { text: routeData.summary }) : null,
+      routeData?.summary ? h('p', { className: 'plan-route-summary', text: routeData.summary }) : null,
       unavailable
         ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
         : null,
       item.condition?.text
         ? h('p', { className: 'plan-item-condition', text: `条件: ${item.condition.text}` })
         : null,
+      routeStops,
       alternatives.length
-        ? h('section', { className: 'plan-route-alternatives' },
+        ? h('section', { className: 'plan-route-alternatives', dataset: { semantic: 'route-alternatives' } },
             h('h5', { text: '代替ルート' }),
             h('ul', {}, alternatives)
           )
@@ -203,6 +235,7 @@ async function renderDay(day, resolver, openByDefault) {
 
   return h('details', {
     className: 'plan-day-disclosure',
+    dataset: { semantic: 'day', day: day.ordinal },
     attrs: { open: openByDefault }
   },
     h('summary', {},
@@ -211,7 +244,7 @@ async function renderDay(day, resolver, openByDefault) {
     ),
     h('div', { className: 'plan-day-body' },
       day.summary ? h('p', { className: 'plan-day-summary', text: day.summary }) : null,
-      h('ol', { className: 'plan-sequence' }, start, items, end)
+      h('ol', { className: 'plan-sequence', dataset: { semantic: 'conceptual-sequence' } }, start, items, end)
     )
   );
 }
@@ -220,7 +253,7 @@ function renderReorderGroups(plan) {
   if (!plan.reorder_groups?.length) return null;
   const dayByOrdinal = new Map((plan.days || []).map(day => [day.ordinal, day]));
 
-  return h('section', { className: 'plan-reorder' },
+  return h('section', { className: 'plan-reorder', dataset: { semantic: 'day-reorder' } },
     h('h2', { text: '日程調整' }),
     ...plan.reorder_groups.map(group => {
       const labels = (group.day_ordinals || []).map(ordinal => {
@@ -246,12 +279,12 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
     dataset: { semantic: 'plan' }
   },
     renderPlanNavigation(manifestEntry),
-    h('header', { className: 'plan-overview' },
+    h('header', { className: 'plan-overview', dataset: { semantic: 'plan-overview' } },
       h('h1', { text: plan.title }),
       plan.summary ? h('p', { text: plan.summary }) : null
     ),
     renderReorderGroups(plan),
-    h('section', { className: 'plan-days' },
+    h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
       h('h2', { text: '日程' }),
       days
     )
