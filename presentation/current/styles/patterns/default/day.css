@@ -1,28 +1,48 @@
 @layer patterns {
   .plan-day-disclosure {
-    border-block-start: var(--border-width) solid var(--line);
+    overflow: hidden;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+
+  .plan-day-disclosure + .plan-day-disclosure {
+    margin-block-start: var(--space-3);
   }
 
   .plan-day-disclosure > summary {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--space-3);
-    padding-block: var(--space-4);
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-5);
     cursor: pointer;
+  }
+
+  .plan-day-disclosure > summary:hover,
+  .plan-day-disclosure > summary:focus-visible,
+  .plan-day-disclosure[open] > summary {
+    background: var(--surface-faint);
+  }
+
+  .plan-day-disclosure[open] > summary {
+    border-block-end: var(--border-width) solid var(--line);
   }
 
   .plan-day-number {
     min-width: 4.5rem;
     color: var(--muted);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-strong);
   }
 
   .plan-day-title {
+    font-size: var(--font-size-value);
     font-weight: var(--font-weight-strong);
   }
 
   .plan-day-body {
-    padding: 0 0 var(--space-6) var(--space-8);
+    padding: var(--space-6);
   }
 
   .concrete-day-summary .concrete-day-date,
@@ -31,9 +51,23 @@
     font-size: var(--font-size-note);
   }
 
+  .concrete-day-summary .concrete-day-date {
+    font-weight: var(--font-weight-strong);
+  }
+
+  .concrete-day-summary .plan-day-title {
+    flex-basis: 100%;
+    margin-inline-start: calc(4.5rem + var(--space-4));
+  }
+
   .plan-reorder-group {
-    padding: var(--space-3) var(--space-4);
-    border-inline-start: 0.2rem solid var(--line);
+    padding: var(--space-4);
+    border-inline-start: 0.22rem solid var(--line-accent);
+    background: var(--surface-faint);
+  }
+
+  .plan-reorder-group + .plan-reorder-group {
+    margin-block-start: var(--space-3);
   }
 
   .plan-reorder-days {
@@ -66,7 +100,8 @@
   }
 
   .plan-day-assignment-select,
-  .execution-day-assignment-select {
+  .execution-day-assignment-select,
+  .plan-route-choice-select {
     width: 100%;
     min-height: var(--control-height);
     padding-inline: var(--space-3);
@@ -87,6 +122,7 @@
     margin: 0;
     color: var(--muted);
     font-size: var(--font-size-note);
+    line-height: 1.6;
   }
 
   @media (max-width: 42rem) {
@@ -94,10 +130,20 @@
       align-items: flex-start;
       flex-direction: column;
       gap: var(--space-1);
+      padding: var(--space-4);
+    }
+
+    .plan-day-number {
+      min-width: 0;
+    }
+
+    .concrete-day-summary .plan-day-title {
+      flex-basis: auto;
+      margin-inline-start: 0;
     }
 
     .plan-day-body {
-      padding-inline-start: 0;
+      padding: var(--space-4);
     }
 
     .plan-day-assignment,
