@@ -35,6 +35,15 @@ function entityTitle(ref, title, unavailable = false) {
   return h('span', { text: title });
 }
 
+function googleMapsLink(event) {
+  if (!event?.google_maps_url) return null;
+  return h('a', {
+    className: 'google-maps-link',
+    attrs: { href: event.google_maps_url, target: '_blank', rel: 'noopener noreferrer' },
+    text: 'Google Mapsで開く'
+  });
+}
+
 function renderTimelineTime(action) {
   if (!action.arrival_label && !action.departure_label) return null;
   return h('aside', { className: 'action-time-axis', dataset: { semantic: 'timeline-time' } },
@@ -164,10 +173,20 @@ function renderMove(move) {
   );
 }
 
-async function renderAction(action, resolver) {
+function fixedFuelEventForTarget(fuelEvents, target) {
+  if (target?.entity_type !== 'travel_point') return null;
+  return (fuelEvents || []).find(event =>
+    event.importance?.code === 'required' &&
+    event.timing?.code === 'fixed' &&
+    event.travel_point_ref?.id === target.id
+  ) || null;
+}
+
+async function renderAction(action, resolver, fuelEvents = []) {
   const target = await describeTarget(action.target, resolver);
   const purpose = action.visit_purpose?.label;
   const inclusion = action.inclusion_requirement?.label;
+  const fixedFuel = fixedFuelEventForTarget(fuelEvents, action.target);
 
   return h('li', {
     className: 'execution-action',
@@ -182,7 +201,8 @@ async function renderAction(action, resolver) {
           ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
           : null,
         purpose ? h('p', { className: 'action-purpose', text: purpose }) : null,
-        inclusion ? h('p', { className: 'action-inclusion', text: inclusion }) : null
+        inclusion ? h('p', { className: 'action-inclusion', text: inclusion }) : null,
+        fixedFuel ? googleMapsLink(fixedFuel) : null
       ),
       renderStay(action),
       renderTodos(action.todos),
@@ -194,8 +214,8 @@ async function renderAction(action, resolver) {
   );
 }
 
-async function renderActions(actions, resolver) {
-  const nodes = await Promise.all((actions || []).map(action => renderAction(action, resolver)));
+async function renderActions(actions, resolver, fuelEvents = []) {
+  const nodes = await Promise.all((actions || []).map(action => renderAction(action, resolver, fuelEvents)));
   return h('ol', { className: 'execution-flow', dataset: { semantic: 'execution-timeline' } }, nodes);
 }
 
@@ -406,10 +426,34 @@ function renderDaySummary(day, sourceDay, weatherDay) {
   );
 }
 
-async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault) {
+function dayFuelSuggestions(fuelEvents, ordinal) {
+  return (fuelEvents || []).filter(event =>
+    event.day_ordinal === ordinal &&
+    event.importance?.code === 'recommended' &&
+    ['preferred', 'fallback'].includes(event.timing?.code)
+  );
+}
+
+function renderDayFuelSuggestions(events) {
+  if (!events?.length) return null;
+  return h('section', { className: 'day-fuel-suggestions', dataset: { semantic: 'fuel-suggestions' } },
+    h('h3', { text: '給油候補' }),
+    h('ul', {}, events.map(event =>
+      h('li', { dataset: { semantic: 'fuel-suggestion', timing: event.timing?.code || '' } },
+        h('strong', { text: event.station_title || '給油候補' }),
+        h('p', { text: [event.importance?.label, event.timing?.label].filter(Boolean).join(' ・ ') }),
+        event.context ? h('p', { text: event.context }) : null,
+        googleMapsLink(event)
+      )
+    ))
+  );
+}
+
+async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault, fuelEvents) {
   const sourceDay = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
   const weatherDay = concretePlan.weather?.days?.find(item => item.day === day.ordinal);
   const variants = await Promise.all((day.variants || []).map(variant => renderVariant(variant, resolver, artifactLoader)));
+  const fuelSuggestions = dayFuelSuggestions(fuelEvents, day.ordinal);
 
   return h('details', {
     className: 'plan-day-disclosure concrete-day-disclosure',
@@ -422,10 +466,11 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
       sourceDay?.summary ? h('p', { className: 'day-summary', text: sourceDay.summary }) : null,
       day.start_time_label ? textRow('開始', day.start_time_label) : null,
       renderWeather(weatherDay),
+      renderDayFuelSuggestions(fuelSuggestions),
       await renderRouteRelations(day.routes, resolver),
       h('section', { className: 'day-execution', dataset: { semantic: 'actual-actions' } },
         h('h3', { text: '行動順' }),
-        await renderActions(day.actions, resolver)
+        await renderActions(day.actions, resolver, fuelEvents)
       ),
       await renderMapPreview(day.map_artifact_ref, artifactLoader, resolver),
       variants.length
@@ -483,6 +528,45 @@ function renderExecutionOverview(plan, sourcePlan) {
   );
 }
 
+function renderFuelSummary(fuel) {
+  if (!fuel) return null;
+  const events = fuel.events || [];
+  const required = events.filter(event => event.importance?.code === 'required');
+  const recommended = events.filter(event => event.importance?.code === 'recommended');
+  return h('section', { className: 'plan-fuel', dataset: { semantic: 'fuel' } },
+    h('h2', { text: '給油計画' }),
+    fuel.distance_label ? textRow('想定走行距離', fuel.distance_label) : null,
+    fuel.fuel_economy_label ? textRow('想定燃費', fuel.fuel_economy_label) : null,
+    fuel.estimated_liters_label ? textRow('想定使用量', fuel.estimated_liters_label) : null,
+    required.length
+      ? h('section', { className: 'fuel-required', dataset: { semantic: 'required-refuel' } },
+          h('h3', { text: '必須給油' }),
+          h('ul', {}, required.map(event =>
+            h('li', {},
+              h('strong', { text: event.station_title || '給油' }),
+              event.day_ordinal ? h('span', { text: ` Day ${event.day_ordinal}` }) : null,
+              event.context ? h('p', { text: event.context }) : null,
+              googleMapsLink(event)
+            )
+          ))
+        )
+      : null,
+    recommended.length
+      ? h('section', { className: 'fuel-recommended', dataset: { semantic: 'recommended-refuel' } },
+          h('h3', { text: '推奨給油' }),
+          h('ul', {}, recommended.map(event =>
+            h('li', {},
+              h('strong', { text: event.station_title || '給油候補' }),
+              event.day_ordinal ? h('span', { text: ` Day ${event.day_ordinal}` }) : null,
+              event.context ? h('p', { text: event.context }) : null,
+              googleMapsLink(event)
+            )
+          ))
+        )
+      : null
+  );
+}
+
 function renderCost(plan) {
   if (!plan.cost) return null;
   return h('section', { className: 'plan-cost', dataset: { semantic: 'cost' } },
@@ -512,8 +596,9 @@ function renderExecutionNavigation(concretePlan) {
 export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, artifactLoader }) {
   const orderedDays = [...(concretePlan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
   const openByDefault = orderedDays.length === 1;
+  const fuelEvents = concretePlan.fuel?.events || [];
   const dayNodes = await Promise.all(
-    orderedDays.map(day => renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault))
+    orderedDays.map(day => renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault, fuelEvents))
   );
 
   return h('article', {
@@ -531,12 +616,7 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
       h('h2', { text: '日程' }),
       dayNodes
     ),
-    concretePlan.fuel?.distance_label
-      ? h('section', { className: 'plan-fuel', dataset: { semantic: 'fuel' } },
-          h('h2', { text: '走行距離' }),
-          h('p', { text: concretePlan.fuel.distance_label })
-        )
-      : null,
+    renderFuelSummary(concretePlan.fuel),
     renderCost(concretePlan)
   );
 }
