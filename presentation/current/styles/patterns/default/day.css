@@ -1,0 +1,108 @@
+@layer patterns {
+  .plan-day-disclosure {
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .plan-day-disclosure > summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+    cursor: pointer;
+  }
+
+  .plan-day-number {
+    min-width: 4.5rem;
+    color: var(--muted);
+  }
+
+  .plan-day-title {
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-day-body {
+    padding: 0 0 var(--space-6) var(--space-8);
+  }
+
+  .concrete-day-summary .concrete-day-date,
+  .concrete-day-summary .concrete-day-weather {
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .plan-reorder-group {
+    padding: var(--space-3) var(--space-4);
+    border-inline-start: 0.2rem solid var(--line);
+  }
+
+  .plan-reorder-days {
+    color: var(--muted);
+  }
+
+  .plan-day-assignment-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .plan-day-assignment,
+  .execution-day-assignment {
+    display: grid;
+    grid-template-columns: minmax(5rem, max-content) minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
+  }
+
+  .plan-day-assignment-slot,
+  .execution-slot {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-day-assignment-select,
+  .execution-day-assignment-select {
+    width: 100%;
+    min-height: var(--control-height);
+    padding-inline: var(--space-3);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .execution-assignment-control {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .execution-reorder-note {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  @media (max-width: 42rem) {
+    .plan-day-disclosure > summary {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .plan-day-body {
+      padding-inline-start: 0;
+    }
+
+    .plan-day-assignment,
+    .execution-day-assignment {
+      grid-template-columns: 1fr;
+    }
+  }
+}
