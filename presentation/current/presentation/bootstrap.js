@@ -60,7 +60,6 @@ function renderBootstrapFailure(error) {
 
 try {
   await activatePresentationPreset();
-  await import('../interaction/layout-mode.js');
   await import('../main.js');
 } catch (error) {
   renderBootstrapFailure(error);
