@@ -1,7 +1,7 @@
 @layer patterns {
   .route-sequence,
   .plan-sequence,
-  html[data-layout="timeline"] .execution-flow {
+  .execution-flow {
     list-style: none;
   }
 
@@ -64,7 +64,7 @@
 
   .plan-sequence-item::before,
   .plan-sequence-boundary::before,
-  html[data-layout="timeline"] .execution-action::before {
+  .execution-action::before {
     content: '';
     position: absolute;
     border-radius: var(--radius-pill);
@@ -82,7 +82,7 @@
 
   .plan-sequence-item:not(:last-child)::after,
   .plan-sequence-boundary:not(:last-child)::after,
-  html[data-layout="timeline"] .execution-action:not(:last-child)::after {
+  .execution-action:not(:last-child)::after {
     content: '';
     position: absolute;
     border-inline-start: var(--border-width) solid var(--line);
@@ -95,14 +95,14 @@
     inset-block-end: 0;
   }
 
-  html[data-layout="timeline"] .execution-flow {
+  .execution-flow {
     display: grid;
     gap: 0;
     margin-block: 0 var(--space-6);
     padding-inline-start: 0;
   }
 
-  html[data-layout="timeline"] .execution-action {
+  .execution-action {
     position: relative;
     display: grid;
     grid-template-columns: minmax(4.5rem, max-content) minmax(0, 1fr);
@@ -110,42 +110,89 @@
     padding-inline-start: var(--space-8);
   }
 
-  html[data-layout="timeline"] .execution-action::before {
+  .execution-action::before {
     inset-inline-start: var(--space-2);
-    inset-block-start: 0.6rem;
+    inset-block-start: 0.75rem;
     width: 0.7rem;
     height: 0.7rem;
     border: var(--border-width-strong) solid currentColor;
   }
 
-  html[data-layout="timeline"] .execution-action:not(:last-child)::after {
+  .execution-action:not(:last-child)::after {
     inset-inline-start: calc(var(--space-2) + 0.3rem);
-    inset-block-start: 1.3rem;
+    inset-block-start: 1.45rem;
     inset-block-end: -0.1rem;
   }
 
-  html[data-layout="timeline"] .action-time-axis {
+  .action-time-axis {
     grid-column: 1;
     grid-row: 1;
     display: grid;
     align-content: start;
     gap: var(--space-1);
     min-width: 0;
+    padding-block-start: var(--space-4);
     color: var(--text-soft);
     font-size: var(--font-size-note);
     font-variant-numeric: tabular-nums;
     font-weight: var(--font-weight-strong);
   }
 
-  html[data-layout="timeline"] .action-time-departure {
+  .action-time-departure {
     color: var(--muted);
     font-weight: var(--font-weight-medium);
   }
 
-  html[data-layout="timeline"] .action-body {
+  .action-body {
     grid-column: 2;
     grid-row: 1;
     min-width: 0;
+    margin-block-end: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
+  }
+
+  .action-header h4 {
+    margin-block-end: var(--space-1);
+    font-size: var(--font-size-value);
+  }
+
+  .action-order {
+    margin-block-end: var(--space-1);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .action-purpose,
+  .action-inclusion {
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .next-move {
+    position: relative;
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .next-move::before {
+    content: '↓';
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--muted);
+  }
+
+  .next-move h5 {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-control-label);
+  }
+
+  .next-move p {
+    margin: 0;
   }
 
   @media (max-width: 38rem) {
@@ -167,9 +214,14 @@
       padding: var(--space-4);
     }
 
-    html[data-layout="timeline"] .execution-action {
+    .execution-action {
       grid-template-columns: 4rem minmax(0, 1fr);
       gap: 0 var(--space-3);
+      padding-inline-start: var(--space-6);
+    }
+
+    .action-body {
+      padding: var(--space-4);
     }
   }
 }
