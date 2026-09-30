@@ -38,7 +38,7 @@ export function renderFactList(facts = [], {
   return h('dl', { className }, facts.map(fact =>
     h('div', {
       className: rowClassName,
-      dataset: { semantic: fact.semantic || '' }
+      dataset: fact.semantic ? { semantic: fact.semantic } : {}
     },
       h('dt', { text: fact.label }),
       h('dd', { text: fact.value })
