@@ -21,25 +21,15 @@
 
   .spot-hero .entity-kind {
     margin-block-end: var(--space-2);
-    font-size: var(--font-size-meta);
-    font-weight: var(--font-weight-strong);
-    letter-spacing: var(--tracking-kicker);
-    text-transform: uppercase;
   }
 
   .spot-hero h1 {
     margin-block-end: var(--space-4);
-    font-size: var(--font-size-display);
-    line-height: 1.05;
-    letter-spacing: -0.035em;
   }
 
   .spot-summary {
     max-width: 46rem;
     margin-block-end: var(--space-4);
-    color: var(--text-soft);
-    font-size: var(--font-size-lead);
-    line-height: 1.75;
   }
 
   .spot-theme-chips {
@@ -115,16 +105,6 @@
     display: grid;
     grid-template-columns: minmax(4rem, auto) minmax(0, 1fr);
     gap: var(--space-3);
-  }
-
-  .spot-fact dt {
-    color: var(--muted);
-    font-size: var(--font-size-fact-label);
-  }
-
-  .spot-fact dd {
-    margin: 0;
-    font-weight: var(--font-weight-medium);
   }
 
   .spot-compact-facts {
@@ -225,11 +205,6 @@
     display: grid;
     grid-template-columns: 7rem minmax(0, 1fr);
     min-height: 7rem;
-  }
-
-  .spot-related-card:hover,
-  .spot-related-card:focus-visible {
-    background: var(--surface-hover-strong);
   }
 
   .spot-related-card > img {
