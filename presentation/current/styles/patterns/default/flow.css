@@ -125,6 +125,8 @@
   }
 
   html[data-layout="timeline"] .action-time-axis {
+    grid-column: 1;
+    grid-row: 1;
     display: grid;
     align-content: start;
     gap: var(--space-1);
@@ -141,6 +143,8 @@
   }
 
   html[data-layout="timeline"] .action-body {
+    grid-column: 2;
+    grid-row: 1;
     min-width: 0;
   }
 
