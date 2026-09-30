@@ -1,0 +1,36 @@
+@layer patterns {
+  .spot-fact dt,
+  .route-identity dt,
+  .route-fact dt {
+    color: var(--muted);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .spot-fact dt {
+    font-size: var(--font-size-fact-label);
+  }
+
+  .route-identity dt,
+  .route-fact dt {
+    font-size: var(--font-size-label);
+  }
+
+  .spot-fact dd {
+    margin: 0;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .route-identity dd,
+  .route-fact dd {
+    margin: var(--space-1) 0 0;
+    font-weight: var(--font-weight-strong);
+  }
+
+  .route-identity > div,
+  .route-fact {
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+  }
+}
