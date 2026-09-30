@@ -23,8 +23,24 @@
       }
     },
     {
-      "point_id": "point-travel_point-T0005",
+      "point_id": "point-travel_point-T0011",
       "order": 2,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0011"
+      },
+      "position": {
+        "lat": 30.3826418,
+        "lon": 130.6584976
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJZwss3W_hPDURGzQj7q9XS8Q"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0005",
+      "order": 3,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0005"
@@ -40,7 +56,7 @@
     },
     {
       "point_id": "point-travel_point-T0003",
-      "order": 3,
+      "order": 4,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0003"
@@ -56,7 +72,7 @@
     },
     {
       "point_id": "point-travel_point-T0008",
-      "order": 4,
+      "order": 5,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0008"
@@ -72,7 +88,7 @@
     },
     {
       "point_id": "point-travel_point-T0002",
-      "order": 5,
+      "order": 6,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0002"
@@ -88,7 +104,7 @@
     },
     {
       "point_id": "point-travel_point-T0006",
-      "order": 6,
+      "order": 7,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0006"
@@ -104,7 +120,7 @@
     },
     {
       "point_id": "point-travel_point-T0001",
-      "order": 7,
+      "order": 8,
       "entity_ref": {
         "entity_type": "travel_point",
         "id": "T0001"
@@ -125,13 +141,22 @@
       "order": 1,
       "flow_element_id": "CP001-D5-LR1-M01",
       "from_point_id": "point-spot-S0025",
-      "to_point_id": "point-travel_point-T0005",
+      "to_point_id": "point-travel_point-T0011",
       "mode": "rental_car",
       "geometry_segment_id": "segment-CP001-D5-LR1-M01"
     },
     {
-      "connection_id": "connection-CP001-D5-LR2-M01",
+      "connection_id": "connection-CP001-D5-LR1-M02",
       "order": 2,
+      "flow_element_id": "CP001-D5-LR1-M02",
+      "from_point_id": "point-travel_point-T0011",
+      "to_point_id": "point-travel_point-T0005",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP001-D5-LR1-M02"
+    },
+    {
+      "connection_id": "connection-CP001-D5-LR2-M01",
+      "order": 3,
       "flow_element_id": "CP001-D5-LR2-M01",
       "from_point_id": "point-travel_point-T0005",
       "to_point_id": "point-travel_point-T0003",
@@ -140,7 +165,7 @@
     },
     {
       "connection_id": "connection-CP001-D5-LR3-M01",
-      "order": 3,
+      "order": 4,
       "flow_element_id": "CP001-D5-LR3-M01",
       "from_point_id": "point-travel_point-T0003",
       "to_point_id": "point-travel_point-T0008",
@@ -149,7 +174,7 @@
     },
     {
       "connection_id": "connection-CP001-D5-LR3-M02",
-      "order": 4,
+      "order": 5,
       "flow_element_id": "CP001-D5-LR3-M02",
       "from_point_id": "point-travel_point-T0008",
       "to_point_id": "point-travel_point-T0002",
@@ -158,7 +183,7 @@
     },
     {
       "connection_id": "connection-CP001-D5-LR4A-M01",
-      "order": 5,
+      "order": 6,
       "flow_element_id": "CP001-D5-LR4A-M01",
       "from_point_id": "point-travel_point-T0002",
       "to_point_id": "point-travel_point-T0006",
@@ -167,7 +192,7 @@
     },
     {
       "connection_id": "connection-CP001-D5-LR4B-M01",
-      "order": 6,
+      "order": 7,
       "flow_element_id": "CP001-D5-LR4B-M01",
       "from_point_id": "point-travel_point-T0006",
       "to_point_id": "point-travel_point-T0001",
@@ -181,7 +206,7 @@
       "order": 1,
       "flow_element_id": "CP001-D5-LR1-M01",
       "from_point_id": "point-spot-S0025",
-      "to_point_id": "point-travel_point-T0005",
+      "to_point_id": "point-travel_point-T0011",
       "mode": {
         "code": "DRIVE",
         "label": "車"
@@ -540,6 +565,27 @@
           "lon": 130.65695
         },
         {
+          "lat": 30.38273,
+          "lon": 130.65865
+        }
+      ]
+    },
+    {
+      "segment_id": "segment-CP001-D5-LR1-M02",
+      "order": 2,
+      "flow_element_id": "CP001-D5-LR1-M02",
+      "from_point_id": "point-travel_point-T0011",
+      "to_point_id": "point-travel_point-T0005",
+      "mode": {
+        "code": "DRIVE",
+        "label": "車"
+      },
+      "path": [
+        {
+          "lat": 30.38273,
+          "lon": 130.65865
+        },
+        {
           "lat": 30.38493,
           "lon": 130.65702
         }
@@ -547,7 +593,7 @@
     },
     {
       "segment_id": "segment-CP001-D5-LR4B-M01",
-      "order": 2,
+      "order": 3,
       "flow_element_id": "CP001-D5-LR4B-M01",
       "from_point_id": "point-travel_point-T0006",
       "to_point_id": "point-travel_point-T0001",

@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 7,
   "entity_type": "concrete_plan",
   "id": "CP001",
   "title": "屋久島 4泊5日基本Plan",
@@ -70,7 +70,12 @@
               "arrive_label": "06:40"
             },
             "depart_label": "05:15",
-            "arrive_label": "06:40"
+            "arrive_label": "06:40",
+            "connection_margin_label": "余裕 10分",
+            "connection_state": {
+              "code": "critical",
+              "label": "余裕小"
+            }
           },
           "arrival_label": "05:05",
           "departure_label": "05:05"
@@ -99,10 +104,16 @@
               "operator": "JAL",
               "service_number": "JAL645",
               "depart_label": "10:00",
-              "arrive_label": "11:45"
+              "arrive_label": "11:45",
+              "reservation_label": "予約済み"
             },
             "depart_label": "10:00",
-            "arrive_label": "11:45"
+            "arrive_label": "11:45",
+            "connection_margin_label": "余裕 3時間20分",
+            "connection_state": {
+              "code": "comfortable",
+              "label": "余裕あり"
+            }
           },
           "arrival_label": "06:40",
           "departure_label": "06:40"
@@ -122,10 +133,16 @@
               "operator": "JAL/JAC",
               "service_number": "JAL3745",
               "depart_label": "13:25",
-              "arrive_label": "14:05"
+              "arrive_label": "14:05",
+              "reservation_label": "予約済み"
             },
             "depart_label": "13:25",
-            "arrive_label": "14:05"
+            "arrive_label": "14:05",
+            "connection_margin_label": "余裕 1時間40分",
+            "connection_state": {
+              "code": "comfortable",
+              "label": "余裕あり"
+            }
           },
           "arrival_label": "11:45",
           "departure_label": "11:45"
@@ -163,7 +180,9 @@
             "id": "T0005"
           },
           "todos": [
-            "レンタカーを受け取る"
+            {
+              "instruction": "レンタカーを受け取る"
+            }
           ],
           "arrival_label": "14:11"
         },
@@ -189,8 +208,12 @@
             "id": "S0025"
           },
           "todos": [
-            "チェックインする",
-            "翌日の縄文杉登山に必要な買い出し・準備を済ませる"
+            {
+              "instruction": "チェックインする"
+            },
+            {
+              "instruction": "翌日の縄文杉登山に必要な買い出し・準備を済ませる"
+            }
           ],
           "next_move": {
             "transport": {
@@ -223,7 +246,10 @@
             "label": "任意"
           },
           "todos": [
-            "夕食をとる"
+            {
+              "instruction": "夕食をとる",
+              "estimated_duration_label": "1時間15分"
+            }
           ],
           "next_move": {
             "transport": {
@@ -292,14 +318,23 @@
             "id": "T0009"
           },
           "todos": [
-            "レンタカーを駐車する",
-            "荒川登山バスへ乗り換える"
+            {
+              "instruction": "レンタカーを駐車する"
+            },
+            {
+              "instruction": "荒川登山バスへ乗り換える"
+            }
           ],
           "arrival_label": "05:35",
           "facility_executions": [
             {
               "facility_key": "parking",
-              "usable": true
+              "usable": true,
+              "vehicle_type": {
+                "code": "car",
+                "label": "車"
+              },
+              "reservation_label": "予約なし"
             }
           ]
         },
@@ -326,7 +361,12 @@
           "facility_executions": [
             {
               "facility_key": "parking",
-              "usable": true
+              "usable": true,
+              "vehicle_type": {
+                "code": "car",
+                "label": "車"
+              },
+              "reservation_label": "予約なし"
             }
           ]
         },
@@ -609,7 +649,12 @@
               "arrive_label": "18:20"
             },
             "depart_label": "17:45",
-            "arrive_label": "18:20"
+            "arrive_label": "18:20",
+            "connection_margin_label": "余裕 10時間25分",
+            "connection_state": {
+              "code": "comfortable",
+              "label": "余裕あり"
+            }
           },
           "arrival_label": "07:20",
           "departure_label": "07:20"
@@ -625,7 +670,12 @@
           "facility_executions": [
             {
               "facility_key": "parking",
-              "usable": true
+              "usable": true,
+              "vehicle_type": {
+                "code": "car",
+                "label": "車"
+              },
+              "reservation_label": "予約なし"
             }
           ]
         },
@@ -648,7 +698,12 @@
           "facility_executions": [
             {
               "facility_key": "parking",
-              "usable": true
+              "usable": true,
+              "vehicle_type": {
+                "code": "car",
+                "label": "車"
+              },
+              "reservation_label": "予約なし"
             }
           ]
         },
@@ -1142,7 +1197,9 @@
             "id": "T0004"
           },
           "todos": [
-            "白谷雲水峡入口でレンタカーを駐車する"
+            {
+              "instruction": "白谷雲水峡入口でレンタカーを駐車する"
+            }
           ],
           "arrival_label": "07:50"
         },
@@ -1252,7 +1309,10 @@
             "label": "入浴"
           },
           "todos": [
-            "入浴する"
+            {
+              "instruction": "入浴する",
+              "estimated_duration_label": "1時間"
+            }
           ],
           "next_move": {
             "transport": {
@@ -1280,7 +1340,10 @@
             "label": "夕食"
           },
           "todos": [
-            "夕食をとる"
+            {
+              "instruction": "夕食をとる",
+              "estimated_duration_label": "1時間30分"
+            }
           ],
           "next_move": {
             "transport": {
@@ -1341,14 +1404,17 @@
             "id": "S0025"
           },
           "todos": [
-            "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"
+            {
+              "instruction": "旅の疲労や買い忘れを吸収し、帰路の余裕を確保する"
+            }
           ],
           "next_move": {
             "transport": {
               "code": "rental_car",
               "label": "レンタカー"
             },
-            "duration_label": "13分"
+            "duration_label": "13分",
+            "distance_label": "10.2km"
           },
           "arrival_label": "10:00"
         },
@@ -1356,10 +1422,34 @@
           "order": 2,
           "target": {
             "entity_type": "travel_point",
+            "id": "T0011"
+          },
+          "todos": [
+            {
+              "instruction": "レンタカー返却前に満タン給油する",
+              "estimated_duration_label": "10分"
+            }
+          ],
+          "next_move": {
+            "transport": {
+              "code": "rental_car",
+              "label": "レンタカー"
+            },
+            "duration_label": "0分",
+            "distance_label": "290m"
+          },
+          "stay_label": "10分"
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
             "id": "T0005"
           },
           "todos": [
-            "レンタカーを返却する"
+            {
+              "instruction": "レンタカーを返却する"
+            }
           ],
           "time_constraints": [
             {
@@ -1369,7 +1459,7 @@
           ]
         },
         {
-          "order": 3,
+          "order": 4,
           "target": {
             "entity_type": "travel_point",
             "id": "T0005"
@@ -1383,14 +1473,14 @@
           }
         },
         {
-          "order": 4,
+          "order": 5,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
           }
         },
         {
-          "order": 5,
+          "order": 6,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
@@ -1404,14 +1494,15 @@
               "operator": "JAL/JAC",
               "service_number": "JAL2450",
               "depart_label": "14:35",
-              "arrive_label": "16:15"
+              "arrive_label": "16:15",
+              "reservation_label": "予約済み"
             },
             "depart_label": "14:35",
             "arrive_label": "16:15"
           }
         },
         {
-          "order": 6,
+          "order": 7,
           "target": {
             "entity_type": "travel_point",
             "id": "T0008"
@@ -1425,16 +1516,22 @@
               "operator": "JAL",
               "service_number": "JAL126",
               "depart_label": "16:35",
-              "arrive_label": "17:50"
+              "arrive_label": "17:50",
+              "reservation_label": "予約済み"
             },
             "depart_label": "16:35",
-            "arrive_label": "17:50"
+            "arrive_label": "17:50",
+            "connection_margin_label": "余裕 20分",
+            "connection_state": {
+              "code": "critical",
+              "label": "余裕小"
+            }
           },
           "arrival_label": "16:15",
           "departure_label": "16:15"
         },
         {
-          "order": 7,
+          "order": 8,
           "target": {
             "entity_type": "travel_point",
             "id": "T0002"
@@ -1443,7 +1540,7 @@
           "departure_label": "17:50"
         },
         {
-          "order": 8,
+          "order": 9,
           "target": {
             "entity_type": "travel_point",
             "id": "T0002"
@@ -1460,13 +1557,18 @@
               "arrive_label": "20:35"
             },
             "depart_label": "18:50",
-            "arrive_label": "20:35"
+            "arrive_label": "20:35",
+            "connection_margin_label": "余裕 1時間",
+            "connection_state": {
+              "code": "comfortable",
+              "label": "余裕あり"
+            }
           },
           "arrival_label": "17:50",
           "departure_label": "17:50"
         },
         {
-          "order": 9,
+          "order": 10,
           "target": {
             "entity_type": "travel_point",
             "id": "T0006"
@@ -1475,7 +1577,7 @@
           "departure_label": "20:35"
         },
         {
-          "order": 10,
+          "order": 11,
           "target": {
             "entity_type": "travel_point",
             "id": "T0006"
@@ -1491,7 +1593,7 @@
           "departure_label": "20:35"
         },
         {
-          "order": 11,
+          "order": 12,
           "target": {
             "entity_type": "travel_point",
             "id": "T0001"
@@ -2050,7 +2152,44 @@
     ]
   },
   "fuel": {
-    "distance_label": "198.074km"
+    "distance_label": "198.655km",
+    "events": [
+      {
+        "fuel_event_id": "FUEL-CP001-D3-PREFERRED",
+        "importance": {
+          "code": "recommended",
+          "label": "推奨"
+        },
+        "timing": {
+          "code": "preferred",
+          "label": "推奨タイミング"
+        },
+        "day_ordinal": 3,
+        "travel_point_ref": {
+          "entity_type": "travel_point",
+          "id": "T0012"
+        },
+        "station_title": "ENEOS 屋久島安房SS",
+        "context": "Day3の島一周ドライブ終盤で安房側を通るため、燃料残量に余裕を持たせたい場合は帰路上の給油候補として利用する"
+      },
+      {
+        "fuel_event_id": "FUEL-CP001-D5-FIXED",
+        "importance": {
+          "code": "required",
+          "label": "必須"
+        },
+        "timing": {
+          "code": "fixed",
+          "label": "確定"
+        },
+        "day_ordinal": 5,
+        "travel_point_ref": {
+          "entity_type": "travel_point",
+          "id": "T0011"
+        },
+        "station_title": "ENEOS 屋久島空港前SS"
+      }
+    ]
   },
   "cost": {
     "total_label": "算定済み分 ¥360,737",
@@ -2103,7 +2242,7 @@
           "code": "unpriced",
           "label": "未算定"
         },
-        "reason": "baselineの実道路distanceは198.074kmまで確定したが、貸出車両の実燃費・給油量・給油単価は現時点で確定していないため"
+        "reason": "baselineの実道路distanceは198.655kmまで確定したが、貸出車両の実燃費・給油量・給油単価は現時点で確定していないため"
       },
       {
         "meaning": "和食の海舟 Day1夕食 大人2名",

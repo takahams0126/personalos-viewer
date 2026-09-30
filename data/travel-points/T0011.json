@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0011",
+  "title": "ENEOS 屋久島空港前SS",
+  "point_type": {
+    "code": "gas_station",
+    "label": "ガソリンスタンド"
+  },
+  "location": {
+    "text": "鹿児島県熊毛郡屋久島町小瀬田815-85"
+  },
+  "links": [
+    {
+      "semantic": "google_maps",
+      "label": "Google Mapsで開く",
+      "url": "https://www.google.com/maps/search/?api=1&query=ENEOS+%E5%B1%8B%E4%B9%85%E5%B3%B6%E7%A9%BA%E6%B8%AF%E5%89%8DSS&query_place_id=ChIJZwss3W_hPDURGzQj7q9XS8Q"
+    }
+  ]
+}

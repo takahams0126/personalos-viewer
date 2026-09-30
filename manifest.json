@@ -1482,6 +1482,22 @@
       },
       "title": "荒川登山口",
       "data_path": "data/travel-points/T0010.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0011"
+      },
+      "title": "ENEOS 屋久島空港前SS",
+      "data_path": "data/travel-points/T0011.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0012"
+      },
+      "title": "ENEOS 屋久島安房SS",
+      "data_path": "data/travel-points/T0012.json"
     }
   ]
 }

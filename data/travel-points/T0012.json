@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0012",
+  "title": "ENEOS 屋久島安房SS",
+  "point_type": {
+    "code": "gas_station",
+    "label": "ガソリンスタンド"
+  },
+  "location": {
+    "text": "鹿児島県熊毛郡屋久島町安房540-9"
+  },
+  "links": [
+    {
+      "semantic": "google_maps",
+      "label": "Google Mapsで開く",
+      "url": "https://www.google.com/maps/search/?api=1&query=ENEOS+%E5%B1%8B%E4%B9%85%E5%B3%B6%E5%AE%89%E6%88%BFSS&query_place_id=ChIJXz_BCd3fPDURxahBJkqhzwg"
+    }
+  ]
+}
