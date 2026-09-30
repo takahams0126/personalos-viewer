@@ -29,6 +29,8 @@
 
   .route-identity > div,
   .route-fact {
+    min-width: 10rem;
+    padding: var(--space-4);
     border: var(--border-width) solid var(--line);
     border-radius: var(--radius-md);
     background: var(--surface-subtle);
