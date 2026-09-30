@@ -60,22 +60,14 @@ function renderReferences(references) {
   );
 }
 
-function renderHeroFacts(facts = []) {
-  if (!facts.length) return null;
-  return h('section', { className: 'spot-hero-detail spot-compact-facts', dataset: { semantic: 'facts' } },
-    h('h2', { className: 'visually-hidden', text: '利用情報' }),
-    renderFacts(facts, 'spot-major-facts')
-  );
-}
-
 function renderFees(fees) {
   if (!fees?.applicability) return null;
   const state = fees.applicability.code;
   if (state === 'not_applicable') return null;
 
   if (state === 'free' || state === 'unknown') {
-    return h('section', { className: 'spot-hero-detail spot-fees', dataset: { semantic: 'fees' } },
-      h('h2', { text: '料金' }),
+    return h('section', { className: 'spot-fees', dataset: { semantic: 'fees' } },
+      h('h3', { text: '料金' }),
       h('p', { className: 'spot-detail-note', text: fees.applicability.label })
     );
   }
@@ -87,9 +79,27 @@ function renderFees(fees) {
   }));
   if (!facts.length) return null;
 
-  return h('section', { className: 'spot-hero-detail spot-fees', dataset: { semantic: 'fees' } },
-    h('h2', { text: '料金' }),
+  return h('section', { className: 'spot-fees', dataset: { semantic: 'fees' } },
+    h('h3', { text: '料金' }),
     renderFacts(facts, 'spot-fee-facts')
+  );
+}
+
+function renderUsageDecision(fees, facts = []) {
+  const feeNode = renderFees(fees);
+  if (!facts.length && !feeNode) return null;
+
+  return h('section', {
+    className: 'spot-hero-detail spot-usage-decision',
+    dataset: { semantic: 'utilization-decision' }
+  },
+    h('h2', { text: '利用判断' }),
+    facts.length
+      ? h('div', { className: 'spot-usage-facts', dataset: { semantic: 'compact-facts' } },
+          renderFacts(facts, 'spot-major-facts')
+        )
+      : null,
+    feeNode
   );
 }
 
@@ -252,10 +262,9 @@ export async function renderSpot({ spot, resolver }) {
         renderChipList(spot.theme_chips, { ariaLabel: 'テーマ', className: 'spot-theme-chips' }),
         h('div', { className: 'spot-hero-details' },
           renderAccess(spot.access),
-          renderFees(spot.fees),
+          renderUsageDecision(spot.fees, spot.hero_facts),
           renderFacilities(spot.facilities),
-          renderReferences(spot.references),
-          renderHeroFacts(spot.hero_facts)
+          renderReferences(spot.references)
         )
       ),
       renderCarousel(spot.images, spot.title)
