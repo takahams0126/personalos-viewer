@@ -130,12 +130,21 @@ First Pattern convergence batch:
 - `render/components/presentation.js` contains only demonstrated identical DOM grammar (`ChipList`, `EmphasisList`); it does not fetch entities, resolve refs, or infer Domain meaning
 - section divider/heading treatment is Pattern-owned through `content-section`; page renderers opt in explicitly
 
+Second Pattern convergence batch:
+
+- Spot / Route fact lists now reuse one thin `FactList` Semantic DOM helper while preserving page-specific fact variants
+- `patterns/default/facts.css` owns fact/identity treatment that was previously mixed into Spot / Route Layout files
+- Plan / ConcretePlan reuse `patterns/default/day.css` for Day disclosure and whole-Day assignment presentation while keeping their Domain semantics separate
+- Route sequence / Plan conceptual sequence / ConcretePlan execution timeline keep independent Semantic DOM but share ordered-flow presentation ownership in `patterns/default/flow.css`
+- ConcretePlan time-axis placement now follows the current `.action-time-axis` Semantic DOM instead of stale `.action-times` assumptions
+- `layouts/default/plan.css`, `route.css`, `spot.css`, and `timeline.css` retain page composition and spatial responsibilities after repeated treatment moved to Pattern ownership
+
 Remaining debt should be evaluated from actual repetition rather than assumed abstraction. Current candidates include:
 
-- repeated entity hero grammar across Spot / Route
-- fact / identity presentation grammar
+- remaining entity hero grammar beyond the already-shared Spot / Route typography roles
 - related / hero Entity card content grammar if the DOM shape converges further
 - occurrence badge vs generic chip semantics, which should stay separate unless their meaning and interaction truly align
 - component-specific typography that should be promoted only when a stable reusable role is demonstrated
+- technical-validation grid layout, whose product role must be resolved rather than preserved by existence alone
 
 Do not create speculative tokens or components for every numeric value or similar-looking block. Promote a value or DOM helper only when it represents a stable owner-correct role.
