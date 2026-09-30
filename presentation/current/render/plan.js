@@ -108,19 +108,6 @@ async function renderMovement(item, resolver) {
   );
 }
 
-async function renderAlternative(alternative, resolver) {
-  const route = await describeRef(alternative.route_ref, resolver);
-  return h('li', { dataset: { semantic: 'alternative-route' } },
-    h('strong', {}, entityTitle(alternative.route_ref, route.title, route.unavailable)),
-    alternative.replacement_intent
-      ? h('p', { text: alternative.replacement_intent })
-      : null,
-    alternative.selection_condition?.text
-      ? h('p', { className: 'plan-item-condition', text: `選択条件: ${alternative.selection_condition.text}` })
-      : null
-  );
-}
-
 async function renderRouteStops(routeData, resolver) {
   const sequence = routeData?.sequence || [];
   if (!sequence.length) return null;
@@ -151,28 +138,65 @@ async function renderRouteStops(routeData, resolver) {
   );
 }
 
-async function renderRoute(item, resolver) {
-  let routeData = null;
-  let title = machineLabel(item.route_ref);
-  let unavailable = false;
-
+async function loadRouteChoice(ref, relation, resolver) {
   try {
-    const loaded = await resolver.load(item.route_ref);
-    routeData = loaded.data;
-    title = routeData.title;
+    const loaded = await resolver.load(ref);
+    return { ref, routeData: loaded.data, title: loaded.data.title, relation, unavailable: false };
   } catch {
-    const described = await describeRef(item.route_ref, resolver);
-    title = described.title;
-    unavailable = true;
+    const described = await describeRef(ref, resolver);
+    return { ref, routeData: null, title: described.title, relation, unavailable: true };
   }
+}
 
+async function renderRouteChoiceDetail(choice, resolver) {
+  const routeData = choice.routeData;
   const identity = routeData
     ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join(' / ')
     : '';
-  const alternatives = await Promise.all(
-    (item.alternatives || []).map(alternative => renderAlternative(alternative, resolver))
-  );
+  const condition = choice.relation?.selection_condition?.text;
+  const replacementIntent = choice.relation?.replacement_intent;
   const routeStops = routeData ? await renderRouteStops(routeData, resolver) : null;
+
+  return h('div', {
+    className: 'plan-route-choice-detail',
+    dataset: { semantic: 'selected-route-detail', routeId: choice.ref?.id || '' }
+  },
+    h('h4', {}, entityTitle(choice.ref, choice.title, choice.unavailable)),
+    identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
+    routeData?.summary ? h('p', { className: 'plan-route-summary', text: routeData.summary }) : null,
+    replacementIntent ? h('p', { className: 'plan-route-intent', text: replacementIntent }) : null,
+    condition ? h('p', { className: 'plan-item-condition', text: `選択条件: ${condition}` }) : null,
+    choice.unavailable
+      ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
+      : null,
+    routeStops
+  );
+}
+
+async function renderRoute(item, resolver) {
+  const choices = await Promise.all([
+    loadRouteChoice(item.route_ref, { selection_condition: item.selection_condition }, resolver),
+    ...(item.alternatives || []).map(alternative =>
+      loadRouteChoice(alternative.route_ref, alternative, resolver)
+    )
+  ]);
+  const detailNodes = await Promise.all(choices.map(choice => renderRouteChoiceDetail(choice, resolver)));
+  const detailHost = h('div', { className: 'plan-route-choice-host' }, detailNodes[0]);
+
+  const select = h('select', {
+    className: 'plan-route-choice-select',
+    attrs: { 'aria-label': '表示するルート' },
+    dataset: { semantic: 'route-choice-control' }
+  }, choices.map((choice, index) =>
+    h('option', {
+      attrs: { value: index },
+      text: index === 0 ? `${choice.title}（標準）` : choice.title
+    })
+  ));
+  select.addEventListener('change', () => {
+    const index = Number(select.value);
+    detailHost.replaceChildren(detailNodes[index]);
+  });
 
   return h('li', {
     className: 'plan-sequence-item plan-route',
@@ -180,22 +204,15 @@ async function renderRoute(item, resolver) {
   },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: 'ルート' }),
-      h('h4', {}, entityTitle(item.route_ref, title, unavailable)),
-      identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
-      routeData?.summary ? h('p', { className: 'plan-route-summary', text: routeData.summary }) : null,
-      unavailable
-        ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
-        : null,
-      item.condition?.text
-        ? h('p', { className: 'plan-item-condition', text: `条件: ${item.condition.text}` })
-        : null,
-      routeStops,
-      alternatives.length
-        ? h('section', { className: 'plan-route-alternatives', dataset: { semantic: 'route-alternatives' } },
-            h('h5', { text: '代替ルート' }),
-            h('ul', {}, alternatives)
-          )
-        : null
+      h('section', { className: 'plan-route-choice', dataset: { semantic: 'route-choice' } },
+        choices.length > 1
+          ? h('label', { className: 'plan-route-choice-label' },
+              h('span', { text: 'ルート選択' }),
+              select
+            )
+          : null,
+        detailHost
+      )
     )
   );
 }
@@ -235,7 +252,7 @@ async function renderDay(day, resolver, openByDefault) {
 
   return h('details', {
     className: 'plan-day-disclosure',
-    dataset: { semantic: 'day', day: day.ordinal },
+    dataset: { semantic: 'day', sourceDay: day.ordinal },
     attrs: { open: openByDefault }
   },
     h('summary', {},
@@ -249,30 +266,88 @@ async function renderDay(day, resolver, openByDefault) {
   );
 }
 
-function renderReorderGroups(plan) {
+function buildReorderControls(plan, assignments, dayNodes, daysHost) {
   if (!plan.reorder_groups?.length) return null;
   const dayByOrdinal = new Map((plan.days || []).map(day => [day.ordinal, day]));
+  const selectBySlot = new Map();
 
+  function refresh() {
+    daysHost.replaceChildren();
+    for (const slot of [...assignments.keys()].sort((a, b) => a - b)) {
+      const sourceOrdinal = assignments.get(slot);
+      const node = dayNodes.get(sourceOrdinal);
+      node.dataset.day = String(slot);
+      node.dataset.sourceDay = String(sourceOrdinal);
+      const number = node.querySelector('.plan-day-number');
+      if (number) number.textContent = `Day ${slot}`;
+      daysHost.append(node);
+    }
+    for (const [slot, select] of selectBySlot.entries()) {
+      select.value = String(assignments.get(slot));
+    }
+  }
+
+  const groups = plan.reorder_groups.map(group => {
+    const ordinals = [...(group.day_ordinals || [])].sort((a, b) => a - b);
+    const rows = ordinals.map(slot => {
+      const select = h('select', {
+        className: 'plan-day-assignment-select',
+        attrs: { 'aria-label': `Day ${slot} の内容` },
+        dataset: { semantic: 'day-assignment-control', slot }
+      }, ordinals.map(sourceOrdinal => {
+        const day = dayByOrdinal.get(sourceOrdinal);
+        return h('option', {
+          attrs: { value: sourceOrdinal },
+          text: `Day ${sourceOrdinal} ${day?.title || ''}`.trim()
+        });
+      }));
+      select.value = String(assignments.get(slot));
+      selectBySlot.set(slot, select);
+      select.addEventListener('change', () => {
+        const selectedSource = Number(select.value);
+        const currentSource = assignments.get(slot);
+        const otherSlot = ordinals.find(candidate => assignments.get(candidate) === selectedSource);
+        if (otherSlot != null && otherSlot !== slot) {
+          assignments.set(otherSlot, currentSource);
+        }
+        assignments.set(slot, selectedSource);
+        refresh();
+      });
+      return h('div', {
+        className: 'plan-day-assignment',
+        dataset: { semantic: 'day-assignment', slot }
+      },
+        h('span', { className: 'plan-day-assignment-slot', text: `Day ${slot}` }),
+        select
+      );
+    });
+    return h('div', { className: 'plan-reorder-group' },
+      h('p', { text: `${group.factor?.label || '条件'}に応じて入れ替え可能` }),
+      h('div', { className: 'plan-day-assignment-grid' }, rows)
+    );
+  });
+
+  refresh();
   return h('section', { className: 'plan-reorder', dataset: { semantic: 'day-reorder' } },
     h('h2', { text: '日程調整' }),
-    ...plan.reorder_groups.map(group => {
-      const labels = (group.day_ordinals || []).map(ordinal => {
-        const day = dayByOrdinal.get(ordinal);
-        return day ? `Day ${ordinal} ${day.title}` : `Day ${ordinal}`;
-      });
-      return h('div', { className: 'plan-reorder-group' },
-        h('p', { text: `${group.factor?.label || '条件'}に応じて入れ替え可能` }),
-        h('p', { className: 'plan-reorder-days', text: labels.join(' / ') })
-      );
-    })
+    groups
   );
 }
 
 export async function renderPlan({ plan, manifestEntry, resolver }) {
-  const openByDefault = (plan.days || []).length === 1;
-  const days = await Promise.all(
-    (plan.days || []).map(day => renderDay(day, resolver, openByDefault))
+  const orderedDays = [...(plan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
+  const openByDefault = orderedDays.length === 1;
+  const dayNodesArray = await Promise.all(
+    orderedDays.map(day => renderDay(day, resolver, openByDefault))
   );
+  const dayNodes = new Map(orderedDays.map((day, index) => [day.ordinal, dayNodesArray[index]]));
+  const assignments = new Map(orderedDays.map(day => [day.ordinal, day.ordinal]));
+  const daysHost = h('div', { className: 'plan-days-list' });
+  const reorder = buildReorderControls(plan, assignments, dayNodes, daysHost);
+
+  if (!reorder) {
+    orderedDays.forEach(day => daysHost.append(dayNodes.get(day.ordinal)));
+  }
 
   return h('article', {
     className: 'plan-page',
@@ -283,10 +358,10 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
       h('h1', { text: plan.title }),
       plan.summary ? h('p', { text: plan.summary }) : null
     ),
-    renderReorderGroups(plan),
+    reorder,
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
       h('h2', { text: '日程' }),
-      days
+      daysHost
     )
   );
 }
