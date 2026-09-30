@@ -19,26 +19,16 @@
 
   .route-hero .entity-kind {
     margin-block-end: var(--space-2);
-    font-size: var(--font-size-meta);
-    font-weight: var(--font-weight-strong);
-    letter-spacing: var(--tracking-kicker);
-    text-transform: uppercase;
   }
 
   .route-hero h1 {
     max-width: 58rem;
     margin-block-end: var(--space-4);
-    font-size: var(--font-size-display);
-    line-height: 1.05;
-    letter-spacing: -0.035em;
   }
 
   .route-summary {
     max-width: 58rem;
     margin-block-end: var(--space-4);
-    color: var(--text-soft);
-    font-size: var(--font-size-lead);
-    line-height: 1.75;
   }
 
   .route-theme-chips {
@@ -78,29 +68,6 @@
     margin-block-end: var(--space-4);
   }
 
-  .route-identity > div,
-  .route-fact {
-    min-width: 10rem;
-    padding: var(--space-4);
-    border: var(--border-width) solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--surface-subtle);
-  }
-
-  .route-identity dt,
-  .route-fact dt {
-    color: var(--muted);
-    font-size: var(--font-size-label);
-    font-weight: var(--font-weight-strong);
-    letter-spacing: var(--tracking-label);
-  }
-
-  .route-identity dd,
-  .route-fact dd {
-    margin: var(--space-1) 0 0;
-    font-weight: var(--font-weight-strong);
-  }
-
   .route-hero-spots {
     padding-block-start: var(--space-5);
     border-block-start: var(--border-width) solid var(--line);
@@ -121,11 +88,6 @@
     display: grid;
     grid-template-columns: 6rem minmax(0, 1fr);
     min-height: 6rem;
-  }
-
-  .route-hero-spot-card:hover,
-  .route-hero-spot-card:focus-visible {
-    background: var(--surface-hover-strong);
   }
 
   .route-hero-spot-card img {
@@ -163,53 +125,6 @@
 
   .route-map {
     margin-block: 0;
-  }
-
-  .route-sequence {
-    position: relative;
-    display: grid;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .route-sequence::before {
-    content: '';
-    position: absolute;
-    top: 1.4rem;
-    bottom: 1.4rem;
-    left: 1.35rem;
-    width: var(--border-width);
-    background: var(--line);
-  }
-
-  .route-sequence-item {
-    position: relative;
-    display: grid;
-    grid-template-columns: 2.7rem minmax(0, 1fr);
-    gap: var(--space-4);
-    padding-block: var(--space-4);
-  }
-
-  .route-sequence-marker {
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    width: 2.7rem;
-    height: 2.7rem;
-    border: var(--border-width) solid var(--line-strong);
-    border-radius: var(--radius-pill);
-    background: var(--surface);
-    font-weight: var(--font-weight-emphasis);
-  }
-
-  .route-sequence-body {
-    min-width: 0;
-    padding: var(--space-4) var(--space-5);
-    border: var(--border-width) solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--surface-faint);
   }
 
   .route-sequence-header {
@@ -288,24 +203,6 @@
     .route-hero-spot-grid,
     .route-strengths {
       grid-template-columns: 1fr;
-    }
-
-    .route-sequence-item {
-      grid-template-columns: 2.25rem minmax(0, 1fr);
-      gap: var(--space-3);
-    }
-
-    .route-sequence::before {
-      left: 1.1rem;
-    }
-
-    .route-sequence-marker {
-      width: 2.25rem;
-      height: 2.25rem;
-    }
-
-    .route-sequence-body {
-      padding: var(--space-4);
     }
 
     .route-sequence-header {

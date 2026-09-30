@@ -1,141 +1,122 @@
 @layer layout {
-  html[data-page-type="plan"] .plan-navigation,
-  html[data-page-type="concrete_plan"] .plan-navigation {
-    margin-block-end: var(--space-8);
+  html[data-page-type="plan"] main,
+  html[data-page-type="concrete_plan"] main {
+    width: min(100% - 2rem, var(--measure-detail));
+  }
+
+  .plan-page,
+  .concrete-plan {
+    display: grid;
+    min-width: 0;
+  }
+
+  .plan-navigation {
     display: flex;
-    gap: var(--space-3);
-  }
-
-  html[data-page-type="plan"] .plan-navigation [aria-current="page"],
-  html[data-page-type="concrete_plan"] .plan-navigation [aria-current="page"] {
-    font-weight: var(--font-weight-strong);
-  }
-
-  html[data-page-type="plan"] .plan-overview,
-  html[data-page-type="plan"] .plan-reorder,
-  html[data-page-type="plan"] .plan-days {
+    flex-wrap: wrap;
+    gap: var(--space-2);
     margin-block-end: var(--space-8);
   }
 
-  html[data-page-type="plan"] .plan-reorder-group {
-    padding: var(--space-3) var(--space-4);
-    border-inline-start: 0.2rem solid var(--line);
+  .plan-overview,
+  .plan-header {
+    max-width: 64rem;
   }
 
-  html[data-page-type="plan"] .plan-reorder-days {
-    color: var(--muted);
+  .plan-overview {
+    margin-block-end: var(--space-8);
   }
 
-  html[data-page-type="plan"] .plan-day-disclosure {
-    border-block-start: var(--border-width) solid var(--line);
+  .plan-day-assignment-grid {
+    max-width: 64rem;
   }
 
-  html[data-page-type="plan"] .plan-day-disclosure > summary {
-    display: flex;
-    gap: var(--space-3);
-    align-items: baseline;
-    padding-block: var(--space-4);
-  }
-
-  html[data-page-type="plan"] .plan-day-number {
-    color: var(--muted);
-    min-width: 4.5rem;
-  }
-
-  html[data-page-type="plan"] .plan-day-title {
-    font-weight: var(--font-weight-strong);
-  }
-
-  html[data-page-type="plan"] .plan-day-body {
-    padding: 0 0 var(--space-6) var(--space-8);
-  }
-
-  html[data-page-type="plan"] .plan-sequence {
-    list-style: none;
-    margin: var(--space-6) 0 0;
-    padding: 0;
-  }
-
-  html[data-page-type="plan"] .plan-sequence-item,
-  html[data-page-type="plan"] .plan-sequence-boundary {
-    position: relative;
-    padding: 0 0 var(--space-5, 1.25rem) var(--space-8);
-  }
-
-  html[data-page-type="plan"] .plan-sequence-item::before,
-  html[data-page-type="plan"] .plan-sequence-boundary::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: var(--space-2);
-    inset-block-start: 0.45rem;
-    width: 0.65rem;
-    height: 0.65rem;
-    border: var(--border-width) solid currentColor;
-    border-radius: var(--radius-pill);
-    background: var(--surface);
-  }
-
-  html[data-page-type="plan"] .plan-sequence-item:not(:last-child)::after,
-  html[data-page-type="plan"] .plan-sequence-boundary:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    inset-inline-start: calc(var(--space-2) + 0.3rem);
-    inset-block-start: 1.1rem;
-    inset-block-end: 0;
-    border-inline-start: var(--border-width) solid var(--line);
-  }
-
-  html[data-page-type="plan"] .plan-item-kind,
-  html[data-page-type="plan"] .plan-boundary-label,
-  html[data-page-type="plan"] .plan-item-meta,
-  html[data-page-type="plan"] .plan-item-condition,
-  html[data-page-type="plan"] .plan-route-identity {
-    color: var(--muted);
-  }
-
-  html[data-page-type="plan"] .plan-item-kind {
-    margin-block-end: var(--space-1);
-  }
-
-  html[data-page-type="plan"] .plan-movement {
-    color: var(--muted);
-  }
-
-  html[data-page-type="plan"] .plan-movement-main {
+  .plan-movement-main {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
   }
 
-  html[data-page-type="plan"] .plan-route > article {
-    padding: var(--space-4);
-    border: var(--border-width) solid var(--line);
-  }
-
-  html[data-page-type="plan"] .plan-route-alternatives {
-    margin-block-start: var(--space-4);
-  }
-
-  html[data-page-type="plan"] .plan-sequence-boundary {
+  .plan-sequence-boundary {
     display: flex;
     gap: var(--space-3);
     align-items: baseline;
   }
 
-  html[data-page-type="plan"] .plan-boundary-label {
+  .plan-boundary-label {
     min-width: 3.5rem;
-    font-size: 0.85em;
+  }
+
+  .plan-route-choice-label {
+    display: grid;
+    grid-template-columns: max-content minmax(12rem, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    max-width: 36rem;
+  }
+
+  .plan-route-choice-host {
+    margin-block-start: var(--space-4);
+  }
+
+  .plan-route-sequence {
+    margin-block-start: var(--space-4);
+  }
+
+  .plan-route-sequence ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .plan-route-stop {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) auto auto;
+    gap: var(--space-2) var(--space-3);
+    align-items: baseline;
+  }
+
+  .plan-route-stop-purpose,
+  .plan-route-stop-inclusion {
+    justify-self: end;
+  }
+
+  .concrete-day-body > h2,
+  .concrete-day-body > .day-summary,
+  .concrete-day-body > .semantic-row {
+    max-width: 64rem;
   }
 
   @media (max-width: 42rem) {
-    html[data-page-type="plan"] .plan-day-body {
-      padding-inline-start: 0;
+    html[data-page-type="plan"] main,
+    html[data-page-type="concrete_plan"] main {
+      width: min(100% - 1rem, var(--measure-detail));
     }
 
-    html[data-page-type="plan"] .plan-day-disclosure > summary {
+    .plan-navigation {
+      margin-block-end: var(--space-6);
+    }
+
+    .plan-movement-main,
+    .plan-sequence-boundary {
       align-items: flex-start;
       flex-direction: column;
       gap: var(--space-1);
+    }
+
+    .plan-route-choice-label {
+      grid-template-columns: 1fr;
+    }
+
+    .plan-route-stop {
+      grid-template-columns: 2rem minmax(0, 1fr);
+    }
+
+    .plan-route-stop-purpose,
+    .plan-route-stop-inclusion {
+      grid-column: 2;
+      justify-self: start;
     }
   }
 }

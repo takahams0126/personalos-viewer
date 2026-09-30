@@ -1,0 +1,79 @@
+@layer patterns {
+  .plan-item-kind,
+  .plan-boundary-label,
+  .plan-item-meta,
+  .plan-item-condition,
+  .plan-route-identity,
+  .plan-route-intent,
+  .plan-route-stop-purpose,
+  .plan-route-stop-inclusion {
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .plan-item-kind {
+    margin-block-end: var(--space-1);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .plan-movement {
+    color: var(--text-soft);
+  }
+
+  .plan-route > article {
+    padding: var(--space-4) var(--space-5);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
+  }
+
+  .plan-route-choice-label > span,
+  .plan-route-sequence > h5 {
+    color: var(--muted);
+    font-size: var(--font-size-control-label);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-route-choice-detail > h4 {
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-title);
+  }
+
+  .plan-route-summary,
+  .plan-route-intent,
+  .plan-item-condition {
+    margin-block: var(--space-2) 0;
+    line-height: 1.6;
+  }
+
+  .plan-route-sequence > h5 {
+    margin-block-end: var(--space-2);
+  }
+
+  .plan-route-stop {
+    padding-block: var(--space-2);
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .plan-route-stop-order {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-sequence-boundary {
+    color: var(--text-soft);
+  }
+
+  .plan-boundary-label {
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+}

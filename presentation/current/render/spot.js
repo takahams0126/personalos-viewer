@@ -1,15 +1,9 @@
 import { hrefFor } from '../core/router.js';
-import { renderChipList, renderEmphasisList } from './components/presentation.js';
+import { renderChipList, renderEmphasisList, renderFactList } from './components/presentation.js';
 import { h } from './dom.js';
 
 function renderFacts(facts = [], className = 'spot-facts') {
-  if (!facts.length) return null;
-  return h('dl', { className }, facts.map(fact =>
-    h('div', { className: 'spot-fact', dataset: { semantic: fact.semantic || '' } },
-      h('dt', { text: fact.label }),
-      h('dd', { text: fact.value })
-    )
-  ));
+  return renderFactList(facts, { className, rowClassName: 'spot-fact' });
 }
 
 function renderAccess(access) {

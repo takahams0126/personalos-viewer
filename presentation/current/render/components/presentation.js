@@ -28,3 +28,20 @@ export function renderEmphasisList(items = [], { className = '' } = {}) {
     )
   ));
 }
+
+export function renderFactList(facts = [], {
+  className = '',
+  rowClassName = ''
+} = {}) {
+  if (!facts.length) return null;
+
+  return h('dl', { className }, facts.map(fact =>
+    h('div', {
+      className: rowClassName,
+      dataset: fact.semantic ? { semantic: fact.semantic } : {}
+    },
+      h('dt', { text: fact.label }),
+      h('dd', { text: fact.value })
+    )
+  ));
+}

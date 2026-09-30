@@ -130,12 +130,28 @@ First Pattern convergence batch:
 - `render/components/presentation.js` contains only demonstrated identical DOM grammar (`ChipList`, `EmphasisList`); it does not fetch entities, resolve refs, or infer Domain meaning
 - section divider/heading treatment is Pattern-owned through `content-section`; page renderers opt in explicitly
 
+Second Pattern convergence batch:
+
+- Spot / Route fact lists reuse one thin `FactList` Semantic DOM helper while preserving page-specific fact variants
+- `patterns/default/facts.css` owns fact/identity treatment that was previously mixed into Spot / Route Layout files
+- Plan / ConcretePlan reuse `patterns/default/day.css` for Day disclosure and whole-Day assignment presentation while keeping their Domain semantics separate
+- Route sequence / Plan conceptual sequence / ConcretePlan execution timeline keep independent Semantic DOM but share ordered-flow presentation ownership in `patterns/default/flow.css`
+- ConcretePlan time-axis placement follows the current `.action-time-axis` Semantic DOM instead of stale `.action-times` assumptions
+
+Default Current convergence batch:
+
+- Current uses one Viewer-wide Default Presentation baseline; the technical-validation `timeline / grid` comparison UI and `grid.css` / `layout-mode.js` path are removed
+- the execution timeline is now the normal Default layout rather than a query-selected mode
+- Plan / ConcretePlan receive one coherent page hierarchy for navigation, hero, Day disclosure, reorder controls, Weather, execution flow, Fuel, Cost, and responsive reflow
+- `patterns/default/plan-content.css` owns Plan-specific occurrence treatment while `layouts/default/plan.css` owns its spatial composition
+- Viewer shell navigation uses the same Default control treatment without introducing a second preset or page-specific theme
+
 Remaining debt should be evaluated from actual repetition rather than assumed abstraction. Current candidates include:
 
-- repeated entity hero grammar across Spot / Route
-- fact / identity presentation grammar
+- remaining entity hero grammar beyond the already-shared Spot / Route typography roles
 - related / hero Entity card content grammar if the DOM shape converges further
 - occurrence badge vs generic chip semantics, which should stay separate unless their meaning and interaction truly align
+- page-local visual declarations in the older TOP / Spot / Route Layout files that should move only when a stable Pattern owner is demonstrated during visual review
 - component-specific typography that should be promoted only when a stable reusable role is demonstrated
 
 Do not create speculative tokens or components for every numeric value or similar-looking block. Promote a value or DOM helper only when it represents a stable owner-correct role.

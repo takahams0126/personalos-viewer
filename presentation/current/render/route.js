@@ -1,17 +1,9 @@
 import { hrefFor } from '../core/router.js';
-import { renderChipList, renderEmphasisList } from './components/presentation.js';
+import { renderChipList, renderEmphasisList, renderFactList } from './components/presentation.js';
 import { h } from './dom.js';
 
 function renderFacts(facts = []) {
-  if (!facts.length) return null;
-  return h('dl', { className: 'route-facts' },
-    facts.map(fact =>
-      h('div', { className: 'route-fact', dataset: { semantic: fact.semantic || '' } },
-        h('dt', { text: fact.label }),
-        h('dd', { text: fact.value })
-      )
-    )
-  );
+  return renderFactList(facts, { className: 'route-facts', rowClassName: 'route-fact' });
 }
 
 async function resolveSpot(ref, resolver) {
@@ -55,15 +47,14 @@ async function renderHeroSpots(refs = [], resolver) {
 }
 
 function renderIdentity(route) {
-  const items = [];
+  const facts = [];
   if (route.family_label) {
-    items.push(h('div', {}, h('dt', { text: 'ルート系列' }), h('dd', { text: route.family_label })));
+    facts.push({ label: 'ルート系列', value: route.family_label });
   }
   if (route.variant?.label) {
-    items.push(h('div', {}, h('dt', { text: 'バリエーション' }), h('dd', { text: route.variant.label })));
+    facts.push({ label: 'バリエーション', value: route.variant.label });
   }
-  if (!items.length) return null;
-  return h('dl', { className: 'route-identity', dataset: { semantic: 'route-identity' } }, items);
+  return renderFactList(facts, { className: 'route-identity' });
 }
 
 function renderAppeal(appeal) {
