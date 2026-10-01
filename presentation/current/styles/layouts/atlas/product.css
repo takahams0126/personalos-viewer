@@ -1,0 +1,56 @@
+@layer layout {
+  :root {
+    --measure-page: 88rem;
+    --measure-detail: 88rem;
+    --measure-explorer: 92rem;
+  }
+
+  .route-workspace {
+    grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.5fr);
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .route-workspace .map-canvas {
+    min-height: clamp(26rem, 58vw, 44rem);
+  }
+
+  .route-workspace [data-layout-slot="secondary"] {
+    position: sticky;
+    top: var(--space-5);
+    max-height: calc(100vh - 8rem);
+    overflow: auto;
+  }
+
+  .day-workspace-panel[data-layout-view="map"] .map-canvas {
+    min-height: clamp(28rem, 60vw, 46rem);
+  }
+
+  .execution-overview {
+    grid-template-columns: minmax(0, 0.78fr) minmax(24rem, 1.22fr);
+  }
+
+  .spot-hero {
+    grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1.1fr);
+  }
+
+  @media (max-width: 64rem) {
+    .route-workspace [data-layout-slot="secondary"] {
+      position: static;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .route-workspace,
+    .execution-overview,
+    .spot-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .route-workspace .map-canvas,
+    .day-workspace-panel[data-layout-view="map"] .map-canvas {
+      min-height: clamp(20rem, 68vw, 32rem);
+    }
+  }
+}

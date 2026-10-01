@@ -40,6 +40,27 @@
     color: inherit;
   }
 
+  .carousel-lightbox-open {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-end: var(--space-3);
+    border: var(--border-width) solid color-mix(in srgb, var(--text) 18%, transparent);
+    border-radius: var(--radius-control);
+    padding: var(--space-2) var(--space-3);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    color: var(--text);
+    font: inherit;
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-strong);
+    cursor: pointer;
+    backdrop-filter: blur(0.35rem);
+  }
+
+  .carousel-lightbox-open:hover,
+  .carousel-lightbox-open:focus-visible {
+    background: var(--surface);
+  }
+
   .carousel-controls {
     display: flex;
     align-items: center;
@@ -107,5 +128,114 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+  }
+
+  .carousel-lightbox {
+    width: min(94vw, 82rem);
+    max-width: none;
+    max-height: 94vh;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: white;
+  }
+
+  .carousel-lightbox::backdrop {
+    background: rgb(0 0 0 / 0.86);
+  }
+
+  .carousel-lightbox-frame {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: min(84vh, 58rem);
+    padding: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .carousel-lightbox-image {
+    display: block;
+    max-width: 100%;
+    max-height: 72vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+  }
+
+  .carousel-lightbox-close,
+  .carousel-lightbox-nav {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: rgb(0 0 0 / 0.56);
+    color: white;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .carousel-lightbox-close {
+    inset-block-start: var(--space-2);
+    inset-inline-end: var(--space-2);
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.7rem;
+  }
+
+  .carousel-lightbox-nav {
+    inset-block-start: 50%;
+    width: 3rem;
+    height: 3rem;
+    translate: 0 -50%;
+    font-size: 2rem;
+  }
+
+  .carousel-lightbox-prev {
+    inset-inline-start: var(--space-2);
+  }
+
+  .carousel-lightbox-next {
+    inset-inline-end: var(--space-2);
+  }
+
+  .carousel-lightbox-close:hover,
+  .carousel-lightbox-close:focus-visible,
+  .carousel-lightbox-nav:hover,
+  .carousel-lightbox-nav:focus-visible {
+    background: rgb(0 0 0 / 0.82);
+    outline: 0.18rem solid white;
+    outline-offset: 0.12rem;
+  }
+
+  .carousel-lightbox-caption,
+  .carousel-lightbox-status {
+    margin: var(--space-2) 0 0;
+    text-align: center;
+  }
+
+  .carousel-lightbox-caption {
+    max-width: 58rem;
+  }
+
+  .carousel-lightbox-status {
+    color: rgb(255 255 255 / 0.72);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 42rem) {
+    .carousel-lightbox-frame {
+      min-height: 90vh;
+      padding: 3.5rem 1rem 4rem;
+    }
+
+    .carousel-lightbox-image {
+      max-height: 72vh;
+    }
+
+    .carousel-lightbox-nav {
+      inset-block-start: auto;
+      inset-block-end: 0.5rem;
+      translate: none;
+    }
   }
 }

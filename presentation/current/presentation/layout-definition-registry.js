@@ -100,11 +100,6 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           view: VIEW.STACK
         }),
         Object.freeze({
-          id: 'appeal',
-          sourceSemantic: 'appeal',
-          view: VIEW.STACK
-        }),
-        Object.freeze({
           id: 'route-workspace',
           view: VIEW.SPLIT,
           slots: Object.freeze({
@@ -112,6 +107,11 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
             secondary: Object.freeze(['sequence'])
           }),
           narrowView: VIEW.STACK
+        }),
+        Object.freeze({
+          id: 'appeal',
+          sourceSemantic: 'appeal',
+          view: VIEW.STACK
         }),
         Object.freeze({
           id: 'supporting-conditions',
