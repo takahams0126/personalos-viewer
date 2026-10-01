@@ -1,4 +1,23 @@
 @layer layout {
+  .viewer-product-shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    width: min(100% - 3rem, var(--measure-page));
+    margin-inline: auto;
+    padding-block: var(--space-3);
+  }
+
+  .viewer-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
   /* Use desktop width for information, not empty whitespace. */
   .execution-overview {
     display: grid;
@@ -169,6 +188,10 @@
   }
 
   @media (max-width: 52rem) {
+    .viewer-product-shell {
+      width: min(100% - 1.5rem, var(--measure-detail));
+    }
+
     .concrete-plan-reorder {
       grid-template-columns: 1fr;
     }
@@ -193,6 +216,17 @@
   }
 
   @media (max-width: 38rem) {
+    .viewer-product-shell {
+      align-items: flex-start;
+      flex-direction: column;
+      width: min(100% - 1rem, var(--measure-detail));
+    }
+
+    .viewer-navigation {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
     .execution-day-assignment {
       grid-template-columns: 1fr;
     }
