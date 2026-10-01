@@ -14,6 +14,10 @@
     padding-block: var(--space-7) calc(var(--space-8) + var(--space-6));
   }
 
+  html[data-page-type="top"] main {
+    width: min(100% - 3rem, var(--measure-explorer));
+  }
+
   html[data-page-type="plan"] main,
   html[data-page-type="concrete_plan"] main,
   html[data-page-type="spot"] main,
@@ -56,6 +60,17 @@
     top: var(--space-5);
   }
 
+  .spot-supporting-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    max-width: 68rem;
+  }
+
+  .spot-supporting-information > * {
+    min-width: 0;
+  }
+
   .route-hero {
     gap: clamp(1.75rem, 3.5vw, 3rem);
   }
@@ -65,9 +80,57 @@
     max-width: 54rem;
   }
 
+  .route-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+  }
+
+  .route-workspace[data-single-slot="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .route-workspace > [data-layout-slot] {
+    min-width: 0;
+    margin-block: 0;
+  }
+
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-row {
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    min-width: 0;
+  }
+
+  @media (max-width: 72rem) {
+    html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 64rem) {
+    .spot-hero,
+    .route-workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .spot-carousel {
+      position: static;
+      grid-row: 1;
+    }
+
+    .spot-hero-copy {
+      grid-row: 2;
+    }
+  }
+
   @media (max-width: 52rem) {
     .viewer-shell,
     main,
+    html[data-page-type="top"] main,
     html[data-page-type="plan"] main,
     html[data-page-type="concrete_plan"] main,
     html[data-page-type="spot"] main,
@@ -80,9 +143,16 @@
     }
   }
 
+  @media (max-width: 42rem) {
+    .spot-supporting-information {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 38rem) {
     .viewer-shell,
     main,
+    html[data-page-type="top"] main,
     html[data-page-type="plan"] main,
     html[data-page-type="concrete_plan"] main,
     html[data-page-type="spot"] main,
