@@ -1,8 +1,6 @@
 @layer patterns {
   /* Conceptual Plan: place/movement are compact journey rows; Route remains a meaningful block. */
-  .plan-sequence {
-    --journey-line: var(--line);
-  }
+  .plan-sequence { --journey-line: var(--line); }
 
   .plan-place > article,
   .plan-movement > article,
@@ -11,9 +9,7 @@
   }
 
   .plan-place > article,
-  .plan-movement > article {
-    padding: var(--space-2) 0;
-  }
+  .plan-movement > article { padding: var(--space-2) 0; }
 
   .plan-place .plan-item-kind,
   .plan-movement .plan-item-kind {
@@ -23,9 +19,7 @@
   }
 
   .plan-place h4,
-  .plan-movement-main {
-    margin: 0;
-  }
+  .plan-movement-main { margin: 0; }
 
   .plan-movement-main > strong::before {
     content: '→ ';
@@ -39,6 +33,40 @@
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
     background: var(--surface-soft);
     box-shadow: none;
+  }
+
+  /* Reassignment is deliberately low-emphasis control chrome. */
+  .plan-reorder,
+  .plan-reorder-group,
+  .plan-day-assignment,
+  .execution-day-assignment {
+    border: 0;
+    box-shadow: none;
+  }
+
+  .plan-reorder {
+    border-block: var(--border-width) solid var(--line);
+    background: transparent;
+  }
+
+  .plan-reorder > h2 {
+    padding: 0;
+    color: var(--muted);
+  }
+
+  .plan-reorder > h2::after { display: none; }
+
+  .plan-reorder-group,
+  .plan-day-assignment,
+  .execution-day-assignment {
+    background: transparent;
+  }
+
+  .plan-day-assignment-slot,
+  .execution-slot {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
   }
 
   /* Map popup is a navigation surface, not a title-only bubble. */
@@ -83,14 +111,37 @@
     margin-block-start: var(--space-2);
   }
 
-  .map-segment-legend-item {
-    max-width: 17rem;
-  }
+  .map-segment-legend-item { max-width: 17rem; }
 
   .map-segment-label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* Fuel and cost are dense summaries with secondary rationale. */
+  .plan-fuel li,
+  .plan-cost li {
+    border-block-end: var(--border-width) solid var(--line);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .plan-fuel li:last-child,
+  .plan-cost li:last-child { border-block-end: 0; }
+
+  .plan-fuel li > p,
+  .plan-cost li > p {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+    line-height: 1.45;
+  }
+
+  .plan-fuel .google-maps-link {
+    justify-self: start;
+    min-height: 1.9rem;
+    padding: .2rem .55rem;
+    font-size: var(--font-size-meta);
   }
 
   /* Keep utility links visually secondary. */
@@ -100,7 +151,5 @@
     gap: var(--space-2);
   }
 
-  .viewer-product-footer p {
-    margin: 0;
-  }
+  .viewer-product-footer p { margin: 0; }
 }
