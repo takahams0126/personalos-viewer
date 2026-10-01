@@ -192,6 +192,69 @@
     margin-block-end: var(--space-6);
   }
 
+  .plan-route-detail-disclosure {
+    margin-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .plan-route-detail-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .plan-route-detail-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .plan-route-detail-title {
+    min-width: 0;
+    color: var(--text);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-route-detail-action {
+    flex: 0 0 auto;
+    color: var(--accent-strong);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-route-detail-summary:hover,
+  .plan-route-detail-summary:focus-visible {
+    background: var(--surface-soft);
+  }
+
+  .plan-route-detail-summary:focus-visible {
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 28%, transparent);
+    outline-offset: 0.12rem;
+  }
+
+  .plan-route-detail-disclosure[open] .plan-route-detail-action {
+    color: var(--muted);
+  }
+
+  .plan-route-detail-disclosure[open] .plan-route-detail-action::before {
+    content: '閉じる';
+  }
+
+  .plan-route-detail-disclosure[open] .plan-route-detail-action {
+    font-size: 0;
+  }
+
+  .plan-route-detail-disclosure[open] .plan-route-detail-action::before {
+    font-size: var(--font-size-note);
+  }
+
+  .plan-route-detail-disclosure > .plan-route-choice-host {
+    margin-block: 0;
+    padding-block: var(--space-3) var(--space-4);
+  }
+
   @media (max-width: 38rem) {
     .execution-package-option {
       flex: 1 1 auto;
@@ -203,6 +266,12 @@
 
     .day-workspace-tab {
       padding-inline: var(--space-3);
+    }
+
+    .plan-route-detail-summary {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-1);
     }
   }
 }

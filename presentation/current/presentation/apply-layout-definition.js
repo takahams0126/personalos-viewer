@@ -273,6 +273,91 @@ function buildExecutionPackages(body, dayDefinition, dayKey) {
   return packagesContainer;
 }
 
+function selectedRouteTitle(routeNode, detailDefinition) {
+  const detail = routeNode.querySelector(`[data-semantic="${CSS.escape(detailDefinition.detailSemantic)}"]`);
+  const heading = detail?.querySelector(':scope > h4');
+  return heading?.textContent?.trim() || 'ルート詳細';
+}
+
+function updatePlanRouteDisclosureSummary(routeNode, disclosure, detailDefinition) {
+  const title = disclosure.querySelector(':scope > summary .plan-route-detail-title');
+  if (title) title.textContent = selectedRouteTitle(routeNode, detailDefinition);
+}
+
+function applyPlanRouteDisclosure(routeNode, detailDefinition) {
+  if (!routeNode || !detailDefinition || detailDefinition.view !== 'disclosure') return;
+  if (routeNode.querySelector(':scope [data-semantic="route-detail-disclosure"]')) return;
+
+  const routeChoice = routeNode.querySelector(':scope > article > [data-semantic="route-choice"]');
+  const detailHost = routeChoice?.querySelector(':scope > .plan-route-choice-host');
+  if (!routeChoice || !detailHost) return;
+
+  const disclosure = document.createElement('details');
+  disclosure.className = 'plan-route-detail-disclosure';
+  disclosure.dataset.semantic = 'route-detail-disclosure';
+  disclosure.dataset.layoutGrammar = detailDefinition.view;
+  disclosure.open = detailDefinition.defaultOpen === true;
+
+  const summary = document.createElement('summary');
+  summary.className = 'plan-route-detail-summary';
+
+  const title = document.createElement('span');
+  title.className = 'plan-route-detail-title';
+  title.textContent = selectedRouteTitle(routeNode, detailDefinition);
+
+  const action = document.createElement('span');
+  action.className = 'plan-route-detail-action';
+  action.textContent = '詳細を見る';
+
+  summary.append(title, action);
+  disclosure.append(summary, detailHost);
+  routeChoice.append(disclosure);
+
+  const select = routeChoice.querySelector(':scope > .plan-route-choice-label select');
+  if (select) {
+    select.addEventListener('change', () => {
+      queueMicrotask(() => updatePlanRouteDisclosureSummary(routeNode, disclosure, detailDefinition));
+    });
+  }
+}
+
+function applyPlanContentLayout(root, contentLayout) {
+  const identity = blockById(contentLayout, 'identity');
+  const reorder = blockById(contentLayout, 'day-reorder');
+  const days = blockById(contentLayout, 'days');
+
+  const overviewNode = directChildBySemantic(root, 'plan-overview');
+  if (overviewNode && identity) {
+    overviewNode.dataset.layoutBlock = identity.id;
+    overviewNode.dataset.layoutGrammar = identity.view;
+  }
+
+  const reorderNode = directChildBySemantic(root, 'day-reorder');
+  if (reorderNode && reorder) {
+    reorderNode.dataset.layoutBlock = reorder.id;
+    reorderNode.dataset.layoutGrammar = reorder.view;
+  }
+
+  const daysNode = directChildBySemantic(root, 'days');
+  if (!daysNode || !days?.day) return;
+  daysNode.dataset.layoutBlock = days.id;
+  daysNode.dataset.layoutGrammar = days.view;
+
+  const dayDefinition = days.day;
+  daysNode.querySelectorAll('[data-semantic="day"]').forEach(dayNode => {
+    dayNode.dataset.layoutGrammar = days.view;
+    const sequence = dayNode.querySelector('[data-semantic="conceptual-sequence"]');
+    if (!sequence) return;
+    sequence.dataset.layoutGrammar = dayDefinition.sequence;
+
+    const detailDefinition = dayDefinition.routeDetail;
+    if (!detailDefinition || typeof detailDefinition !== 'object') return;
+    sequence.querySelectorAll(`:scope > [data-semantic="${CSS.escape(detailDefinition.sourceSemantic)}"]`).forEach(routeNode => {
+      applyPlanRouteDisclosure(routeNode, detailDefinition);
+    });
+  });
+}
+
 function applyConcretePlanContentLayout(root, contentLayout) {
   const executionDays = blockById(contentLayout, 'execution-days');
   const dayDefinition = executionDays?.day;
@@ -294,6 +379,7 @@ function applyConcretePlanContentLayout(root, contentLayout) {
 }
 
 const CONTENT_LAYOUT_APPLIERS = Object.freeze({
+  plan: applyPlanContentLayout,
   concrete_plan: applyConcretePlanContentLayout
 });
 
