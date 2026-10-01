@@ -92,13 +92,17 @@ const LEISURE_PRODUCT_V1 = Object.freeze({
             workspace: Object.freeze({
               view: VIEW.CONTENT_SWITCHER,
               defaultView: 'actions',
+              singleViewMode: 'direct',
               views: Object.freeze([
-                Object.freeze({ id: 'actions', label: '行動順', semantic: 'actions', view: VIEW.TIMELINE, required: true }),
+                Object.freeze({ id: 'actions', label: '行動順', semantic: 'actual-actions', view: VIEW.TIMELINE, required: true }),
                 Object.freeze({ id: 'route', label: 'ルート詳細', semantic: 'route-relations', view: VIEW.STACK, optional: true }),
                 Object.freeze({ id: 'map', label: 'マップ', semantic: 'map', view: VIEW.MAP, optional: true })
               ])
             }),
-            supporting: VIEW.STACK
+            supporting: Object.freeze({
+              view: VIEW.STACK,
+              semantics: Object.freeze(['fuel-suggestions', 'variants'])
+            })
           })
         }),
         Object.freeze({ id: 'fuel', view: VIEW.STRUCTURED_LIST, optional: true }),
