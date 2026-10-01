@@ -58,9 +58,7 @@
 
   .plan-reorder-group,
   .plan-day-assignment,
-  .execution-day-assignment {
-    background: transparent;
-  }
+  .execution-day-assignment { background: transparent; }
 
   .plan-day-assignment-slot,
   .execution-slot {
@@ -117,6 +115,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .map-view[data-map-state="ready"] .map-data-fallback {
+    display: none;
   }
 
   /* Fuel and cost are dense summaries with secondary rationale. */
