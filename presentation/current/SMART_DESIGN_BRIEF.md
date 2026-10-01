@@ -1,8 +1,34 @@
 # Smart Presentation Design Brief
 
-Status: review-ready
+Status: implementation-in-progress
 Scope: Current Viewer Presentation only
 Preset id: `smart`
+
+## Current implementation status
+
+The Smart implementation now exists on `work/smart-presentation-design` without any Semantic Renderer or Public Boundary change.
+
+Current composition:
+
+```text
+smart
+├─ theme      = smart
+├─ patternSet = smart
+└─ layoutSet  = smart
+```
+
+The Smart Pattern and Layout sets intentionally reuse the proven Default baseline resources and add explicit Smart-owned resources after them. This is registry composition, not runtime fallback.
+
+Implemented so far:
+
+- Smart Theme with product color / typography / surface / radius / shadow roles
+- distinct page surface vs component surface roles
+- Smart product Pattern treatment across navigation, entity surfaces, Day, route, timeline, Weather / Fuel attention, and controls
+- Smart Layout composition for page measure, readable content width, and responsive spacing
+- branch-local `config.js` activation through `presentationPreset: 'smart'`
+- TOP / Spot / Route skin and component-treatment declarations moved out of Layout ownership into Pattern ownership while retaining the same Default presentation semantics
+
+Main is intentionally unchanged until explicit approval.
 
 ## Purpose
 
