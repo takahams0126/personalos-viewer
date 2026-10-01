@@ -117,9 +117,7 @@
     white-space: nowrap;
   }
 
-  .map-view[data-map-state="ready"] .map-data-fallback {
-    display: none;
-  }
+  .map-view[data-map-state="ready"] .map-data-fallback { display: none; }
 
   /* Fuel and cost are dense summaries with secondary rationale. */
   .plan-fuel li,
@@ -144,6 +142,23 @@
     min-height: 1.9rem;
     padding: .2rem .55rem;
     font-size: var(--font-size-meta);
+  }
+
+  /* Spot fee/source labels are long prose; never let them steal the value column. */
+  .spot-fee-facts .spot-fact {
+    grid-template-columns: 1fr;
+    gap: .15rem;
+  }
+
+  .spot-fee-facts .spot-fact dt,
+  .spot-fee-facts .spot-fact dd {
+    display: block;
+    min-width: 0;
+  }
+
+  .spot-fee-facts .spot-fact dd {
+    font-size: var(--font-size-value);
+    font-weight: var(--font-weight-emphasis);
   }
 
   /* Keep utility links visually secondary. */
