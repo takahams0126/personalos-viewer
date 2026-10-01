@@ -34,9 +34,23 @@
     border-inline-end: var(--border-width) solid var(--line);
   }
 
+  .spot-compact-facts .spot-fact:last-child {
+    border-inline-end: 0;
+  }
+
   .spot-compact-facts .spot-fact dd {
     margin-block-start: var(--space-1);
     font-size: var(--font-size-value);
+  }
+
+  .spot-review-header h3 {
+    margin: 0;
+    font-size: var(--font-size-value);
+  }
+
+  .spot-review-checked {
+    color: var(--muted);
+    font-size: var(--font-size-caption);
   }
 
   .spot-review-positive,
