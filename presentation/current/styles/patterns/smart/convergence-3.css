@@ -58,20 +58,21 @@
 
   .spot-fee-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-columns: minmax(0, 1fr) minmax(8rem, 14rem);
     gap: var(--space-2);
     align-items: baseline;
     min-width: 0;
   }
 
-  .spot-fee-scope {
+  .spot-fee-scope,
+  .spot-fee-value {
     min-width: 0;
     overflow-wrap: anywhere;
   }
 
   .spot-fee-value {
-    white-space: nowrap;
     font-size: var(--font-size-value);
+    line-height: 1.45;
   }
 
   .spot-reference-utility {
