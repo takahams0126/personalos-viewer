@@ -1,0 +1,59 @@
+@layer patterns {
+  .content-section > h2,
+  .execution-days > h2,
+  .plan-fuel > h2,
+  .plan-cost > h2 {
+    margin-block-end: var(--space-3);
+  }
+
+  .entity-kind,
+  .action-order,
+  .plan-item-kind,
+  .plan-boundary-label {
+    font-size: 0.74rem;
+  }
+
+  .spot-hero-detail,
+  .emphasis-card,
+  .entity-link-card,
+  .execution-day-assignment,
+  .route-execution-body,
+  .map-semantic-preview {
+    box-shadow: none;
+  }
+
+  .weather-summary {
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .weather-icon-primary {
+    width: 2.65rem;
+    height: 2.65rem;
+  }
+
+  .hourly-weather-strip {
+    grid-auto-columns: minmax(3.8rem, 1fr);
+  }
+
+  .hourly-weather-period {
+    padding: 0.2rem var(--space-1);
+  }
+
+  .weather-icon-hourly {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  .day-workspace-tab,
+  .execution-package-option {
+    padding-block: var(--space-2);
+  }
+
+  .map-segment-legend-item {
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .map-segment-label {
+    max-width: 13rem;
+  }
+}
