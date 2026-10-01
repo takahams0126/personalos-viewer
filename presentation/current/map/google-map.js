@@ -1,5 +1,23 @@
 let mapsPromise;
 
+const SEGMENT_COLORS = Object.freeze([
+  '#1565c0',
+  '#d81b60',
+  '#00897b',
+  '#ef6c00',
+  '#6a1b9a',
+  '#2e7d32',
+  '#c62828',
+  '#00838f',
+  '#5d4037',
+  '#3949ab'
+]);
+
+const CIRCLED_NUMBERS = Object.freeze([
+  '', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩',
+  '⑪', '⑫', '⑬', '⑭', '⑮', '⑯', '⑰', '⑱', '⑲', '⑳'
+]);
+
 function loadGoogleMaps() {
   if (globalThis.google?.maps) return Promise.resolve(globalThis.google.maps);
   if (mapsPromise) return mapsPromise;
@@ -50,16 +68,32 @@ function infoContent(title) {
   return node;
 }
 
-function drawResolvedSegment(maps, map, segment, bounds) {
+function segmentColor(segment, index) {
+  const order = Number(segment.order);
+  const paletteIndex = Number.isFinite(order) && order > 0 ? order - 1 : index;
+  return SEGMENT_COLORS[paletteIndex % SEGMENT_COLORS.length];
+}
+
+function segmentNumber(segment, index) {
+  const order = Number(segment.order);
+  const value = Number.isFinite(order) && order > 0 ? order : index + 1;
+  return CIRCLED_NUMBERS[value] || String(value);
+}
+
+function drawResolvedSegment(maps, map, segment, bounds, index) {
   const path = (segment.path || []).map(latLng);
   path.forEach(position => bounds.extend(position));
-  new maps.Polyline({
+  const color = segmentColor(segment, index);
+  const polyline = new maps.Polyline({
     map,
     path,
     geodesic: true,
-    strokeOpacity: 0.82,
-    strokeWeight: 4
+    strokeColor: color,
+    strokeOpacity: 0.88,
+    strokeWeight: 5,
+    zIndex: 2
   });
+  return { segment, polyline, color, index };
 }
 
 function drawSemanticConnection(maps, map, connection, pointById, bounds) {
@@ -90,6 +124,67 @@ function drawSemanticConnection(maps, map, connection, pointById, bounds) {
   });
 }
 
+function setSegmentFocus(segmentViews, active) {
+  for (const item of segmentViews) {
+    const selected = !active || item === active;
+    item.polyline.setOptions({
+      strokeOpacity: selected ? 0.96 : 0.2,
+      strokeWeight: selected ? (active ? 7 : 5) : 4,
+      zIndex: selected && active ? 20 : 2
+    });
+  }
+}
+
+function buildSegmentLegend(segmentViews, pointTitleById) {
+  if (segmentViews.length <= 1) return null;
+
+  const legend = document.createElement('div');
+  legend.className = 'map-segment-legend';
+  legend.dataset.semantic = 'map-segment-legend';
+  legend.setAttribute('aria-label', '移動経路');
+
+  let pinned = null;
+
+  segmentViews.forEach(item => {
+    const segment = item.segment;
+    const fromTitle = pointTitleById.get(segment.from_point_id) || segment.from_point_id;
+    const toTitle = pointTitleById.get(segment.to_point_id) || segment.to_point_id;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'map-segment-legend-item';
+    button.style.setProperty('--segment-color', item.color);
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', `経路 ${segment.order || item.index + 1}: ${fromTitle} から ${toTitle}`);
+
+    const number = document.createElement('span');
+    number.className = 'map-segment-number';
+    number.textContent = segmentNumber(segment, item.index);
+    const label = document.createElement('span');
+    label.className = 'map-segment-label';
+    label.textContent = `${fromTitle} → ${toTitle}`;
+    button.append(number, label);
+
+    const preview = () => setSegmentFocus(segmentViews, item);
+    const restore = () => setSegmentFocus(segmentViews, pinned);
+    button.addEventListener('pointerenter', preview);
+    button.addEventListener('pointerleave', restore);
+    button.addEventListener('focus', preview);
+    button.addEventListener('blur', restore);
+    button.addEventListener('click', () => {
+      const nextPinned = pinned === item ? null : item;
+      pinned = nextPinned;
+      legend.querySelectorAll('.map-segment-legend-item').forEach(control => {
+        control.setAttribute('aria-pressed', control === button && pinned === item ? 'true' : 'false');
+      });
+      setSegmentFocus(segmentViews, pinned);
+    });
+
+    legend.append(button);
+  });
+
+  return legend;
+}
+
 async function hydrateMapView(view, { artifactLoader, resolver }) {
   if (view.dataset.mapState === 'ready' || view.dataset.mapState === 'loading') return;
   view.dataset.mapState = 'loading';
@@ -116,17 +211,18 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
 
     const bounds = new maps.LatLngBounds();
     const pointById = new Map(points.map(point => [point.point_id, point]));
+    const pointTitles = await Promise.all(points.map(point => titleForPoint(point, resolver)));
+    const pointTitleById = new Map(points.map((point, index) => [point.point_id, pointTitles[index]]));
 
-    for (const segment of artifact.segments || []) {
-      drawResolvedSegment(maps, map, segment, bounds);
-    }
+    const segmentViews = (artifact.segments || []).map((segment, index) =>
+      drawResolvedSegment(maps, map, segment, bounds, index)
+    );
 
     for (const connection of artifact.connections || []) {
       drawSemanticConnection(maps, map, connection, pointById, bounds);
     }
 
     const infoWindow = new maps.InfoWindow();
-    const pointTitles = await Promise.all(points.map(point => titleForPoint(point, resolver)));
 
     points.forEach((point, index) => {
       const position = latLng(point.position);
@@ -142,6 +238,11 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
         infoWindow.open({ map, anchor: marker });
       });
     });
+
+    const existingLegend = view.querySelector('.map-segment-legend');
+    existingLegend?.remove();
+    const legend = buildSegmentLegend(segmentViews, pointTitleById);
+    if (legend) canvas.insertAdjacentElement('afterend', legend);
 
     if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
     if (state) state.remove();
