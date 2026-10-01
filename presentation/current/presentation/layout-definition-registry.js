@@ -94,7 +94,13 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           day: Object.freeze({
             context: VIEW.STACK,
             sequence: VIEW.ORDERED_FLOW,
-            routeDetail: VIEW.DISCLOSURE
+            routeDetail: Object.freeze({
+              id: 'route-detail',
+              view: VIEW.DISCLOSURE,
+              sourceSemantic: 'route-occurrence',
+              detailSemantic: 'selected-route-detail',
+              defaultOpen: false
+            })
           })
         })
       ])
