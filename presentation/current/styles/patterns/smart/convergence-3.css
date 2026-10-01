@@ -1,0 +1,280 @@
+@layer patterns {
+  /* Spot: compact factual blocks scale with the amount of semantic content. */
+  .spot-access-block,
+  .spot-usage-decision {
+    padding: var(--space-3) 0;
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .spot-access-block h2,
+  .spot-usage-decision h2,
+  .spot-facilities h2 {
+    margin-block-end: var(--space-2);
+    color: var(--muted);
+    font-size: var(--font-size-control-label);
+  }
+
+  .spot-location {
+    margin: 0;
+    max-width: 32rem;
+    font-weight: var(--font-weight-strong);
+    line-height: 1.55;
+  }
+
+  .spot-major-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .spot-major-facts .spot-fact {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-1) var(--space-2);
+    align-items: baseline;
+  }
+
+  .spot-major-facts dt,
+  .spot-fee-scope,
+  .spot-reference-label {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+  }
+
+  .spot-major-facts dd { margin: 0; font-weight: var(--font-weight-strong); }
+
+  .spot-fees {
+    margin-block-start: var(--space-3);
+    padding-block-start: var(--space-2);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .spot-fees h3 {
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-label);
+  }
+
+  .spot-fee-list { display: grid; gap: var(--space-1); }
+
+  .spot-fee-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: var(--space-2);
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .spot-fee-scope {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .spot-fee-value {
+    white-space: nowrap;
+    font-size: var(--font-size-value);
+  }
+
+  .spot-reference-utility {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    align-items: baseline;
+    padding-block: var(--space-2);
+  }
+
+  .spot-reference-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+  .spot-facilities {
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-faint);
+  }
+
+  .spot-highlight-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spot-highlight-list li {
+    position: relative;
+    padding: var(--space-2) 0 var(--space-2) var(--space-4);
+    line-height: 1.6;
+  }
+
+  .spot-highlight-list li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: .85rem;
+    width: .45rem;
+    height: .45rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .spot-review {
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-4);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .spot-review-positive,
+  .spot-review-caution {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .spot-review-positive h4,
+  .spot-review-caution h4 {
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-label);
+  }
+
+  /* Route: appeal belongs to the lead, not a duplicate section at the page bottom. */
+  .route-appeal-lead {
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-4);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .route-appeal-lead > h2 {
+    margin-block-end: var(--space-2);
+    font-size: var(--font-size-title);
+  }
+
+  .route-appeal-summary {
+    max-width: 58rem;
+    margin-block-end: var(--space-3);
+    font-size: var(--font-size-value);
+    line-height: 1.7;
+  }
+
+  .route-strengths {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .route-strengths > * {
+    padding: var(--space-3);
+    box-shadow: none;
+  }
+
+  .route-workspace .route-sequence-section,
+  .route-workspace .route-map-section {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .route-workspace .route-sequence-body {
+    padding: var(--space-2) var(--space-3);
+    box-shadow: none;
+  }
+
+  /* Plan composition replaces the old Plan/Execution toggle with explicit graph context. */
+  .plan-composition {
+    border-block: var(--border-width) solid var(--line);
+  }
+
+  .plan-composition > h2 {
+    margin: 0;
+    padding-block: var(--space-3);
+    font-size: var(--font-size-title);
+  }
+
+  .plan-composition-row {
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .plan-composition-row h3 {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-control-label);
+  }
+
+  .plan-composition-chip,
+  .plan-composition-execution-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.15rem;
+    padding: .3rem .7rem;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--accent-strong);
+    text-decoration: none;
+  }
+
+  .plan-composition-chip:hover,
+  .plan-composition-chip:focus-visible,
+  .plan-composition-execution-link:hover,
+  .plan-composition-execution-link:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* Schedule controls are intentionally weaker than itinerary content. */
+  .schedule-adjustment,
+  .concrete-plan-reorder {
+    border-block: var(--border-width) solid var(--line);
+    background: transparent;
+  }
+
+  .schedule-adjustment > h2,
+  .concrete-plan-reorder > h2 {
+    padding: 0;
+    color: var(--muted);
+    font-size: var(--font-size-label);
+  }
+
+  .schedule-adjustment > h2::after,
+  .concrete-plan-reorder > h2::after { display: none; }
+
+  .schedule-adjustment-item,
+  .concrete-plan-reorder .execution-day-assignment {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .schedule-adjustment-select,
+  .concrete-plan-reorder .execution-day-assignment-select {
+    width: 100%;
+    min-width: 0;
+    height: 2.2rem;
+  }
+
+  .concrete-plan-reorder > p,
+  .execution-reorder-note,
+  .schedule-adjustment-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+    line-height: 1.45;
+  }
+
+  /* The old Plan/Execution navigation is replaced by plan composition and shell context. */
+  .concrete-plan > .plan-navigation { display: none; }
+
+  /* Inline SVG makes the icon geometry itself centered inside the circular Lightbox button. */
+  .carousel-lightbox-close::before,
+  .carousel-lightbox-close::after,
+  .carousel-lightbox-prev::before,
+  .carousel-lightbox-next::before { display: none !important; }
+
+  .carousel-lightbox-close svg,
+  .carousel-lightbox-nav svg {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    margin: auto;
+    pointer-events: none;
+  }
+
+  @media (max-width: 64rem) {
+    .route-strengths { grid-template-columns: 1fr; }
+  }
+}
