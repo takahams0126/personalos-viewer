@@ -1,0 +1,98 @@
+@layer patterns {
+  .spot-hero-detail {
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+  }
+
+  .spot-hero-detail h2 {
+    margin-block-end: var(--space-2);
+    color: var(--muted);
+    font-size: var(--font-size-label);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label-wide);
+  }
+
+  .spot-location {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .spot-detail-note {
+    margin-block-start: var(--space-2);
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .spot-external-link,
+  .spot-reference-links a {
+    text-underline-offset: 0.16em;
+  }
+
+  .spot-compact-facts .spot-fact {
+    padding-inline-end: var(--space-3);
+    border-inline-end: var(--border-width) solid var(--line);
+  }
+
+  .spot-compact-facts .spot-fact:last-child {
+    border-inline-end: 0;
+  }
+
+  .spot-compact-facts .spot-fact dd {
+    margin-block-start: var(--space-1);
+    font-size: var(--font-size-value);
+  }
+
+  .spot-review-header h3 {
+    margin: 0;
+    font-size: var(--font-size-value);
+  }
+
+  .spot-review-checked {
+    color: var(--muted);
+    font-size: var(--font-size-caption);
+  }
+
+  .spot-review-positive,
+  .spot-review-caution {
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+  }
+
+  .spot-review-positive {
+    background: var(--surface-positive);
+  }
+
+  .spot-review-caution {
+    background: var(--surface-caution);
+  }
+
+  .spot-review-grid h4 {
+    margin-block-end: var(--space-3);
+  }
+
+  .spot-related-copy {
+    padding: var(--space-4);
+  }
+
+  .spot-related-copy h3 {
+    margin-block-end: var(--space-2);
+    font-size: 1rem;
+  }
+
+  .spot-related-copy p,
+  .spot-related-copy small {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 38rem) {
+    .spot-compact-facts .spot-fact {
+      border-inline-end: 0;
+      border-block-end: var(--border-width) solid var(--line);
+      padding-block-end: var(--space-2);
+    }
+  }
+}

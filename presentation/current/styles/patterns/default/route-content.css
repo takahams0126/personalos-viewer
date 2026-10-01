@@ -1,0 +1,75 @@
+@layer patterns {
+  .route-occurrence-badge {
+    padding: 0.22rem 0.6rem;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--surface-disabled);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .route-occurrence-badge[data-code="required"] {
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .route-hero-spots {
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .route-hero-spots > h2 {
+    margin-block-end: var(--space-4);
+    font-size: 1rem;
+  }
+
+  .route-hero-spot-copy {
+    padding: var(--space-4);
+  }
+
+  .route-hero-spot-copy h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .route-hero-spot-copy small {
+    display: block;
+    margin-block-start: var(--space-2);
+    color: var(--muted);
+  }
+
+  .route-appeal-summary {
+    font-size: var(--font-size-lead);
+    line-height: 1.75;
+  }
+
+  .route-sequence-header h3 {
+    margin: 0;
+    font-size: var(--font-size-value);
+  }
+
+  .route-sequence-header a,
+  .route-alternative-line a {
+    color: inherit;
+    text-underline-offset: 0.15em;
+  }
+
+  .route-condition,
+  .route-alternative-line,
+  .route-alternative-condition {
+    color: var(--muted);
+    font-size: var(--font-size-body-sm);
+    line-height: 1.6;
+  }
+
+  .route-inline-label {
+    color: var(--text);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .route-alternatives {
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
+    list-style: none;
+  }
+}

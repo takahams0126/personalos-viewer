@@ -1,0 +1,92 @@
+@layer layout {
+  :root {
+    --measure-page: 76rem;
+    --measure-detail: 76rem;
+    --measure-explorer: 84rem;
+  }
+
+  .viewer-shell,
+  main {
+    width: min(100% - 3rem, var(--measure-page));
+  }
+
+  main {
+    padding-block: var(--space-7) calc(var(--space-8) + var(--space-6));
+  }
+
+  html[data-page-type="plan"] main,
+  html[data-page-type="concrete_plan"] main,
+  html[data-page-type="spot"] main,
+  html[data-page-type="route"] main {
+    width: min(100% - 3rem, var(--measure-detail));
+  }
+
+  .plan-overview,
+  .plan-header,
+  .route-hero-copy {
+    max-width: 58rem;
+  }
+
+  .plan-day-assignment-grid {
+    max-width: 60rem;
+  }
+
+  .execution-flow,
+  .trip-weather-overview,
+  .plan-fuel,
+  .plan-cost {
+    max-width: 68rem;
+  }
+
+  .spot-page,
+  .route-page {
+    gap: clamp(2.75rem, 4.5vw, 4.5rem);
+  }
+
+  .spot-hero {
+    gap: clamp(1.75rem, 3.5vw, 3.5rem);
+  }
+
+  .spot-carousel {
+    top: var(--space-5);
+  }
+
+  .route-hero {
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+  }
+
+  .route-hero h1,
+  .route-summary {
+    max-width: 54rem;
+  }
+
+  @media (max-width: 52rem) {
+    .viewer-shell,
+    main,
+    html[data-page-type="plan"] main,
+    html[data-page-type="concrete_plan"] main,
+    html[data-page-type="spot"] main,
+    html[data-page-type="route"] main {
+      width: min(100% - 1.5rem, var(--measure-detail));
+    }
+
+    main {
+      padding-block: var(--space-6) var(--space-8);
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .viewer-shell,
+    main,
+    html[data-page-type="plan"] main,
+    html[data-page-type="concrete_plan"] main,
+    html[data-page-type="spot"] main,
+    html[data-page-type="route"] main {
+      width: min(100% - 1rem, var(--measure-detail));
+    }
+
+    main {
+      padding-block: var(--space-4) var(--space-7);
+    }
+  }
+}

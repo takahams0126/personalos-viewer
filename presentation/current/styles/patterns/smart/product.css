@@ -1,0 +1,341 @@
+@layer patterns {
+  .viewer-home-link,
+  .viewer-context-back,
+  .plan-navigation a,
+  .plan-navigation [aria-current="page"] {
+    border-color: transparent;
+    background: var(--surface-soft);
+  }
+
+  .viewer-home-link:hover,
+  .viewer-home-link:focus-visible,
+  .viewer-context-back:hover,
+  .viewer-context-back:focus-visible,
+  .plan-navigation a:hover,
+  .plan-navigation a:focus-visible {
+    border-color: var(--line-interactive);
+    background: var(--surface-hover);
+  }
+
+  .plan-navigation [aria-current="page"] {
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .entity-kind,
+  .plan-header .entity-kind {
+    color: var(--accent);
+  }
+
+  .entity-chip {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .content-section {
+    border-block-start-color: var(--line);
+  }
+
+  .content-section > h2,
+  .execution-overview > h2,
+  .plan-reorder > h2,
+  .plan-days > h2,
+  .plan-fuel > h2,
+  .plan-cost > h2 {
+    position: relative;
+    padding-block-end: var(--space-2);
+  }
+
+  .content-section > h2::after,
+  .execution-overview > h2::after,
+  .plan-reorder > h2::after,
+  .plan-days > h2::after,
+  .plan-fuel > h2::after,
+  .plan-cost > h2::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-end: 0;
+    width: 2.6rem;
+    height: 0.2rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+  }
+
+  .emphasis-card,
+  .entity-link-card,
+  .trip-weather-day,
+  .weather-summary,
+  .day-route-relation,
+  .day-fuel-suggestions li,
+  .plan-fuel li,
+  .plan-cost li,
+  .map-semantic-preview,
+  .day-variant,
+  .plan-route > article,
+  .route-sequence-body,
+  .action-body {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .emphasis-card::before,
+  .plan-reorder-group {
+    border-color: var(--accent-muted);
+  }
+
+  .emphasis-card::before {
+    background: var(--accent);
+  }
+
+  .top-filter-panel {
+    border-color: transparent;
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .top-type-option span,
+  .top-filter-field input,
+  .top-filter-field select {
+    border-color: var(--line);
+    background: var(--surface-faint);
+  }
+
+  .top-type-option input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .top-type-option input:focus-visible + span,
+  .top-filter-field input:focus,
+  .top-filter-field select:focus {
+    border-color: var(--accent);
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 22%, transparent);
+    outline-offset: 0;
+  }
+
+  .top-result-row {
+    border-color: transparent;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .top-result-row:hover,
+  .top-result-row:focus-visible {
+    border-color: var(--accent-muted);
+    background: var(--surface);
+  }
+
+  .top-result-thumbnail {
+    background: var(--accent-soft);
+  }
+
+  .spot-hero-detail,
+  .spot-review-positive,
+  .spot-review-caution {
+    border-color: transparent;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .spot-hero-detail {
+    background: var(--surface);
+  }
+
+  .spot-review-positive {
+    background: var(--positive-soft);
+  }
+
+  .spot-review-caution {
+    background: var(--caution-soft);
+  }
+
+  .route-occurrence-badge {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .route-occurrence-badge[data-code="required"] {
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .route-hero-spots {
+    border-block-start-color: var(--line);
+  }
+
+  .route-identity > div,
+  .route-fact {
+    border-color: transparent;
+    background: var(--surface-soft);
+  }
+
+  .spot-fact dt,
+  .route-identity dt,
+  .route-fact dt {
+    color: var(--muted);
+  }
+
+  .plan-day-disclosure {
+    border-color: var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .plan-day-disclosure > summary {
+    background: var(--surface);
+  }
+
+  .plan-day-disclosure > summary:hover,
+  .plan-day-disclosure > summary:focus-visible,
+  .plan-day-disclosure[open] > summary {
+    background: var(--surface-subtle);
+  }
+
+  .plan-day-number {
+    color: var(--accent);
+  }
+
+  .plan-day-title {
+    color: var(--text);
+  }
+
+  .plan-reorder-group {
+    border-inline-start-width: 0.25rem;
+    border-inline-start-style: solid;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: var(--accent-soft);
+  }
+
+  .plan-day-assignment,
+  .execution-day-assignment {
+    border-color: transparent;
+    background: color-mix(in srgb, var(--surface) 78%, var(--accent-soft));
+  }
+
+  .plan-day-assignment-select,
+  .execution-day-assignment-select,
+  .plan-route-choice-select {
+    border-color: var(--line-interactive);
+    background: var(--surface);
+  }
+
+  .plan-day-assignment-select:focus,
+  .execution-day-assignment-select:focus,
+  .plan-route-choice-select:focus {
+    border-color: var(--accent);
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 22%, transparent);
+    outline-offset: 0;
+  }
+
+  .route-sequence::before,
+  .plan-sequence-item:not(:last-child)::after,
+  .plan-sequence-boundary:not(:last-child)::after,
+  .execution-action:not(:last-child)::after {
+    background: var(--accent-muted);
+    border-color: var(--accent-muted);
+  }
+
+  .route-sequence-marker {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--text-inverse);
+    box-shadow: 0 0.3rem 0.9rem color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .plan-sequence-item::before,
+  .plan-sequence-boundary::before,
+  .execution-action::before {
+    border-color: var(--accent);
+    background: var(--surface);
+    color: var(--accent);
+  }
+
+  .execution-action::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 0.22rem var(--surface-page);
+  }
+
+  .action-time-axis {
+    color: var(--accent-strong);
+  }
+
+  .action-time-departure {
+    color: var(--muted);
+  }
+
+  .action-order,
+  .plan-item-kind,
+  .plan-boundary-label {
+    color: var(--accent);
+  }
+
+  .next-move {
+    border-block-start-color: var(--line);
+  }
+
+  .next-move::before,
+  .next-move h5 {
+    color: var(--info);
+  }
+
+  .weather-notice,
+  .execution-attention,
+  .day-fuel-suggestions {
+    border-inline-start-color: var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--accent-soft);
+  }
+
+  .action-constraints li[data-margin-state="critical"],
+  .action-constraints li[data-margin-state="violated"] {
+    background: var(--caution-soft);
+    color: var(--text);
+  }
+
+  .google-maps-link {
+    border-color: var(--accent-muted);
+    background: var(--surface);
+    color: var(--accent-strong);
+  }
+
+  .google-maps-link:hover,
+  .google-maps-link:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .cost-total {
+    color: var(--accent-strong);
+  }
+
+  @media (max-width: 42rem) {
+    .plan-day-disclosure {
+      border-radius: var(--radius-md);
+    }
+
+    .emphasis-card,
+    .entity-link-card,
+    .trip-weather-day,
+    .weather-summary,
+    .day-route-relation,
+    .day-fuel-suggestions li,
+    .plan-fuel li,
+    .plan-cost li,
+    .map-semantic-preview,
+    .day-variant,
+    .plan-route > article,
+    .route-sequence-body,
+    .action-body,
+    .top-filter-panel,
+    .top-result-row,
+    .spot-hero-detail,
+    .spot-review-positive,
+    .spot-review-caution {
+      box-shadow: none;
+    }
+  }
+}

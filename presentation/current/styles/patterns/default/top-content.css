@@ -1,0 +1,183 @@
+@layer patterns {
+  .top-hero .entity-kind {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-kicker);
+  }
+
+  .top-hero h1 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .top-intro {
+    color: var(--muted);
+    font-size: var(--font-size-lead-compact);
+  }
+
+  .top-filter-panel {
+    padding: var(--space-5);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface-subtle);
+  }
+
+  .top-filter-heading h2,
+  .top-results-header h2 {
+    margin: 0;
+    font-size: var(--font-size-title);
+  }
+
+  .top-type-filter {
+    border: 0;
+  }
+
+  .top-type-filter legend,
+  .top-filter-field label {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .top-type-option input {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .top-type-option span {
+    display: grid;
+    min-height: var(--control-height);
+    place-items: center;
+    padding-inline: var(--space-2);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+  }
+
+  .top-type-option input:checked + span {
+    border-color: var(--surface-selected);
+    background: var(--surface-selected);
+    color: var(--text-inverse);
+  }
+
+  .top-type-option input:focus-visible + span {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .top-filter-field input,
+  .top-filter-field select {
+    min-height: var(--control-height);
+    padding: 0.55rem 0.72rem;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .top-filter-field select:disabled {
+    color: var(--muted);
+    background: var(--surface-disabled);
+  }
+
+  .top-result-count {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .top-result-row {
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: transform var(--duration-1) ease, box-shadow var(--duration-1) ease, border-color var(--duration-1) ease;
+  }
+
+  .top-result-row:hover,
+  .top-result-row:focus-visible {
+    transform: translateY(-1px);
+    border-color: var(--line-interactive);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .top-result-thumbnail {
+    background: var(--surface-soft);
+  }
+
+  .top-result-thumbnail-fallback {
+    color: var(--muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .top-result-body {
+    padding-block: var(--space-4);
+  }
+
+  .top-result-meta {
+    color: var(--muted);
+    font-size: var(--font-size-meta-sm);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .top-result-type {
+    color: var(--text);
+  }
+
+  .top-result-body h3 {
+    font-size: var(--font-size-title);
+    line-height: 1.35;
+  }
+
+  .top-result-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: var(--text-summary);
+    font-size: var(--font-size-body-sm);
+    line-height: 1.6;
+  }
+
+  .top-result-arrow {
+    padding-inline: var(--space-4);
+    color: var(--muted);
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .top-empty-state {
+    padding: var(--space-8);
+    border: var(--border-width) dashed var(--line);
+    border-radius: var(--radius-lg);
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 42rem) {
+    .top-hero h1 {
+      font-size: clamp(1.9rem, 9vw, 2.7rem);
+    }
+
+    .top-filter-panel {
+      padding: var(--space-4);
+    }
+
+    .top-result-body {
+      padding-block: var(--space-3);
+      padding-inline-end: var(--space-3);
+    }
+
+    .top-result-summary {
+      -webkit-line-clamp: 3;
+    }
+  }
+}

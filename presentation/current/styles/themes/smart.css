@@ -1,0 +1,114 @@
+@layer theme {
+  :root {
+    color-scheme: light dark;
+    --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+
+    --font-size-display: clamp(1.9rem, 3.2vw, 3.2rem);
+    --font-size-display-large: clamp(2.1rem, 3.8vw, 3.65rem);
+    --font-size-section: clamp(1.32rem, 2vw, 1.78rem);
+    --font-size-lead: clamp(1rem, 1.35vw, 1.14rem);
+    --font-size-lead-compact: clamp(0.98rem, 1.25vw, 1.1rem);
+    --font-size-title: 1.12rem;
+    --font-size-value: 1.02rem;
+    --font-size-body-sm: 0.9rem;
+    --font-size-note: 0.86rem;
+    --font-size-control-label: 0.84rem;
+    --font-size-small: 0.84rem;
+    --font-size-fact-label: 0.8rem;
+    --font-size-caption: 0.8rem;
+    --font-size-meta: 0.76rem;
+    --font-size-label: 0.74rem;
+    --font-size-meta-sm: 0.72rem;
+
+    --font-weight-medium: 600;
+    --font-weight-strong: 700;
+    --font-weight-emphasis: 760;
+    --tracking-label: 0.025em;
+    --tracking-label-wide: 0.04em;
+    --tracking-kicker: 0.07em;
+
+    --surface-page: #f4f7f6;
+    --surface: #ffffff;
+    --surface-faint: #f8faf9;
+    --surface-subtle: #f1f5f3;
+    --surface-disabled: #e9efec;
+    --surface-soft: #e5eee9;
+    --surface-hover-strong: #dbe8e2;
+    --surface-hover: #e7efeb;
+    --surface-selected: #173a34;
+    --surface-positive: #edf8f0;
+    --surface-caution: #fff4df;
+
+    --text: #1f2b28;
+    --text-inverse: #ffffff;
+    --text-soft: #42534f;
+    --text-summary: #334742;
+    --muted: #71807b;
+
+    --line: #d9e2de;
+    --line-interactive: #b7c7c0;
+    --line-accent: #6f9588;
+    --line-strong: #687b74;
+    --focus-ring: #176b5a;
+
+    --accent: #176b5a;
+    --accent-strong: #0f5144;
+    --accent-soft: #e5f2ed;
+    --accent-muted: #7aa394;
+    --info: #356d9a;
+    --info-soft: #edf4fa;
+    --positive: #2e7d4f;
+    --positive-soft: #edf8f0;
+    --caution: #a66312;
+    --caution-soft: #fff4df;
+
+    --radius-sm: 0.65rem;
+    --radius-control: 0.8rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.2rem;
+    --radius-pill: 999px;
+
+    --shadow-raised: 0 0.75rem 2rem rgba(39, 69, 59, 0.1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-page: #111715;
+      --surface: #18201d;
+      --surface-faint: #1c2522;
+      --surface-subtle: #202a26;
+      --surface-disabled: #27332f;
+      --surface-soft: #2b3833;
+      --surface-hover-strong: #34453e;
+      --surface-hover: #304039;
+      --surface-selected: #e5f2ed;
+      --surface-positive: #1f3527;
+      --surface-caution: #3a2d18;
+
+      --text: #edf4f1;
+      --text-inverse: #18382f;
+      --text-soft: #c0cec8;
+      --text-summary: #d2ded9;
+      --muted: #91a29b;
+
+      --line: #33413c;
+      --line-interactive: #52665e;
+      --line-accent: #78a696;
+      --line-strong: #8ea49b;
+      --focus-ring: #69c4aa;
+
+      --accent: #69c4aa;
+      --accent-strong: #94dbc5;
+      --accent-soft: #203830;
+      --accent-muted: #78a696;
+      --info: #78a9d3;
+      --info-soft: #1f2e3a;
+      --positive: #78c795;
+      --positive-soft: #1f3527;
+      --caution: #e2ad65;
+      --caution-soft: #3a2d18;
+
+      --shadow-raised: 0 0.9rem 2.2rem rgba(0, 0, 0, 0.28);
+    }
+  }
+}
