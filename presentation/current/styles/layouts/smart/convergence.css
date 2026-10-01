@@ -168,7 +168,28 @@
     list-style: none;
   }
 
-  @media (max-width: 64rem) {
+  /* Smart's former 64rem stack wasted laptop/desktop width. Keep split views until tablet width. */
+  @media (min-width: 52.01rem) and (max-width: 64rem) {
+    .spot-hero {
+      grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+    }
+
+    .spot-carousel {
+      position: sticky;
+      top: var(--space-5);
+      grid-row: auto;
+    }
+
+    .spot-hero-copy {
+      grid-row: auto;
+    }
+
+    .route-workspace {
+      grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
+    }
+  }
+
+  @media (max-width: 52rem) {
     .execution-overview {
       grid-template-columns: 1fr;
     }
@@ -185,9 +206,7 @@
     .execution-overview > .trip-weather-overview {
       margin-block-start: var(--space-4);
     }
-  }
 
-  @media (max-width: 52rem) {
     .viewer-product-shell {
       width: min(100% - 1.5rem, var(--measure-detail));
     }
