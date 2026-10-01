@@ -1,4 +1,79 @@
 @layer patterns {
+  .execution-package-selector {
+    margin-block: var(--space-6) var(--space-3);
+  }
+
+  .execution-package-selector > h3 {
+    margin-block: 0 var(--space-2);
+  }
+
+  .execution-package-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .execution-package-option {
+    appearance: none;
+    border: var(--border-width) solid var(--line-strong);
+    border-radius: var(--radius-control);
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-weight: var(--font-weight-strong);
+    cursor: pointer;
+  }
+
+  .execution-package-option:hover {
+    border-color: var(--accent);
+    background: var(--surface-soft);
+  }
+
+  .execution-package-option[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .execution-package-option:focus-visible {
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 28%, transparent);
+    outline-offset: 0.12rem;
+  }
+
+  .execution-package-note {
+    margin-block: var(--space-2) 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .execution-packages > [hidden] {
+    display: none;
+  }
+
+  .execution-package-meta {
+    margin-block: var(--space-4) var(--space-2);
+    padding: var(--space-4);
+    border-inline-start: var(--border-width-strong) solid var(--accent);
+    background: var(--surface-soft);
+  }
+
+  .execution-package-meta > h3,
+  .execution-package-intent,
+  .execution-package-condition {
+    margin-block: 0;
+  }
+
+  .execution-package-intent,
+  .execution-package-condition {
+    margin-block-start: var(--space-2);
+  }
+
+  .execution-package-condition {
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
   .day-workspace {
     margin-block: var(--space-6);
   }
@@ -93,6 +168,11 @@
     background: var(--surface-soft);
   }
 
+  .day-workspace[data-active-view="actions"] [data-semantic="route-execution-summary"] h4 a {
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+  }
+
   .day-workspace[data-active-view="route"] .execution-sequence > .execution-action:not(.route-execution-group),
   .day-workspace[data-active-view="route"] .route-execution-exit {
     display: none;
@@ -113,6 +193,10 @@
   }
 
   @media (max-width: 38rem) {
+    .execution-package-option {
+      flex: 1 1 auto;
+    }
+
     .day-workspace {
       margin-inline: calc(-1 * var(--space-1));
     }
