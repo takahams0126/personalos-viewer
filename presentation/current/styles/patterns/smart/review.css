@@ -1,4 +1,8 @@
 @layer patterns {
+  .weather-symbol {
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Segoe UI Symbol", sans-serif;
+  }
+
   .weather-matrix-row {
     grid-template-columns: 5.5rem repeat(var(--weather-period-count, 8), minmax(4.25rem, 1fr));
   }
@@ -38,6 +42,8 @@
     background: var(--surface-soft);
     box-shadow: none;
   }
+
+  .route-execution-action-range { display: none; }
 
   /* Reassignment is deliberately low-emphasis control chrome. */
   .plan-reorder,
