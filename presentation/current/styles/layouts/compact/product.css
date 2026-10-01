@@ -1,0 +1,71 @@
+@layer layout {
+  :root {
+    --measure-page: 82rem;
+    --measure-detail: 82rem;
+    --measure-explorer: 88rem;
+  }
+
+  main {
+    padding-block: var(--space-5) var(--space-7);
+  }
+
+  .spot-page,
+  .route-page,
+  .plan-page,
+  .concrete-plan-page {
+    gap: clamp(1.75rem, 3vw, 3rem);
+  }
+
+  .execution-flow,
+  .trip-weather-overview,
+  .day-workspace,
+  .plan-fuel,
+  .plan-cost {
+    max-width: 76rem;
+  }
+
+  .execution-overview {
+    grid-template-columns: minmax(0, 0.82fr) minmax(24rem, 1.18fr);
+    column-gap: clamp(1rem, 2vw, 2rem);
+  }
+
+  .concrete-plan-reorder > .plan-day-assignment-grid {
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+
+  .execution-day-assignment {
+    padding: var(--space-2);
+  }
+
+  .execution-action {
+    grid-template-columns: minmax(3.8rem, max-content) minmax(0, 1fr);
+    gap: 0 var(--space-2);
+    padding-inline-start: var(--space-6);
+  }
+
+  .execution-action:not(.route-execution-group) .action-body {
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, 13rem);
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-2) var(--space-1);
+  }
+
+  .action-time-axis {
+    padding-block-start: var(--space-2);
+  }
+
+  .route-workspace {
+    grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
+  }
+
+  .spot-hero {
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  }
+
+  @media (max-width: 52rem) {
+    .execution-overview,
+    .route-workspace,
+    .spot-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+}
