@@ -33,9 +33,14 @@
 
   .execution-flow,
   .trip-weather-overview,
+  .day-workspace,
   .plan-fuel,
   .plan-cost {
     max-width: 68rem;
+  }
+
+  .day-workspace-panel > .map-semantic-preview {
+    max-width: 100%;
   }
 
   .spot-page,
