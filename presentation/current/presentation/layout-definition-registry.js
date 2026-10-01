@@ -44,9 +44,21 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
     top: Object.freeze({
       id: 'top-content-v1',
       blocks: Object.freeze([
-        Object.freeze({ id: 'orientation', view: VIEW.STACK }),
-        Object.freeze({ id: 'explorer-controls', view: VIEW.STACK }),
-        Object.freeze({ id: 'results', view: VIEW.GRID })
+        Object.freeze({
+          id: 'orientation',
+          sourceSelector: ':scope > .top-hero',
+          view: VIEW.STACK
+        }),
+        Object.freeze({
+          id: 'explorer-controls',
+          sourceSelector: ':scope > .top-explorer-layout > .top-filter-panel',
+          view: VIEW.STACK
+        }),
+        Object.freeze({
+          id: 'results',
+          sourceSelector: ':scope > .top-explorer-layout > .top-results-panel',
+          view: VIEW.GRID
+        })
       ])
     }),
     spot: Object.freeze({
@@ -54,33 +66,59 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
       blocks: Object.freeze([
         Object.freeze({
           id: 'hero',
+          sourceSelector: ':scope > .spot-hero',
           view: VIEW.SPLIT,
           slots: Object.freeze({
-            primary: Object.freeze(['identity', 'summary', 'theme', 'decision-facts']),
-            secondary: Object.freeze(['media'])
+            primary: Object.freeze(['spot-hero-copy']),
+            secondary: Object.freeze(['image-carousel'])
           }),
           narrowView: VIEW.STACK
         }),
-        Object.freeze({ id: 'appeal-review', view: VIEW.STACK }),
-        Object.freeze({ id: 'supporting-information', view: VIEW.STACK }),
-        Object.freeze({ id: 'related-spots', view: VIEW.GRID })
+        Object.freeze({
+          id: 'appeal-review',
+          sourceSemantic: 'appeal',
+          view: VIEW.STACK
+        }),
+        Object.freeze({
+          id: 'supporting-information',
+          view: VIEW.GRID,
+          semantics: Object.freeze(['facilities', 'references'])
+        }),
+        Object.freeze({
+          id: 'related-spots',
+          sourceSemantic: 'related-spots',
+          view: VIEW.GRID
+        })
       ])
     }),
     route: Object.freeze({
       id: 'route-content-v1',
       blocks: Object.freeze([
-        Object.freeze({ id: 'identity', view: VIEW.STACK }),
-        Object.freeze({ id: 'appeal', view: VIEW.STACK }),
+        Object.freeze({
+          id: 'identity',
+          sourceSelector: ':scope > .route-hero',
+          view: VIEW.STACK
+        }),
+        Object.freeze({
+          id: 'appeal',
+          sourceSemantic: 'appeal',
+          view: VIEW.STACK
+        }),
         Object.freeze({
           id: 'route-workspace',
           view: VIEW.SPLIT,
           slots: Object.freeze({
-            primary: Object.freeze(['map']),
-            secondary: Object.freeze(['ordered-stops'])
+            primary: Object.freeze(['conceptual-map']),
+            secondary: Object.freeze(['sequence'])
           }),
           narrowView: VIEW.STACK
         }),
-        Object.freeze({ id: 'supporting-conditions', view: VIEW.STACK, optional: true })
+        Object.freeze({
+          id: 'supporting-conditions',
+          sourceSemantic: 'constraints',
+          view: VIEW.STACK,
+          optional: true
+        })
       ])
     }),
     plan: Object.freeze({
