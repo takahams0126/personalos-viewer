@@ -4,19 +4,21 @@ export function renderAppShell({ request, navigation }, root) {
   if (!root) return;
 
   root.replaceChildren();
-  if (request?.kind === 'top') {
-    root.hidden = true;
-    return;
-  }
-
   root.hidden = false;
 
-  const items = [
-    h('a', {
-      className: 'viewer-home-link',
-      attrs: { href: '?' },
-      text: 'レジャーTOP'
-    })
+  const isTop = request?.kind === 'top';
+  const globalItems = [
+    isTop
+      ? h('span', {
+          className: 'viewer-home-link',
+          attrs: { 'aria-current': 'page' },
+          text: 'Explorer'
+        })
+      : h('a', {
+          className: 'viewer-home-link',
+          attrs: { href: '?' },
+          text: 'Explorer'
+        })
   ];
 
   if (navigation?.source) {
@@ -26,13 +28,20 @@ export function renderAppShell({ request, navigation }, root) {
       text: `← ${navigation.source.title}`
     });
     back.addEventListener('click', () => history.back());
-    items.push(back);
+    globalItems.push(back);
   }
 
   root.append(
-    h('nav', {
-      className: 'viewer-navigation',
-      attrs: { 'aria-label': 'Viewer navigation' }
-    }, items)
+    h('header', { className: 'viewer-product-shell' },
+      h('a', {
+        className: 'viewer-brand',
+        attrs: { href: '?', 'aria-label': 'PersonalOS Leisure Explorer' },
+        text: 'PersonalOS Leisure'
+      }),
+      h('nav', {
+        className: 'viewer-navigation',
+        attrs: { 'aria-label': 'Leisure navigation' }
+      }, globalItems)
+    )
   );
 }
