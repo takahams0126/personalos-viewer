@@ -9,11 +9,12 @@ import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
 import { renderTop } from './render/top.js';
+import { applyPresentationStrategy } from './presentation/apply-strategy.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './interaction/carousel.js';
+import { hydrateContentSwitchers } from './interaction/content-switcher.js';
 import { hydrateExplorer } from './interaction/explorer.js';
 import { renderAppShell } from './structure/app-shell.js';
-import { h } from './render/dom.js';
 
 const manifestStore = new ManifestStore(resources);
 const resolver = new EntityResolver(manifestStore, resources);
@@ -58,22 +59,26 @@ async function renderRequestedEntity(request, loaded) {
   throw new Error(`Current Viewer does not support this page type yet: ${request.type}`);
 }
 
-async function renderTopPage(app) {
+async function renderTopPage(app, strategy) {
   const manifest = await manifestStore.ensure();
   document.documentElement.dataset.pageType = 'top';
   document.title = 'レジャー | PersonalOS Viewer';
   app.replaceChildren(renderTop({ manifest }));
+  applyPresentationStrategy({ root: app, pageType: 'top', strategy });
   hydrateExplorer(app);
 }
 
-async function main() {
+export async function startCurrentViewer({ presentation }) {
+  const strategy = presentation?.strategy;
+  if (!strategy) throw new Error('Active Presentation Strategy is unavailable.');
+
   const request = readRequest();
   const app = document.querySelector('#app');
   const shell = document.querySelector('#viewer-shell');
   const navigation = createNavigationContext();
 
   if (request.kind === 'top') {
-    await renderTopPage(app);
+    await renderTopPage(app, strategy);
     renderAppShell({ request, navigation }, shell);
     installNavigationCapture({ request, data: null });
     return;
@@ -90,8 +95,11 @@ async function main() {
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
+  applyPresentationStrategy({ root: app, pageType: request.type, strategy });
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
+
+  hydrateContentSwitchers(app);
 
   if (request.type === 'spot') {
     hydrateCarousels(app);
@@ -100,16 +108,4 @@ async function main() {
   if (request.type === 'route' || request.type === 'concrete_plan') {
     await hydrateMapViews({ root: app, artifactLoader, resolver });
   }
-}
-
-try {
-  await main();
-} catch (error) {
-  console.error('[current-viewer] bootstrap failed', error);
-  document.querySelector('#app').replaceChildren(
-    h('section', { attrs: { role: 'alert' } },
-      h('h1', { text: 'Viewerを表示できませんでした' }),
-      h('p', { text: error.message })
-    )
-  );
 }
