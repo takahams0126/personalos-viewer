@@ -5,7 +5,7 @@
     margin: 0;
     font-family: var(--font-body);
     color: var(--text);
-    background: var(--surface);
+    background: var(--surface-page, var(--surface));
     line-height: 1.55;
   }
 
