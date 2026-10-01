@@ -1,4 +1,8 @@
 @layer patterns {
+  .weather-matrix-row {
+    grid-template-columns: 5.5rem repeat(var(--weather-period-count, 8), minmax(4.25rem, 1fr));
+  }
+
   /* Conceptual Plan: place/movement are compact journey rows; Route remains a meaningful block. */
   .plan-sequence { --journey-line: var(--line); }
 
