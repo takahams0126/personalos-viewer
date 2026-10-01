@@ -110,6 +110,15 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           view: VIEW.DISCLOSURE,
           day: Object.freeze({
             context: VIEW.STACK,
+            executionPackages: Object.freeze({
+              id: 'execution-package-selector',
+              view: VIEW.CONTENT_SWITCHER,
+              sourceSemantic: 'execution-packages',
+              packageSemantic: 'execution-package',
+              defaultPackage: 'baseline',
+              baselineLabel: '標準',
+              variantLabelPrefix: '代替案'
+            }),
             workspace: Object.freeze({
               id: 'day-workspace',
               view: VIEW.CONTENT_SWITCHER,
@@ -145,7 +154,7 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
             }),
             supporting: Object.freeze({
               view: VIEW.STACK,
-              semantics: Object.freeze(['fuel-suggestions', 'variants'])
+              semantics: Object.freeze(['fuel-suggestions'])
             })
           })
         }),
