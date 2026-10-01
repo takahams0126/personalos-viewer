@@ -23,7 +23,8 @@ const SMART_PATTERN_SET = Object.freeze({
   id: 'smart',
   stylesheets: Object.freeze([
     ...DEFAULT_PATTERN_STYLESHEETS,
-    new URL('../styles/patterns/smart/product.css', import.meta.url).href
+    new URL('../styles/patterns/smart/product.css', import.meta.url).href,
+    new URL('../styles/patterns/smart/workspace.css', import.meta.url).href
   ])
 });
 
