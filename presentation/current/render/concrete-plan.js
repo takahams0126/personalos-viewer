@@ -228,36 +228,146 @@ async function renderActions(actions, resolver, fuelEvents = []) {
   return h('ol', { className: 'execution-flow', dataset: { semantic: 'execution-timeline' } }, nodes);
 }
 
-async function renderRouteRelations(routes, resolver) {
-  if (!routes?.length) return null;
-  const items = await Promise.all(routes.map(async relation => {
-    let routeData = null;
-    let title;
-    let unavailable = false;
-    try {
-      const loaded = await resolver.load(relation.route_ref);
-      routeData = loaded.data;
-      title = routeData.title || loaded.entry.title;
-    } catch {
-      title = `${relation.route_ref.entity_type}:${relation.route_ref.id}`;
-      unavailable = true;
-    }
-    const identity = routeData
+function actionStartLabel(action) {
+  return action?.arrival_label || action?.departure_label || '';
+}
+
+function actionEndLabel(action) {
+  return action?.departure_label || action?.arrival_label || '';
+}
+
+async function resolveRouteExecution(relation, resolver) {
+  let routeData = null;
+  let title;
+  let unavailable = false;
+  try {
+    const loaded = await resolver.load(relation.route_ref);
+    routeData = loaded.data;
+    title = routeData.title || loaded.entry.title;
+  } catch {
+    title = `${relation.route_ref.entity_type}:${relation.route_ref.id}`;
+    unavailable = true;
+  }
+
+  return {
+    relation,
+    routeData,
+    title,
+    unavailable,
+    identity: routeData
       ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join(' / ')
-      : '';
-    return h('li', { className: 'day-route-relation', dataset: { semantic: 'route-relation' } },
-      h('article', {},
-        h('h5', {}, entityTitle(relation.route_ref, title, unavailable)),
-        identity ? h('p', { className: 'day-route-identity', text: identity }) : null,
-        h('p', { className: 'day-route-action-range', text: `実施範囲 Action ${relation.from_action_order}〜${relation.to_action_order}` }),
-        unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
-      )
-    );
-  }));
-  return h('section', { className: 'day-routes', dataset: { semantic: 'route-relations' } },
-    h('h4', { text: 'この日のルート' }),
-    h('p', { className: 'day-routes-note', text: '実際の立ち寄り順・時刻は下の行動順を正とします。' }),
-    h('ul', {}, items)
+      : ''
+  };
+}
+
+async function renderRouteExecutionGroup(relation, routeActions, resolver, fuelEvents) {
+  const resolved = await resolveRouteExecution(relation, resolver);
+  const firstAction = routeActions[0];
+  const lastAction = routeActions[routeActions.length - 1];
+  const [startTarget, endTarget] = await Promise.all([
+    firstAction ? describeTarget(firstAction.target, resolver) : null,
+    lastAction ? describeTarget(lastAction.target, resolver) : null
+  ]);
+  const actionNodes = await Promise.all(
+    routeActions.map(action => renderAction(action, resolver, fuelEvents))
+  );
+  const startLabel = actionStartLabel(firstAction);
+  const endLabel = actionEndLabel(lastAction);
+
+  return h('li', {
+    className: 'execution-action route-execution-group',
+    dataset: {
+      semantic: 'route-execution-group',
+      routeId: relation.route_ref?.id || '',
+      fromAction: relation.from_action_order,
+      toAction: relation.to_action_order
+    }
+  },
+    (startLabel || endLabel)
+      ? h('aside', { className: 'action-time-axis route-execution-time-axis', dataset: { semantic: 'route-execution-time' } },
+          startLabel ? h('span', { className: 'action-time-arrival', text: startLabel, attrs: { 'aria-label': `ルート開始 ${startLabel}` } }) : null,
+          endLabel && endLabel !== startLabel
+            ? h('span', { className: 'action-time-departure', text: endLabel, attrs: { 'aria-label': `ルート終了 ${endLabel}` } })
+            : null
+        )
+      : null,
+    h('article', { className: 'action-body route-execution-body' },
+      h('header', { className: 'route-execution-summary', dataset: { semantic: 'route-execution-summary' } },
+        h('p', { className: 'route-execution-label', text: 'ルート' }),
+        h('h4', {}, entityTitle(relation.route_ref, resolved.title, resolved.unavailable)),
+        resolved.identity ? h('p', { className: 'route-execution-identity', text: resolved.identity }) : null,
+        startTarget && endTarget
+          ? h('p', {
+              className: 'route-execution-endpoints',
+              dataset: { semantic: 'route-execution-endpoints' },
+              text: `${startTarget.title} → ${endTarget.title}`
+            })
+          : null,
+        resolved.routeData?.summary
+          ? h('p', {
+              className: 'route-execution-description',
+              dataset: { semantic: 'route-execution-description' },
+              text: resolved.routeData.summary
+            })
+          : null,
+        h('p', {
+          className: 'route-execution-action-range',
+          dataset: { semantic: 'route-execution-action-range' },
+          text: `Action ${relation.from_action_order}〜${relation.to_action_order}`
+        }),
+        resolved.unavailable
+          ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
+          : null
+      ),
+      h('ol', {
+        className: 'execution-flow route-execution-actions',
+        dataset: { semantic: 'route-execution-actions' }
+      }, actionNodes),
+      lastAction?.next_move
+        ? h('div', { className: 'route-execution-exit', dataset: { semantic: 'route-execution-exit' } },
+            renderMove(lastAction.next_move)
+          )
+        : null
+    )
+  );
+}
+
+async function renderExecutionSequence(actions, routes, resolver, fuelEvents = []) {
+  const orderedActions = [...(actions || [])].sort((a, b) => a.order - b.order);
+  const orderedRoutes = [...(routes || [])].sort((a, b) => a.from_action_order - b.from_action_order);
+  const routeByStart = new Map(orderedRoutes.map(relation => [relation.from_action_order, relation]));
+  const nodes = [];
+
+  for (let index = 0; index < orderedActions.length;) {
+    const action = orderedActions[index];
+    const relation = routeByStart.get(action.order);
+
+    if (!relation) {
+      nodes.push(await renderAction(action, resolver, fuelEvents));
+      index += 1;
+      continue;
+    }
+
+    const routeActions = [];
+    let cursor = index;
+    while (cursor < orderedActions.length && orderedActions[cursor].order <= relation.to_action_order) {
+      routeActions.push(orderedActions[cursor]);
+      cursor += 1;
+    }
+
+    if (!routeActions.length) {
+      nodes.push(await renderAction(action, resolver, fuelEvents));
+      index += 1;
+      continue;
+    }
+
+    nodes.push(await renderRouteExecutionGroup(relation, routeActions, resolver, fuelEvents));
+    index = cursor;
+  }
+
+  return h('section', { className: 'day-execution', dataset: { semantic: 'execution-sequence' } },
+    h('h3', { className: 'execution-sequence-title', text: '行動順' }),
+    h('ol', { className: 'execution-flow execution-sequence', dataset: { semantic: 'execution-timeline' } }, nodes)
   );
 }
 
@@ -477,11 +587,7 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
       day.start_time_label ? textRow('開始', day.start_time_label) : null,
       renderWeather(weatherDay),
       await renderDayFuelSuggestions(fuelSuggestions, resolver),
-      await renderRouteRelations(day.routes, resolver),
-      h('section', { className: 'day-execution', dataset: { semantic: 'actual-actions' } },
-        h('h3', { text: '行動順' }),
-        await renderActions(day.actions, resolver, fuelEvents)
-      ),
+      await renderExecutionSequence(day.actions, day.routes, resolver, fuelEvents),
       await renderMapPreview(day.map_artifact_ref, artifactLoader, resolver),
       variants.length
         ? h('section', { className: 'day-variants', dataset: { semantic: 'variants' } },
