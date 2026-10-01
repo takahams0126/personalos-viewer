@@ -1,16 +1,26 @@
 export const DEFAULT_PRESENTATION_PRESET = 'default';
 
+const DEFAULT_PATTERN_STYLESHEETS = Object.freeze([
+  new URL('../styles/patterns/default/content.css', import.meta.url).href,
+  new URL('../styles/patterns/default/entity-content.css', import.meta.url).href,
+  new URL('../styles/patterns/default/facts.css', import.meta.url).href,
+  new URL('../styles/patterns/default/day.css', import.meta.url).href,
+  new URL('../styles/patterns/default/flow.css', import.meta.url).href,
+  new URL('../styles/patterns/default/plan-content.css', import.meta.url).href,
+  new URL('../styles/patterns/default/map.css', import.meta.url).href,
+  new URL('../styles/patterns/default/carousel.css', import.meta.url).href
+]);
+
 const DEFAULT_PATTERN_SET = Object.freeze({
   id: 'default',
+  stylesheets: DEFAULT_PATTERN_STYLESHEETS
+});
+
+const SMART_PATTERN_SET = Object.freeze({
+  id: 'smart',
   stylesheets: Object.freeze([
-    new URL('../styles/patterns/default/content.css', import.meta.url).href,
-    new URL('../styles/patterns/default/entity-content.css', import.meta.url).href,
-    new URL('../styles/patterns/default/facts.css', import.meta.url).href,
-    new URL('../styles/patterns/default/day.css', import.meta.url).href,
-    new URL('../styles/patterns/default/flow.css', import.meta.url).href,
-    new URL('../styles/patterns/default/plan-content.css', import.meta.url).href,
-    new URL('../styles/patterns/default/map.css', import.meta.url).href,
-    new URL('../styles/patterns/default/carousel.css', import.meta.url).href
+    ...DEFAULT_PATTERN_STYLESHEETS,
+    new URL('../styles/patterns/smart/product.css', import.meta.url).href
   ])
 });
 
@@ -47,7 +57,7 @@ export const PRESENTATION_PRESETS = Object.freeze({
         new URL('../styles/themes/smart.css', import.meta.url).href
       ])
     }),
-    patternSet: DEFAULT_PATTERN_SET,
+    patternSet: SMART_PATTERN_SET,
     layoutSet: DEFAULT_LAYOUT_SET
   })
 });
