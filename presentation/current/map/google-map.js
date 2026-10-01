@@ -156,16 +156,28 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
 
 function hydrateWhenUsable(view, context) {
   const disclosure = view.closest('details');
-  if (disclosure && !disclosure.open) {
-    const onToggle = () => {
-      if (!disclosure.open) return;
-      disclosure.removeEventListener('toggle', onToggle);
-      hydrateMapView(view, context);
-    };
-    disclosure.addEventListener('toggle', onToggle);
-    return Promise.resolve();
-  }
-  return hydrateMapView(view, context);
+  const panel = view.closest('[role="tabpanel"]');
+
+  const isUsable = () =>
+    (!disclosure || disclosure.open) &&
+    (!panel || !panel.hidden);
+
+  if (isUsable()) return hydrateMapView(view, context);
+
+  const cleanup = () => {
+    disclosure?.removeEventListener('toggle', tryHydrate);
+    panel?.removeEventListener('presentation:shown', tryHydrate);
+  };
+
+  const tryHydrate = () => {
+    if (!isUsable()) return;
+    cleanup();
+    hydrateMapView(view, context);
+  };
+
+  disclosure?.addEventListener('toggle', tryHydrate);
+  panel?.addEventListener('presentation:shown', tryHydrate);
+  return Promise.resolve();
 }
 
 export async function hydrateMapViews({ root, artifactLoader, resolver }) {
