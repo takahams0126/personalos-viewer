@@ -7,7 +7,7 @@
     display: flex;
     gap: var(--space-1);
     overflow-x: auto;
-    border-block-end: var(--border-thin) solid var(--line);
+    border-block-end: var(--border-width) solid var(--line);
     scrollbar-width: thin;
   }
 
@@ -16,7 +16,7 @@
     appearance: none;
     border: 0;
     border-block-end: 0.2rem solid transparent;
-    margin-block-end: calc(-1 * var(--border-thin));
+    margin-block-end: calc(-1 * var(--border-width));
     padding: var(--space-3) var(--space-4);
     background: transparent;
     color: var(--muted);
