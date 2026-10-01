@@ -91,10 +91,12 @@ Spot Hero Block
 ├─ decision facts
 └─ media
 
-ConcretePlan Day Workspace Block
-├─ 行動順
-├─ ルート詳細?
-└─ マップ?
+ConcretePlan Day Block
+├─ Execution Package Selector?
+└─ Day Workspace Block
+   ├─ 行動順
+   ├─ ルート詳細?
+   └─ マップ?
 ```
 
 Block membership is deterministic. Runtime code does not decide that two nodes belong together because they look similar.
@@ -148,11 +150,13 @@ The ConcretePlan Content Layout then presents the same group at different densit
 → normal Actions are shown
 → Route Execution Group is shown as one abstract Route block
 → internal Route Actions are hidden
+→ Route title interaction opens the local ルート詳細 view when that view exists
 
 ルート詳細
 → non-Route Actions are hidden
 → Route Execution Group is expanded
 → internal Route Actions are shown
+→ Route Entity link keeps the independent Route drill-down available
 
 マップ
 → explicit Map Artifact view
@@ -162,6 +166,33 @@ The ConcretePlan Content Layout then presents the same group at different densit
 
 The Route block may expose Route title, family/variant, endpoint context, time range or short Route summary according to the Content Layout's information-density decision. The semantic renderer supplies available meaning; the layout decides what is visible.
 
+## ConcretePlan execution packages
+
+A Concrete Day has one baseline execution package and may have zero or more explicit Variants.
+
+The Content Layout treats these as another deterministic presentation axis above the Day Workspace:
+
+```text
+Day
+└─ Execution Package Selector?
+   ├─ 標準
+   └─ 代替案 1..N
+        ↓ selected package
+   Day Workspace
+   ├─ 行動順
+   ├─ ルート詳細?   # only when explicit route grouping exists in that package
+   └─ マップ?       # only when an explicit map artifact exists
+```
+
+The two switchers represent different meanings:
+
+- Execution Package Selector = which explicit execution package is being previewed.
+- Day Workspace = how the selected package is being viewed.
+
+The selector is local presentation state only. It does not persist Variant adoption and does not mutate ConcretePlan Canonical.
+
+The runtime does not invent missing Route relations for a Variant. If a selected package exposes Actions and Map but no explicit Route grouping, the `ルート詳細` view is omitted for that package.
+
 ## Deterministic runtime rules
 
 Allowed inputs:
@@ -170,16 +201,18 @@ Allowed inputs:
 - explicit semantic role
 - explicit optional presence
 - explicit Route Action range
+- explicit baseline / Variant presence and order
 - declared responsive/container state
 - local interaction state
 
 Not allowed:
 
 - prose interpretation
-- text parsing to reconstruct semantics
+- text parsing to reconstruct Domain semantics
 - runtime scoring/ranking of layouts
 - LLM-like selection of timeline/grid/map
 - silent fallback to another Page Layout Definition
+- inventing Variant Route relations from Action similarity
 
 ## Registry relationship
 
@@ -205,10 +238,12 @@ Common Page Layout
    └─ Execution Days Block
       └─ Day Block
          ├─ Day Context
-         ├─ Day Workspace Block
-         │  ├─ 行動順        → execution-sequence / overview
-         │  ├─ ルート詳細    → execution-sequence / route-detail
-         │  └─ マップ        → map
+         ├─ Execution Package Selector?  → baseline / explicit Variants
+         ├─ selected Execution Package
+         │  └─ Day Workspace Block
+         │     ├─ 行動順        → execution-sequence / overview
+         │     ├─ ルート詳細    → execution-sequence / route-detail
+         │     └─ マップ        → map
          └─ Supporting Detail
 ```
 
