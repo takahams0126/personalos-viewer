@@ -53,6 +53,7 @@ const SMART_LAYOUT_SET = Object.freeze({
 export const PRESENTATION_PRESETS = Object.freeze({
   default: Object.freeze({
     id: 'default',
+    strategyId: 'semantic-baseline-v1',
     theme: Object.freeze({
       id: 'default',
       stylesheets: Object.freeze([
@@ -64,6 +65,7 @@ export const PRESENTATION_PRESETS = Object.freeze({
   }),
   smart: Object.freeze({
     id: 'smart',
+    strategyId: 'leisure-product-v1',
     theme: Object.freeze({
       id: 'smart',
       stylesheets: Object.freeze([
