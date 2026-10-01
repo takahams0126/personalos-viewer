@@ -24,7 +24,8 @@ const SMART_PATTERN_SET = Object.freeze({
   stylesheets: Object.freeze([
     ...DEFAULT_PATTERN_STYLESHEETS,
     new URL('../styles/patterns/smart/product.css', import.meta.url).href,
-    new URL('../styles/patterns/smart/workspace.css', import.meta.url).href
+    new URL('../styles/patterns/smart/workspace.css', import.meta.url).href,
+    new URL('../styles/patterns/smart/convergence.css', import.meta.url).href
   ])
 });
 
@@ -47,7 +48,8 @@ const SMART_LAYOUT_SET = Object.freeze({
   id: 'smart',
   stylesheets: Object.freeze([
     ...DEFAULT_LAYOUT_STYLESHEETS,
-    new URL('../styles/layouts/smart/product.css', import.meta.url).href
+    new URL('../styles/layouts/smart/product.css', import.meta.url).href,
+    new URL('../styles/layouts/smart/convergence.css', import.meta.url).href
   ])
 });
 
