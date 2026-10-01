@@ -1,4 +1,27 @@
 @layer patterns {
+  .viewer-product-shell {
+    border-block-end: var(--border-width) solid var(--line);
+    background: color-mix(in srgb, var(--surface-page) 94%, var(--surface));
+  }
+
+  .viewer-brand {
+    color: var(--text);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .viewer-brand:hover,
+  .viewer-brand:focus-visible {
+    color: var(--accent-strong);
+  }
+
+  .viewer-home-link[aria-current="page"] {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+  }
+
   /* Product convergence: ordinary execution facts are rows, not raised cards. */
   .action-body {
     border-color: transparent;
