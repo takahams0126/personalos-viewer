@@ -10,18 +10,30 @@ function panelFor(switcher, tab) {
 
 function activateTab(switcher, nextTab, { focus = false } = {}) {
   const tabs = tabsFor(switcher);
+  const sourceSemantic = nextTab.dataset.sourceSemantic;
+  const viewId = nextTab.dataset.viewId;
+  const viewMode = nextTab.dataset.viewMode;
+  const panel = panelFor(switcher, nextTab);
+
   for (const tab of tabs) {
     const selected = tab === nextTab;
     tab.setAttribute('aria-selected', selected ? 'true' : 'false');
     tab.tabIndex = selected ? 0 : -1;
+  }
 
-    const panel = panelFor(switcher, tab);
-    if (!panel) continue;
-    const wasHidden = panel.hidden;
-    panel.hidden = !selected;
-    if (selected && wasHidden) {
-      panel.dispatchEvent(new Event('presentation:shown'));
-    }
+  switcher.dataset.activeView = viewId || '';
+  switcher.dataset.activeMode = viewMode || '';
+
+  if (panel) {
+    panel.setAttribute('aria-labelledby', nextTab.id);
+    panel.querySelectorAll(':scope > [data-layout-source]').forEach(source => {
+      const selected = source.dataset.layoutSource === sourceSemantic;
+      const wasHidden = source.hidden;
+      source.hidden = !selected;
+      if (selected && wasHidden) {
+        source.dispatchEvent(new Event('presentation:shown'));
+      }
+    });
   }
 
   if (focus) nextTab.focus();
