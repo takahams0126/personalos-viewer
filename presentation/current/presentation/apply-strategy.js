@@ -76,43 +76,44 @@ function applyDayWorkspace(dayNode, dayStrategy) {
   workspace.dataset.presentationGrammar = workspaceStrategy.view;
   workspace.dataset.contentSwitcher = `day-${dayKey}`;
 
+  if (anchor) body.insertBefore(workspace, anchor);
+  else body.append(workspace);
+
   if (available.length === 1 && workspaceStrategy.singleViewMode === 'direct') {
     workspace.dataset.presentationMode = 'direct';
     workspace.append(available[0].node);
-  } else {
-    const tabList = document.createElement('div');
-    tabList.className = 'day-workspace-tabs';
-    tabList.setAttribute('role', 'tablist');
-    tabList.setAttribute('aria-label', `Day ${dayKey} 表示`);
-
-    const panels = document.createElement('div');
-    panels.className = 'day-workspace-panels';
-
-    for (const item of available) {
-      const selected = item.definition.id === defaultView.definition.id;
-      const tabId = `day-${dayKey}-${item.definition.id}-tab`;
-      const panelId = `day-${dayKey}-${item.definition.id}-panel`;
-      tabList.append(createTab({
-        id: tabId,
-        label: item.definition.label,
-        panelId,
-        selected
-      }));
-      panels.append(createPanel({
-        id: panelId,
-        tabId,
-        viewId: item.definition.id,
-        viewGrammar: item.definition.view,
-        selected,
-        node: item.node
-      }));
-    }
-
-    workspace.append(tabList, panels);
+    return;
   }
 
-  if (anchor) body.insertBefore(workspace, anchor);
-  else body.append(workspace);
+  const tabList = document.createElement('div');
+  tabList.className = 'day-workspace-tabs';
+  tabList.setAttribute('role', 'tablist');
+  tabList.setAttribute('aria-label', `Day ${dayKey} 表示`);
+
+  const panels = document.createElement('div');
+  panels.className = 'day-workspace-panels';
+
+  for (const item of available) {
+    const selected = item.definition.id === defaultView.definition.id;
+    const tabId = `day-${dayKey}-${item.definition.id}-tab`;
+    const panelId = `day-${dayKey}-${item.definition.id}-panel`;
+    tabList.append(createTab({
+      id: tabId,
+      label: item.definition.label,
+      panelId,
+      selected
+    }));
+    panels.append(createPanel({
+      id: panelId,
+      tabId,
+      viewId: item.definition.id,
+      viewGrammar: item.definition.view,
+      selected,
+      node: item.node
+    }));
+  }
+
+  workspace.append(tabList, panels);
 }
 
 function applyConcretePlanStrategy(root, surfaceStrategy) {
