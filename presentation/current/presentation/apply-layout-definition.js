@@ -16,6 +16,22 @@ function semanticIsAvailable(container, definition) {
   return Boolean(container.querySelector(`[data-semantic="${CSS.escape(availabilitySemantic)}"]`));
 }
 
+function nodeForBlock(root, definition) {
+  if (!definition) return null;
+  if (definition.sourceSemantic) {
+    return directChildBySemantic(root, definition.sourceSemantic)
+      || root.querySelector(`[data-semantic="${CSS.escape(definition.sourceSemantic)}"]`);
+  }
+  if (definition.sourceSelector) return root.querySelector(definition.sourceSelector);
+  return null;
+}
+
+function markBlock(node, definition) {
+  if (!node || !definition) return;
+  node.dataset.layoutBlock = definition.id;
+  node.dataset.layoutGrammar = definition.view;
+}
+
 function createTab({ id, definition, panelId, selected }) {
   const button = document.createElement('button');
   button.type = 'button';
@@ -273,6 +289,105 @@ function buildExecutionPackages(body, dayDefinition, dayKey) {
   return packagesContainer;
 }
 
+function applyTopContentLayout(root, contentLayout) {
+  for (const block of contentLayout.blocks || []) {
+    const node = nodeForBlock(root, block);
+    if (!node) continue;
+    markBlock(node, block);
+    if (block.id === 'results') {
+      const list = node.querySelector(':scope > .top-result-list');
+      if (list) {
+        list.dataset.layoutBlock = 'result-items';
+        list.dataset.layoutGrammar = block.view;
+      }
+    }
+  }
+}
+
+function applySpotContentLayout(root, contentLayout) {
+  const heroDefinition = blockById(contentLayout, 'hero');
+  const hero = nodeForBlock(root, heroDefinition);
+  if (hero) {
+    markBlock(hero, heroDefinition);
+    const primary = hero.querySelector(':scope > .spot-hero-copy');
+    const secondary = hero.querySelector(':scope > [data-semantic="image-carousel"]');
+    if (primary) primary.dataset.layoutSlot = 'primary';
+    if (secondary) secondary.dataset.layoutSlot = 'secondary';
+    hero.dataset.hasSecondary = secondary ? 'true' : 'false';
+  }
+
+  const appealDefinition = blockById(contentLayout, 'appeal-review');
+  const appeal = nodeForBlock(root, appealDefinition);
+  markBlock(appeal, appealDefinition);
+
+  const relatedDefinition = blockById(contentLayout, 'related-spots');
+  const related = nodeForBlock(root, relatedDefinition);
+  markBlock(related, relatedDefinition);
+
+  const supportingDefinition = blockById(contentLayout, 'supporting-information');
+  if (!supportingDefinition?.semantics?.length) return;
+  let supporting = directChildBySemantic(root, 'supporting-information');
+  if (!supporting) {
+    const details = supportingDefinition.semantics
+      .map(semantic => hero?.querySelector(`[data-semantic="${CSS.escape(semantic)}"]`) || null)
+      .filter(Boolean);
+    if (!details.length) return;
+
+    supporting = document.createElement('section');
+    supporting.className = 'spot-supporting-information';
+    supporting.dataset.semantic = 'supporting-information';
+    markBlock(supporting, supportingDefinition);
+    details.forEach(node => supporting.append(node));
+
+    if (related?.parentNode === root) root.insertBefore(supporting, related);
+    else root.append(supporting);
+  } else {
+    markBlock(supporting, supportingDefinition);
+  }
+}
+
+function applyRouteContentLayout(root, contentLayout) {
+  const identityDefinition = blockById(contentLayout, 'identity');
+  markBlock(nodeForBlock(root, identityDefinition), identityDefinition);
+
+  const appealDefinition = blockById(contentLayout, 'appeal');
+  markBlock(nodeForBlock(root, appealDefinition), appealDefinition);
+
+  const supportingDefinition = blockById(contentLayout, 'supporting-conditions');
+  markBlock(nodeForBlock(root, supportingDefinition), supportingDefinition);
+
+  const workspaceDefinition = blockById(contentLayout, 'route-workspace');
+  if (!workspaceDefinition?.slots) return;
+  let workspace = directChildBySemantic(root, 'route-workspace');
+  if (workspace) {
+    markBlock(workspace, workspaceDefinition);
+    return;
+  }
+
+  const primarySemantics = workspaceDefinition.slots.primary || [];
+  const secondarySemantics = workspaceDefinition.slots.secondary || [];
+  const allSemantics = [...primarySemantics, ...secondarySemantics];
+  const nodes = allSemantics
+    .map(semantic => ({ semantic, node: directChildBySemantic(root, semantic) }))
+    .filter(item => item.node);
+  if (!nodes.length) return;
+
+  workspace = document.createElement('section');
+  workspace.className = 'route-workspace';
+  workspace.dataset.semantic = 'route-workspace';
+  markBlock(workspace, workspaceDefinition);
+
+  const anchor = firstDirectChildForSemantics(root, allSemantics);
+  if (anchor) root.insertBefore(workspace, anchor);
+  else root.append(workspace);
+
+  for (const item of nodes) {
+    item.node.dataset.layoutSlot = primarySemantics.includes(item.semantic) ? 'primary' : 'secondary';
+    workspace.append(item.node);
+  }
+  workspace.dataset.singleSlot = nodes.length === 1 ? 'true' : 'false';
+}
+
 function selectedRouteTitle(routeNode, detailDefinition) {
   const detail = routeNode.querySelector(`[data-semantic="${CSS.escape(detailDefinition.detailSemantic)}"]`);
   const heading = detail?.querySelector(':scope > h4');
@@ -379,6 +494,9 @@ function applyConcretePlanContentLayout(root, contentLayout) {
 }
 
 const CONTENT_LAYOUT_APPLIERS = Object.freeze({
+  top: applyTopContentLayout,
+  spot: applySpotContentLayout,
+  route: applyRouteContentLayout,
   plan: applyPlanContentLayout,
   concrete_plan: applyConcretePlanContentLayout
 });
