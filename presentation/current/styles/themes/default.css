@@ -27,6 +27,7 @@
     --tracking-label-wide: 0.05em;
     --tracking-kicker: 0.08em;
 
+    --surface-page: Canvas;
     --surface: Canvas;
     --surface-faint: color-mix(in srgb, CanvasText 2%, Canvas);
     --surface-subtle: color-mix(in srgb, CanvasText 2.5%, Canvas);
