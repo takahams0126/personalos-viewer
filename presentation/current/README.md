@@ -6,7 +6,7 @@ Current Viewer is rebuilt directly from the published HTML Boundary JSON.
 
 Technical validation is **CLOSED**. Primary pages, graph drill-down, Plan ↔ ConcretePlan navigation, explicit Map Artifact rendering, and Viewer-wide Presentation Preset composition are implemented.
 
-Current work is now **architecture stabilization + presentation convergence**, not another feasibility phase.
+Current work is now **Page Layout Definition + product presentation convergence**, not another feasibility phase.
 
 Root production routing still points to `presentation/modern/` until the Current promotion gate is explicitly closed.
 
@@ -56,6 +56,7 @@ TOP → Plan → Route → Spot
 - fetch only explicit referenced entities/artifacts
 - cache same-runtime JSON/entity loads
 - render semantic DOM; do not persist an intermediate ViewModel / derived JSON layer
+- apply an explicit Page Layout Definition after Semantic DOM creation; do not infer display structure from prose
 - do not depend on `../modern/` or `../legacy/`
 - render Map Artifact coordinates/geometry directly; never call Places or Routes from Viewer
 - do not repair missing Domain semantics in presentation code
@@ -73,6 +74,8 @@ presentation/current/
 │  └─ Viewer-level shell structure
 ├─ presentation/**
 │  ├─ registry.js
+│  ├─ layout-definition-registry.js
+│  ├─ apply-layout-definition.js
 │  └─ bootstrap.js
 ├─ interaction/**
 │  └─ local UI behavior
@@ -86,7 +89,40 @@ presentation/current/
    └─ layouts/<layout-set-id>/**
 ```
 
-Shared renderer components are transient DOM helpers, not a new ViewModel layer. They may render already-resolved semantic input but must not fetch entities, inspect relations, infer Domain meaning, or choose the active Preset.
+Shared renderer components are transient DOM helpers, not a new ViewModel layer. They may render already-resolved semantic input but must not fetch arbitrary entities, inspect unrelated relations, infer Domain meaning, or choose the active Preset.
+
+## Page Layout Definition
+
+`PAGE_LAYOUT_DEFINITION.md` defines the deterministic layer between Semantic DOM and concrete visual implementation.
+
+```text
+Semantic DOM
+    ↓
+Page Layout Definition
+├─ Common Page Layout
+└─ Content Layout Definition
+   └─ Block Definitions
+    ↓
+Presentation Implementation
+├─ Theme
+├─ Pattern Set
+├─ Layout Set / CSS
+└─ Interaction
+```
+
+### Common Page Layout
+
+Defines the Viewer-wide page frame and common slots, such as App / navigation shell, title area, and content area.
+
+### Content Layout Definition
+
+Defines the content area per surface (`top`, `spot`, `route`, `plan`, `concrete_plan`). It determines Block grouping, order, information density, view grammar, responsive reflow, and local presentation interaction using explicit semantic roles only.
+
+### Block Definition
+
+Binds known Semantic DOM roles into user-facing presentation units. Block membership is not inferred from prose or visual similarity.
+
+ConcretePlan is the first reference implementation: an explicit Route Action range becomes one `route-execution-group` in Semantic DOM; `行動順` shows that group abstractly while `ルート詳細` expands the same group and shows its internal Actions.
 
 ## Presentation Preset system
 
@@ -99,6 +135,7 @@ config.js
 presentation/registry.js
           ↓
 active preset
+  ├─ Page Layout Definition
   ├─ Theme
   ├─ Pattern Set
   └─ Layout Set
@@ -106,20 +143,33 @@ active preset
 TOP / Spot / Route / Plan / ConcretePlan
 ```
 
-An explicitly unknown preset is an error; it does not silently fall back to `default`.
-Theme / Pattern Set / Layout Set are independently reusable resources.
+An explicitly unknown preset or Page Layout Definition is an error; neither silently falls back to another definition.
+Theme / Pattern Set / Layout Set are independently reusable implementation resources.
 
 Default:
 
 ```text
-theme      = default
-patternSet = default
-layoutSet  = default
+pageLayoutDefinition = semantic-baseline-page-v1
+theme                = default
+patternSet           = default
+layoutSet            = default
+```
+
+Smart:
+
+```text
+pageLayoutDefinition = leisure-page-layout-v1
+theme                = smart
+patternSet           = smart
+layoutSet            = smart
 ```
 
 ### Ownership
 
 ```text
+Page Layout Definition
+→ common page frame + surface Content Layout + Block composition + information density / view grammar
+
 Foundation
 → preset-independent atomic scales only
 
@@ -130,11 +180,16 @@ Pattern Set
 → reusable visual grammar / component treatment / component density
 
 Layout Set
-→ page measure / composition / placement / responsive reflow
+→ concrete CSS measure / placement / grid / flex / responsive reflow
 
 Primitive
 → generic HTML / control baseline shared by presets
+
+Interaction
+→ local UI state and accessible behavior declared by the layout
 ```
+
+`Page Layout Definition` and CSS `Layout Set` are intentionally different: the former defines how meaning is composed for a page; the latter implements spatial styling.
 
 Do not move `page measure / control density / component gap / motion personality` into Foundation merely because Default currently shares a value. Those are allowed to differ materially between future presets.
 
@@ -158,7 +213,7 @@ styles/patterns/default/content.css    Default component/content grammar + densi
 styles/patterns/default/map.css        Default Map pattern
 styles/patterns/default/carousel.css   Default Carousel pattern
 styles/layouts/default/settings.css    Default page/detail/explorer measures
-styles/layouts/default/*.css           Default page compositions / reflow
+styles/layouts/default/*.css           Default spatial compositions / reflow
 ```
 
 Technical-validation CSS still contains migration debt. Convergence classifies it into the formal ownership model instead of treating page CSS as a hidden second Theme.
@@ -169,11 +224,14 @@ The next reusable extraction boundary is not “all similar CSS”. It is:
 repeated semantic DOM grammar
 → shared renderer component, only when real repetition exists
 
+same user-facing semantic grouping
+→ Block Definition
+
 same grammar visual treatment
 → Pattern
 
 page placement / measure / reflow
-→ Layout
+→ Layout Set / CSS
 
 skin role
 → Theme
@@ -232,6 +290,7 @@ Modern / `_prototype/poc/**` are evidence only. Do not import their data path or
 Native semantic HTML and small adapters remain the default. Add a third-party component library only when a concrete interaction/accessibility cost justifies the dependency.
 
 Before Current promotion, finish at least:
+- content-switcher semantics / keyboard / focus behavior
 - carousel semantics / keyboard / focus behavior
 - touch/responsive behavior
 - Map marker/popup accessibility
@@ -246,12 +305,11 @@ Repository-level physical architecture is in `../../VIEWER_ARCHITECTURE.md`.
 ## Next phase
 
 ```text
-1. architecture/documentation stabilization
-2. Default Presentation convergence
-3. shared semantic presentation grammar extraction where repetition proves it
-4. Map modernization / interaction finalization
-5. accessibility finishing
-6. additional Preset such as design2 using Modern / Legacy as evidence
-7. minimum usable Current review
-8. explicit root promotion: modern → current
+1. validate Page Layout Definition with ConcretePlan reference implementation
+2. converge Plan / Route / Spot Content Layouts and Blocks
+3. finish Smart implementation against the accepted layout skeleton
+4. Map / Weather rich presentation finishing
+5. accessibility / carousel / interaction finishing
+6. cross-surface minimum usable Current review
+7. explicit root promotion: modern → current
 ```

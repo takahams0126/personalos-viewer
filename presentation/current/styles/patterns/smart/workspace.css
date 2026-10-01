@@ -40,25 +40,76 @@
     outline-offset: -0.18rem;
   }
 
-  .day-workspace-panels {
+  .day-workspace-panel {
     padding-block-start: var(--space-4);
   }
 
-  .day-workspace-panel[hidden] {
+  .day-workspace-panel > [hidden] {
     display: none;
   }
 
-  .day-workspace-panel > .day-execution,
-  .day-workspace-panel > .day-routes,
-  .day-workspace-panel > .map-semantic-preview,
-  .day-workspace[data-presentation-mode="direct"] > .day-execution,
-  .day-workspace[data-presentation-mode="direct"] > .day-routes,
-  .day-workspace[data-presentation-mode="direct"] > .map-semantic-preview {
+  .day-workspace-panel > [data-layout-source],
+  .day-workspace[data-presentation-mode="direct"] > [data-layout-source] {
     margin-block: 0;
   }
 
-  .day-workspace-panel > .day-execution > h3 {
-    margin-block-start: 0;
+  .day-workspace:not([data-presentation-mode="direct"]) .execution-sequence-title {
+    display: none;
+  }
+
+  .route-execution-time-axis {
+    display: none;
+  }
+
+  .route-execution-label {
+    margin-block: 0 var(--space-1);
+    color: var(--accent-strong);
+    font-size: var(--font-size-meta);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .route-execution-identity,
+  .route-execution-endpoints,
+  .route-execution-description,
+  .route-execution-action-range {
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .route-execution-actions {
+    margin-block-start: var(--space-4);
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions,
+  .day-workspace[data-active-view="actions"] .route-execution-description,
+  .day-workspace[data-active-view="actions"] .route-execution-action-range {
+    display: none;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-body {
+    border-inline-start: var(--border-width-strong) solid var(--accent);
+    background: var(--surface-soft);
+  }
+
+  .day-workspace[data-active-view="route"] .execution-sequence > .execution-action:not(.route-execution-group),
+  .day-workspace[data-active-view="route"] .route-execution-exit {
+    display: none;
+  }
+
+  .day-workspace[data-active-view="route"] .route-execution-group {
+    padding-inline-start: 0;
+  }
+
+  .day-workspace[data-active-view="route"] .route-execution-group::before,
+  .day-workspace[data-active-view="route"] .route-execution-group::after {
+    display: none;
+  }
+
+  .day-workspace[data-active-view="route"] .route-execution-body {
+    grid-column: 1 / -1;
+    margin-block-end: var(--space-6);
   }
 
   @media (max-width: 38rem) {

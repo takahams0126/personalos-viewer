@@ -156,17 +156,17 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
 
 function hydrateWhenUsable(view, context) {
   const disclosure = view.closest('details');
-  const panel = view.closest('[role="tabpanel"]');
+  const layoutSource = view.closest('[data-layout-source]');
 
   const isUsable = () =>
     (!disclosure || disclosure.open) &&
-    (!panel || !panel.hidden);
+    (!layoutSource || !layoutSource.hidden);
 
   if (isUsable()) return hydrateMapView(view, context);
 
   const cleanup = () => {
     disclosure?.removeEventListener('toggle', tryHydrate);
-    panel?.removeEventListener('presentation:shown', tryHydrate);
+    layoutSource?.removeEventListener('presentation:shown', tryHydrate);
   };
 
   const tryHydrate = () => {
@@ -176,7 +176,7 @@ function hydrateWhenUsable(view, context) {
   };
 
   disclosure?.addEventListener('toggle', tryHydrate);
-  panel?.addEventListener('presentation:shown', tryHydrate);
+  layoutSource?.addEventListener('presentation:shown', tryHydrate);
   return Promise.resolve();
 }
 

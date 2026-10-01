@@ -6,29 +6,29 @@ Preset id: `smart`
 
 ## Current implementation status
 
-The Smart implementation now exists on `work/smart-presentation-design` without any Semantic Renderer or Public Boundary change.
+Smart is the active Current Viewer product presentation on `main`. The current review branch `work/page-layout-route-grouping` is refining the product skeleton without changing Canonical or Public Boundary semantics.
 
 Current composition:
 
 ```text
 smart
-├─ theme      = smart
-├─ patternSet = smart
-└─ layoutSet  = smart
+├─ pageLayoutDefinition = leisure-page-layout-v1
+├─ theme                = smart
+├─ patternSet           = smart
+└─ layoutSet            = smart
 ```
 
-The Smart Pattern and Layout sets intentionally reuse the proven Default baseline resources and add explicit Smart-owned resources after them. This is registry composition, not runtime fallback.
+The Smart Pattern and Layout sets intentionally reuse proven Default baseline resources where the implementation is explicitly identical. This is registry composition, not runtime fallback.
 
 Implemented so far:
 
 - Smart Theme with product color / typography / surface / radius / shadow roles
 - distinct page surface vs component surface roles
 - Smart product Pattern treatment across navigation, entity surfaces, Day, route, timeline, Weather / Fuel attention, and controls
-- Smart Layout composition for page measure, readable content width, and responsive spacing
-- branch-local `config.js` activation through `presentationPreset: 'smart'`
-- TOP / Spot / Route skin and component-treatment declarations moved out of Layout ownership into Pattern ownership while retaining the same Default presentation semantics
-
-Main is intentionally unchanged until explicit approval.
+- Smart Layout CSS for page measure, readable content width, and responsive spacing
+- deterministic Page Layout Definition between Semantic DOM and visual implementation
+- ConcretePlan Day Workspace with `行動順 / ルート詳細 / マップ`
+- explicit Route Action ranges represented as semantic Route Execution Groups
 
 ## Purpose
 
@@ -60,32 +60,55 @@ Design keywords:
 
 Smart should feel like a travel product, not a rendered document and not an administration dashboard.
 
+## Product layout model
+
+The product skeleton is not inferred by CSS or runtime heuristics.
+
+```text
+Semantic DOM
+    ↓
+Page Layout Definition
+├─ Common Page Layout
+└─ Content Layout Definition
+   └─ Block Definitions
+    ↓
+Smart implementation
+├─ Theme
+├─ Pattern Set
+├─ Layout Set / CSS
+└─ Interaction
+```
+
+`Page Layout Definition` owns how semantic meaning is grouped and composed for a user. CSS `Layout Set` owns concrete spatial implementation. They are intentionally distinct.
+
 ## Design principles
 
 ### 1. Journey-first hierarchy
 
 The trip flow is the primary reading axis.
 
-Day, time, place, movement, action, and next-step relationships must be visually stronger than explanatory metadata.
+Day, time, place, movement, action, Route execution, and next-step relationships must be visually stronger than explanatory metadata.
 
-For execution pages, the user should be able to scan the timeline without reading every sentence.
+For execution pages, the user should be able to scan the day without reading every sentence or every Route-internal checkpoint.
 
 ### 2. High information density without visual noise
 
 Use compact grouping, clear typographic hierarchy, and stable spacing instead of large empty areas or repeated borders.
 
-Secondary facts should remain available but should not compete with the primary journey flow.
+Secondary facts remain available but do not compete with the primary journey flow.
 
-### 3. Calm surfaces with explicit hierarchy
+### 3. Block strength follows meaning
 
-Use a small number of surface levels:
+Do not equate every semantic node with a raised card.
 
-- page background
-- primary section / Day surface
-- nested action / fact surface
-- attention surface
+Use a small set of surface strengths:
 
-Borders and shadows should be subtle and communicate hierarchy, not decoration.
+- page canvas
+- ordinary section / row
+- independent or interactive Block
+- attention Block
+
+Nested card-on-card composition is exceptional, not the default.
 
 ### 4. Semantic color discipline
 
@@ -99,19 +122,32 @@ Examples:
 - warning / attention state
 - weather or contextual status where useful
 
-Do not color every card or semantic type merely to make the screen more vivid.
+Do not color every block or semantic type merely to make the screen more vivid.
 
-### 5. Timeline is the primary execution grammar
+### 5. Execution overview and Route detail have different density
 
-ConcretePlan execution must read as a continuous vertical journey with time, node, connector, body, and next movement clearly associated.
+ConcretePlan uses the same semantic execution structure at different display densities.
 
-Legacy's strong scanability is useful evidence, but Smart must implement this through Current's existing Semantic DOM and Pattern / Layout layers.
+```text
+行動順
+→ normal Action sequence
+→ Route internal Action range becomes one abstract Route Block
+
+ルート詳細
+→ the same Route Block expands
+→ Route-internal Actions are visible
+
+マップ
+→ explicit Map Artifact
+```
+
+Route internal Actions are not duplicated into another persistent model.
 
 ### 6. Progressive disclosure for deep information
 
-The first view should expose what is needed to understand the day or entity.
+The first view exposes what is needed to understand the day or entity.
 
-Details such as supporting facts, constraints, route internals, weather detail, Todo detail, and supplemental explanation should remain easy to reach without making the default view visually flat or excessively long.
+Supporting facts, constraints, Route internals, weather detail, Todo detail, and supplemental explanation remain easy to reach without making the default view excessively long.
 
 ### 7. Maps and imagery are contextual anchors
 
@@ -123,7 +159,7 @@ Route / ConcretePlan maps and Spot imagery should feel integrated into the same 
 
 ### 8. Actions must look actionable
 
-Links, selectors, map actions, route choices, disclosure controls, and navigation must be visually distinguishable from passive facts.
+Links, selectors, map actions, Route choices, disclosure controls, view switchers, and navigation must be visually distinguishable from passive facts.
 
 The user should not need to infer whether text is clickable.
 
@@ -131,29 +167,30 @@ The user should not need to infer whether text is clickable.
 
 Mobile is not a reduced semantic version.
 
-The same information hierarchy must survive narrow layouts by reflowing columns, collapsing secondary detail, and preserving timeline continuity.
+The same hierarchy survives narrow layouts by reflowing columns, reducing secondary density, and preserving journey continuity.
 
 ### 10. Presentation ownership must reach 100%
 
 Smart completion includes full owner-correct separation.
 
+- Semantic Renderer owns Semantic Structure.
+- Page Layout Definition owns Common Page / Content Layout / Block composition and information density.
 - Theme owns color, typography roles, radius, shadow, surface values.
-- Pattern owns reusable presentation grammar and component treatment.
-- Layout owns measure, placement, grid / flex composition, and responsive reflow.
+- Pattern owns reusable visual grammar and component treatment.
+- Layout Set / CSS owns concrete measure, placement, grid / flex composition, and responsive reflow.
 - Primitive owns generic HTML / control presentation.
 - Foundation owns only preset-independent atomic scales.
-- Renderer owns Semantic Structure.
-- Interaction owns behavior.
+- Interaction owns local behavior and accessibility interaction state.
 
-A Smart implementation is incomplete while visual declarations remain under the wrong owner merely because they existed in older page-local CSS.
+A Smart implementation is incomplete while responsibilities remain under the wrong owner merely because they existed in older page-local code.
 
 ## Evidence to retain from Legacy
 
 Retain as design evidence, not code:
 
-- strong Day-card identity
+- strong Day identity
 - vertical journey / flow scanability
-- clear visual distinction between movement, route, place, and activity
+- clear distinction between movement, route, place, and activity
 - compact fact blocks
 - large integrated map surface
 - travel-oriented, destination-facing feel
@@ -170,14 +207,14 @@ Do not retain:
 
 Retain as design evidence, not authority:
 
-- restrained reusable card surface
+- restrained reusable surfaces
 - responsive fact grids
 - collapsible sections
 - clear focus / hover states
 - cleaner spacing and typography hierarchy
 - map popup and mobile interaction evidence
 
-Do not copy Modern components mechanically when Current Semantic DOM already expresses the correct grammar.
+Do not copy Modern components mechanically when Current Semantic DOM already expresses the correct meaning.
 
 ## Current baseline relationship
 
@@ -185,18 +222,7 @@ Do not copy Modern components mechanically when Current Semantic DOM already exp
 
 `smart` is the primary product presentation.
 
-Both must consume the same Current Semantic DOM.
-
-Expected registry composition:
-
-```text
-smart
-├─ theme      = smart
-├─ patternSet = smart
-└─ layoutSet  = smart
-```
-
-Reuse of a Default resource is allowed only when it is intentionally presentation-neutral or explicitly demonstrated to be identical. It must not be used as silent fallback.
+Both consume the same Current Public Boundary and Domain semantics. The active Page Layout Definition may compose the Semantic DOM for presentation without creating new Domain facts or persistent ViewModels.
 
 ## Acceptance criteria
 
@@ -204,32 +230,33 @@ Smart is complete only when all of the following are true:
 
 1. `config.js` can switch the whole Viewer with only `presentationPreset: 'smart'`.
 2. TOP / Spot / Route / Plan / ConcretePlan all use the same Smart preset.
-3. Semantic Renderer code contains no `smart`, Theme, or design-specific branching.
-4. Smart and Default consume the same Semantic DOM and Public Boundary.
-5. Theme contains no page / Domain selectors.
-6. Layout contains no skin ownership such as design-specific color, font family, radius, or shadow values.
-7. Pattern does not own page-level measure or global spatial composition.
-8. Foundation contains no Smart- or Default-specific design decisions.
-9. No Default-specific visual behavior leaks into Smart unintentionally, and vice versa.
-10. Desktop and mobile both preserve the same semantic hierarchy.
-11. The primary journey can be scanned without reading all supporting prose.
-12. Major controls are visibly actionable and keyboard / focus behavior remains coherent.
-13. No Legacy / Modern runtime or DOM dependency is introduced.
+3. Runtime display composition is resolved from an explicit Page Layout Definition, not prose inference.
+4. Semantic Renderer contains no Smart/Theme-specific branching.
+5. Page Layout Definition creates no new Domain fact and uses only explicit semantic roles / relations.
+6. Theme contains no page / Domain selectors.
+7. Layout CSS contains no skin ownership such as design-specific color, font family, radius, or shadow values.
+8. Pattern does not own page-level measure or global spatial composition.
+9. Foundation contains no Smart- or Default-specific design decisions.
+10. No Default-specific visual behavior leaks into Smart unintentionally, and vice versa.
+11. Desktop and mobile preserve the same semantic hierarchy.
+12. The primary journey can be scanned without reading Route-internal Actions or all supporting prose.
+13. Major controls are visibly actionable and keyboard / focus behavior remains coherent.
+14. No Legacy / Modern runtime or DOM dependency is introduced.
 
-## Initial implementation order
+## Current implementation order
 
-1. Smart Theme: color / typography / surface / radius / shadow language.
-2. Smart Pattern Set: section, fact, Day, flow, action, control, map, image presentation grammar.
-3. Smart Layout Set: page measure, Day composition, timeline geometry, responsive reflow.
-4. Cross-surface review: TOP → Plan → ConcretePlan → Route → Spot.
-5. Ownership audit: move every discovered visual declaration to the correct owner until the 100% criteria are satisfied.
-6. Interaction finishing: map popup, carousel / lightbox, keyboard / focus / touch.
-7. Final product review and, only after explicit approval, active-preset / root promotion.
+1. Validate Page Layout Definition with ConcretePlan as the reference page.
+2. Converge Plan / Route / Spot Content Layouts and Block definitions.
+3. Finish Smart Pattern / Layout implementation against the accepted skeleton.
+4. Complete ownership audit to 100%.
+5. Weather and Map rich presentation finishing.
+6. Carousel / lightbox / keyboard / focus / touch finishing.
+7. Final product review and, only after explicit approval, root promotion.
 
 ## Non-goals
 
-- changing Canonical or Public Boundary
-- changing the meaning or information order solely to fit a visual style
+- changing Canonical or Public Boundary merely to fit a visual style
+- inventing Domain meaning in Page Layout or CSS
 - creating a generic component for every visually similar block
 - copying Legacy or Modern implementation structure
 - adding a UI framework only for styling convenience
