@@ -57,6 +57,10 @@
     display: none;
   }
 
+  .route-execution-time-axis {
+    display: none;
+  }
+
   .route-execution-label {
     margin-block: 0 var(--space-1);
     color: var(--accent-strong);
@@ -99,8 +103,7 @@
   }
 
   .day-workspace[data-active-view="route"] .route-execution-group::before,
-  .day-workspace[data-active-view="route"] .route-execution-group::after,
-  .day-workspace[data-active-view="route"] .route-execution-time-axis {
+  .day-workspace[data-active-view="route"] .route-execution-group::after {
     display: none;
   }
 
