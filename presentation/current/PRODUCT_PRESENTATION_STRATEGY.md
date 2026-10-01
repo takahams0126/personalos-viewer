@@ -1,6 +1,6 @@
 # Product Presentation Strategy
 
-Status: design-review
+Status: implementation-review
 Scope: Current Leisure Viewer presentation
 
 ## Purpose
@@ -448,6 +448,22 @@ supporting note?                          confidence/state?
 ```
 
 Total / priced amount is visually stronger than individual rows.
+
+## Reference implementation
+
+The first implementation target is ConcretePlan Day Workspace.
+
+The Semantic Renderer remains unchanged. After Semantic DOM creation, a deterministic strategy applier uses only explicit semantic roles to compose the workspace:
+
+```text
+actual-actions    → 行動順 / timeline
+route-relations   → ルート詳細
+map               → マップ
+```
+
+The applier does not inspect prose or visual similarity. Required semantic absence is an error; optional absence removes only that declared view. The default view is the declared `actions` view.
+
+The content-switcher interaction is local presentation state. It does not write to Canonical or Public Entity data. Map hydration waits until both the Day disclosure and the Map panel are actually visible so hidden-panel initialization does not become a presentation dependency.
 
 ## Strategy vs implementation boundary
 
