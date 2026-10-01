@@ -33,7 +33,7 @@ function startTime(label) {
 }
 
 function matrixRow(label, periods, selector, className = '') {
-  const row = document.createElement('div');
+  const row = document.createElement('span');
   row.className = ['weather-matrix-row', className].filter(Boolean).join(' ');
 
   const heading = document.createElement('span');
@@ -60,6 +60,7 @@ function buildHourlyMatrix(weatherDay) {
   const wrapper = document.createElement('section');
   wrapper.className = 'hourly-weather';
   wrapper.dataset.semantic = 'hourly-weather-presentation';
+  wrapper.style.setProperty('--weather-period-count', String(periods.length));
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
@@ -70,7 +71,7 @@ function buildHourlyMatrix(weatherDay) {
   title.className = 'hourly-weather-toggle-label';
   title.textContent = '3時間ごとの天気';
 
-  const preview = document.createElement('div');
+  const preview = document.createElement('span');
   preview.className = 'weather-matrix weather-matrix-preview';
   preview.append(
     matrixRow('', periods, period => startTime(period.time_label), 'weather-matrix-time-row'),
