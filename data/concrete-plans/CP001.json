@@ -317,8 +317,8 @@
             "duration_label": "30分",
             "distance_label": "22.4km"
           },
-          "arrival_label": "05:05",
-          "departure_label": "05:05"
+          "arrival_label": "04:15",
+          "departure_label": "04:15"
         },
         {
           "order": 2,
@@ -334,8 +334,8 @@
               "instruction": "荒川登山バスへ乗り換える"
             }
           ],
-          "arrival_label": "05:35",
-          "departure_label": "05:35",
+          "arrival_label": "04:45",
+          "departure_label": "04:45",
           "facility_executions": [
             {
               "facility_key": "parking",
@@ -362,19 +362,19 @@
             "service": {
               "operator": "荒川登山バス",
               "route_name": "屋久杉自然館前→荒川登山口",
-              "depart_label": "05:40",
-              "arrive_label": "06:15"
+              "depart_label": "05:00",
+              "arrive_label": "05:35"
             },
-            "depart_label": "05:40",
-            "arrive_label": "06:15",
-            "connection_margin_label": "余裕 4分",
+            "depart_label": "05:00",
+            "arrive_label": "05:35",
+            "connection_margin_label": "余裕 14分",
             "connection_state": {
               "code": "critical",
               "label": "余裕小"
             }
           },
-          "arrival_label": "05:35",
-          "departure_label": "05:35",
+          "arrival_label": "04:45",
+          "departure_label": "04:45",
           "facility_executions": [
             {
               "facility_key": "parking",
@@ -393,8 +393,8 @@
             "entity_type": "travel_point",
             "id": "T0010"
           },
-          "arrival_label": "06:15",
-          "departure_label": "06:15"
+          "arrival_label": "05:35",
+          "departure_label": "05:35"
         },
         {
           "order": 5,
@@ -402,8 +402,8 @@
             "entity_type": "travel_point",
             "id": "T0010"
           },
-          "arrival_label": "06:15",
-          "departure_label": "06:15"
+          "arrival_label": "05:35",
+          "departure_label": "05:35"
         },
         {
           "order": 6,
@@ -411,8 +411,8 @@
             "kind": "route_local",
             "label": "橋"
           },
-          "arrival_label": "06:40",
-          "departure_label": "06:40"
+          "arrival_label": "06:00",
+          "departure_label": "06:00"
         },
         {
           "order": 7,
@@ -420,8 +420,8 @@
             "entity_type": "spot",
             "id": "S0019"
           },
-          "arrival_label": "07:05",
-          "departure_label": "07:05"
+          "arrival_label": "06:25",
+          "departure_label": "06:25"
         },
         {
           "order": 8,
@@ -429,8 +429,8 @@
             "kind": "route_local",
             "label": "楠川分れ"
           },
-          "arrival_label": "07:55",
-          "departure_label": "07:55"
+          "arrival_label": "07:15",
+          "departure_label": "07:15"
         },
         {
           "order": 9,
@@ -438,8 +438,8 @@
             "kind": "route_local",
             "label": "分岐"
           },
-          "arrival_label": "08:10",
-          "departure_label": "08:10"
+          "arrival_label": "07:30",
+          "departure_label": "07:30"
         },
         {
           "order": 10,
@@ -447,8 +447,8 @@
             "kind": "route_local",
             "label": "分岐"
           },
-          "arrival_label": "08:13",
-          "departure_label": "08:13"
+          "arrival_label": "07:33",
+          "departure_label": "07:33"
         },
         {
           "order": 11,
@@ -456,8 +456,8 @@
             "kind": "route_local",
             "label": "仁王杉"
           },
-          "arrival_label": "09:03",
-          "departure_label": "09:03"
+          "arrival_label": "08:23",
+          "departure_label": "08:23"
         },
         {
           "order": 12,
@@ -465,8 +465,8 @@
             "kind": "route_local",
             "label": "大株歩道入口"
           },
-          "arrival_label": "09:33",
-          "departure_label": "09:33"
+          "arrival_label": "08:53",
+          "departure_label": "08:53"
         },
         {
           "order": 13,
@@ -474,8 +474,8 @@
             "kind": "route_local",
             "label": "トロッコ道終点トイレ"
           },
-          "arrival_label": "09:35",
-          "departure_label": "09:35"
+          "arrival_label": "08:55",
+          "departure_label": "08:55"
         },
         {
           "order": 14,
@@ -483,8 +483,8 @@
             "kind": "route_local",
             "label": "大株歩道入口"
           },
-          "arrival_label": "09:37",
-          "departure_label": "09:37"
+          "arrival_label": "08:57",
+          "departure_label": "08:57"
         },
         {
           "order": 15,
@@ -493,8 +493,8 @@
             "id": "S0017"
           },
           "stay_label": "20分",
-          "arrival_label": "10:02",
-          "departure_label": "10:22"
+          "arrival_label": "09:22",
+          "departure_label": "09:42"
         },
         {
           "order": 16,
@@ -502,8 +502,8 @@
             "kind": "route_local",
             "label": "水場"
           },
-          "arrival_label": "11:12",
-          "departure_label": "11:12"
+          "arrival_label": "10:32",
+          "departure_label": "10:32"
         },
         {
           "order": 17,
@@ -511,8 +511,8 @@
             "entity_type": "spot",
             "id": "S0020"
           },
-          "arrival_label": "11:20",
-          "departure_label": "11:20"
+          "arrival_label": "10:40",
+          "departure_label": "10:40"
         },
         {
           "order": 18,
@@ -521,8 +521,8 @@
             "id": "S0016"
           },
           "stay_label": "45分",
-          "arrival_label": "12:05",
-          "departure_label": "12:50"
+          "arrival_label": "11:25",
+          "departure_label": "12:10"
         },
         {
           "order": 19,
@@ -530,8 +530,8 @@
             "entity_type": "spot",
             "id": "S0020"
           },
-          "arrival_label": "13:30",
-          "departure_label": "13:30"
+          "arrival_label": "12:50",
+          "departure_label": "12:50"
         },
         {
           "order": 20,
@@ -539,8 +539,8 @@
             "kind": "route_local",
             "label": "水場"
           },
-          "arrival_label": "13:36",
-          "departure_label": "13:36"
+          "arrival_label": "12:56",
+          "departure_label": "12:56"
         },
         {
           "order": 21,
@@ -549,8 +549,8 @@
             "id": "S0017"
           },
           "stay_label": "0分",
-          "arrival_label": "14:21",
-          "departure_label": "14:21"
+          "arrival_label": "13:41",
+          "departure_label": "13:41"
         },
         {
           "order": 22,
@@ -558,8 +558,8 @@
             "kind": "route_local",
             "label": "大株歩道入口"
           },
-          "arrival_label": "14:41",
-          "departure_label": "14:41"
+          "arrival_label": "14:01",
+          "departure_label": "14:01"
         },
         {
           "order": 23,
@@ -567,8 +567,8 @@
             "kind": "route_local",
             "label": "トロッコ道終点トイレ"
           },
-          "arrival_label": "14:43",
-          "departure_label": "14:43"
+          "arrival_label": "14:03",
+          "departure_label": "14:03"
         },
         {
           "order": 24,
@@ -576,8 +576,8 @@
             "kind": "route_local",
             "label": "大株歩道入口"
           },
-          "arrival_label": "14:45",
-          "departure_label": "14:45"
+          "arrival_label": "14:05",
+          "departure_label": "14:05"
         },
         {
           "order": 25,
@@ -585,8 +585,8 @@
             "kind": "route_local",
             "label": "仁王杉"
           },
-          "arrival_label": "15:10",
-          "departure_label": "15:10"
+          "arrival_label": "14:30",
+          "departure_label": "14:30"
         },
         {
           "order": 26,
@@ -594,8 +594,8 @@
             "kind": "route_local",
             "label": "分岐"
           },
-          "arrival_label": "15:55",
-          "departure_label": "15:55"
+          "arrival_label": "15:15",
+          "departure_label": "15:15"
         },
         {
           "order": 27,
@@ -603,8 +603,8 @@
             "kind": "route_local",
             "label": "分岐"
           },
-          "arrival_label": "15:58",
-          "departure_label": "15:58"
+          "arrival_label": "15:18",
+          "departure_label": "15:18"
         },
         {
           "order": 28,
@@ -612,8 +612,8 @@
             "kind": "route_local",
             "label": "楠川分れ"
           },
-          "arrival_label": "16:13",
-          "departure_label": "16:13"
+          "arrival_label": "15:33",
+          "departure_label": "15:33"
         },
         {
           "order": 29,
@@ -621,8 +621,8 @@
             "entity_type": "spot",
             "id": "S0019"
           },
-          "arrival_label": "17:01",
-          "departure_label": "17:01"
+          "arrival_label": "16:21",
+          "departure_label": "16:21"
         },
         {
           "order": 30,
@@ -630,8 +630,8 @@
             "kind": "route_local",
             "label": "橋"
           },
-          "arrival_label": "17:25",
-          "departure_label": "17:25"
+          "arrival_label": "16:45",
+          "departure_label": "16:45"
         },
         {
           "order": 31,
@@ -639,8 +639,8 @@
             "entity_type": "travel_point",
             "id": "T0010"
           },
-          "arrival_label": "17:48",
-          "departure_label": "17:48",
+          "arrival_label": "17:08",
+          "departure_label": "17:08",
           "time_constraints": [
             {
               "kind": "latest_safe",
@@ -667,14 +667,14 @@
             },
             "depart_label": "17:45",
             "arrive_label": "18:20",
-            "connection_margin_label": "超過 3分",
+            "connection_margin_label": "余裕 37分",
             "connection_state": {
-              "code": "violated",
-              "label": "制約超過"
+              "code": "tight",
+              "label": "注意"
             }
           },
-          "arrival_label": "17:48",
-          "departure_label": "17:48"
+          "arrival_label": "17:08",
+          "departure_label": "17:08"
         },
         {
           "order": 33,
@@ -682,6 +682,8 @@
             "entity_type": "travel_point",
             "id": "T0009"
           },
+          "arrival_label": "18:20",
+          "departure_label": "18:20",
           "facility_executions": [
             {
               "facility_key": "parking",
@@ -708,6 +710,8 @@
             "duration_label": "29分",
             "distance_label": "22.4km"
           },
+          "arrival_label": "18:20",
+          "departure_label": "18:20",
           "facility_executions": [
             {
               "facility_key": "parking",
@@ -725,10 +729,12 @@
           "target": {
             "entity_type": "spot",
             "id": "S0025"
-          }
+          },
+          "arrival_label": "18:49",
+          "departure_label": "18:49"
         }
       ],
-      "start_time_label": "05:05",
+      "start_time_label": "04:15",
       "routes": [
         {
           "route_ref": {
@@ -749,8 +755,8 @@
                 "entity_type": "travel_point",
                 "id": "T0010"
               },
-              "arrival_label": "06:15",
-              "departure_label": "06:15"
+              "arrival_label": "05:35",
+              "departure_label": "05:35"
             },
             {
               "order": 2,
@@ -758,8 +764,8 @@
                 "entity_type": "spot",
                 "id": "S0019"
               },
-              "arrival_label": "07:05",
-              "departure_label": "07:05"
+              "arrival_label": "06:25",
+              "departure_label": "06:25"
             },
             {
               "order": 3,
@@ -767,8 +773,8 @@
                 "entity_type": "spot",
                 "id": "S0017"
               },
-              "arrival_label": "10:02",
-              "departure_label": "10:02"
+              "arrival_label": "09:22",
+              "departure_label": "09:22"
             },
             {
               "order": 4,
@@ -776,8 +782,8 @@
                 "entity_type": "spot",
                 "id": "S0019"
               },
-              "arrival_label": "12:39",
-              "departure_label": "12:39"
+              "arrival_label": "11:59",
+              "departure_label": "11:59"
             },
             {
               "order": 5,
@@ -785,8 +791,56 @@
                 "entity_type": "travel_point",
                 "id": "T0010"
               },
-              "arrival_label": "13:29",
-              "departure_label": "13:29"
+              "arrival_label": "12:49",
+              "departure_label": "12:49"
+            },
+            {
+              "order": 6,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0010"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "bus",
+                  "label": "バス"
+                },
+                "service": {
+                  "operator": "荒川登山バス",
+                  "route_name": "荒川登山口→屋久杉自然館前",
+                  "depart_label": "15:00",
+                  "arrive_label": "15:35"
+                },
+                "depart_label": "15:00",
+                "arrive_label": "15:35",
+                "connection_margin_label": "余裕 2時間11分",
+                "connection_state": {
+                  "code": "comfortable",
+                  "label": "余裕あり"
+                }
+              },
+              "arrival_label": "12:49",
+              "departure_label": "12:49"
+            },
+            {
+              "order": 7,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0009"
+              },
+              "arrival_label": "15:35",
+              "departure_label": "15:35",
+              "facility_executions": [
+                {
+                  "facility_key": "parking",
+                  "usable": true,
+                  "vehicle_type": {
+                    "code": "car",
+                    "label": "車"
+                  },
+                  "reservation_label": "予約なし"
+                }
+              ]
             }
           ],
           "intent": "縄文杉までの完遂が厳しい場合でも、森と巨木の体験を残しながら山行を短縮する",

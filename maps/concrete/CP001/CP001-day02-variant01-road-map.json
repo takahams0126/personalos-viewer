@@ -54,8 +54,34 @@
         "provider_code": "google_places",
         "id": "ChIJK3BIjRciPTUR2S8_5yCwnUI"
       }
+    },
+    {
+      "point_id": "point-travel_point-T0009",
+      "order": 4,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0009"
+      },
+      "position": {
+        "lat": 30.3104631,
+        "lon": 130.6315587
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgwb-AdQhPTURRFmUDP2_DQw"
+      }
     }
   ],
-  "connections": [],
+  "connections": [
+    {
+      "connection_id": "connection-CP001-D2-V1-LR3A-M01",
+      "order": 1,
+      "flow_element_id": "CP001-D2-V1-LR3A-M01",
+      "from_point_id": "point-travel_point-T0010",
+      "to_point_id": "point-travel_point-T0009",
+      "mode": "bus",
+      "geometry_segment_id": null
+    }
+  ],
   "segments": []
 }
