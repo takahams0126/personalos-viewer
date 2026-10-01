@@ -43,16 +43,14 @@ function uniqueSources(available) {
   return sources;
 }
 
-function applyDayWorkspace(dayNode, dayDefinition) {
-  const body = dayNode.querySelector(':scope > .concrete-day-body');
-  const workspaceDefinition = dayDefinition?.workspace;
-  if (!body || !workspaceDefinition || workspaceDefinition.view !== 'content-switcher') return;
-  if (body.querySelector(':scope > [data-semantic="day-workspace"]')) return;
+function applyDayWorkspace(container, workspaceDefinition, workspaceKey) {
+  if (!container || !workspaceDefinition || workspaceDefinition.view !== 'content-switcher') return;
+  if (container.querySelector(':scope > [data-semantic="day-workspace"]')) return;
 
   const available = [];
   for (const definition of workspaceDefinition.views || []) {
-    const node = directChildBySemantic(body, definition.sourceSemantic);
-    const present = node && semanticIsAvailable(body, definition);
+    const node = directChildBySemantic(container, definition.sourceSemantic);
+    const present = node && semanticIsAvailable(container, definition);
     if (!present) {
       if (definition.required) {
         throw new Error(`Required layout semantic is missing: ${definition.sourceSemantic}`);
@@ -70,20 +68,18 @@ function applyDayWorkspace(dayNode, dayDefinition) {
   }
 
   const sourceSemantics = uniqueSources(available).map(item => item.definition.sourceSemantic);
-  const supportingSemantics = dayDefinition.supporting?.semantics || [];
-  const anchor = firstDirectChildForSemantics(body, [...sourceSemantics, ...supportingSemantics]);
+  const anchor = firstDirectChildForSemantics(container, sourceSemantics);
 
-  const dayKey = dayNode.dataset.day || 'day';
   const workspace = document.createElement('section');
   workspace.className = 'day-workspace';
   workspace.dataset.semantic = 'day-workspace';
   workspace.dataset.layoutGrammar = workspaceDefinition.view;
-  workspace.dataset.contentSwitcher = `day-${dayKey}`;
+  workspace.dataset.contentSwitcher = workspaceKey;
   workspace.dataset.activeView = defaultView.definition.id;
   workspace.dataset.activeMode = defaultView.definition.mode || defaultView.definition.view;
 
-  if (anchor) body.insertBefore(workspace, anchor);
-  else body.append(workspace);
+  if (anchor) container.insertBefore(workspace, anchor);
+  else container.append(workspace);
 
   const sources = uniqueSources(available);
 
@@ -98,17 +94,17 @@ function applyDayWorkspace(dayNode, dayDefinition) {
   const tabList = document.createElement('div');
   tabList.className = 'day-workspace-tabs';
   tabList.setAttribute('role', 'tablist');
-  tabList.setAttribute('aria-label', `Day ${dayKey} 表示`);
+  tabList.setAttribute('aria-label', '表示切替');
 
   const panel = document.createElement('div');
-  const panelId = `day-${dayKey}-workspace-panel`;
+  const panelId = `${workspaceKey}-panel`;
   panel.id = panelId;
   panel.className = 'day-workspace-panel';
   panel.setAttribute('role', 'tabpanel');
 
   for (const item of available) {
     const selected = item.definition.id === defaultView.definition.id;
-    const tabId = `day-${dayKey}-${item.definition.id}-tab`;
+    const tabId = `${workspaceKey}-${item.definition.id}-tab`;
     const tab = createTab({ id: tabId, definition: item.definition, panelId, selected });
     tabList.append(tab);
     if (selected) panel.setAttribute('aria-labelledby', tabId);
@@ -123,13 +119,177 @@ function applyDayWorkspace(dayNode, dayDefinition) {
   workspace.append(tabList, panel);
 }
 
+function createExecutionSequenceFromVariant(variantNode) {
+  const timeline = variantNode.querySelector(':scope > [data-semantic="execution-timeline"]');
+  if (!timeline) return null;
+
+  const sequence = document.createElement('section');
+  sequence.className = 'day-execution';
+  sequence.dataset.semantic = 'execution-sequence';
+
+  const title = document.createElement('h3');
+  title.className = 'execution-sequence-title';
+  title.textContent = '行動順';
+  sequence.append(title, timeline);
+  return sequence;
+}
+
+function createPackageMeta({ label, intent, condition }) {
+  if (!intent && !condition) return null;
+  const header = document.createElement('header');
+  header.className = 'execution-package-meta';
+  header.dataset.semantic = 'execution-package-meta';
+
+  const title = document.createElement('h3');
+  title.textContent = label;
+  header.append(title);
+
+  if (intent) {
+    const description = document.createElement('p');
+    description.className = 'execution-package-intent';
+    description.textContent = intent;
+    header.append(description);
+  }
+
+  if (condition) {
+    const conditionText = document.createElement('p');
+    conditionText.className = 'execution-package-condition';
+    conditionText.textContent = condition;
+    header.append(conditionText);
+  }
+
+  return header;
+}
+
+function createPackage({ packageId, packageKind, label }) {
+  const node = document.createElement('section');
+  node.className = `execution-package execution-package-${packageKind}`;
+  node.dataset.semantic = 'execution-package';
+  node.dataset.packageId = packageId;
+  node.dataset.packageKind = packageKind;
+  node.dataset.packageLabel = label;
+  return node;
+}
+
+function createPackageSelector(packages, dayKey, definition) {
+  const selector = document.createElement('section');
+  selector.className = 'execution-package-selector';
+  selector.dataset.semantic = 'execution-package-selector';
+  selector.dataset.packageSwitcher = `day-${dayKey}-execution-package`;
+
+  const heading = document.createElement('h3');
+  heading.textContent = '実施案';
+
+  const choices = document.createElement('div');
+  choices.className = 'execution-package-options';
+  choices.setAttribute('role', 'group');
+  choices.setAttribute('aria-label', '実施案切替');
+
+  packages.forEach((packageNode, index) => {
+    const selected = packageNode.dataset.packageId === definition.defaultPackage;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'execution-package-option';
+    button.dataset.packageTarget = packageNode.dataset.packageId;
+    button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    button.tabIndex = selected || index === 0 ? 0 : -1;
+    button.textContent = packageNode.dataset.packageLabel;
+    choices.append(button);
+  });
+
+  const note = document.createElement('p');
+  note.className = 'execution-package-note';
+  note.textContent = '表示上の切替です。採用時は実行内容を再具体化します。';
+
+  selector.append(heading, choices, note);
+  return selector;
+}
+
+function buildExecutionPackages(body, dayDefinition, dayKey) {
+  const definition = dayDefinition?.executionPackages;
+  if (!body || !definition || definition.view !== 'content-switcher') return null;
+  if (body.querySelector(':scope > [data-semantic="execution-packages"]')) {
+    return body.querySelector(':scope > [data-semantic="execution-packages"]');
+  }
+
+  const baselineSequence = directChildBySemantic(body, 'execution-sequence');
+  if (!baselineSequence) {
+    throw new Error('Required layout semantic is missing: execution-sequence');
+  }
+  const baselineMap = directChildBySemantic(body, 'map');
+  const variantsContainer = directChildBySemantic(body, 'variants');
+  const variantNodes = variantsContainer
+    ? [...variantsContainer.querySelectorAll(':scope > [data-semantic="variant"]')]
+    : [];
+
+  const packagesContainer = document.createElement('section');
+  packagesContainer.className = 'execution-packages';
+  packagesContainer.dataset.semantic = 'execution-packages';
+  packagesContainer.dataset.packageGroup = `day-${dayKey}-execution-package`;
+  packagesContainer.dataset.activePackage = definition.defaultPackage;
+
+  const anchor = firstDirectChildForSemantics(body, ['execution-sequence', 'map', 'variants']);
+  if (anchor) body.insertBefore(packagesContainer, anchor);
+  else body.append(packagesContainer);
+
+  const baseline = createPackage({
+    packageId: 'baseline',
+    packageKind: 'baseline',
+    label: definition.baselineLabel || '標準'
+  });
+  baseline.append(baselineSequence);
+  if (baselineMap) baseline.append(baselineMap);
+  packagesContainer.append(baseline);
+
+  variantNodes.forEach((variantNode, index) => {
+    const packageId = `variant-${index + 1}`;
+    const label = `${definition.variantLabelPrefix || '代替案'} ${index + 1}`;
+    const summary = variantNode.querySelector(':scope > summary');
+    const condition = variantNode.querySelector(':scope > .variant-condition');
+    const packageNode = createPackage({ packageId, packageKind: 'variant', label });
+    const meta = createPackageMeta({
+      label,
+      intent: summary?.textContent?.trim() || '',
+      condition: condition?.textContent?.trim() || ''
+    });
+    const sequence = createExecutionSequenceFromVariant(variantNode);
+    const map = variantNode.querySelector(':scope > [data-semantic="map"]');
+
+    if (meta) packageNode.append(meta);
+    if (sequence) packageNode.append(sequence);
+    if (map) packageNode.append(map);
+    packageNode.hidden = packageId !== definition.defaultPackage;
+    packagesContainer.append(packageNode);
+  });
+
+  if (variantsContainer) variantsContainer.remove();
+
+  const packages = [...packagesContainer.querySelectorAll(':scope > [data-semantic="execution-package"]')];
+  if (packages.length > 1) {
+    const selector = createPackageSelector(packages, dayKey, definition);
+    body.insertBefore(selector, packagesContainer);
+  }
+
+  return packagesContainer;
+}
+
 function applyConcretePlanContentLayout(root, contentLayout) {
   const executionDays = blockById(contentLayout, 'execution-days');
   const dayDefinition = executionDays?.day;
   if (!dayDefinition?.workspace) return;
 
   root.querySelectorAll('[data-semantic="execution-day"]').forEach(dayNode => {
-    applyDayWorkspace(dayNode, dayDefinition);
+    const body = dayNode.querySelector(':scope > .concrete-day-body');
+    if (!body) return;
+    const dayKey = dayNode.dataset.day || 'day';
+    const packagesContainer = buildExecutionPackages(body, dayDefinition, dayKey);
+    if (!packagesContainer) return;
+
+    const packages = [...packagesContainer.querySelectorAll(':scope > [data-semantic="execution-package"]')];
+    packages.forEach(packageNode => {
+      const packageKey = packageNode.dataset.packageId || 'package';
+      applyDayWorkspace(packageNode, dayDefinition.workspace, `day-${dayKey}-${packageKey}-workspace`);
+    });
   });
 }
 
