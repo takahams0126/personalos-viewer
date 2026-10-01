@@ -9,7 +9,7 @@ import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
 import { renderTop } from './render/top.js';
-import { applyPresentationStrategy } from './presentation/apply-strategy.js';
+import { applyPageLayoutDefinition } from './presentation/apply-layout-definition.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './interaction/carousel.js';
 import { hydrateContentSwitchers } from './interaction/content-switcher.js';
@@ -59,18 +59,18 @@ async function renderRequestedEntity(request, loaded) {
   throw new Error(`Current Viewer does not support this page type yet: ${request.type}`);
 }
 
-async function renderTopPage(app, strategy) {
+async function renderTopPage(app, pageLayoutDefinition) {
   const manifest = await manifestStore.ensure();
   document.documentElement.dataset.pageType = 'top';
   document.title = 'レジャー | PersonalOS Viewer';
   app.replaceChildren(renderTop({ manifest }));
-  applyPresentationStrategy({ root: app, pageType: 'top', strategy });
+  applyPageLayoutDefinition({ root: app, pageType: 'top', definition: pageLayoutDefinition });
   hydrateExplorer(app);
 }
 
 export async function startCurrentViewer({ presentation }) {
-  const strategy = presentation?.strategy;
-  if (!strategy) throw new Error('Active Presentation Strategy is unavailable.');
+  const pageLayoutDefinition = presentation?.pageLayoutDefinition;
+  if (!pageLayoutDefinition) throw new Error('Active Page Layout Definition is unavailable.');
 
   const request = readRequest();
   const app = document.querySelector('#app');
@@ -78,7 +78,7 @@ export async function startCurrentViewer({ presentation }) {
   const navigation = createNavigationContext();
 
   if (request.kind === 'top') {
-    await renderTopPage(app, strategy);
+    await renderTopPage(app, pageLayoutDefinition);
     renderAppShell({ request, navigation }, shell);
     installNavigationCapture({ request, data: null });
     return;
@@ -95,7 +95,7 @@ export async function startCurrentViewer({ presentation }) {
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
-  applyPresentationStrategy({ root: app, pageType: request.type, strategy });
+  applyPageLayoutDefinition({ root: app, pageType: request.type, definition: pageLayoutDefinition });
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
 
