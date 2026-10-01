@@ -26,6 +26,7 @@
 
   .top-filter-heading h2,
   .top-results-header h2 {
+    margin: 0;
     font-size: var(--font-size-title);
   }
 
@@ -87,6 +88,7 @@
   }
 
   .top-result-count {
+    margin: 0;
     color: var(--muted);
     font-size: var(--font-size-note);
   }
