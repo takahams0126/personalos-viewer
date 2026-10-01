@@ -48,12 +48,8 @@ async function renderHeroSpots(refs = [], resolver) {
 
 function renderIdentity(route) {
   const facts = [];
-  if (route.family_label) {
-    facts.push({ label: 'ルート系列', value: route.family_label });
-  }
-  if (route.variant?.label) {
-    facts.push({ label: 'バリエーション', value: route.variant.label });
-  }
+  if (route.family_label) facts.push({ label: 'ルート系列', value: route.family_label });
+  if (route.variant?.label) facts.push({ label: 'バリエーション', value: route.variant.label });
   return renderFactList(facts, { className: 'route-identity' });
 }
 
@@ -71,9 +67,9 @@ function renderAppeal(appeal) {
 function renderMap(map) {
   if (!map?.artifact_ref) return null;
   return h('section', { className: 'route-map-section content-section', dataset: { semantic: 'conceptual-map' } },
-    h('h2', { text: 'Conceptual Map' }),
+    h('h2', { text: 'ルートマップ' }),
     h('figure', { className: 'map-view route-map', dataset: { mapArtifactId: map.artifact_ref } },
-      h('div', { className: 'map-canvas', attrs: { role: 'img', 'aria-label': 'ルートのConceptual Map' } }),
+      h('div', { className: 'map-canvas', attrs: { role: 'img', 'aria-label': 'ルートマップ' } }),
       h('p', { className: 'map-state', text: '地図を読み込み中…' })
     )
   );
@@ -81,9 +77,7 @@ function renderMap(map) {
 
 function renderBadges(item) {
   const badges = [];
-  if (item.visit_purpose?.label) {
-    badges.push(h('span', { className: 'route-occurrence-badge', text: item.visit_purpose.label }));
-  }
+  if (item.visit_purpose?.label) badges.push(h('span', { className: 'route-occurrence-badge', text: item.visit_purpose.label }));
   if (item.inclusion_requirement?.label) {
     badges.push(h('span', {
       className: 'route-occurrence-badge',
@@ -164,9 +158,9 @@ export async function renderRoute({ route, resolver }) {
       ),
       await renderHeroSpots(route.hero_spots, resolver)
     ),
-    renderAppeal(route.appeal),
     renderMap(route.map),
     await renderSequence(route.sequence, resolver),
+    renderAppeal(route.appeal),
     renderConstraints(route.constraints)
   );
 }
