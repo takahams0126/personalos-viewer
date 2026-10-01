@@ -13,10 +13,7 @@ const VIEW = Object.freeze({
 
 const COMMON_PAGE_LAYOUT_V1 = Object.freeze({
   id: 'leisure-common-page-v1',
-  frame: Object.freeze({
-    shell: 'viewer-shell',
-    contentSlot: 'content'
-  }),
+  frame: Object.freeze({ shell: 'viewer-shell', contentSlot: 'content' }),
   regions: Object.freeze([
     Object.freeze({ id: 'global-navigation', owner: 'app-shell', optional: true }),
     Object.freeze({ id: 'context-navigation', owner: 'app-shell', optional: true }),
@@ -56,18 +53,11 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           id: 'hero',
           sourceSelector: ':scope > .spot-hero',
           view: VIEW.SPLIT,
-          slots: Object.freeze({
-            primary: Object.freeze(['spot-hero-copy']),
-            secondary: Object.freeze(['image-carousel'])
-          }),
+          slots: Object.freeze({ primary: Object.freeze(['spot-hero-copy']), secondary: Object.freeze(['image-carousel']) }),
           narrowView: VIEW.STACK
         }),
         Object.freeze({ id: 'appeal-review', sourceSemantic: 'appeal', view: VIEW.STACK }),
-        Object.freeze({
-          id: 'supporting-information',
-          view: VIEW.GRID,
-          semantics: Object.freeze(['facilities'])
-        }),
+        Object.freeze({ id: 'supporting-information', view: VIEW.GRID, semantics: Object.freeze(['facilities']) }),
         Object.freeze({ id: 'related-spots', sourceSemantic: 'related-spots', view: VIEW.GRID })
       ])
     }),
@@ -79,10 +69,7 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
         Object.freeze({
           id: 'route-workspace',
           view: VIEW.SPLIT,
-          slots: Object.freeze({
-            primary: Object.freeze(['sequence']),
-            secondary: Object.freeze(['conceptual-map'])
-          }),
+          slots: Object.freeze({ primary: Object.freeze(['sequence']), secondary: Object.freeze(['conceptual-map']) }),
           narrowView: VIEW.STACK
         }),
         Object.freeze({ id: 'supporting-conditions', sourceSemantic: 'constraints', view: VIEW.STACK, optional: true })
@@ -163,3 +150,5 @@ export function resolvePageLayoutDefinition(id) {
   if (!definition) throw new Error(`Unknown Page Layout Definition: ${key}`);
   return definition;
 }
+
+export { VIEW as LAYOUT_VIEW_GRAMMAR };
