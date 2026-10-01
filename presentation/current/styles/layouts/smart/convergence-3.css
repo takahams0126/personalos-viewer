@@ -1,0 +1,188 @@
+@layer layout {
+  /* Spot: identity/decision information uses the left column; media stays a stable visual anchor. */
+  .spot-decision-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  .spot-access-block,
+  .spot-usage-decision {
+    min-width: 0;
+  }
+
+  .spot-reference-utility {
+    margin-block-start: var(--space-3);
+  }
+
+  .spot-usage-expanded {
+    grid-column: 1 / -1;
+  }
+
+  .spot-highlight-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-5);
+  }
+
+  .spot-review-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Route: ordered sequence is the compact index; map is the large spatial workspace. */
+  .route-workspace {
+    grid-template-columns: minmax(15rem, .58fr) minmax(0, 1.42fr);
+    gap: clamp(1rem, 2.2vw, 2rem);
+    align-items: stretch;
+  }
+
+  .route-workspace > [data-layout-slot="primary"],
+  .route-workspace > [data-layout-slot="secondary"] {
+    min-width: 0;
+  }
+
+  .route-workspace [data-layout-slot="primary"] {
+    max-height: clamp(28rem, 50vw, 38rem);
+    overflow: auto;
+    padding-inline-end: var(--space-1);
+  }
+
+  .route-workspace [data-layout-slot="secondary"] .map-canvas {
+    min-height: clamp(28rem, 50vw, 38rem);
+  }
+
+  /* Plan composition is navigation/content context, not a second hero. */
+  .plan-composition {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-block: var(--space-5) var(--space-7);
+  }
+
+  .plan-composition-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    min-width: 0;
+    padding-block: var(--space-3);
+  }
+
+  .plan-composition-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Plan/ConcretePlan share one schedule-adjustment grammar. */
+  .schedule-adjustment,
+  .concrete-plan-reorder {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+    margin-block: var(--space-5);
+    padding: var(--space-3) 0;
+  }
+
+  .schedule-adjustment > h2,
+  .concrete-plan-reorder > h2 {
+    grid-column: 1;
+    margin: .25rem 0 0;
+  }
+
+  .schedule-adjustment > .schedule-adjustment-group,
+  .concrete-plan-reorder > p,
+  .concrete-plan-reorder > .plan-day-assignment-grid {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .schedule-adjustment-group {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-2) var(--space-3);
+    align-items: center;
+  }
+
+  .schedule-adjustment-note {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .schedule-adjustment-grid,
+  .concrete-plan-reorder .plan-day-assignment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .schedule-adjustment-item,
+  .concrete-plan-reorder .execution-day-assignment {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-1) var(--space-2);
+    align-items: center;
+    min-width: 0;
+    padding: var(--space-1) 0;
+  }
+
+  .concrete-plan-reorder .execution-reorder-note {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 64rem) {
+    .spot-decision-grid,
+    .spot-highlight-list {
+      grid-template-columns: 1fr;
+    }
+
+    .spot-usage-expanded {
+      grid-column: auto;
+    }
+
+    .schedule-adjustment-grid,
+    .concrete-plan-reorder .plan-day-assignment-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 52rem) {
+    .route-workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .route-workspace [data-layout-slot="primary"] {
+      max-height: none;
+      overflow: visible;
+      padding-inline-end: 0;
+    }
+
+    .route-workspace [data-layout-slot="secondary"] .map-canvas {
+      min-height: 22rem;
+    }
+
+    .plan-composition-row,
+    .schedule-adjustment,
+    .concrete-plan-reorder,
+    .schedule-adjustment-group,
+    .schedule-adjustment-item,
+    .concrete-plan-reorder .execution-day-assignment {
+      grid-template-columns: 1fr;
+    }
+
+    .schedule-adjustment > h2,
+    .schedule-adjustment > .schedule-adjustment-group,
+    .concrete-plan-reorder > h2,
+    .concrete-plan-reorder > p,
+    .concrete-plan-reorder > .plan-day-assignment-grid {
+      grid-column: 1;
+    }
+
+    .schedule-adjustment-note { white-space: normal; }
+    .schedule-adjustment-grid,
+    .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
+    .spot-review-grid { grid-template-columns: 1fr; }
+  }
+}
