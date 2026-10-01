@@ -39,6 +39,13 @@ function activateTab(switcher, nextTab, { focus = false } = {}) {
   if (focus) nextTab.focus();
 }
 
+function routeDetailTarget(event, switcher, tabs) {
+  const routeLink = event.target.closest('[data-semantic="route-execution-summary"] h4 a');
+  if (!routeLink || !switcher.contains(routeLink)) return null;
+  if (switcher.dataset.activeView === 'route') return null;
+  return tabs.find(tab => tab.dataset.viewId === 'route') || null;
+}
+
 function hydrateSwitcher(switcher) {
   if (switcher.dataset.contentSwitcherReady === 'true') return;
   const tabs = tabsFor(switcher);
@@ -48,6 +55,13 @@ function hydrateSwitcher(switcher) {
   }
 
   switcher.addEventListener('click', event => {
+    const localRouteTarget = routeDetailTarget(event, switcher, tabs);
+    if (localRouteTarget) {
+      event.preventDefault();
+      activateTab(switcher, localRouteTarget, { focus: true });
+      return;
+    }
+
     const tab = event.target.closest('[role="tab"]');
     if (!tab || !switcher.contains(tab)) return;
     activateTab(switcher, tab);
