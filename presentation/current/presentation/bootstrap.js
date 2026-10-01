@@ -1,5 +1,5 @@
 import { resolvePresentationPreset } from './registry.js';
-import { resolvePresentationStrategy } from './strategy-registry.js';
+import { resolvePageLayoutDefinition } from './layout-definition-registry.js';
 
 function stylesheetResource(href, role, setId) {
   return { href, role, setId };
@@ -23,11 +23,11 @@ function loadStylesheet({ href, role, setId }) {
 export async function activatePresentationPreset() {
   const requestedId = window.PERSONALOS_CONFIG?.presentationPreset;
   const preset = resolvePresentationPreset(requestedId);
-  const strategy = resolvePresentationStrategy(preset.strategyId);
+  const pageLayoutDefinition = resolvePageLayoutDefinition(preset.pageLayoutDefinitionId);
   const root = document.documentElement;
 
   root.dataset.presentationPreset = preset.id;
-  root.dataset.presentationStrategy = strategy.id;
+  root.dataset.pageLayoutDefinition = pageLayoutDefinition.id;
   root.dataset.presentationTheme = preset.theme.id;
   root.dataset.presentationPatternSet = preset.patternSet.id;
   root.dataset.presentationLayoutSet = preset.layoutSet.id;
@@ -40,7 +40,7 @@ export async function activatePresentationPreset() {
 
   await Promise.all(resources.map(loadStylesheet));
   root.dataset.presentationReady = 'true';
-  return Object.freeze({ preset, strategy });
+  return Object.freeze({ preset, pageLayoutDefinition });
 }
 
 function renderBootstrapFailure(error) {
