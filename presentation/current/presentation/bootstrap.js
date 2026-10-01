@@ -62,8 +62,9 @@ function renderBootstrapFailure(error) {
 }
 
 try {
-  await activatePresentationPreset();
-  await import('../main.js');
+  const presentation = await activatePresentationPreset();
+  const { startCurrentViewer } = await import('../main.js');
+  await startCurrentViewer({ presentation });
 } catch (error) {
   renderBootstrapFailure(error);
 }
