@@ -1,16 +1,10 @@
+import { hrefFor, isDetailPageRef } from '../core/router.js';
+
 let mapsPromise;
 
 const SEGMENT_COLORS = Object.freeze([
-  '#1565c0',
-  '#d81b60',
-  '#00897b',
-  '#ef6c00',
-  '#6a1b9a',
-  '#2e7d32',
-  '#c62828',
-  '#00838f',
-  '#5d4037',
-  '#3949ab'
+  '#1565c0', '#d81b60', '#00897b', '#ef6c00', '#6a1b9a',
+  '#2e7d32', '#c62828', '#00838f', '#5d4037', '#3949ab'
 ]);
 
 const CIRCLED_NUMBERS = Object.freeze([
@@ -23,9 +17,7 @@ function loadGoogleMaps() {
   if (mapsPromise) return mapsPromise;
 
   const key = globalThis.PERSONALOS_CONFIG?.googleMapsApiKey;
-  if (!key) {
-    return Promise.reject(new Error('Google Maps API key is not configured.'));
-  }
+  if (!key) return Promise.reject(new Error('Google Maps API key is not configured.'));
 
   mapsPromise = new Promise((resolve, reject) => {
     const callbackName = '__personalosCurrentGoogleMapsReady';
@@ -33,7 +25,6 @@ function loadGoogleMaps() {
       delete globalThis[callbackName];
       resolve(globalThis.google.maps);
     };
-
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&v=weekly&loading=async&callback=${callbackName}`;
     script.async = true;
@@ -53,7 +44,7 @@ function latLng(position) {
 }
 
 async function titleForPoint(point, resolver) {
-  if (!point.entity_ref) return point.point_id;
+  if (!point.entity_ref) return point.label || point.point_id;
   try {
     const described = await resolver.describe(point.entity_ref);
     return described.title;
@@ -62,9 +53,41 @@ async function titleForPoint(point, resolver) {
   }
 }
 
-function infoContent(title) {
-  const node = document.createElement('div');
-  node.textContent = title;
+function googleMapsUrl(point) {
+  const placeId = point.external_ref?.provider_code === 'google_places' ? point.external_ref.id : null;
+  if (placeId) {
+    return `https://www.google.com/maps/search/?api=1&query_place_id=${encodeURIComponent(placeId)}&query=${encodeURIComponent(`${point.position.lat},${point.position.lon}`)}`;
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${point.position.lat},${point.position.lon}`)}`;
+}
+
+function infoContent(point, title) {
+  const node = document.createElement('article');
+  node.className = 'map-popup';
+
+  const heading = document.createElement('strong');
+  heading.className = 'map-popup-title';
+  heading.textContent = `${point.order ? `${point.order}. ` : ''}${title}`;
+  node.append(heading);
+
+  const actions = document.createElement('div');
+  actions.className = 'map-popup-actions';
+
+  if (point.entity_ref && isDetailPageRef(point.entity_ref)) {
+    const internal = document.createElement('a');
+    internal.href = hrefFor(point.entity_ref);
+    internal.textContent = 'PersonalOSで見る';
+    actions.append(internal);
+  }
+
+  const external = document.createElement('a');
+  external.href = googleMapsUrl(point);
+  external.target = '_blank';
+  external.rel = 'noopener noreferrer';
+  external.textContent = 'Google Maps';
+  actions.append(external);
+
+  node.append(actions);
   return node;
 }
 
@@ -89,8 +112,8 @@ function drawResolvedSegment(maps, map, segment, bounds, index) {
     path,
     geodesic: true,
     strokeColor: color,
-    strokeOpacity: 0.88,
-    strokeWeight: 5,
+    strokeOpacity: 0.9,
+    strokeWeight: 6,
     zIndex: 2
   });
   return { segment, polyline, color, index };
@@ -110,17 +133,11 @@ function drawSemanticConnection(maps, map, connection, pointById, bounds) {
     geodesic: true,
     strokeOpacity: 0,
     strokeWeight: 2,
-    icons: [
-      {
-        icon: {
-          path: 'M 0,-1 0,1',
-          strokeOpacity: 0.55,
-          scale: 2
-        },
-        offset: '0',
-        repeat: '12px'
-      }
-    ]
+    icons: [{
+      icon: { path: 'M 0,-1 0,1', strokeOpacity: 0.55, scale: 2 },
+      offset: '0',
+      repeat: '12px'
+    }]
   });
 }
 
@@ -128,8 +145,8 @@ function setSegmentFocus(segmentViews, active) {
   for (const item of segmentViews) {
     const selected = !active || item === active;
     item.polyline.setOptions({
-      strokeOpacity: selected ? 0.96 : 0.2,
-      strokeWeight: selected ? (active ? 7 : 5) : 4,
+      strokeOpacity: selected ? 0.98 : 0.18,
+      strokeWeight: selected ? (active ? 8 : 6) : 4,
       zIndex: selected && active ? 20 : 2
     });
   }
@@ -137,12 +154,10 @@ function setSegmentFocus(segmentViews, active) {
 
 function buildSegmentLegend(segmentViews, pointTitleById) {
   if (segmentViews.length <= 1) return null;
-
   const legend = document.createElement('div');
   legend.className = 'map-segment-legend';
   legend.dataset.semantic = 'map-segment-legend';
   legend.setAttribute('aria-label', '移動経路');
-
   let pinned = null;
 
   segmentViews.forEach(item => {
@@ -171,24 +186,71 @@ function buildSegmentLegend(segmentViews, pointTitleById) {
     button.addEventListener('focus', preview);
     button.addEventListener('blur', restore);
     button.addEventListener('click', () => {
-      const nextPinned = pinned === item ? null : item;
-      pinned = nextPinned;
+      pinned = pinned === item ? null : item;
       legend.querySelectorAll('.map-segment-legend-item').forEach(control => {
         control.setAttribute('aria-pressed', control === button && pinned === item ? 'true' : 'false');
       });
       setSegmentFocus(segmentViews, pinned);
     });
-
     legend.append(button);
   });
 
   return legend;
 }
 
+function bindRouteSequence(view, markerViews) {
+  const page = view.closest('.route-page');
+  if (!page) return;
+  const sequenceItems = [...page.querySelectorAll('.route-sequence-item[data-order]')];
+  if (!sequenceItems.length) return;
+
+  const markerByOrder = new Map(markerViews.map(item => [String(item.point.order), item]));
+  let pinnedOrder = null;
+
+  const apply = order => {
+    sequenceItems.forEach(item => {
+      item.dataset.mapActive = String(item.dataset.order) === String(order) ? 'true' : 'false';
+    });
+    markerViews.forEach(item => {
+      const active = String(item.point.order) === String(order);
+      item.marker.setOpacity(!order || active ? 1 : 0.45);
+      item.marker.setZIndex(active ? 100 : undefined);
+    });
+  };
+
+  sequenceItems.forEach(item => {
+    const order = String(item.dataset.order);
+    const markerView = markerByOrder.get(order);
+    if (!markerView) return;
+    item.tabIndex = 0;
+    item.addEventListener('pointerenter', () => apply(order));
+    item.addEventListener('pointerleave', () => apply(pinnedOrder));
+    item.addEventListener('focusin', () => apply(order));
+    item.addEventListener('focusout', () => apply(pinnedOrder));
+    item.addEventListener('click', event => {
+      if (event.target.closest('a, button')) return;
+      pinnedOrder = pinnedOrder === order ? null : order;
+      apply(pinnedOrder);
+      if (pinnedOrder) markerView.marker.setAnimation(globalThis.google?.maps?.Animation?.BOUNCE || null);
+      setTimeout(() => markerView.marker.setAnimation(null), 550);
+    });
+  });
+
+  markerViews.forEach(item => {
+    item.marker.addListener('mouseover', () => apply(String(item.point.order)));
+    item.marker.addListener('mouseout', () => apply(pinnedOrder));
+    item.marker.addListener('click', () => {
+      pinnedOrder = String(item.point.order);
+      apply(pinnedOrder);
+      const target = sequenceItems.find(node => String(node.dataset.order) === pinnedOrder);
+      target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  });
+}
+
 async function hydrateMapView(view, { artifactLoader, resolver }) {
   if (view.dataset.mapState === 'ready' || view.dataset.mapState === 'loading') return;
   view.dataset.mapState = 'loading';
-
   const state = view.querySelector('.map-state');
   const canvas = view.querySelector('.map-canvas');
 
@@ -197,7 +259,6 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
       artifactLoader.load({ artifact_id: view.dataset.mapArtifactId }),
       loadGoogleMaps()
     ]);
-
     const points = artifact.points || [];
     if (!points.length) throw new Error('Map artifact has no points.');
 
@@ -217,13 +278,12 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     const segmentViews = (artifact.segments || []).map((segment, index) =>
       drawResolvedSegment(maps, map, segment, bounds, index)
     );
-
     for (const connection of artifact.connections || []) {
       drawSemanticConnection(maps, map, connection, pointById, bounds);
     }
 
     const infoWindow = new maps.InfoWindow();
-
+    const markerViews = [];
     points.forEach((point, index) => {
       const position = latLng(point.position);
       bounds.extend(position);
@@ -234,23 +294,25 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
         label: String(point.order)
       });
       marker.addListener('click', () => {
-        infoWindow.setContent(infoContent(pointTitles[index]));
+        infoWindow.setContent(infoContent(point, pointTitles[index]));
         infoWindow.open({ map, anchor: marker });
       });
+      markerViews.push({ point, marker });
     });
 
-    const existingLegend = view.querySelector('.map-segment-legend');
-    existingLegend?.remove();
+    view.querySelector('.map-segment-legend')?.remove();
     const legend = buildSegmentLegend(segmentViews, pointTitleById);
     if (legend) canvas.insertAdjacentElement('afterend', legend);
 
+    bindRouteSequence(view, markerViews);
+
     if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
-    if (state) state.remove();
+    state?.remove();
     view.dataset.mapState = 'ready';
   } catch (error) {
     console.warn('[current-viewer] map unavailable', error);
     view.dataset.mapState = 'error';
-    if (canvas) canvas.replaceChildren();
+    canvas?.replaceChildren();
     if (state) state.textContent = '地図を表示できませんでした。';
   }
 }
@@ -258,24 +320,18 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
 function hydrateWhenUsable(view, context) {
   const disclosure = view.closest('details');
   const layoutSource = view.closest('[data-layout-source]');
-
-  const isUsable = () =>
-    (!disclosure || disclosure.open) &&
-    (!layoutSource || !layoutSource.hidden);
-
+  const isUsable = () => (!disclosure || disclosure.open) && (!layoutSource || !layoutSource.hidden);
   if (isUsable()) return hydrateMapView(view, context);
 
   const cleanup = () => {
     disclosure?.removeEventListener('toggle', tryHydrate);
     layoutSource?.removeEventListener('presentation:shown', tryHydrate);
   };
-
   const tryHydrate = () => {
     if (!isUsable()) return;
     cleanup();
     hydrateMapView(view, context);
   };
-
   disclosure?.addEventListener('toggle', tryHydrate);
   layoutSource?.addEventListener('presentation:shown', tryHydrate);
   return Promise.resolve();
@@ -283,7 +339,5 @@ function hydrateWhenUsable(view, context) {
 
 export async function hydrateMapViews({ root, artifactLoader, resolver }) {
   const views = [...root.querySelectorAll('[data-map-artifact-id]')];
-  await Promise.allSettled(
-    views.map(view => hydrateWhenUsable(view, { artifactLoader, resolver }))
-  );
+  await Promise.allSettled(views.map(view => hydrateWhenUsable(view, { artifactLoader, resolver })));
 }
