@@ -15,6 +15,7 @@ import { hydrateCarousels } from './interaction/carousel.js';
 import { hydrateContentSwitchers } from './interaction/content-switcher.js';
 import { hydrateExecutionPackageSwitchers } from './interaction/execution-package-switcher.js';
 import { hydrateExplorer } from './interaction/explorer.js';
+import { hydrateWeatherPresentation } from './interaction/weather.js';
 import { renderAppShell } from './structure/app-shell.js';
 
 const manifestStore = new ManifestStore(resources);
@@ -102,6 +103,10 @@ export async function startCurrentViewer({ presentation }) {
 
   hydrateContentSwitchers(app);
   hydrateExecutionPackageSwitchers(app);
+
+  if (request.type === 'concrete_plan') {
+    hydrateWeatherPresentation(app, loaded.data);
+  }
 
   if (request.type === 'spot') {
     hydrateCarousels(app);
