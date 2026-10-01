@@ -1,4 +1,4 @@
 window.PERSONALOS_CONFIG = {
-  presentationPreset: 'default',
+  presentationPreset: 'smart',
   googleMapsApiKey: '__GOOGLE_MAPS_API_KEY__'
 };
