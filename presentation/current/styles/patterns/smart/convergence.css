@@ -1,0 +1,130 @@
+@layer patterns {
+  /* Product convergence: ordinary execution facts are rows, not raised cards. */
+  .action-body {
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .execution-action:hover > .action-body {
+    background: var(--surface-soft);
+  }
+
+  .trip-weather-day,
+  .plan-fuel li,
+  .plan-cost li {
+    border: 0;
+    border-block-end: var(--border-width) solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .trip-weather-day:last-child,
+  .plan-fuel li:last-child,
+  .plan-cost li:last-child {
+    border-block-end: 0;
+  }
+
+  .trip-weather-day {
+    padding: var(--space-2) 0;
+  }
+
+  .trip-weather-day-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .trip-weather-day > p {
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .trip-weather-condition {
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .concrete-plan-reorder > p {
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .execution-day-assignment {
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+
+  .execution-reorder-note {
+    color: var(--muted);
+    font-size: var(--font-size-meta);
+  }
+
+  .plan-fuel > .semantic-row,
+  .plan-cost > .cost-total {
+    margin-block: 0;
+  }
+
+  .plan-fuel ul,
+  .plan-cost ul {
+    margin-block: var(--space-3) 0;
+  }
+
+  .plan-fuel li,
+  .plan-cost li {
+    padding: var(--space-3) 0;
+  }
+
+  .plan-fuel li > p,
+  .plan-cost li > p {
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--font-size-note);
+  }
+
+  .cost-total {
+    font-size: var(--font-size-section-title);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  /* Normal movement information is a compact support column. */
+  .execution-action:not(.route-execution-group) .next-move {
+    border: 0;
+    border-inline-start: var(--border-width) solid var(--line);
+    background: transparent;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move::before {
+    display: none;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move h5 {
+    color: var(--muted);
+  }
+
+  .action-stay,
+  .action-todos,
+  .action-facilities,
+  .action-constraints,
+  .action-attention {
+    font-size: var(--font-size-note);
+  }
+
+  .action-todos h5,
+  .action-facilities h5,
+  .action-constraints h5,
+  .action-attention h5 {
+    margin-block-end: var(--space-1);
+  }
+
+  @media (max-width: 42rem) {
+    .execution-action:hover > .action-body {
+      background: transparent;
+    }
+  }
+}
