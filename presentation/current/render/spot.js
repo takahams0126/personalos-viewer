@@ -1,14 +1,20 @@
 import { hrefFor } from '../core/router.js';
-import { renderChipList, renderEmphasisList, renderFactList } from './components/presentation.js';
+import { renderChipList } from './components/presentation.js';
 import { h } from './dom.js';
 
 function renderFacts(facts = [], className = 'spot-facts') {
-  return renderFactList(facts, { className, rowClassName: 'spot-fact' });
+  if (!facts.length) return null;
+  return h('dl', { className }, facts.map(fact =>
+    h('div', { className: 'spot-fact', dataset: { semantic: fact.semantic || '' } },
+      h('dt', { text: fact.label }),
+      h('dd', { text: fact.value })
+    )
+  ));
 }
 
 function renderAccess(access) {
   if (!access?.location_text) return null;
-  return h('section', { className: 'spot-hero-detail spot-access', dataset: { semantic: 'access' } },
+  return h('section', { className: 'spot-access-block', dataset: { semantic: 'access' } },
     h('h2', { text: 'アクセス' }),
     h('p', { className: 'spot-location', text: access.location_text }),
     access.note ? h('p', { className: 'spot-detail-note', text: access.note }) : null,
@@ -16,7 +22,7 @@ function renderAccess(access) {
       ? h('a', {
           className: 'spot-external-link',
           text: 'Google Mapsで開く',
-          attrs: { href: access.google_maps_url, target: '_blank', rel: 'noopener' }
+          attrs: { href: access.google_maps_url, target: '_blank', rel: 'noopener noreferrer' }
         })
       : null
   );
@@ -24,7 +30,7 @@ function renderAccess(access) {
 
 function renderFacilities(facilities) {
   if (!facilities?.facts?.length) return null;
-  return h('section', { className: 'spot-hero-detail spot-facilities', dataset: { semantic: 'facilities' } },
+  return h('section', { className: 'spot-facilities', dataset: { semantic: 'facilities' } },
     h('h2', { text: '設備・施設' }),
     renderFacts(facilities.facts, 'spot-facility-facts'),
     facilities.note ? h('p', { className: 'spot-detail-note', text: facilities.note }) : null
@@ -33,23 +39,25 @@ function renderFacilities(facilities) {
 
 function renderReferences(references) {
   if (!references?.official && !references?.supplemental) return null;
-
   const links = [];
   if (references.official?.url) {
     links.push(h('a', {
       text: '公式・観光情報',
-      attrs: { href: references.official.url, target: '_blank', rel: 'noopener' }
+      attrs: { href: references.official.url, target: '_blank', rel: 'noopener noreferrer' }
     }));
   }
   if (references.supplemental?.url) {
     links.push(h('a', {
       text: '補足情報',
-      attrs: { href: references.supplemental.url, target: '_blank', rel: 'noopener' }
+      attrs: { href: references.supplemental.url, target: '_blank', rel: 'noopener noreferrer' }
     }));
   }
-
-  return h('section', { className: 'spot-hero-detail spot-references', dataset: { semantic: 'references' } },
-    h('h2', { text: '公式・参考' }),
+  return h('nav', {
+    className: 'spot-reference-utility',
+    dataset: { semantic: 'references' },
+    attrs: { 'aria-label': '公式・参考' }
+  },
+    h('span', { className: 'spot-reference-label', text: '公式・参考' }),
     h('div', { className: 'spot-reference-links' }, links)
   );
 }
@@ -58,48 +66,43 @@ function renderFees(fees) {
   if (!fees?.applicability) return null;
   const state = fees.applicability.code;
   if (state === 'not_applicable') return null;
-
   if (state === 'free' || state === 'unknown') {
     return h('section', { className: 'spot-fees', dataset: { semantic: 'fees' } },
       h('h3', { text: '料金' }),
-      h('p', { className: 'spot-detail-note', text: fees.applicability.label })
+      h('p', { className: 'spot-fee-state', text: fees.applicability.label })
     );
   }
 
-  const facts = (fees.items || []).map(item => ({
-    semantic: 'fee',
-    label: item.scope,
-    value: item.pricing === null ? '料金変動' : item.pricing.label
-  }));
-  if (!facts.length) return null;
-
+  const items = fees.items || [];
+  if (!items.length) return null;
   return h('section', { className: 'spot-fees', dataset: { semantic: 'fees' } },
     h('h3', { text: '料金' }),
-    renderFacts(facts, 'spot-fee-facts')
+    h('div', { className: 'spot-fee-list' }, items.map(item =>
+      h('div', { className: 'spot-fee-row', dataset: { semantic: 'fee' } },
+        h('span', { className: 'spot-fee-scope', text: item.scope || '料金' }),
+        h('strong', { className: 'spot-fee-value', text: item.pricing === null ? '料金変動' : item.pricing.label })
+      )
+    ))
   );
 }
 
 function renderUsageDecision(fees, facts = []) {
   const feeNode = renderFees(fees);
   if (!facts.length && !feeNode) return null;
-
+  const feeCount = fees?.items?.length || 0;
+  const density = facts.length + feeCount;
   return h('section', {
-    className: 'spot-hero-detail spot-usage-decision',
-    dataset: { semantic: 'utilization-decision' }
+    className: `spot-usage-decision spot-usage-${density <= 2 ? 'compact' : density <= 5 ? 'standard' : 'expanded'}`,
+    dataset: { semantic: 'utilization-decision', density: density <= 2 ? 'compact' : density <= 5 ? 'standard' : 'expanded' }
   },
     h('h2', { text: '利用判断' }),
-    facts.length
-      ? h('div', { className: 'spot-usage-facts', dataset: { semantic: 'compact-facts' } },
-          renderFacts(facts, 'spot-major-facts')
-        )
-      : null,
+    facts.length ? renderFacts(facts, 'spot-major-facts') : null,
     feeNode
   );
 }
 
 function renderCarousel(images = [], title = '') {
   if (!images.length) return null;
-
   const slides = images.map((image, index) =>
     h('figure', {
       className: 'carousel-slide',
@@ -166,22 +169,21 @@ function renderReview(review) {
   const positives = review.positives || [];
   const cautions = review.cautions || [];
   if (!positives.length && !cautions.length) return null;
-
-  return h('div', { className: 'spot-review', dataset: { semantic: 'review' } },
+  return h('section', { className: 'spot-review', dataset: { semantic: 'review' } },
     h('header', { className: 'spot-review-header' },
-      h('h3', { text: '口コミから見える評価' }),
+      h('h3', { text: '口コミから' }),
       review.checked_label ? h('span', { className: 'spot-review-checked', text: review.checked_label }) : null
     ),
     h('div', { className: 'spot-review-grid' },
       positives.length
-        ? h('section', { className: 'spot-review-positive' },
-            h('h4', { text: 'よく評価されている点' }),
+        ? h('div', { className: 'spot-review-positive' },
+            h('h4', { text: 'よく評価される点' }),
             h('ul', {}, positives.map(item => h('li', { text: item })))
           )
         : null,
       cautions.length
-        ? h('section', { className: 'spot-review-caution' },
-            h('h4', { text: '気をつけたい点' }),
+        ? h('div', { className: 'spot-review-caution' },
+            h('h4', { text: '注意したい点' }),
             h('ul', {}, cautions.map(item => h('li', { text: item })))
           )
         : null
@@ -193,10 +195,11 @@ function renderAppeal(appeal = {}) {
   const highlights = appeal.highlights || [];
   const review = renderReview(appeal.review);
   if (!highlights.length && !review) return null;
-
-  return h('section', { className: 'spot-appeal content-section content-section--roomy', dataset: { semantic: 'appeal' } },
+  return h('section', { className: 'spot-appeal content-section', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このスポットの魅力' }),
-    renderEmphasisList(highlights, { className: 'spot-highlights' }),
+    highlights.length
+      ? h('ul', { className: 'spot-highlight-list' }, highlights.map(item => h('li', { text: item })))
+      : null,
     review
   );
 }
@@ -225,7 +228,6 @@ async function describeRelated(ref, resolver) {
 async function renderRelatedSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const items = await Promise.all(refs.map(ref => describeRelated(ref, resolver)));
-
   return h('section', { className: 'spot-related content-section content-section--roomy', dataset: { semantic: 'related-spots' } },
     h('h2', { text: '関連スポット' }),
     h('div', { className: 'spot-related-grid' },
@@ -254,12 +256,12 @@ export async function renderSpot({ spot, resolver }) {
         h('h1', { text: spot.title }),
         spot.summary ? h('p', { className: 'spot-summary', text: spot.summary }) : null,
         renderChipList(spot.theme_chips, { ariaLabel: 'テーマ', className: 'spot-theme-chips' }),
-        h('div', { className: 'spot-hero-details' },
+        h('div', { className: 'spot-decision-grid' },
           renderAccess(spot.access),
-          renderUsageDecision(spot.fees, spot.hero_facts),
-          renderFacilities(spot.facilities),
-          renderReferences(spot.references)
-        )
+          renderUsageDecision(spot.fees, spot.hero_facts)
+        ),
+        renderReferences(spot.references),
+        renderFacilities(spot.facilities)
       ),
       renderCarousel(spot.images, spot.title)
     ),
