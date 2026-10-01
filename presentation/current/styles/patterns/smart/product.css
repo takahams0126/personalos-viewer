@@ -19,7 +19,7 @@
 
   .plan-navigation [aria-current="page"] {
     background: var(--accent);
-    color: #fff;
+    color: var(--text-inverse);
   }
 
   .entity-kind,
@@ -88,6 +88,82 @@
 
   .emphasis-card::before {
     background: var(--accent);
+  }
+
+  .top-filter-panel {
+    border-color: transparent;
+    background: var(--surface);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .top-type-option span,
+  .top-filter-field input,
+  .top-filter-field select {
+    border-color: var(--line);
+    background: var(--surface-faint);
+  }
+
+  .top-type-option input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .top-type-option input:focus-visible + span,
+  .top-filter-field input:focus,
+  .top-filter-field select:focus {
+    border-color: var(--accent);
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 22%, transparent);
+    outline-offset: 0;
+  }
+
+  .top-result-row {
+    border-color: transparent;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .top-result-row:hover,
+  .top-result-row:focus-visible {
+    border-color: var(--accent-muted);
+    background: var(--surface);
+  }
+
+  .top-result-thumbnail {
+    background: var(--accent-soft);
+  }
+
+  .spot-hero-detail,
+  .spot-review-positive,
+  .spot-review-caution {
+    border-color: transparent;
+    box-shadow: var(--shadow-raised);
+  }
+
+  .spot-hero-detail {
+    background: var(--surface);
+  }
+
+  .spot-review-positive {
+    background: var(--positive-soft);
+  }
+
+  .spot-review-caution {
+    background: var(--caution-soft);
+  }
+
+  .route-occurrence-badge {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .route-occurrence-badge[data-code="required"] {
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .route-hero-spots {
+    border-block-start-color: var(--line);
   }
 
   .route-identity > div,
@@ -166,7 +242,7 @@
   .route-sequence-marker {
     border-color: var(--accent);
     background: var(--accent);
-    color: #fff;
+    color: var(--text-inverse);
     box-shadow: 0 0.3rem 0.9rem color-mix(in srgb, var(--accent) 22%, transparent);
   }
 
@@ -253,7 +329,12 @@
     .day-variant,
     .plan-route > article,
     .route-sequence-body,
-    .action-body {
+    .action-body,
+    .top-filter-panel,
+    .top-result-row,
+    .spot-hero-detail,
+    .spot-review-positive,
+    .spot-review-caution {
       box-shadow: none;
     }
   }
