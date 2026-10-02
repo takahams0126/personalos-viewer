@@ -83,76 +83,114 @@ Card / Row / Grid / Inline / Disclosure / Attention surfaceは `PRODUCT_UI_FOUND
 
 Primary task: catalog discovery.
 
+Desktop composition:
+
 ```text
-Product Shell
-Explorer controls
-Results workspace
+orientation
+
+explorer controls 3 | results 9
 ```
+
+- Explorer controlsはDesktopではscan中の操作railとして扱う。
+- ResultsはPrimary workspace。
+- Mobileではcontrols → resultsのreading orderへ戻す。
 
 ### Spot
 
 Primary task: Spot identity / value / practical decision information.
 
-Reference desktop composition:
+Desktop composition:
 
 ```text
-information 5 / media 7
+Hero
+  identity 5 | media 7
+
+Practical information
+  access 4 | utilization / pricing 8
+  references full width
+
+Appeal / review
+Supporting facilities?
+Related spots
 ```
 
-Semantic order:
+Heroへ可変長の料金・設備情報を押し込まない。
+料金・予約・利用条件等はSemantic structureそのものが伸縮し、runtime density scoringを行わない。
+
+Mobile priority:
 
 ```text
+media
 identity
-summary
-key facts
-location / usage decision
-references / facilities as supporting information
+practical information
 appeal / review
-related spots
+support
 ```
-
-Information volume may change layout density but must not create new Domain meaning.
 
 ### Route
 
 Primary task: ordered spatial experience.
 
 ```text
-lead
-  identity / compact metadata
-  appeal
+Identity / compact metadata
+Appeal lead
 
-workspace
+Workspace
   sequence 4 | map 8
 
-constraints?
+Constraints?
 ```
 
+AppealはIdentity Hero内部の補足ではなく、Workspaceへ導く独立lead Block。
 Sequence and Map share the same explicit baseline order and local selection state.
 Map geometryからorderを推測しない。
+
+Mobile priority:
+
+```text
+Map
+horizontal ordered-stop selector
+supporting condition
+```
 
 ### Plan
 
 Primary task: date-independent trip structure.
 
 ```text
-identity / summary
-composition context
-schedule adjustment?
-days
+Identity / summary
+Composition context
+Schedule adjustment?
+Days
   conceptual Journey
 ```
 
+Composition contextはPlanが参照するRouteとConcretePlanへのnavigation / structure理解を所有する。
+
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
+Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
 
 ### ConcretePlan
 
 Primary task: execution scanability.
 
-Reference desktop grammar:
+Top-level composition:
 
 ```text
-time 2 | journey 7 | support 3
+Identity
+Execution overview
+Schedule adjustment?
+Execution days
+Trip supporting information
+  Fuel | Cost
+```
+
+Execution overviewはPlan/status等のtrip contextと日別WeatherをDesktopで並列表示できる。
+
+Reference Journey grammar:
+
+```text
+time 2 | journey 7 | move/support 3
 ```
 
 Day workspace:
@@ -163,8 +201,10 @@ Execution Package Selector?
 Action Journey
 Route detail?
 Map?
-Supporting trip information
+Day-specific supporting information
 ```
+
+Fuel / CostはExecution Daysの後段にまとめ、Primary execution flowより強く見せない。
 
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
