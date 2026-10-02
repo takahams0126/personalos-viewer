@@ -6,7 +6,7 @@ Updated: 2026-10-02
 
 ## Purpose
 
-Batch 2 applies the Product UI Foundation by semantic grammar rather than by page-local fixes.
+Product UI Foundationをpage-local fixesではなくshared semantic grammarとして適用する。
 
 Every change answers two questions:
 
@@ -33,6 +33,8 @@ context / time → main journey → move → support
 Plan remains conceptual and ConcretePlan remains actual-world execution. The visual grammar is shared; the Domain semantics are not flattened.
 
 Normal journey rows are not Cards. Explicit Route groups, hard boundaries, and material attention may receive stronger treatment.
+
+Plan Route occurrence does not duplicate Route summary / full stop sequence. Route detail remains the Route page owner's responsibility.
 
 ## Map
 
@@ -72,6 +74,81 @@ Schedule adjustment, execution package selection, Day workspace switching, Varia
 
 Controls use low-emphasis surfaces and preserve native semantics (`button`, `select`, `details`, tabs where appropriate).
 
+## Surface bindings
+
+Shared grammarをPageへ適用する最終composition:
+
+### TOP
+
+```text
+orientation
+controls 3 | results 9
+```
+
+### Spot
+
+```text
+identity 5 | media 7
+access 4 | utilization/pricing 8
+references full width
+appeal/review
+facilities?
+related spots
+```
+
+### Route
+
+```text
+identity
+appeal lead
+sequence 4 | map 8
+constraints?
+```
+
+### Plan
+
+```text
+identity
+composition context
+schedule adjustment?
+conceptual journey
+```
+
+### ConcretePlan
+
+```text
+execution overview
+schedule adjustment?
+execution days
+trip support: fuel | cost
+```
+
+Surface-specific grouping / orderingはPage Layout Definitionが所有する。Shared grammar自体へPage固有例外を埋め込まない。
+
+## Responsive priority
+
+Spot mobile:
+
+```text
+Media
+Identity
+Practical information
+```
+
+Route mobile:
+
+```text
+Map
+horizontal ordered-stop selector
+```
+
+ConcretePlan mobile:
+
+```text
+Time + Journey
+Move / Support
+```
+
 ## Ownership
 
 ```text
@@ -84,6 +161,14 @@ patterns/smart/fact.css        → facts / cost / fuel
 patterns/smart/media.css       → carousel / lightbox / footer
 
 layouts/smart/*.css            → spatial composition only
+```
+
+Page-specific composition ownership:
+
+```text
+PAGE_LAYOUT_DEFINITION.md
+presentation/layout-definition-registry.js
+presentation/apply-layout-definition.js
 ```
 
 If a correction does not fit an owner, re-evaluate the root cause before adding a new file.
