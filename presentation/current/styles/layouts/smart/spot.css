@@ -10,20 +10,29 @@
   .spot-hero-copy,
   .spot-carousel { min-width: 0; }
 
-  .spot-carousel {
-    position: sticky;
-    top: var(--space-5);
-  }
+  .spot-carousel { position: sticky; top: var(--space-5); }
+  .spot-decision-grid:empty { display: none; }
 
-  /* Address is usually short; usage/pricing may be arbitrarily richer. */
-  .spot-decision-grid {
+  .spot-practical-information {
     display: grid;
-    grid-template-columns: minmax(10rem, 4fr) minmax(0, 8fr);
-    gap: var(--space-3) var(--space-5);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-4) var(--product-grid-gap);
     align-items: start;
+    padding-block: var(--space-5);
+    border-block: var(--border-width) solid var(--line);
   }
 
-  .spot-decision-grid > :only-child { grid-column: 1 / -1; }
+  .spot-practical-information > [data-semantic="access"] {
+    grid-column: span 4;
+  }
+
+  .spot-practical-information > [data-semantic="utilization-decision"] {
+    grid-column: span 8;
+  }
+
+  .spot-practical-information > [data-semantic="references"] {
+    grid-column: 1 / -1;
+  }
 
   .spot-highlight-list,
   .spot-review-grid {
@@ -36,5 +45,9 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
+  }
+
+  .spot-supporting-information:has(> :only-child) {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
