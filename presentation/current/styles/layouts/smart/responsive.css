@@ -52,12 +52,30 @@
 
     html[data-page-type="top"] [data-layout-block="explorer-controls"] { position: static; }
 
+    /* Mobile switches from the desktop 5/7 workspace to media-first reading order. */
+    .spot-page { display: block; }
+    .spot-hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
     .spot-carousel {
       position: static;
+      grid-column: 1;
       grid-row: 1;
     }
 
-    .spot-hero-copy { grid-row: 2; }
+    .spot-hero-copy {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .spot-practical-information {
+      margin-block: var(--space-5);
+      padding-block: var(--space-4);
+    }
+
     .spot-decision-grid:empty { display: none; }
 
     .spot-practical-information > [data-semantic="access"],
