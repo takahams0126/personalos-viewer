@@ -50,9 +50,7 @@
     .concrete-plan > [data-layout-block="execution-overview"],
     .trip-supporting-information { grid-template-columns: 1fr; }
 
-    html[data-page-type="top"] [data-layout-block="explorer-controls"] {
-      position: static;
-    }
+    html[data-page-type="top"] [data-layout-block="explorer-controls"] { position: static; }
 
     .spot-carousel {
       position: static;
@@ -68,7 +66,6 @@
 
     .route-workspace [data-layout-slot="secondary"] {
       order: -1;
-      min-height: 22rem;
     }
 
     .route-workspace [data-layout-slot="secondary"] .map-canvas { min-height: 22rem; }
@@ -88,9 +85,7 @@
       min-width: 100%;
     }
 
-    .route-workspace .route-sequence-item {
-      flex: 0 0 min(18rem, 78vw);
-    }
+    .route-workspace .route-sequence-item { flex: 0 0 min(18rem, 78vw); }
 
     .schedule-adjustment > h2,
     .schedule-adjustment > .schedule-adjustment-group,
@@ -125,10 +120,7 @@
     .plan-place .plan-item-actions,
     .plan-movement .plan-item-condition { grid-column: 2; }
 
-    .execution-action:not(.route-execution-group) {
-      grid-template-columns: 4.4rem minmax(0, 1fr);
-    }
-
+    .execution-action:not(.route-execution-group) { grid-template-columns: 4.4rem minmax(0, 1fr); }
     .execution-action:not(.route-execution-group) .action-body { grid-template-columns: 1fr; }
 
     .execution-action:not(.route-execution-group) .action-header,
