@@ -1,30 +1,61 @@
 @layer layout {
-  .spot-page { gap: clamp(2.75rem, 4.5vw, 4.5rem); }
-
-  .spot-hero {
-    grid-template-columns: minmax(0, 5fr) minmax(22rem, 7fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
+  .spot-page {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--product-grid-gap);
+    row-gap: clamp(2.75rem, 4.5vw, 4.5rem);
     align-items: start;
   }
 
-  .spot-hero-copy,
-  .spot-carousel { min-width: 0; }
+  .spot-page > * {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
 
-  .spot-carousel { position: sticky; top: var(--space-5); }
+  /* Desktop product workspace: identity and practical facts share the left rail;
+     media remains the visual anchor on the right. */
+  .spot-hero { display: contents; }
+
+  .spot-hero-copy {
+    grid-column: 1 / span 5;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .spot-carousel {
+    grid-column: 6 / -1;
+    grid-row: 1 / span 2;
+    min-width: 0;
+    position: sticky;
+    top: var(--space-5);
+  }
+
   .spot-decision-grid:empty { display: none; }
 
   .spot-practical-information {
+    grid-column: 1 / span 5;
+    grid-row: 2;
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-4) var(--product-grid-gap);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
     align-items: start;
-    padding-block: var(--space-5);
+    align-self: start;
+    padding-block: var(--space-4);
     border-block: var(--border-width) solid var(--line);
   }
 
-  .spot-practical-information > [data-semantic="access"] { grid-column: span 4; }
-  .spot-practical-information > [data-semantic="utilization-decision"] { grid-column: span 8; }
-  .spot-practical-information > [data-semantic="references"] { grid-column: 1 / -1; }
+  .spot-practical-information > [data-semantic="access"],
+  .spot-practical-information > [data-semantic="utilization-decision"],
+  .spot-practical-information > [data-semantic="references"] {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  /* Narrow left-rail pricing is more legible as label/value rows that may stack. */
+  .spot-practical-information .spot-fee-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
 
   .spot-highlight-list,
   .spot-review-grid {
