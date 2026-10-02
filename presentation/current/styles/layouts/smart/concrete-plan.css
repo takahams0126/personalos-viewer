@@ -128,6 +128,24 @@
     min-width: 0;
   }
 
+  /* Route internals stay collapsed in Actions view, except operational boundary events. */
+  .day-workspace[data-active-view="actions"] .route-execution-actions:has(.action-constraints) {
+    display: grid;
+    margin: var(--space-2) 0 0;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action {
+    display: none;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints) {
+    display: grid;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints)::after {
+    display: none;
+  }
+
   .trip-supporting-information {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
