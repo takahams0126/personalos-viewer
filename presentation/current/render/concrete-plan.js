@@ -459,16 +459,6 @@ function weatherTemperatureRange(weatherDay) {
   return minimum || maximum || '';
 }
 
-function compactWeatherText(weatherDay) {
-  if (!weatherDay) return '';
-  return [
-    weatherDay.condition?.label,
-    weatherTemperatureRange(weatherDay),
-    weatherDay.precipitation_probability_label && `降水 ${weatherDay.precipitation_probability_label}`,
-    weatherDay.precipitation_amount_label && `${weatherDay.precipitation_amount_label}`
-  ].filter(Boolean).join(' ・ ');
-}
-
 function renderWeather(weatherDay) {
   if (!weatherDay) return null;
   const summaryFacts = [
@@ -505,89 +495,6 @@ function renderWeather(weatherDay) {
   );
 }
 
-function reorderCandidates(day, sourcePlan) {
-  const groups = sourcePlan?.reorder_groups || [];
-  const group = groups.find(item => (item.day_ordinals || []).includes(day.source_plan_day_ordinal));
-  if (!group) return [];
-  return (group.day_ordinals || [])
-    .map(ordinal => sourcePlan.days?.find(item => item.ordinal === ordinal))
-    .filter(Boolean);
-}
-
-function renderDayAssignment(day, sourcePlan) {
-  const current = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
-  const candidates = reorderCandidates(day, sourcePlan);
-
-  if (candidates.length <= 1) {
-    return h('section', { className: 'execution-day-assignment', dataset: { semantic: 'execution-day-assignment' } },
-      h('p', { className: 'execution-slot', text: `${day.date} ${day.weekday_label || ''}`.trim() }),
-      h('p', { className: 'execution-assigned-day' },
-        h('span', { text: '実施内容 ' }),
-        h('strong', { text: current ? `Plan Day ${current.ordinal} ${current.title}` : `Plan Day ${day.source_plan_day_ordinal}` })
-      )
-    );
-  }
-
-  const note = h('p', {
-    className: 'execution-reorder-note',
-    text: '実施日・天気はこの日付に固定。現在の実行内容を変更するには再具体化が必要です。'
-  });
-  const select = h('select', {
-    className: 'execution-day-assignment-select',
-    attrs: { 'aria-label': `${day.date} の実施内容` },
-    dataset: { semantic: 'execution-day-assignment-control', slot: day.ordinal }
-  }, candidates.map(candidate =>
-    h('option', {
-      attrs: { value: candidate.ordinal },
-      text: `Plan Day ${candidate.ordinal} ${candidate.title}`
-    })
-  ));
-  select.value = String(day.source_plan_day_ordinal);
-  select.addEventListener('change', () => {
-    const selected = sourcePlan?.days?.find(item => item.ordinal === Number(select.value));
-    if (!selected || selected.ordinal === day.source_plan_day_ordinal) {
-      note.textContent = '実施日・天気はこの日付に固定。現在の実行内容を表示しています。';
-      return;
-    }
-    note.textContent = `Plan Day ${selected.ordinal} ${selected.title} をこの日に割り当てる場合は、交通・営業時間・制約・Mapをこの日付で再具体化します。現在表示中のActionは変更しません。`;
-  });
-
-  return h('section', { className: 'execution-day-assignment', dataset: { semantic: 'execution-day-assignment' } },
-    h('p', { className: 'execution-slot', text: `${day.date} ${day.weekday_label || ''}`.trim() }),
-    h('label', { className: 'execution-assignment-control' },
-      h('span', { text: '実施内容 ' }),
-      select
-    ),
-    note
-  );
-}
-
-function renderExecutionReorder(concretePlan, sourcePlan) {
-  const reorderableDays = (concretePlan.days || []).filter(
-    day => reorderCandidates(day, sourcePlan).length > 1
-  );
-  if (!reorderableDays.length) return null;
-
-  return h('section', { className: 'plan-reorder concrete-plan-reorder', dataset: { semantic: 'day-reorder' } },
-    h('h2', { text: '日程調整' }),
-    h('p', { text: '実施日は固定したまま、各日へ割り当てるPlan Day contentを確認・選択します。採用時は日付依存情報を再具体化します。' }),
-    h('div', { className: 'plan-day-assignment-grid' },
-      reorderableDays.map(day => renderDayAssignment(day, sourcePlan))
-    )
-  );
-}
-
-function renderDaySummary(day, sourceDay, weatherDay) {
-  return h('summary', { className: 'concrete-day-summary' },
-    h('span', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
-    h('span', { className: 'concrete-day-date', text: `${day.date} ${day.weekday_label || ''}`.trim() }),
-    compactWeatherText(weatherDay)
-      ? h('span', { className: 'concrete-day-weather', dataset: { semantic: 'compact-weather' }, text: compactWeatherText(weatherDay) })
-      : null,
-    h('span', { className: 'plan-day-title', text: sourceDay?.title || `Plan Day ${day.source_plan_day_ordinal}` })
-  );
-}
-
 function dayFuelSuggestions(fuelEvents, ordinal) {
   return (fuelEvents || []).filter(event =>
     event.day_ordinal === ordinal &&
@@ -612,22 +519,61 @@ async function renderDayFuelSuggestions(events, resolver) {
   );
 }
 
-async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault, fuelEvents) {
+function dayExecutionWindow(day) {
+  const actions = [...(day.actions || [])].sort((a, b) => a.order - b.order);
+  const first = actions.find(action => action.arrival_label || action.departure_label);
+  const last = [...actions].reverse().find(action => action.departure_label || action.arrival_label);
+  const start = day.start_time_label || first?.arrival_label || first?.departure_label || '';
+  const end = last?.departure_label || last?.arrival_label || '';
+  if (!start && !end) return '';
+  if (start && end && start !== end) return `${start} → ${end}`;
+  return start || end;
+}
+
+function dayHasTimeConstraint(day) {
+  return (day.actions || []).some(action => action.time_constraints?.length);
+}
+
+function renderDayContext(day, sourceDay) {
+  const window = dayExecutionWindow(day);
+  const hasConstraint = dayHasTimeConstraint(day);
+  return h('header', { className: 'concrete-day-context', dataset: { semantic: 'day-context' } },
+    h('p', {
+      className: 'concrete-day-kicker',
+      text: [`Day ${day.ordinal}`, day.date, day.weekday_label].filter(Boolean).join(' · ')
+    }),
+    h('h2', { text: sourceDay?.title || `Day ${day.ordinal}` }),
+    sourceDay?.summary ? h('p', { className: 'day-summary', text: sourceDay.summary }) : null,
+    h('div', { className: 'concrete-day-context-facts' },
+      window ? h('p', { className: 'concrete-day-window', text: window }) : null,
+      hasConstraint
+        ? h('p', { className: 'concrete-day-constraint-indicator', text: '時刻制約あり' })
+        : null
+    )
+  );
+}
+
+async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, fuelEvents) {
   const sourceDay = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
   const weatherDay = concretePlan.weather?.days?.find(item => item.day === day.ordinal);
   const variants = await Promise.all((day.variants || []).map(variant => renderVariant(variant, resolver, artifactLoader)));
   const fuelSuggestions = dayFuelSuggestions(fuelEvents, day.ordinal);
+  const title = sourceDay?.title || `Day ${day.ordinal}`;
+  const hasConstraint = dayHasTimeConstraint(day);
 
-  return h('details', {
-    className: 'plan-day-disclosure concrete-day-disclosure',
-    dataset: { semantic: 'execution-day', day: day.ordinal, sourceDay: day.source_plan_day_ordinal },
-    attrs: { open: openByDefault }
+  return h('section', {
+    className: 'concrete-day-panel',
+    dataset: {
+      semantic: 'execution-day',
+      day: day.ordinal,
+      sourceDay: day.source_plan_day_ordinal,
+      date: `${day.date || ''} ${day.weekday_label || ''}`.trim(),
+      dayTitle: title,
+      hasConstraint: hasConstraint ? 'true' : 'false'
+    }
   },
-    renderDaySummary(day, sourceDay, weatherDay),
-    h('div', { className: 'plan-day-body concrete-day-body' },
-      h('h2', { text: sourceDay?.title || `Day ${day.ordinal}` }),
-      sourceDay?.summary ? h('p', { className: 'day-summary', text: sourceDay.summary }) : null,
-      day.start_time_label ? textRow('開始', day.start_time_label) : null,
+    h('div', { className: 'concrete-day-body' },
+      renderDayContext(day, sourceDay),
       renderWeather(weatherDay),
       await renderDayFuelSuggestions(fuelSuggestions, resolver),
       await renderExecutionSequence(day.actions, day.routes, resolver, fuelEvents),
@@ -642,30 +588,6 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
   );
 }
 
-function renderTripWeatherOverview(plan) {
-  const weatherDays = plan.weather?.days || [];
-  if (!weatherDays.length) return null;
-  const dayByOrdinal = new Map((plan.days || []).map(day => [day.ordinal, day]));
-
-  return h('section', { className: 'trip-weather-overview', dataset: { semantic: 'trip-weather-overview' } },
-    h('h3', { text: '日別天気' }),
-    h('ol', { className: 'trip-weather-days' }, weatherDays.map(weatherDay => {
-      const day = dayByOrdinal.get(weatherDay.day);
-      return h('li', { className: 'trip-weather-day', dataset: { semantic: 'trip-weather-day', day: weatherDay.day } },
-        h('div', { className: 'trip-weather-day-heading' },
-          h('strong', { text: day ? `Day ${day.ordinal} ${day.date} ${day.weekday_label || ''}`.trim() : `Day ${weatherDay.day}` }),
-          weatherDay.condition?.label ? h('span', { className: 'trip-weather-condition', text: weatherDay.condition.label }) : null
-        ),
-        h('p', { text: [
-          weatherTemperatureRange(weatherDay) && `気温 ${weatherTemperatureRange(weatherDay)}`,
-          weatherDay.precipitation_probability_label && `降水確率 ${weatherDay.precipitation_probability_label}`,
-          weatherDay.precipitation_amount_label && `降水量 ${weatherDay.precipitation_amount_label}`
-        ].filter(Boolean).join(' ・ ') })
-      );
-    }))
-  );
-}
-
 function renderExecutionOverview(plan, sourcePlan) {
   const status = plan.status;
   return h('section', { className: 'execution-overview', dataset: { semantic: 'execution-overview' } },
@@ -675,7 +597,6 @@ function renderExecutionOverview(plan, sourcePlan) {
     status?.state?.label ? textRow('状態', status.state.label) : null,
     plan.weather?.state?.label ? textRow('天気情報', plan.weather.state.label) : null,
     plan.weather?.notice ? h('p', { className: 'weather-notice', text: plan.weather.notice }) : null,
-    renderTripWeatherOverview(plan),
     status?.attention?.length
       ? h('section', { className: 'execution-attention', dataset: { semantic: 'execution-attention' } },
           h('h3', { text: '確認事項' }),
@@ -756,10 +677,9 @@ function renderExecutionNavigation(concretePlan) {
 
 export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, artifactLoader }) {
   const orderedDays = [...(concretePlan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
-  const openByDefault = orderedDays.length === 1;
   const fuelEvents = concretePlan.fuel?.events || [];
   const dayNodes = await Promise.all(
-    orderedDays.map(day => renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, openByDefault, fuelEvents))
+    orderedDays.map(day => renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader, fuelEvents))
   );
   const fuelSummary = await renderFuelSummary(concretePlan.fuel, resolver);
 
@@ -773,8 +693,7 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
       h('h1', { text: concretePlan.title })
     ),
     renderExecutionOverview(concretePlan, sourcePlan),
-    renderExecutionReorder(concretePlan, sourcePlan),
-    h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
+    h('section', { className: 'plan-days concrete-plan-days', dataset: { semantic: 'days' } },
       h('h2', { text: '日程' }),
       dayNodes
     ),
