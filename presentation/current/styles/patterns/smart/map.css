@@ -1,26 +1,31 @@
 @layer patterns {
   .route-sequence-item {
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     outline: none;
     transition: background-color .14s ease, opacity .14s ease;
   }
 
   .route-sequence-item:focus-visible {
-    outline: .16rem solid color-mix(in srgb, var(--focus-ring) 34%, transparent);
+    outline: .14rem solid color-mix(in srgb, var(--focus-ring) 40%, transparent);
     outline-offset: .08rem;
   }
 
-  .route-sequence-item[data-map-active="true"] .route-sequence-marker {
-    transform: scale(1.08);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  .route-sequence-item[data-map-active="true"] {
+    background: color-mix(in srgb, var(--accent-soft) 58%, transparent);
   }
 
-  .route-sequence-item[data-map-active="true"] .route-sequence-body {
+  .route-sequence-item[data-map-active="true"] .route-sequence-marker {
+    transform: scale(1.06);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+
+  .route-sequence-item[data-map-selected="true"] {
     background: var(--accent-soft);
   }
 
   .route-sequence-item[data-map-selected="true"] .route-sequence-body {
-    box-shadow: inset .2rem 0 0 var(--accent);
+    box-shadow: inset .18rem 0 0 var(--accent);
   }
 
   .map-popup {
