@@ -25,13 +25,8 @@
     padding-inline-end: var(--space-1);
   }
 
-  .route-workspace [data-layout-slot="secondary"] {
-    min-height: clamp(30rem, 52vw, 40rem);
-  }
-
-  .route-workspace [data-layout-slot="secondary"] .map-view,
   .route-workspace [data-layout-slot="secondary"] .map-canvas {
-    min-height: inherit;
+    min-height: clamp(30rem, 52vw, 40rem);
   }
 
   .route-workspace .route-map-section,
