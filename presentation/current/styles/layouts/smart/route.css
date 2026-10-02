@@ -1,12 +1,31 @@
 @layer layout {
-  .route-page { gap: clamp(2.75rem, 4.5vw, 4.5rem); }
+  .route-page {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2.75rem, 4.5vw, 4.5rem) var(--product-grid-gap);
+    align-items: start;
+  }
+
+  .route-page > .route-hero,
+  .route-page > [data-layout-block="identity"],
+  .route-page > .route-appeal,
+  .route-page > [data-layout-block="appeal"],
+  .route-page > .route-workspace,
+  .route-page > .route-constraints,
+  .route-page > [data-layout-block="supporting-conditions"] {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
   .route-hero-copy { max-width: 58rem; }
 
-  .route-page > [data-layout-block="appeal"] {
+  .route-page > [data-layout-block="appeal"],
+  .route-page > .route-appeal {
     max-width: 60rem;
     margin-block: 0;
   }
 
+  /* Normal path: layout applier has grouped sequence and map. */
   .route-workspace {
     display: grid;
     grid-template-columns: minmax(15rem, 4fr) minmax(0, 8fr);
@@ -29,6 +48,30 @@
     min-height: clamp(30rem, 52vw, 40rem);
   }
 
+  /* Runtime fallback: semantic nodes are direct Route children when the applier root is #app. */
+  .route-page > .route-sequence-section[data-semantic="sequence"] {
+    grid-column: 1 / span 4;
+    min-width: 0;
+    max-height: clamp(30rem, 52vw, 40rem);
+    overflow: auto;
+    margin-block: 0;
+    padding-block-start: 0;
+    padding-inline-end: var(--space-1);
+    border-block-start: 0;
+  }
+
+  .route-page > .route-map-section[data-semantic="conceptual-map"] {
+    grid-column: 5 / -1;
+    min-width: 0;
+    margin-block: 0;
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+
+  .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas {
+    min-height: clamp(30rem, 52vw, 40rem);
+  }
+
   .route-workspace .route-map-section,
   .route-workspace .route-sequence-section {
     margin-block: 0;
@@ -36,12 +79,14 @@
     border-block-start: 0;
   }
 
-  .route-workspace .route-sequence {
+  .route-workspace .route-sequence,
+  .route-page > .route-sequence-section .route-sequence {
     display: grid;
     gap: var(--space-1);
   }
 
-  .route-workspace .route-sequence-body {
+  .route-workspace .route-sequence-body,
+  .route-page > .route-sequence-section .route-sequence-body {
     padding: var(--space-2) var(--space-3);
     box-shadow: none;
   }
