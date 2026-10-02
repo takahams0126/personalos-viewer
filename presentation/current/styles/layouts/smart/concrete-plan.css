@@ -40,7 +40,7 @@
 
   .concrete-plan-reorder > h2 {
     grid-column: 1;
-    margin: .15rem 0 0;
+    margin: .1rem 0 0;
   }
 
   .concrete-plan-reorder > p,
@@ -51,18 +51,20 @@
 
   .concrete-plan-reorder > p {
     margin: 0 0 var(--space-1);
-    font-size: var(--type-meta);
+    max-width: 58rem;
+    font-size: var(--type-caption);
   }
 
   .concrete-plan-reorder .plan-day-assignment-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-1) var(--space-3);
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    gap: var(--space-1) var(--space-4);
+    justify-content: start;
   }
 
   .concrete-plan-reorder .execution-day-assignment {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: max-content minmax(12rem, 20rem);
     gap: var(--space-1) var(--space-2);
     align-items: center;
     min-width: 0;
@@ -72,11 +74,12 @@
   .concrete-plan-reorder .execution-slot,
   .concrete-plan-reorder .execution-assignment-control,
   .concrete-plan-reorder .execution-day-assignment-select {
-    font-size: var(--type-meta);
+    font-size: var(--type-caption);
   }
 
   .concrete-plan-reorder .execution-day-assignment-select {
-    height: 1.9rem;
+    width: min(100%, 20rem);
+    height: 1.95rem;
     padding-block: 0;
   }
 
@@ -140,4 +143,9 @@
   }
 
   .trip-supporting-information[data-support-count="1"] { grid-template-columns: minmax(0, 1fr); }
+
+  @media (max-width: 64rem) {
+    .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
+    .concrete-plan-reorder .execution-day-assignment { grid-template-columns: max-content minmax(0, 1fr); }
+  }
 }

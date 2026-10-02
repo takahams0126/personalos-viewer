@@ -47,14 +47,28 @@ map point preview/select
 ```
 
 Selection uses explicit artifact/sequence order only. Geometry never creates order or Domain meaning.
+Route sequence is a compact journey index, not a collection of independent Cards. Normal rows are visually quiet; active/selected state is emphasized through the shared Map selection state.
 
 ConcretePlan segment color uses explicit execution leg identity. Successful Maps rendering suppresses duplicated fallback lists.
 
 ## Weather
 
-Weather uses icon-first daily state and a horizontal 3-hour comparison matrix. One disclosure reveals all metrics across the same time axis.
+Trip Weather and hourly detail have separate roles.
 
-The Day view may show an explicit baseline execution window derived only from already-published Action time labels. The Viewer does not forecast, aggregate, or evaluate Weather.
+```text
+Trip Weather
+→ peer Day tabs for whole-trip comparison
+
+Selected Day
+→ 3-hour icon timeline
+→ one disclosure reveals temperature / precipitation / wind metrics
+```
+
+Meteocons are local Viewer assets. Runtime CDN dependency is not part of the Weather grammar.
+
+Execution Day summaries may keep one compact headline Weather indicator. A second full Day Weather block is not repeated inside each Day body.
+
+The selected Day's hourly view may show an explicit baseline execution window derived only from already-published Action time labels. The Viewer does not forecast, aggregate, or evaluate Weather.
 
 ## Entity / Fact
 
@@ -63,6 +77,7 @@ The Day view may show an explicit baseline execution window derived only from al
 - Comparable facts are rows/grids.
 - Information volume grows naturally; the Viewer does not score content into arbitrary compact/standard/expanded classes.
 - Route hero Spot references are compact context, not duplicate Spot cards.
+- Fuel / Cost and other dense comparable support use structured rows/table-like presentation rather than Card collections.
 
 ## Media
 
@@ -70,9 +85,32 @@ Carousel and Lightbox controls use local inline SVG geometry, not external SVG a
 
 ## Control / Disclosure
 
-Schedule adjustment, execution package selection, Day workspace switching, Variants, and secondary details are controls—not primary content blocks.
+Controls are intentionally weaker than Product content.
 
-Controls use low-emphasis surfaces and preserve native semantics (`button`, `select`, `details`, tabs where appropriate).
+```text
+Tab / Switch rail
+→ switch peer content panels at the same hierarchy
+
+Select
+→ choose an assignment/value from alternatives
+
+Disclosure
+→ reveal secondary detail without changing peer context
+
+Link
+→ navigate to another Entity
+```
+
+Shared switch-rail family applies to:
+- Day Workspace: 行動順 / ルート詳細 / マップ
+- Execution Package: baseline / explicit Variant
+- Trip Weather: Day 1 ... Day N
+
+The visual language is shared, while hierarchy and Domain meaning stay distinct.
+
+Schedule adjustment is not a Tab. It remains a compact Select-based operation control.
+
+Controls preserve native semantics (`button`, `select`, `details`, ARIA tabs where appropriate), keyboard access, focus visibility, and active state.
 
 ## Surface bindings
 
@@ -89,19 +127,20 @@ controls 3 | results 9
 
 ```text
 identity 5 | media 7
-access 4 | utilization/pricing 8
-references full width
-appeal/review
+practical information in the identity rail
+appeal/review after the complete hero workspace
 facilities?
 related spots
 ```
+
+Desktop Media does not overlap later content. Mobile priority remains Media → Identity → Practical information.
 
 ### Route
 
 ```text
 identity
 appeal lead
-sequence 4 | map 8
+journey index 4 | map 8
 constraints?
 ```
 
@@ -110,7 +149,7 @@ constraints?
 ```text
 identity
 composition context
-schedule adjustment?
+schedule adjustment?   # compact Select control
 conceptual journey
 ```
 
@@ -118,7 +157,8 @@ conceptual journey
 
 ```text
 execution overview
-schedule adjustment?
+trip weather tabs + selected hourly detail
+schedule adjustment?   # compact Select control
 execution days
 trip support: fuel | cost
 ```
@@ -145,15 +185,18 @@ horizontal ordered-stop selector
 ConcretePlan mobile:
 
 ```text
+Trip weather tab strip
 Time + Journey
 Move / Support
 ```
+
+Switch rails may horizontally scroll when all peer choices cannot fit without shrinking labels below useful readability.
 
 ## Ownership
 
 ```text
 patterns/smart/navigation.css  → navigation / relation navigation
-patterns/smart/journey.css     → journey / controls
+patterns/smart/journey.css     → journey / controls / switch rails
 patterns/smart/map.css         → map / map-linked selection
 patterns/smart/weather.css     → weather
 patterns/smart/entity.css      → entity hierarchy / appeal / review

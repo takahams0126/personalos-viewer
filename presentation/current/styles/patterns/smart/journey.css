@@ -22,9 +22,12 @@
 
   .schedule-adjustment-select,
   .concrete-plan-reorder .execution-day-assignment-select {
-    width: 100%;
+    width: min(100%, 22rem);
     min-width: 0;
-    height: 2.2rem;
+    height: 1.95rem;
+    padding: 0 .55rem;
+    font-size: var(--type-caption);
+    line-height: 1.2;
   }
 
   .concrete-plan-reorder > p,
@@ -32,8 +35,8 @@
   .schedule-adjustment-note {
     margin: 0;
     color: var(--muted);
-    font-size: var(--type-meta);
-    line-height: 1.45;
+    font-size: var(--type-caption);
+    line-height: 1.4;
   }
 
   .concrete-plan > .plan-navigation { display: none; }
@@ -197,53 +200,71 @@
     font-weight: var(--font-weight-strong);
   }
 
-  /* Execution package and view switchers are controls, not content cards. */
+  /* One switch-rail family for package choice and workspace views. */
   .execution-package-selector { margin-block: var(--space-5) var(--space-3); }
-  .execution-package-selector > h3 { margin-block: 0 var(--space-2); font-size: var(--type-control-label); color: var(--muted); }
-  .execution-package-options { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .execution-package-option {
-    appearance: none;
-    border: var(--border-width) solid var(--line-interactive);
-    border-radius: var(--radius-pill);
-    padding: .35rem .75rem;
-    background: transparent;
-    color: var(--text-soft);
-    font: inherit;
-    font-size: var(--type-meta);
-    font-weight: var(--font-weight-strong);
-    cursor: pointer;
+  .execution-package-selector > h3 {
+    margin-block: 0 var(--space-1);
+    font-size: var(--type-caption);
+    color: var(--muted);
   }
-  .execution-package-option:hover,
-  .execution-package-option:focus-visible { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
-  .execution-package-option[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--text-inverse); }
-  .execution-package-note { margin-block: var(--space-2) 0; color: var(--muted); font-size: var(--type-meta); }
-  .execution-packages > [hidden] { display: none; }
 
-  .day-workspace { margin-block: var(--space-5); }
+  .execution-package-options,
   .day-workspace-tabs {
     display: flex;
-    gap: var(--space-1);
+    gap: 0;
     overflow-x: auto;
     border-block-end: var(--border-width) solid var(--line);
     scrollbar-width: thin;
   }
+
+  .execution-package-option,
   .day-workspace-tab {
     flex: 0 0 auto;
     appearance: none;
+    min-height: 2.1rem;
+    margin-block-end: calc(-1 * var(--border-width));
+    padding: .35rem .7rem;
     border: 0;
     border-block-end: .2rem solid transparent;
-    margin-block-end: calc(-1 * var(--border-width));
-    padding: var(--space-2) var(--space-3);
+    border-radius: 0;
     background: transparent;
     color: var(--muted);
     font: inherit;
-    font-size: var(--type-meta);
+    font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);
     cursor: pointer;
   }
+
+  .execution-package-option:hover,
+  .execution-package-option:focus-visible,
   .day-workspace-tab:hover,
-  .day-workspace-tab:focus-visible { background: var(--surface-soft); color: var(--text); }
-  .day-workspace-tab[aria-selected="true"] { border-block-end-color: var(--accent); color: var(--accent-strong); }
+  .day-workspace-tab:focus-visible {
+    background: var(--surface-soft);
+    color: var(--text);
+    outline: none;
+  }
+
+  .execution-package-option:focus-visible,
+  .day-workspace-tab:focus-visible {
+    box-shadow: inset 0 0 0 .12rem color-mix(in srgb, var(--focus-ring) 45%, transparent);
+  }
+
+  .execution-package-option[aria-pressed="true"],
+  .day-workspace-tab[aria-selected="true"] {
+    border-block-end-color: var(--accent);
+    background: color-mix(in srgb, var(--accent-soft) 45%, transparent);
+    color: var(--accent-strong);
+  }
+
+  .execution-package-note {
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+  }
+
+  .execution-packages > [hidden] { display: none; }
+
+  .day-workspace { margin-block: var(--space-5); }
   .day-workspace-panel { padding-block-start: var(--space-3); }
   .day-workspace-panel > [hidden] { display: none; }
   .route-execution-time-axis { display: none; }
