@@ -56,6 +56,11 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           slots: Object.freeze({ primary: Object.freeze(['spot-hero-copy']), secondary: Object.freeze(['image-carousel']) }),
           narrowView: VIEW.STACK
         }),
+        Object.freeze({
+          id: 'practical-information',
+          view: VIEW.GRID,
+          semantics: Object.freeze(['access', 'utilization-decision', 'references'])
+        }),
         Object.freeze({ id: 'appeal-review', sourceSemantic: 'appeal', view: VIEW.STACK }),
         Object.freeze({ id: 'supporting-information', view: VIEW.GRID, semantics: Object.freeze(['facilities']) }),
         Object.freeze({ id: 'related-spots', sourceSemantic: 'related-spots', view: VIEW.GRID })
@@ -78,10 +83,12 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
     plan: Object.freeze({
       id: 'plan-content-v1',
       blocks: Object.freeze([
-        Object.freeze({ id: 'identity', view: VIEW.STACK }),
-        Object.freeze({ id: 'day-reorder', view: VIEW.STACK, optional: true }),
+        Object.freeze({ id: 'identity', sourceSemantic: 'plan-overview', view: VIEW.STACK }),
+        Object.freeze({ id: 'composition-context', sourceSemantic: 'plan-composition', view: VIEW.STRUCTURED_LIST }),
+        Object.freeze({ id: 'day-reorder', sourceSemantic: 'day-reorder', view: VIEW.STACK, optional: true }),
         Object.freeze({
           id: 'days',
+          sourceSemantic: 'days',
           view: VIEW.DISCLOSURE,
           day: Object.freeze({
             context: VIEW.STACK,
@@ -100,11 +107,11 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
     concrete_plan: Object.freeze({
       id: 'concrete-plan-content-v1',
       blocks: Object.freeze([
-        Object.freeze({ id: 'execution-overview', view: VIEW.STACK }),
-        Object.freeze({ id: 'decision-summary', view: VIEW.STACK }),
-        Object.freeze({ id: 'day-reorder', view: VIEW.STACK, optional: true }),
+        Object.freeze({ id: 'execution-overview', sourceSemantic: 'execution-overview', view: VIEW.GRID }),
+        Object.freeze({ id: 'day-reorder', sourceSemantic: 'day-reorder', view: VIEW.STACK, optional: true }),
         Object.freeze({
           id: 'execution-days',
+          sourceSemantic: 'days',
           view: VIEW.DISCLOSURE,
           day: Object.freeze({
             context: VIEW.STACK,
@@ -131,8 +138,12 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
             supporting: Object.freeze({ view: VIEW.STACK, semantics: Object.freeze(['fuel-suggestions']) })
           })
         }),
-        Object.freeze({ id: 'fuel', view: VIEW.STRUCTURED_LIST, optional: true }),
-        Object.freeze({ id: 'cost', view: VIEW.STRUCTURED_LIST, optional: true })
+        Object.freeze({
+          id: 'trip-supporting-information',
+          view: VIEW.GRID,
+          semantics: Object.freeze(['fuel', 'cost']),
+          optional: true
+        })
       ])
     })
   })
