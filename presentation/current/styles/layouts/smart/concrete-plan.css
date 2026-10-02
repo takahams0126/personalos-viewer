@@ -88,26 +88,29 @@
 
   .concrete-plan > [data-layout-block="execution-days"] { margin-block-start: var(--space-6); }
 
+  /* Execution Timeline: compact Event + connector, not card + move-column. */
   .execution-action:not(.route-execution-group) {
-    grid-template-columns: minmax(4.75rem, 2fr) minmax(0, 10fr);
+    grid-template-columns: minmax(3.75rem, max-content) minmax(0, 1fr);
     gap: 0 var(--space-2);
+  }
+
+  .execution-action:not(.route-execution-group) .action-time-axis {
+    padding-block-start: .5rem;
+    font-size: var(--type-caption);
   }
 
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
-    grid-template-columns: minmax(12rem, 7fr) minmax(10rem, 3fr) minmax(9rem, 2fr);
-    gap: var(--space-2) var(--space-3);
+    grid-template-columns: minmax(0, 7fr) minmax(11rem, 5fr);
+    gap: var(--space-1) var(--space-3);
     align-items: start;
-    padding: var(--space-2) 0;
+    margin-block-end: 0;
+    padding: .42rem 0 .5rem;
   }
 
-  .execution-action:not(.route-execution-group) .action-header { grid-column: 1; min-width: 0; }
-
-  .execution-action:not(.route-execution-group) .next-move {
-    grid-column: 2;
-    grid-row: 1 / span 6;
+  .execution-action:not(.route-execution-group) .action-header {
+    grid-column: 1;
     min-width: 0;
-    padding: 0 var(--space-3);
   }
 
   .execution-action:not(.route-execution-group) .action-stay,
@@ -115,9 +118,158 @@
   .execution-action:not(.route-execution-group) .action-facilities,
   .execution-action:not(.route-execution-group) .action-constraints,
   .execution-action:not(.route-execution-group) .action-attention {
-    grid-column: 3;
+    grid-column: 2;
     margin: 0;
     min-width: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  /* Supporting facts stay scan-friendly and visually subordinate to Event / Move / Constraint. */
+  .execution-action:not(.route-execution-group) .action-heading > .action-purpose,
+  .execution-action:not(.route-execution-group) .action-heading > .action-inclusion {
+    display: inline;
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    line-height: 1.35;
+  }
+
+  .execution-action:not(.route-execution-group) .action-heading > .action-inclusion::before {
+    content: ' · ';
+  }
+
+  .execution-action:not(.route-execution-group) .action-stay {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    align-items: baseline;
+    color: var(--muted);
+    font-size: var(--type-caption);
+  }
+
+  .execution-action:not(.route-execution-group) .action-stay .semantic-row,
+  .execution-action:not(.route-execution-group) .action-stay.semantic-row {
+    display: inline-flex;
+    gap: .3rem;
+    margin: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .action-stay .semantic-label,
+  .execution-action:not(.route-execution-group) .action-stay > .semantic-label {
+    color: var(--muted);
+  }
+
+  .execution-action:not(.route-execution-group) .action-todos > h5,
+  .execution-action:not(.route-execution-group) .action-facilities > h5 {
+    display: none;
+  }
+
+  .execution-action:not(.route-execution-group) .action-todos ul,
+  .execution-action:not(.route-execution-group) .action-facilities ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .execution-action:not(.route-execution-group) .action-todos li {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .2rem .35rem;
+    align-items: baseline;
+    min-width: 0;
+    color: var(--text-soft);
+    font-size: var(--type-caption);
+  }
+
+  .execution-action:not(.route-execution-group) .action-todos li::before {
+    content: '✓';
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .execution-action:not(.route-execution-group) .todo-duration {
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .execution-action:not(.route-execution-group) .action-facilities li {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: .15rem .35rem;
+    align-items: baseline;
+    min-width: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+  }
+
+  .execution-action:not(.route-execution-group) .action-facilities li > strong {
+    color: var(--text-soft);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .execution-action:not(.route-execution-group) .action-facilities li > p {
+    margin: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .action-attention ul {
+    margin: 0;
+    padding-inline-start: 1rem;
+  }
+
+  /* Route is one journey event in Actions view; route internals belong to Route detail view. */
+  .day-workspace[data-active-view="actions"] .route-execution-body {
+    margin-block: .35rem;
+    padding: .55rem .75rem;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-summary {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: .1rem .55rem;
+    align-items: baseline;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-summary > .route-execution-label {
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-summary > h4 {
+    grid-row: 1;
+    margin: 0;
+    font-size: var(--type-entity-title);
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-identity,
+  .day-workspace[data-active-view="actions"] .route-execution-endpoints {
+    grid-column: 2;
+    margin: 0;
+    font-size: var(--type-caption);
+  }
+
+  /* Route internals stay collapsed in Actions view, except operational boundary events. */
+  .day-workspace[data-active-view="actions"] .route-execution-actions:has(.action-constraints) {
+    display: grid;
+    margin: var(--space-2) 0 0;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action {
+    display: none;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints) {
+    display: grid;
+  }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints)::after {
+    display: none;
   }
 
   .trip-supporting-information {
@@ -147,5 +299,17 @@
   @media (max-width: 64rem) {
     .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
     .concrete-plan-reorder .execution-day-assignment { grid-template-columns: max-content minmax(0, 1fr); }
+
+    .execution-action:not(.route-execution-group) .action-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .execution-action:not(.route-execution-group) .action-stay,
+    .execution-action:not(.route-execution-group) .action-todos,
+    .execution-action:not(.route-execution-group) .action-facilities,
+    .execution-action:not(.route-execution-group) .action-constraints,
+    .execution-action:not(.route-execution-group) .action-attention {
+      grid-column: 1;
+    }
   }
 }

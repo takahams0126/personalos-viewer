@@ -36,6 +36,38 @@ Normal journey rows are not Cards. Explicit Route groups, hard boundaries, and m
 
 Plan Route occurrence does not duplicate Route summary / full stop sequence. Route detail remains the Route page owner's responsibility.
 
+### Execution Timeline
+
+ConcretePlan execution is event-centered rather than card-centered.
+
+```text
+time  event
+      │
+      ├─ movement connector
+      │
+time  next event
+```
+
+- Action is the Event anchor.
+- `next_move` is a Connector to the next Event, not an independent content card.
+- Destination text is not repeated when the following Event already names the destination.
+- Existing `travel_point.point_type` and `next_move.transport.code` may drive local semantic icons. Text remains authoritative.
+- Todo / facility / stay / purpose / inclusion are compact supporting facts and must not dominate Event / Move / Constraint.
+- Route occurrence is one compact Journey event in Actions view; full Route internals belong to Route detail view.
+
+Operational timing is attached to the decision point:
+
+```text
+Event
+  latest_safe / hard_limit / target?
+Connector
+  next service / connection margin / connection state
+```
+
+Viewer never derives new timetable times, safe-line times, margins, or margin-state thresholds. It renders published values only. State is communicated with label + value + visual emphasis, never color alone.
+
+Route-internal Actions remain collapsed in Actions view except explicit operational-boundary Events that carry published time constraints.
+
 ## Map
 
 Route Map and ordered sequence are one workspace.
@@ -50,6 +82,8 @@ Selection uses explicit artifact/sequence order only. Geometry never creates ord
 Route sequence is a compact journey index, not a collection of independent Cards. Normal rows are visually quiet; active/selected state is emphasized through the shared Map selection state.
 
 ConcretePlan segment color uses explicit execution leg identity. Successful Maps rendering suppresses duplicated fallback lists.
+
+ConcretePlan Timeline ↔ Map selection is added only when an explicit stable binding exists. Entity-title or geometry similarity is not sufficient to infer that relation.
 
 ## Weather
 
@@ -160,6 +194,7 @@ execution overview
 trip weather tabs + selected hourly detail
 schedule adjustment?   # compact Select control
 execution days
+  event timeline + movement connectors + operational constraints
 trip support: fuel | cost
 ```
 
@@ -186,11 +221,13 @@ ConcretePlan mobile:
 
 ```text
 Trip weather tab strip
-Time + Journey
-Move / Support
+Time + Event
+Move connector
+Operational constraint
+Supporting facts
 ```
 
-Switch rails may horizontally scroll when all peer choices cannot fit without shrinking labels below useful readability.
+Operational constraints remain visible on Mobile. Secondary supporting facts may reflow below the Event. Switch rails may horizontally scroll when all peer choices cannot fit without shrinking labels below useful readability.
 
 ## Ownership
 
