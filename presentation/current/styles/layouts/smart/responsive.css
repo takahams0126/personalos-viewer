@@ -64,10 +64,27 @@
     .spot-practical-information > [data-semantic="utilization-decision"],
     .spot-practical-information > [data-semantic="references"] { grid-column: 1; }
 
-    .route-workspace [data-layout-slot="secondary"] {
-      order: -1;
+    .route-page { display: block; }
+
+    .route-page > .route-map-section[data-semantic="conceptual-map"] {
+      display: block;
+      margin-block: var(--space-6);
     }
 
+    .route-page > .route-sequence-section[data-semantic="sequence"] {
+      display: block;
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: visible;
+      margin-block: var(--space-6);
+      padding-inline-end: 0;
+      scrollbar-width: thin;
+    }
+
+    .route-page > .route-map-section[data-semantic="conceptual-map"] { order: -1; }
+    .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas { min-height: 22rem; }
+
+    .route-workspace [data-layout-slot="secondary"] { order: -1; }
     .route-workspace [data-layout-slot="secondary"] .map-canvas { min-height: 22rem; }
 
     .route-workspace [data-layout-slot="primary"] {
@@ -78,14 +95,16 @@
       scrollbar-width: thin;
     }
 
-    .route-workspace .route-sequence {
+    .route-workspace .route-sequence,
+    .route-page > .route-sequence-section .route-sequence {
       display: flex;
       gap: var(--space-2);
       width: max-content;
       min-width: 100%;
     }
 
-    .route-workspace .route-sequence-item { flex: 0 0 min(18rem, 78vw); }
+    .route-workspace .route-sequence-item,
+    .route-page > .route-sequence-section .route-sequence-item { flex: 0 0 min(18rem, 78vw); }
 
     .schedule-adjustment > h2,
     .schedule-adjustment > .schedule-adjustment-group,
