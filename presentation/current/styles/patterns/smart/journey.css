@@ -36,6 +36,8 @@
     line-height: 1.45;
   }
 
+  .concrete-plan > .plan-navigation { display: none; }
+
   /* Conceptual Plan and ConcretePlan share a row rhythm instead of card rhythm. */
   .plan-sequence,
   .execution-flow {
