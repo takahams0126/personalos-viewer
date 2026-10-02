@@ -174,11 +174,30 @@ Trip supporting information
 
 Execution overviewはPlan/status等のtrip contextと日別WeatherをDesktopで並列表示できる。
 
-Reference Journey grammar:
+Reference Execution Timeline grammar:
 
 ```text
-time 2 | journey 7 | move/support 3
+time  Event
+      │
+      ├─ Move connector
+      │
+time  Event
+
+Event side support
+  Todo / Facility / Stay / Purpose / Inclusion
+
+Operational boundary
+  latest_safe / hard_limit / target
+  next service / connection margin / connection state
 ```
+
+- EventがPrimary anchor。
+- Moveは次EventへのConnectorであり、独立Cardではない。
+- Destination名をMove内で重複表示しない。
+- Operational constraintは対象EventまたはConnector近傍に常時表示する。
+- Viewerは時刻・safe line・margin・stateを再計算しない。
+- Route occurrenceはActions viewではcompactにし、full Route internalsはRoute detail viewへ委譲する。
+- Route内部Actionは通常collapsedだが、明示time constraintを持つoperational-boundary EventはActions viewにも残す。
 
 Day workspace:
 
@@ -209,6 +228,8 @@ Day Workspace
 
 local presentation stateのみでCanonicalを変更しない。
 
+Timeline ↔ Map cross-selectionは、stable explicit bindingが存在する場合だけ追加する。Entity名・座標・表示順の類似性だけからrelationを推測しない。
+
 ## Responsive rule
 
 Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriority transformationとする。
@@ -216,6 +237,8 @@ Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriorit
 - Desktop: concurrent informationを横方向に利用。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
+- ConcretePlan MobileではTime + Event → Move connector → Operational constraint → supporting factsの順を維持する。
+- Operational constraintをMobileだけ隠さない。
 
 Source DOM reading / focus orderを壊さない。
 
