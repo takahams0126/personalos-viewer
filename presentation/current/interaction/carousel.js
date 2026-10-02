@@ -23,7 +23,12 @@ function bindCarousel(carousel) {
   const current = carousel.querySelector('[data-carousel-current]');
   const thumbs = [...carousel.querySelectorAll('[data-carousel-go]')];
   const stage = carousel.querySelector('.carousel-stage');
+  const previousControl = carousel.querySelector('[data-carousel-prev]');
+  const nextControl = carousel.querySelector('[data-carousel-next]');
   let index = 0;
+
+  previousControl?.replaceChildren(iconSvg('M15 18l-6-6 6-6'));
+  nextControl?.replaceChildren(iconSvg('M9 18l6-6-6-6'));
 
   const show = nextIndex => {
     index = (nextIndex + slides.length) % slides.length;
@@ -32,8 +37,8 @@ function bindCarousel(carousel) {
     if (current) current.textContent = String(index + 1);
   };
 
-  carousel.querySelector('[data-carousel-prev]')?.addEventListener('click', () => show(index - 1));
-  carousel.querySelector('[data-carousel-next]')?.addEventListener('click', () => show(index + 1));
+  previousControl?.addEventListener('click', () => show(index - 1));
+  nextControl?.addEventListener('click', () => show(index + 1));
   thumbs.forEach(thumb => thumb.addEventListener('click', () => show(Number(thumb.dataset.carouselGo))));
   stage?.addEventListener('keydown', event => {
     if (event.key === 'ArrowLeft') { event.preventDefault(); show(index - 1); }
