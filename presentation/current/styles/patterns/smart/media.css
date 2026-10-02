@@ -6,11 +6,6 @@
   .spot-fact,
   .spot-fact dd { min-width: 0; }
 
-  .carousel-lightbox-close::before,
-  .carousel-lightbox-close::after,
-  .carousel-lightbox-prev::before,
-  .carousel-lightbox-next::before { display: none !important; }
-
   .carousel-lightbox-close svg,
   .carousel-lightbox-nav svg {
     display: block;
