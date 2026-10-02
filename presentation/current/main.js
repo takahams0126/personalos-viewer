@@ -13,6 +13,7 @@ import { applyPageLayoutDefinition } from './presentation/apply-layout-definitio
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './interaction/carousel.js';
 import { hydrateContentSwitchers } from './interaction/content-switcher.js';
+import { hydrateDayNavigation } from './interaction/day-navigation.js';
 import { hydrateExecutionPackageSwitchers } from './interaction/execution-package-switcher.js';
 import { hydrateExplorer } from './interaction/explorer.js';
 import { hydrateWeatherPresentation } from './interaction/weather.js';
@@ -101,6 +102,7 @@ export async function startCurrentViewer({ presentation }) {
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
 
+  hydrateDayNavigation(app);
   hydrateContentSwitchers(app);
   hydrateExecutionPackageSwitchers(app);
 
