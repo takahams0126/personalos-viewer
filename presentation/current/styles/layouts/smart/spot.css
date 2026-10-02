@@ -22,17 +22,9 @@
     border-block: var(--border-width) solid var(--line);
   }
 
-  .spot-practical-information > [data-semantic="access"] {
-    grid-column: span 4;
-  }
-
-  .spot-practical-information > [data-semantic="utilization-decision"] {
-    grid-column: span 8;
-  }
-
-  .spot-practical-information > [data-semantic="references"] {
-    grid-column: 1 / -1;
-  }
+  .spot-practical-information > [data-semantic="access"] { grid-column: span 4; }
+  .spot-practical-information > [data-semantic="utilization-decision"] { grid-column: span 8; }
+  .spot-practical-information > [data-semantic="references"] { grid-column: 1 / -1; }
 
   .spot-highlight-list,
   .spot-review-grid {
@@ -47,7 +39,5 @@
     gap: var(--space-4);
   }
 
-  .spot-supporting-information:has(> :only-child) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  .spot-supporting-information:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
 }
