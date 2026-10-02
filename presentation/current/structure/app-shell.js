@@ -15,9 +15,14 @@ const PAGE_LABELS = Object.freeze({
 });
 
 function currentCatalog(request) {
-  if (request?.kind !== 'top') return null;
-  const catalog = new URLSearchParams(window.location.search).get('catalog');
-  return ['plan', 'route', 'spot'].includes(catalog) ? catalog : 'all';
+  if (request?.kind === 'top') {
+    const catalog = new URLSearchParams(window.location.search).get('catalog');
+    return ['plan', 'route', 'spot'].includes(catalog) ? catalog : 'all';
+  }
+  if (request?.kind === 'entity' && ['plan', 'route', 'spot'].includes(request.type)) {
+    return request.type;
+  }
+  return null;
 }
 
 function renderCatalogNavigation(request) {
