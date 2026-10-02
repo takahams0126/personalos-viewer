@@ -23,7 +23,6 @@ Page Layout Definitionは、その意味をProductとしてどの優先順位・
 ## Product Foundation
 
 `PRODUCT_UI_FOUNDATION.md` のShared Product Grid / Typography roles / Presentation Grammarを全Surfaceへ適用する。
-
 Pageごとに独自のcontainer grammarやpage width systemを発明しない。
 
 ## Common Page Layout
@@ -73,7 +72,6 @@ Attention
 ## Block rule
 
 Blockは既知Semantic roleをuser-facing unitへbindingしたもの。
-
 CardはBlockの同義語ではない。
 Card / Row / Grid / Inline / Disclosure / Attention surfaceは `PRODUCT_UI_FOUNDATION.md` のContainer Ruleに従う。
 
@@ -83,23 +81,18 @@ Card / Row / Grid / Inline / Disclosure / Attention surfaceは `PRODUCT_UI_FOUND
 
 Primary task: catalog discovery.
 
-Desktop composition:
-
 ```text
 orientation
-
 explorer controls 3 | results 9
 ```
 
-- Explorer controlsはDesktopではscan中の操作railとして扱う。
+- Explorer controlsはDesktopではscan中の操作rail。
 - ResultsはPrimary workspace。
 - Mobileではcontrols → resultsのreading orderへ戻す。
 
 ### Spot
 
 Primary task: Spot identity / value / practical decision information.
-
-Desktop composition:
 
 ```text
 Hero
@@ -134,10 +127,7 @@ Primary task: ordered spatial experience.
 ```text
 Identity / compact metadata
 Appeal lead
-
-Workspace
-  sequence 4 | map 8
-
+Sequence 4 | Map 8
 Constraints?
 ```
 
@@ -166,15 +156,12 @@ Days
 ```
 
 Composition contextはPlanが参照するRouteとConcretePlanへのnavigation / structure理解を所有する。
-
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
 Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
 
 ### ConcretePlan
 
 Primary task: execution scanability.
-
-Top-level composition:
 
 ```text
 Identity
@@ -205,7 +192,6 @@ Day-specific supporting information
 ```
 
 Fuel / CostはExecution Daysの後段にまとめ、Primary execution flowより強く見せない。
-
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
 
