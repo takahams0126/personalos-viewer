@@ -5,33 +5,59 @@
   .plan-fuel,
   .plan-cost { max-width: none; }
 
-  .execution-overview {
+  .concrete-plan > [data-layout-block="execution-overview"] {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(22rem, 7fr);
     column-gap: var(--product-grid-gap);
     align-items: start;
   }
+
   .execution-overview > h2,
   .execution-overview > .execution-attention { grid-column: 1 / -1; }
   .execution-overview > .semantic-row,
   .execution-overview > .weather-notice { grid-column: 1; }
-  .execution-overview > .trip-weather-overview { grid-column: 2; grid-row: 2 / span 8; margin-block: 0; min-width: 0; }
+  .execution-overview > .trip-weather-overview {
+    grid-column: 2;
+    grid-row: 2 / span 8;
+    margin-block: 0;
+    min-width: 0;
+  }
+
+  .concrete-plan > [data-layout-block="day-reorder"] {
+    margin-block: var(--space-4) var(--space-6);
+  }
 
   .concrete-plan-reorder {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr);
     gap: var(--space-2) var(--space-4);
     align-items: start;
-    margin-block: var(--space-5);
     padding: var(--space-3) 0;
   }
+
   .concrete-plan-reorder > h2 { grid-column: 1; margin: .25rem 0 0; }
   .concrete-plan-reorder > p,
   .concrete-plan-reorder > .plan-day-assignment-grid { grid-column: 2; min-width: 0; }
-  .concrete-plan-reorder .plan-day-assignment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
-  .concrete-plan-reorder .execution-day-assignment { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-1) var(--space-2); align-items: center; min-width: 0; padding: var(--space-1) 0; }
 
-  /* Shared journey grid: time | place/action | move | support. */
+  .concrete-plan-reorder .plan-day-assignment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .concrete-plan-reorder .execution-day-assignment {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-1) var(--space-2);
+    align-items: center;
+    min-width: 0;
+    padding: var(--space-1) 0;
+  }
+
+  .concrete-plan > [data-layout-block="execution-days"] {
+    margin-block-start: var(--space-7);
+  }
+
   .execution-action:not(.route-execution-group) {
     grid-template-columns: minmax(4.75rem, 2fr) minmax(0, 10fr);
     gap: 0 var(--space-2);
@@ -39,7 +65,7 @@
 
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
-    grid-template-columns: minmax(14rem, 5fr) minmax(10rem, 3fr) minmax(8rem, 2fr);
+    grid-template-columns: minmax(12rem, 7fr) minmax(10rem, 3fr) minmax(9rem, 2fr);
     gap: var(--space-2) var(--space-3);
     align-items: start;
     padding: var(--space-2) 0;
@@ -52,7 +78,7 @@
 
   .execution-action:not(.route-execution-group) .next-move {
     grid-column: 2;
-    grid-row: 1 / span 8;
+    grid-row: 1 / span 6;
     min-width: 0;
     padding: 0 var(--space-3);
   }
@@ -67,10 +93,29 @@
     min-width: 0;
   }
 
-  .execution-action:not(.route-execution-group) .action-stay + .action-todos,
-  .execution-action:not(.route-execution-group) .action-todos + .action-facilities,
-  .execution-action:not(.route-execution-group) .action-facilities + .action-constraints,
-  .execution-action:not(.route-execution-group) .action-constraints + .action-attention {
-    margin-block-start: var(--space-2);
+  .trip-supporting-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--product-grid-gap);
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-5);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .trip-supporting-information > h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: var(--type-section-title);
+  }
+
+  .trip-supporting-information > .plan-fuel,
+  .trip-supporting-information > .plan-cost {
+    min-width: 0;
+    padding-block: 0;
+    border-block-start: 0;
+  }
+
+  .trip-supporting-information[data-support-count="1"] {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
