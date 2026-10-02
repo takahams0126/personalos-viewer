@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--product-grid-gap);
-    row-gap: clamp(2.75rem, 4.5vw, 4.5rem);
+    row-gap: clamp(1.75rem, 3vw, 2.75rem);
     align-items: start;
   }
 
@@ -12,8 +12,8 @@
     min-width: 0;
   }
 
-  /* Desktop product workspace: identity and practical facts share the left rail;
-     media remains the visual anchor on the right. */
+  /* Desktop product workspace: identity and practical facts occupy the left rail;
+     media is the right visual anchor. Nothing below the hero may share these rows. */
   .spot-hero { display: contents; }
 
   .spot-hero-copy {
@@ -24,17 +24,17 @@
 
   .spot-carousel {
     grid-column: 6 / -1;
-    grid-row: 1 / span 2;
+    grid-row: 1 / span 4;
     min-width: 0;
-    position: sticky;
-    top: var(--space-5);
+    position: static;
   }
 
   .spot-decision-grid:empty { display: none; }
 
+  /* Normal path: layout applier has grouped practical semantics. */
   .spot-practical-information {
     grid-column: 1 / span 5;
-    grid-row: 2;
+    grid-row: 2 / span 3;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
@@ -49,6 +49,33 @@
   .spot-practical-information > [data-semantic="references"] {
     grid-column: 1;
     min-width: 0;
+  }
+
+  /* Runtime-safe direct semantic layout. This is the same Product composition when
+     the semantic grouper has not wrapped the practical nodes yet. */
+  .spot-page > [data-semantic="access"] {
+    grid-column: 1 / span 5;
+    grid-row: 2;
+  }
+
+  .spot-page > [data-semantic="utilization-decision"] {
+    grid-column: 1 / span 5;
+    grid-row: 3;
+  }
+
+  .spot-page > [data-semantic="references"] {
+    grid-column: 1 / span 5;
+    grid-row: 4;
+  }
+
+  .spot-page > [data-layout-block="appeal-review"],
+  .spot-page > [data-semantic="appeal-review"],
+  .spot-page > .spot-appeal-review,
+  .spot-page > .spot-supporting-information,
+  .spot-page > [data-layout-block="supporting-information"],
+  .spot-page > [data-layout-block="related-spots"],
+  .spot-page > [data-semantic="related-spots"] {
+    grid-column: 1 / -1;
   }
 
   /* Narrow left-rail pricing is more legible as label/value rows that may stack. */
@@ -71,4 +98,15 @@
   }
 
   .spot-supporting-information:has(> :only-child) { grid-template-columns: minmax(0, 1fr); }
+
+  @media (max-width: 52rem) {
+    .spot-page { display: block; }
+    .spot-hero { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+    .spot-carousel { grid-column: 1; grid-row: 1; }
+    .spot-hero-copy { grid-column: 1; grid-row: 2; }
+    .spot-practical-information { margin-block: var(--space-5); }
+    .spot-page > [data-semantic="access"],
+    .spot-page > [data-semantic="utilization-decision"],
+    .spot-page > [data-semantic="references"] { margin-block: var(--space-3); }
+  }
 }
