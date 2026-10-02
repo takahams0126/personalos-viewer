@@ -21,7 +21,8 @@
   .execution-overview > h2,
   .plan-days > h2,
   .plan-fuel > h2,
-  .plan-cost > h2 {
+  .plan-cost > h2,
+  .trip-supporting-information > h2 {
     margin-block-end: var(--space-3);
     font-size: var(--type-section-title);
   }
@@ -68,7 +69,6 @@
   .top-result-row { box-shadow: none; }
   .top-result-thumbnail { background: var(--accent-soft); }
 
-  /* Route identity is compact metadata. */
   .route-meta {
     display: flex;
     flex-wrap: wrap;
@@ -115,7 +115,7 @@
   }
 
   .route-appeal-lead {
-    margin-block-start: var(--space-5);
+    margin: 0;
     padding-block-start: var(--space-4);
     border-block-start: var(--border-width) solid var(--line);
   }
@@ -173,6 +173,10 @@
     text-underline-offset: .16em;
   }
 
+  .spot-practical-information {
+    background: transparent;
+  }
+
   .spot-reference-utility {
     display: flex;
     flex-wrap: wrap;
@@ -192,7 +196,6 @@
     gap: var(--space-2);
   }
 
-  /* Facilities are practical information, not a decorative card. */
   .spot-facilities {
     padding: var(--space-3) 0;
     border: 0;
