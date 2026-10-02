@@ -46,7 +46,5 @@
     box-shadow: none;
   }
 
-  .route-page > [data-layout-block="supporting-conditions"] {
-    max-width: 60rem;
-  }
+  .route-page > [data-layout-block="supporting-conditions"] { max-width: 60rem; }
 }
