@@ -6,38 +6,18 @@
   .spot-fact,
   .spot-fact dd { min-width: 0; }
 
-  .carousel-controls button,
-  .carousel-lightbox-close,
-  .carousel-lightbox-nav {
-    display: inline-grid;
-    place-items: center;
-  }
-
-  .carousel-controls button svg,
-  .carousel-lightbox-close svg,
-  .carousel-lightbox-nav svg {
-    display: block;
-    width: 1.4rem;
-    height: 1.4rem;
-    margin: 0;
-    pointer-events: none;
-  }
-
   .carousel-lightbox-close::before,
   .carousel-lightbox-close::after,
   .carousel-lightbox-prev::before,
   .carousel-lightbox-next::before { display: none !important; }
 
-  .carousel-lightbox-close,
-  .carousel-lightbox-nav {
-    padding: 0;
-    line-height: 1;
-  }
-
-  .carousel-lightbox-image {
-    max-width: min(86vw, 92rem);
-    max-height: 82vh;
-    object-fit: contain;
+  .carousel-lightbox-close svg,
+  .carousel-lightbox-nav svg {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    margin: auto;
+    pointer-events: none;
   }
 
   .viewer-product-footer {
