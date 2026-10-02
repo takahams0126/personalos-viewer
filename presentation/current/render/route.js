@@ -31,13 +31,13 @@ async function renderHeroSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const spots = await Promise.all(refs.map(ref => resolveSpot(ref, resolver)));
   return h('section', { className: 'route-hero-spots', dataset: { semantic: 'hero-spots' } },
-    h('h2', { text: '主役スポット' }),
     h('div', { className: 'route-hero-spot-grid' },
       spots.map(spot =>
         h('a', { className: 'route-hero-spot-card entity-link-card', attrs: { href: hrefFor(spot.ref) } },
           spot.image ? h('img', { attrs: { src: spot.image, alt: '', loading: 'lazy', decoding: 'async' } }) : null,
           h('div', { className: 'route-hero-spot-copy' },
             h('h3', { text: spot.title }),
+            spot.summary ? h('p', { text: spot.summary }) : null,
             spot.unavailable ? h('small', { text: '詳細を読み込めませんでした' }) : null
           )
         )
@@ -57,7 +57,7 @@ function renderAppeal(appeal) {
   if (!appeal) return null;
   const strengths = appeal.strengths || [];
   if (!appeal.summary && !strengths.length) return null;
-  return h('section', { className: 'route-appeal content-section', dataset: { semantic: 'appeal' } },
+  return h('section', { className: 'route-appeal route-appeal-lead', dataset: { semantic: 'appeal' } },
     h('h2', { text: 'このルートの魅力' }),
     appeal.summary ? h('p', { className: 'route-appeal-summary', text: appeal.summary }) : null,
     renderEmphasisList(strengths, { className: 'route-strengths' })
@@ -67,7 +67,7 @@ function renderAppeal(appeal) {
 function renderMap(map) {
   if (!map?.artifact_ref) return null;
   return h('section', { className: 'route-map-section content-section', dataset: { semantic: 'conceptual-map' } },
-    h('h2', { text: 'ルートマップ' }),
+    h('h2', { text: '地図' }),
     h('figure', { className: 'map-view route-map', dataset: { mapArtifactId: map.artifact_ref } },
       h('div', { className: 'map-canvas', attrs: { role: 'img', 'aria-label': 'ルートマップ' } }),
       h('p', { className: 'map-state', text: '地図を読み込み中…' })
@@ -152,15 +152,14 @@ export async function renderRoute({ route, resolver }) {
           renderIdentity(route)
         ),
         h('h1', { text: route.title }),
-        route.summary ? h('p', { className: 'route-summary', text: route.summary }) : null,
         renderChipList(route.theme_chips, { ariaLabel: 'テーマ', className: 'route-theme-chips' }),
-        renderFacts(route.hero_facts)
+        renderFacts(route.hero_facts),
+        renderAppeal(route.appeal)
       ),
       await renderHeroSpots(route.hero_spots, resolver)
     ),
-    renderMap(route.map),
     await renderSequence(route.sequence, resolver),
-    renderAppeal(route.appeal),
+    renderMap(route.map),
     renderConstraints(route.constraints)
   );
 }

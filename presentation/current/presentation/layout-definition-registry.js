@@ -13,10 +13,7 @@ const VIEW = Object.freeze({
 
 const COMMON_PAGE_LAYOUT_V1 = Object.freeze({
   id: 'leisure-common-page-v1',
-  frame: Object.freeze({
-    shell: 'viewer-shell',
-    contentSlot: 'content'
-  }),
+  frame: Object.freeze({ shell: 'viewer-shell', contentSlot: 'content' }),
   regions: Object.freeze([
     Object.freeze({ id: 'global-navigation', owner: 'app-shell', optional: true }),
     Object.freeze({ id: 'context-navigation', owner: 'app-shell', optional: true }),
@@ -44,21 +41,9 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
     top: Object.freeze({
       id: 'top-content-v1',
       blocks: Object.freeze([
-        Object.freeze({
-          id: 'orientation',
-          sourceSelector: ':scope > .top-hero',
-          view: VIEW.STACK
-        }),
-        Object.freeze({
-          id: 'explorer-controls',
-          sourceSelector: ':scope > .top-explorer-layout > .top-filter-panel',
-          view: VIEW.STACK
-        }),
-        Object.freeze({
-          id: 'results',
-          sourceSelector: ':scope > .top-explorer-layout > .top-results-panel',
-          view: VIEW.GRID
-        })
+        Object.freeze({ id: 'orientation', sourceSelector: ':scope > .top-hero', view: VIEW.STACK }),
+        Object.freeze({ id: 'explorer-controls', sourceSelector: ':scope > .top-explorer-layout > .top-filter-panel', view: VIEW.STACK }),
+        Object.freeze({ id: 'results', sourceSelector: ':scope > .top-explorer-layout > .top-results-panel', view: VIEW.GRID })
       ])
     }),
     spot: Object.freeze({
@@ -68,57 +53,26 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           id: 'hero',
           sourceSelector: ':scope > .spot-hero',
           view: VIEW.SPLIT,
-          slots: Object.freeze({
-            primary: Object.freeze(['spot-hero-copy']),
-            secondary: Object.freeze(['image-carousel'])
-          }),
+          slots: Object.freeze({ primary: Object.freeze(['spot-hero-copy']), secondary: Object.freeze(['image-carousel']) }),
           narrowView: VIEW.STACK
         }),
-        Object.freeze({
-          id: 'appeal-review',
-          sourceSemantic: 'appeal',
-          view: VIEW.STACK
-        }),
-        Object.freeze({
-          id: 'supporting-information',
-          view: VIEW.GRID,
-          semantics: Object.freeze(['facilities', 'references'])
-        }),
-        Object.freeze({
-          id: 'related-spots',
-          sourceSemantic: 'related-spots',
-          view: VIEW.GRID
-        })
+        Object.freeze({ id: 'appeal-review', sourceSemantic: 'appeal', view: VIEW.STACK }),
+        Object.freeze({ id: 'supporting-information', view: VIEW.GRID, semantics: Object.freeze(['facilities']) }),
+        Object.freeze({ id: 'related-spots', sourceSemantic: 'related-spots', view: VIEW.GRID })
       ])
     }),
     route: Object.freeze({
       id: 'route-content-v1',
       blocks: Object.freeze([
-        Object.freeze({
-          id: 'identity',
-          sourceSelector: ':scope > .route-hero',
-          view: VIEW.STACK
-        }),
+        Object.freeze({ id: 'identity', sourceSelector: ':scope > .route-hero', view: VIEW.STACK }),
+        Object.freeze({ id: 'appeal', sourceSemantic: 'appeal', view: VIEW.STACK }),
         Object.freeze({
           id: 'route-workspace',
           view: VIEW.SPLIT,
-          slots: Object.freeze({
-            primary: Object.freeze(['conceptual-map']),
-            secondary: Object.freeze(['sequence'])
-          }),
+          slots: Object.freeze({ primary: Object.freeze(['sequence']), secondary: Object.freeze(['conceptual-map']) }),
           narrowView: VIEW.STACK
         }),
-        Object.freeze({
-          id: 'appeal',
-          sourceSemantic: 'appeal',
-          view: VIEW.STACK
-        }),
-        Object.freeze({
-          id: 'supporting-conditions',
-          sourceSemantic: 'constraints',
-          view: VIEW.STACK,
-          optional: true
-        })
+        Object.freeze({ id: 'supporting-conditions', sourceSemantic: 'constraints', view: VIEW.STACK, optional: true })
       ])
     }),
     plan: Object.freeze({
@@ -169,37 +123,12 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
               defaultView: 'actions',
               singleViewMode: 'direct',
               views: Object.freeze([
-                Object.freeze({
-                  id: 'actions',
-                  label: '行動順',
-                  sourceSemantic: 'execution-sequence',
-                  view: VIEW.TIMELINE,
-                  mode: 'overview',
-                  required: true
-                }),
-                Object.freeze({
-                  id: 'route',
-                  label: 'ルート詳細',
-                  sourceSemantic: 'execution-sequence',
-                  availabilitySemantic: 'route-execution-group',
-                  view: VIEW.TIMELINE,
-                  mode: 'route-detail',
-                  optional: true
-                }),
-                Object.freeze({
-                  id: 'map',
-                  label: 'マップ',
-                  sourceSemantic: 'map',
-                  view: VIEW.MAP,
-                  mode: 'map',
-                  optional: true
-                })
+                Object.freeze({ id: 'actions', label: '行動順', sourceSemantic: 'execution-sequence', view: VIEW.TIMELINE, mode: 'overview', required: true }),
+                Object.freeze({ id: 'route', label: 'ルート詳細', sourceSemantic: 'execution-sequence', availabilitySemantic: 'route-execution-group', view: VIEW.TIMELINE, mode: 'route-detail', optional: true }),
+                Object.freeze({ id: 'map', label: 'マップ', sourceSemantic: 'map', view: VIEW.MAP, mode: 'map', optional: true })
               ])
             }),
-            supporting: Object.freeze({
-              view: VIEW.STACK,
-              semantics: Object.freeze(['fuel-suggestions'])
-            })
+            supporting: Object.freeze({ view: VIEW.STACK, semantics: Object.freeze(['fuel-suggestions']) })
           })
         }),
         Object.freeze({ id: 'fuel', view: VIEW.STRUCTURED_LIST, optional: true }),

@@ -1,9 +1,25 @@
+function iconSvg(pathData) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', pathData);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', 'currentColor');
+  path.setAttribute('stroke-width', '2');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  svg.append(path);
+  return svg;
+}
+
 function bindCarousel(carousel) {
   if (carousel.dataset.carouselReady === 'true') return;
-
   const slides = [...carousel.querySelectorAll('[data-carousel-slide]')];
   if (!slides.length) return;
-
   const current = carousel.querySelector('[data-carousel-current]');
   const thumbs = [...carousel.querySelectorAll('[data-carousel-go]')];
   const stage = carousel.querySelector('.carousel-stage');
@@ -11,35 +27,22 @@ function bindCarousel(carousel) {
 
   const show = nextIndex => {
     index = (nextIndex + slides.length) % slides.length;
-    slides.forEach((slide, slideIndex) => {
-      slide.hidden = slideIndex !== index;
-    });
-    thumbs.forEach((thumb, thumbIndex) => {
-      thumb.setAttribute('aria-current', thumbIndex === index ? 'true' : 'false');
-    });
+    slides.forEach((slide, slideIndex) => { slide.hidden = slideIndex !== index; });
+    thumbs.forEach((thumb, thumbIndex) => { thumb.setAttribute('aria-current', thumbIndex === index ? 'true' : 'false'); });
     if (current) current.textContent = String(index + 1);
   };
 
   carousel.querySelector('[data-carousel-prev]')?.addEventListener('click', () => show(index - 1));
   carousel.querySelector('[data-carousel-next]')?.addEventListener('click', () => show(index + 1));
-  thumbs.forEach(thumb => {
-    thumb.addEventListener('click', () => show(Number(thumb.dataset.carouselGo)));
-  });
-
+  thumbs.forEach(thumb => thumb.addEventListener('click', () => show(Number(thumb.dataset.carouselGo))));
   stage?.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      show(index - 1);
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      show(index + 1);
-    }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); show(index - 1); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); show(index + 1); }
   });
 
   const lightbox = document.createElement('dialog');
   lightbox.className = 'carousel-lightbox';
   lightbox.setAttribute('aria-label', '画像を拡大表示');
-
   const lightboxFrame = document.createElement('div');
   lightboxFrame.className = 'carousel-lightbox-frame';
   const lightboxImage = document.createElement('img');
@@ -54,19 +57,19 @@ function bindCarousel(carousel) {
   close.type = 'button';
   close.className = 'carousel-lightbox-close';
   close.setAttribute('aria-label', '拡大表示を閉じる');
-  close.textContent = '×';
+  close.append(iconSvg('M6 6l12 12M18 6L6 18'));
 
   const previous = document.createElement('button');
   previous.type = 'button';
   previous.className = 'carousel-lightbox-nav carousel-lightbox-prev';
   previous.setAttribute('aria-label', '前の画像');
-  previous.textContent = '‹';
+  previous.append(iconSvg('M15 18l-6-6 6-6'));
 
   const next = document.createElement('button');
   next.type = 'button';
   next.className = 'carousel-lightbox-nav carousel-lightbox-next';
   next.setAttribute('aria-label', '次の画像');
-  next.textContent = '›';
+  next.append(iconSvg('M9 18l6-6-6-6'));
 
   function syncLightbox() {
     const slide = slides[index];
@@ -97,17 +100,10 @@ function bindCarousel(carousel) {
   close.addEventListener('click', () => lightbox.close());
   previous.addEventListener('click', () => moveLightbox(-1));
   next.addEventListener('click', () => moveLightbox(1));
-  lightbox.addEventListener('click', event => {
-    if (event.target === lightbox) lightbox.close();
-  });
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
   lightbox.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      moveLightbox(-1);
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      moveLightbox(1);
-    }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); moveLightbox(-1); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); moveLightbox(1); }
   });
   lightbox.addEventListener('close', () => stage?.focus());
 
@@ -124,7 +120,6 @@ function bindCarousel(carousel) {
     open.addEventListener('click', () => showLightbox());
     stage.append(open);
   }
-
   carousel.dataset.carouselReady = 'true';
 }
 
