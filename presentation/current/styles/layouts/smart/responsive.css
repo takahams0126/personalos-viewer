@@ -1,28 +1,46 @@
 @layer layout {
   @media (max-width: 72rem) {
-    html[data-page-type="top"] [data-layout-block="results"] .top-result-list { grid-template-columns: 1fr; }
+    html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 64rem) {
     .spot-highlight-list,
     .spot-review-grid { grid-template-columns: 1fr; }
+
     .schedule-adjustment-grid,
-    .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .execution-action:not(.route-execution-group) .action-body { grid-template-columns: minmax(0, 1.2fr) minmax(10rem, .8fr); }
+    .concrete-plan-reorder .plan-day-assignment-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .execution-action:not(.route-execution-group) .action-body {
+      grid-template-columns: minmax(0, 5fr) minmax(10rem, 3fr);
+    }
+
     .execution-action:not(.route-execution-group) .action-stay,
     .execution-action:not(.route-execution-group) .action-todos,
     .execution-action:not(.route-execution-group) .action-facilities,
     .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention { grid-column: 1 / -1; }
+    .execution-action:not(.route-execution-group) .action-attention {
+      grid-column: 1 / -1;
+    }
   }
 
   @media (max-width: 52rem) {
     .viewer-shell,
     main,
-    html[data-page-type="top"] main { width: min(100% - 1.5rem, var(--product-detail-max)); }
+    html[data-page-type="top"] main {
+      width: min(100% - 1.5rem, var(--product-detail-max));
+    }
+
     main { padding-block: var(--space-6) var(--space-8); }
 
-    .viewer-product-shell { grid-template-columns: 1fr; width: min(100%, var(--product-detail-max)); }
+    .viewer-product-shell {
+      grid-template-columns: 1fr;
+      width: min(100%, var(--product-detail-max));
+    }
+
     .viewer-context-navigation { justify-content: flex-start; }
 
     .spot-hero,
@@ -35,14 +53,47 @@
     .schedule-adjustment-item,
     .concrete-plan-reorder,
     .concrete-plan-reorder .execution-day-assignment,
-    .execution-overview { grid-template-columns: 1fr; }
+    .execution-overview {
+      grid-template-columns: 1fr;
+    }
 
-    .spot-carousel { position: static; grid-row: 1; }
+    /* Spot mobile: media is the visual entry, then identity and practical facts. */
+    .spot-carousel {
+      position: static;
+      grid-row: 1;
+    }
+
     .spot-hero-copy { grid-row: 2; }
-    .spot-usage-expanded { grid-column: auto; }
 
-    .route-workspace [data-layout-slot="primary"] { max-height: none; overflow: visible; padding-inline-end: 0; }
-    .route-workspace [data-layout-slot="secondary"] .map-canvas { min-height: 22rem; }
+    /* Route mobile: spatial context first, then a horizontal ordered stop strip. */
+    .route-workspace [data-layout-slot="secondary"] {
+      grid-row: 1;
+    }
+
+    .route-workspace [data-layout-slot="primary"] {
+      grid-row: 2;
+      max-height: none;
+      overflow: visible;
+      padding-inline-end: 0;
+    }
+
+    .route-workspace [data-layout-slot="secondary"] .map-canvas {
+      min-height: 22rem;
+    }
+
+    .route-workspace .route-sequence {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(14rem, 82vw);
+      overflow-x: auto;
+      gap: var(--space-2);
+      padding-block-end: var(--space-2);
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+    }
+
+    .route-workspace .route-sequence-item {
+      scroll-snap-align: start;
+    }
 
     .schedule-adjustment > h2,
     .schedule-adjustment > .schedule-adjustment-group,
@@ -53,15 +104,24 @@
     .execution-overview > .semantic-row,
     .execution-overview > .weather-notice,
     .execution-overview > .trip-weather-overview,
-    .execution-overview > .execution-attention { grid-column: 1; grid-row: auto; }
+    .execution-overview > .execution-attention {
+      grid-column: 1;
+      grid-row: auto;
+    }
 
     .schedule-adjustment-grid,
-    .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
+    .concrete-plan-reorder .plan-day-assignment-grid {
+      grid-template-columns: 1fr;
+    }
 
     .plan-place > article,
-    .plan-movement > article { grid-template-columns: 3.75rem minmax(0, 1fr); }
+    .plan-movement > article {
+      grid-template-columns: 3.75rem minmax(0, 1fr);
+    }
+
     .plan-place .plan-item-kind,
     .plan-movement .plan-item-kind { grid-column: 1; }
+
     .plan-place h4,
     .plan-movement-main,
     .plan-place .plan-item-meta,
@@ -69,27 +129,58 @@
     .plan-place .plan-item-actions,
     .plan-movement .plan-item-condition { grid-column: 2; }
 
-    .execution-action:not(.route-execution-group) { grid-template-columns: 4.4rem minmax(0, 1fr); }
-    .execution-action:not(.route-execution-group) .action-body { grid-template-columns: 1fr; }
+    .execution-action:not(.route-execution-group) {
+      grid-template-columns: 4.4rem minmax(0, 1fr);
+    }
+
+    .execution-action:not(.route-execution-group) .action-body {
+      grid-template-columns: 1fr;
+    }
+
     .execution-action:not(.route-execution-group) .action-header,
     .execution-action:not(.route-execution-group) .next-move,
     .execution-action:not(.route-execution-group) .action-stay,
     .execution-action:not(.route-execution-group) .action-todos,
     .execution-action:not(.route-execution-group) .action-facilities,
     .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention { grid-column: 1; grid-row: auto; }
-    .execution-action:not(.route-execution-group) .next-move { border-inline-start: 0; border-block-start: var(--border-width) solid var(--line); padding: var(--space-2) 0 0; }
+    .execution-action:not(.route-execution-group) .action-attention {
+      grid-column: 1;
+      grid-row: auto;
+    }
 
-    .viewer-product-footer { width: min(100% - 1.5rem, var(--product-detail-max)); }
+    .execution-action:not(.route-execution-group) .next-move {
+      border-inline-start: 0;
+      border-block-start: var(--border-width) solid var(--line);
+      padding: var(--space-2) 0 0;
+    }
+
+    .viewer-product-footer {
+      width: min(100% - 1.5rem, var(--product-detail-max));
+    }
   }
 
   @media (max-width: 38rem) {
     .viewer-shell,
     main,
-    html[data-page-type="top"] main { width: min(100% - 1rem, var(--product-detail-max)); }
+    html[data-page-type="top"] main {
+      width: min(100% - 1rem, var(--product-detail-max));
+    }
+
     main { padding-block: var(--space-4) var(--space-7); }
-    .viewer-shell-primary { align-items: flex-start; flex-direction: column; gap: var(--space-2); }
-    .viewer-global-navigation { width: 100%; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+
+    .viewer-shell-primary {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .viewer-global-navigation {
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+    }
+
     .viewer-global-navigation::-webkit-scrollbar { display: none; }
     .route-strengths { grid-template-columns: 1fr; }
   }
