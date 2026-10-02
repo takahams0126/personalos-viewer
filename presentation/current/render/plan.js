@@ -216,88 +216,12 @@ async function renderDay(day, resolver, openByDefault) {
   );
 }
 
-function buildReorderControls(plan, assignments, dayNodes, daysHost) {
-  if (!plan.reorder_groups?.length) return null;
-  const dayByOrdinal = new Map((plan.days || []).map(day => [day.ordinal, day]));
-  const selectBySlot = new Map();
-
-  function refresh() {
-    daysHost.replaceChildren();
-    for (const slot of [...assignments.keys()].sort((a, b) => a - b)) {
-      const sourceOrdinal = assignments.get(slot);
-      const node = dayNodes.get(sourceOrdinal);
-      node.dataset.day = String(slot);
-      node.dataset.sourceDay = String(sourceOrdinal);
-      const number = node.querySelector('.plan-day-number');
-      if (number) number.textContent = `Day ${slot}`;
-      daysHost.append(node);
-    }
-    for (const [slot, select] of selectBySlot.entries()) {
-      select.value = String(assignments.get(slot));
-    }
-  }
-
-  const groups = plan.reorder_groups.map(group => {
-    const ordinals = [...(group.day_ordinals || [])].sort((a, b) => a - b);
-    const rows = ordinals.map(slot => {
-      const select = h('select', {
-        className: 'plan-day-assignment-select schedule-adjustment-select',
-        attrs: { 'aria-label': `Day ${slot} の内容` },
-        dataset: { semantic: 'day-assignment-control', slot }
-      }, ordinals.map(sourceOrdinal => {
-        const day = dayByOrdinal.get(sourceOrdinal);
-        return h('option', {
-          attrs: { value: sourceOrdinal },
-          text: `Day ${sourceOrdinal} ${day?.title || ''}`.trim()
-        });
-      }));
-      select.value = String(assignments.get(slot));
-      selectBySlot.set(slot, select);
-      select.addEventListener('change', () => {
-        const selectedSource = Number(select.value);
-        const currentSource = assignments.get(slot);
-        const otherSlot = ordinals.find(candidate => assignments.get(candidate) === selectedSource);
-        if (otherSlot != null && otherSlot !== slot) assignments.set(otherSlot, currentSource);
-        assignments.set(slot, selectedSource);
-        refresh();
-      });
-      return h('div', {
-        className: 'plan-day-assignment schedule-adjustment-item',
-        dataset: { semantic: 'day-assignment', slot }
-      },
-        h('span', { className: 'plan-day-assignment-slot schedule-adjustment-slot', text: `Day ${slot}` }),
-        select
-      );
-    });
-    return h('div', { className: 'plan-reorder-group schedule-adjustment-group' },
-      h('p', {
-        className: 'schedule-adjustment-note',
-        text: `${group.factor?.label || '条件'}に応じて入れ替え可能`
-      }),
-      h('div', { className: 'plan-day-assignment-grid schedule-adjustment-grid' }, rows)
-    );
-  });
-
-  refresh();
-  return h('section', {
-    className: 'plan-reorder schedule-adjustment',
-    dataset: { semantic: 'day-reorder' }
-  }, h('h2', { text: '日程調整' }), groups);
-}
-
 export async function renderPlan({ plan, manifestEntry, resolver }) {
   const orderedDays = [...(plan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
   const openByDefault = orderedDays.length === 1;
-  const dayNodesArray = await Promise.all(
+  const dayNodes = await Promise.all(
     orderedDays.map(day => renderDay(day, resolver, openByDefault))
   );
-  const dayNodes = new Map(
-    orderedDays.map((day, index) => [day.ordinal, dayNodesArray[index]])
-  );
-  const assignments = new Map(orderedDays.map(day => [day.ordinal, day.ordinal]));
-  const daysHost = h('div', { className: 'plan-days-list' });
-  const reorder = buildReorderControls(plan, assignments, dayNodes, daysHost);
-  if (!reorder) orderedDays.forEach(day => daysHost.append(dayNodes.get(day.ordinal)));
   const composition = await renderPlanComposition(plan, manifestEntry, resolver);
 
   return h('article', { className: 'plan-page', dataset: { semantic: 'plan' } },
@@ -306,10 +230,9 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
       plan.summary ? h('p', { text: plan.summary }) : null
     ),
     composition,
-    reorder,
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
       h('h2', { text: '日程' }),
-      daysHost
+      h('div', { className: 'plan-days-list' }, dayNodes)
     )
   );
 }
