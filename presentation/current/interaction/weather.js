@@ -35,17 +35,6 @@ function startTime(label) {
   return String(label).split('〜')[0] || String(label);
 }
 
-function executionWindow(day) {
-  const actions = [...(day?.actions || [])].sort((a, b) => a.order - b.order);
-  if (!actions.length) return null;
-  const first = actions.find(action => action.arrival_label || action.departure_label);
-  const last = [...actions].reverse().find(action => action.departure_label || action.arrival_label);
-  const start = first?.arrival_label || first?.departure_label || day.start_time_label || '';
-  const end = last?.departure_label || last?.arrival_label || '';
-  if (!start && !end) return null;
-  return { start, end };
-}
-
 function matrixRow(label, periods, selector, className = '') {
   const row = document.createElement('span');
   row.className = ['weather-matrix-row', className].filter(Boolean).join(' ');
@@ -67,7 +56,7 @@ function matrixRow(label, periods, selector, className = '') {
   return row;
 }
 
-function buildHourlyMatrix(weatherDay, executionDay) {
+function buildHourlyMatrix(weatherDay) {
   const periods = weatherDay?.periods || [];
   if (!periods.length) return null;
 
@@ -76,25 +65,11 @@ function buildHourlyMatrix(weatherDay, executionDay) {
   wrapper.dataset.semantic = 'hourly-weather-presentation';
   wrapper.style.setProperty('--weather-period-count', String(periods.length));
 
-  const window = executionWindow(executionDay);
-  if (window) {
-    const execution = document.createElement('p');
-    execution.className = 'weather-execution-window';
-    execution.dataset.semantic = 'weather-execution-window';
-    const label = document.createElement('span');
-    label.textContent = '標準行程';
-    const value = document.createElement('strong');
-    value.textContent = window.start && window.end && window.start !== window.end
-      ? `${window.start}〜${window.end}`
-      : window.start || window.end;
-    execution.append(label, value);
-    wrapper.append(execution);
-  }
-
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'hourly-weather-toggle';
   toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-label', '3時間天気の詳細を表示');
 
   const preview = document.createElement('span');
   preview.className = 'weather-matrix weather-matrix-preview';
@@ -121,6 +96,7 @@ function buildHourlyMatrix(weatherDay, executionDay) {
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+    toggle.setAttribute('aria-label', open ? '3時間天気の詳細を表示' : '3時間天気の詳細を閉じる');
     detail.hidden = open;
   });
 
@@ -128,109 +104,51 @@ function buildHourlyMatrix(weatherDay, executionDay) {
   return wrapper;
 }
 
-function createWeatherTab({ ordinal, weatherDay, executionDay, panelId, selected }) {
-  const tab = document.createElement('button');
-  tab.type = 'button';
-  tab.className = 'trip-weather-tab';
-  tab.id = `trip-weather-day-${ordinal}-tab`;
-  tab.setAttribute('role', 'tab');
-  tab.setAttribute('aria-controls', panelId);
-  tab.setAttribute('aria-selected', selected ? 'true' : 'false');
-  tab.tabIndex = selected ? 0 : -1;
-  tab.dataset.day = String(ordinal);
-
-  const dayLabel = document.createElement('strong');
-  dayLabel.className = 'trip-weather-day-label';
-  dayLabel.textContent = `Day ${ordinal}`;
-
-  const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-trip');
-
-  const condition = document.createElement('span');
-  condition.className = 'trip-weather-condition';
-  condition.textContent = weatherDay.condition?.label || '—';
-
-  const date = document.createElement('span');
-  date.className = 'trip-weather-date';
-  date.textContent = [executionDay?.date, executionDay?.weekday_label].filter(Boolean).join(' ');
-
-  tab.append(dayLabel, icon, condition, date);
-  return tab;
-}
-
-function decorateTripWeather(root, dayByOrdinal, executionDayByOrdinal) {
-  const overview = root.querySelector('.trip-weather-overview');
-  const sourceList = overview?.querySelector('.trip-weather-days');
-  if (!overview || !sourceList || overview.dataset.weatherHydrated === 'true') return;
-
-  const ordinals = [...dayByOrdinal.keys()].sort((a, b) => a - b);
-  if (!ordinals.length) return;
-
-  const tabList = document.createElement('div');
-  tabList.className = 'trip-weather-tabs';
-  tabList.setAttribute('role', 'tablist');
-  tabList.setAttribute('aria-label', '日別天気');
-
-  const panel = document.createElement('div');
-  panel.className = 'trip-weather-panel';
-  panel.id = 'trip-weather-detail-panel';
-  panel.setAttribute('role', 'tabpanel');
-
-  const activate = ordinal => {
+function decorateDayNavigation(root, dayByOrdinal) {
+  root.querySelectorAll('[data-day-navigation] [role="tab"][data-day]').forEach(tab => {
+    if (tab.querySelector('.primary-day-tab-weather')) return;
+    const ordinal = Number(tab.dataset.day);
     const weatherDay = dayByOrdinal.get(ordinal);
-    const executionDay = executionDayByOrdinal.get(ordinal);
     if (!weatherDay) return;
 
-    tabList.querySelectorAll('[role="tab"]').forEach(tab => {
-      const active = Number(tab.dataset.day) === ordinal;
-      tab.setAttribute('aria-selected', active ? 'true' : 'false');
-      tab.tabIndex = active ? 0 : -1;
-      if (active) panel.setAttribute('aria-labelledby', tab.id);
-    });
+    const weather = document.createElement('span');
+    weather.className = 'primary-day-tab-weather';
+    weather.append(weatherIcon(weatherDay.condition, 'weather-icon weather-icon-day-tab'));
 
-    const matrix = buildHourlyMatrix(weatherDay, executionDay);
-    panel.replaceChildren(matrix || document.createTextNode('3時間天気はありません。'));
-  };
+    const condition = document.createElement('span');
+    condition.className = 'primary-day-tab-condition';
+    condition.textContent = weatherDay.condition?.label || '—';
+    weather.append(condition);
 
-  ordinals.forEach((ordinal, index) => {
-    const tab = createWeatherTab({
-      ordinal,
-      weatherDay: dayByOrdinal.get(ordinal),
-      executionDay: executionDayByOrdinal.get(ordinal),
-      panelId: panel.id,
-      selected: index === 0
-    });
-    tab.addEventListener('click', () => activate(ordinal));
-    tab.addEventListener('keydown', event => {
-      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-      event.preventDefault();
-      const tabs = [...tabList.querySelectorAll('[role="tab"]')];
-      const current = tabs.indexOf(event.currentTarget);
-      let next = current;
-      if (event.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
-      if (event.key === 'ArrowRight') next = (current + 1) % tabs.length;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = tabs.length - 1;
-      tabs[next].focus();
-      activate(Number(tabs[next].dataset.day));
-    });
-    tabList.append(tab);
+    const title = tab.querySelector('.primary-day-tab-title');
+    if (title) tab.insertBefore(weather, title);
+    else tab.append(weather);
   });
-
-  sourceList.replaceWith(tabList);
-  overview.append(panel);
-  overview.dataset.weatherHydrated = 'true';
-  activate(ordinals[0]);
 }
 
-function decorateDaySummary(disclosure, weatherDay) {
-  const compact = disclosure.querySelector('.concrete-day-weather');
-  if (!compact || compact.querySelector('.weather-icon')) return;
-  compact.prepend(weatherIcon(weatherDay.condition, 'weather-icon weather-icon-summary'));
-}
+function decorateDayWeather(root, dayByOrdinal) {
+  root.querySelectorAll('[data-day-navigation-panel][data-day]').forEach(panel => {
+    if (panel.querySelector('[data-semantic="hourly-weather-presentation"]')) return;
+    const ordinal = Number(panel.dataset.day);
+    const weatherDay = dayByOrdinal.get(ordinal);
+    if (!weatherDay) return;
 
-function removeDayWeather(disclosure) {
-  const weather = disclosure.querySelector('.day-weather');
-  if (weather) weather.remove();
+    const source = panel.querySelector(':scope .day-weather');
+    if (!source) return;
+    const matrix = buildHourlyMatrix(weatherDay);
+    if (!matrix) {
+      source.remove();
+      return;
+    }
+
+    const presentation = document.createElement('section');
+    presentation.className = 'selected-day-weather';
+    presentation.dataset.semantic = 'selected-day-weather';
+    const heading = document.createElement('h3');
+    heading.textContent = '3時間天気';
+    presentation.append(heading, matrix);
+    source.replaceWith(presentation);
+  });
 }
 
 export function hydrateWeatherPresentation(root, concretePlan) {
@@ -238,14 +156,6 @@ export function hydrateWeatherPresentation(root, concretePlan) {
   if (!root || !days.length) return;
 
   const dayByOrdinal = new Map(days.map(day => [Number(day.day), day]));
-  const executionDayByOrdinal = new Map((concretePlan?.days || []).map(day => [Number(day.ordinal), day]));
-  decorateTripWeather(root, dayByOrdinal, executionDayByOrdinal);
-
-  root.querySelectorAll('.concrete-day-disclosure[data-day]').forEach(disclosure => {
-    const ordinal = Number(disclosure.dataset.day);
-    const weatherDay = dayByOrdinal.get(ordinal);
-    if (!weatherDay) return;
-    decorateDaySummary(disclosure, weatherDay);
-    removeDayWeather(disclosure);
-  });
+  decorateDayNavigation(root, dayByOrdinal);
+  decorateDayWeather(root, dayByOrdinal);
 }

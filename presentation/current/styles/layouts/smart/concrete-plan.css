@@ -1,6 +1,5 @@
 @layer layout {
   .execution-flow,
-  .trip-weather-overview,
   .day-workspace,
   .plan-fuel,
   .plan-cost { max-width: none; }
@@ -10,83 +9,106 @@
 
   .concrete-plan > [data-layout-block="execution-overview"] {
     display: grid;
-    grid-template-columns: minmax(15rem, 4fr) minmax(0, 8fr);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     gap: var(--space-2) var(--product-grid-gap);
     align-items: start;
   }
 
   .execution-overview > h2,
-  .execution-overview > .execution-attention { grid-column: 1 / -1; }
+  .execution-overview > .execution-attention,
+  .execution-overview > .weather-notice { grid-column: 1 / -1; }
 
-  .execution-overview > .semantic-row,
-  .execution-overview > .weather-notice { grid-column: 1; }
-
-  .execution-overview > .trip-weather-overview {
-    grid-column: 2;
-    grid-row: 2 / span 8;
-    margin-block: 0;
-    min-width: 0;
+  .concrete-plan > [data-layout-block="execution-days"] {
+    position: relative;
+    margin-block-start: var(--space-5);
   }
 
-  .concrete-plan > [data-layout-block="day-reorder"] { margin-block: var(--space-3) var(--space-5); }
+  .concrete-plan-days > h2 {
+    margin-block: 0 var(--space-2);
+    font-size: var(--type-section-title);
+  }
 
-  .concrete-plan-reorder {
+  .primary-day-navigation {
+    position: sticky;
+    inset-block-start: .5rem;
+    z-index: 20;
+    display: flex;
+    overflow-x: auto;
+    min-width: 0;
+    margin-block-end: var(--space-4);
+    border-block-end: var(--border-width) solid var(--line);
+    background: color-mix(in srgb, var(--surface-page) 96%, transparent);
+    backdrop-filter: blur(.45rem);
+    scrollbar-width: thin;
+  }
+
+  .concrete-day-panel[hidden] { display: none; }
+
+  .concrete-day-body {
     display: grid;
-    grid-template-columns: 6.5rem minmax(0, 1fr);
-    gap: var(--space-1) var(--space-3);
+    grid-template-columns: minmax(15rem, 5fr) minmax(0, 7fr);
+    gap: var(--space-4) var(--product-grid-gap);
     align-items: start;
-    padding: var(--space-2) 0;
   }
 
-  .concrete-plan-reorder > h2 {
+  .concrete-day-context {
     grid-column: 1;
-    margin: .1rem 0 0;
+    min-width: 0;
   }
 
-  .concrete-plan-reorder > p,
-  .concrete-plan-reorder > .plan-day-assignment-grid {
+  .selected-day-weather {
     grid-column: 2;
     min-width: 0;
   }
 
-  .concrete-plan-reorder > p {
-    margin: 0 0 var(--space-1);
-    max-width: 58rem;
-    font-size: var(--type-caption);
-  }
-
-  .concrete-plan-reorder .plan-day-assignment-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, max-content));
-    gap: var(--space-1) var(--space-4);
-    justify-content: start;
-  }
-
-  .concrete-plan-reorder .execution-day-assignment {
-    display: grid;
-    grid-template-columns: max-content minmax(12rem, 20rem);
-    gap: var(--space-1) var(--space-2);
-    align-items: center;
+  .day-fuel-suggestions,
+  .execution-package-selector,
+  .execution-packages {
+    grid-column: 1 / -1;
     min-width: 0;
-    padding: 0;
   }
 
-  .concrete-plan-reorder .execution-slot,
-  .concrete-plan-reorder .execution-assignment-control,
-  .concrete-plan-reorder .execution-day-assignment-select {
+  .concrete-day-context > h2 {
+    margin-block: .15rem var(--space-1);
+    font-size: var(--type-page-title);
+  }
+
+  .concrete-day-kicker,
+  .concrete-day-window,
+  .concrete-day-constraint-indicator {
+    margin: 0;
     font-size: var(--type-caption);
   }
 
-  .concrete-plan-reorder .execution-day-assignment-select {
-    width: min(100%, 20rem);
-    height: 1.95rem;
-    padding-block: 0;
+  .concrete-day-kicker { color: var(--muted); }
+
+  .concrete-day-context .day-summary {
+    margin-block: var(--space-2);
+    color: var(--text-soft);
+    line-height: 1.55;
   }
 
-  /* The shared rule is stated once at group level; repeated item notes are noise. */
-  .concrete-plan-reorder .execution-reorder-note { display: none; }
+  .concrete-day-context-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: center;
+    margin-block-start: var(--space-2);
+  }
 
-  .concrete-plan > [data-layout-block="execution-days"] { margin-block-start: var(--space-6); }
+  .concrete-day-window {
+    color: var(--text-soft);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--font-weight-strong);
+  }
+
+  .concrete-day-constraint-indicator {
+    padding: .12rem .45rem;
+    border-radius: var(--radius-pill);
+    background: var(--caution-soft);
+    color: var(--caution);
+    font-weight: var(--font-weight-strong);
+  }
 
   /* Execution Timeline: compact Event + connector, not card + move-column. */
   .execution-action:not(.route-execution-group) {
@@ -297,8 +319,13 @@
   .trip-supporting-information[data-support-count="1"] { grid-template-columns: minmax(0, 1fr); }
 
   @media (max-width: 64rem) {
-    .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
-    .concrete-plan-reorder .execution-day-assignment { grid-template-columns: max-content minmax(0, 1fr); }
+    .concrete-day-body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-3);
+    }
+
+    .concrete-day-context,
+    .selected-day-weather { grid-column: 1; }
 
     .execution-action:not(.route-execution-group) .action-body {
       grid-template-columns: minmax(0, 1fr);
@@ -311,5 +338,15 @@
     .execution-action:not(.route-execution-group) .action-attention {
       grid-column: 1;
     }
+  }
+
+  @media (max-width: 52rem) {
+    .primary-day-navigation {
+      inset-block-start: .25rem;
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+    }
+
+    .trip-supporting-information { grid-template-columns: minmax(0, 1fr); }
   }
 }

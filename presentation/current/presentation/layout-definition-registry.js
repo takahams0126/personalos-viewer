@@ -85,7 +85,6 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
       blocks: Object.freeze([
         Object.freeze({ id: 'identity', sourceSemantic: 'plan-overview', view: VIEW.STACK }),
         Object.freeze({ id: 'composition-context', sourceSemantic: 'plan-composition', view: VIEW.STRUCTURED_LIST }),
-        Object.freeze({ id: 'day-reorder', sourceSemantic: 'day-reorder', view: VIEW.STACK, optional: true }),
         Object.freeze({
           id: 'days',
           sourceSemantic: 'days',
@@ -108,11 +107,15 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
       id: 'concrete-plan-content-v1',
       blocks: Object.freeze([
         Object.freeze({ id: 'execution-overview', sourceSemantic: 'execution-overview', view: VIEW.GRID }),
-        Object.freeze({ id: 'day-reorder', sourceSemantic: 'day-reorder', view: VIEW.STACK, optional: true }),
         Object.freeze({
           id: 'execution-days',
           sourceSemantic: 'days',
-          view: VIEW.DISCLOSURE,
+          view: VIEW.CONTENT_SWITCHER,
+          dayNavigation: Object.freeze({
+            id: 'primary-day-navigation',
+            view: VIEW.CONTENT_SWITCHER,
+            defaultDay: 'first'
+          }),
           day: Object.freeze({
             context: VIEW.STACK,
             executionPackages: Object.freeze({

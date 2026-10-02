@@ -2,7 +2,7 @@
 
 Status: active implementation guidance
 Scope: Current Leisure Viewer / Smart
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 ## Purpose
 
@@ -68,6 +68,34 @@ Viewer never derives new timetable times, safe-line times, margins, or margin-st
 
 Route-internal Actions remain collapsed in Actions view except explicit operational-boundary Events that carry published time constraints.
 
+## Primary Day Navigation
+
+ConcretePlan is a one-day-at-a-time Execution Workspace.
+
+```text
+Trip context
+→ Primary Day Navigator
+→ Selected Day Workspace
+```
+
+Primary Day Navigator owns the only Day selection on ConcretePlan.
+
+A Day tab may show only already-published or directly-presented facts:
+
+```text
+Day number
+Date / weekday
+Headline Weather?
+Day title
+Material time-constraint presence?
+```
+
+- Selecting a Day switches the complete Day context: Weather / Execution Package / Journey / Route detail / Map / Day support.
+- Day selection is local presentation state and is never persisted as Canonical truth.
+- Weather may decorate Day tabs but never owns or duplicates Day selection.
+- Desktop and Mobile use the same Day navigation model. Mobile may horizontally scroll the Day rail; it does not fall back to vertically stacking every Day.
+- Plan keeps its whole-trip multi-Day overview; Primary Day Navigation is ConcretePlan-specific because its purpose is execution rather than conceptual overview.
+
 ## Map
 
 Route Map and ordered sequence are one workspace.
@@ -87,22 +115,20 @@ ConcretePlan Timeline ↔ Map selection is added only when an explicit stable bi
 
 ## Weather
 
-Trip Weather and hourly detail have separate roles.
+ConcretePlan Weather belongs to the selected Day, not to an independent trip-level Day selector.
 
 ```text
-Trip Weather
-→ peer Day tabs for whole-trip comparison
-
-Selected Day
+Primary Day Navigator
+→ selected Day headline Weather
 → 3-hour icon timeline
 → one disclosure reveals temperature / precipitation / wind metrics
 ```
 
 Meteocons are local Viewer assets. Runtime CDN dependency is not part of the Weather grammar.
 
-Execution Day summaries may keep one compact headline Weather indicator. A second full Day Weather block is not repeated inside each Day body.
+The selected Day's hourly view may use only already-published Weather periods and Action time labels. The Viewer does not forecast, aggregate, or evaluate Weather.
 
-The selected Day's hourly view may show an explicit baseline execution window derived only from already-published Action time labels. The Viewer does not forecast, aggregate, or evaluate Weather.
+Weather unavailable on one Day must not break Day Navigation. Day Navigation is the owner; Weather is optional decoration/content.
 
 ## Entity / Fact
 
@@ -119,9 +145,12 @@ Carousel and Lightbox controls use local inline SVG geometry, not external SVG a
 
 ## Control / Disclosure
 
-Controls are intentionally weaker than Product content.
+Controls are intentionally weaker than Product content, except the Primary Day Navigator which establishes the current execution context.
 
 ```text
+Primary Day Navigator
+→ choose which execution Day is current
+
 Tab / Switch rail
 → switch peer content panels at the same hierarchy
 
@@ -135,14 +164,22 @@ Link
 → navigate to another Entity
 ```
 
-Shared switch-rail family applies to:
-- Day Workspace: 行動順 / ルート詳細 / マップ
-- Execution Package: baseline / explicit Variant
-- Trip Weather: Day 1 ... Day N
+ConcretePlan switch hierarchy:
 
-The visual language is shared, while hierarchy and Domain meaning stay distinct.
+```text
+Primary Day Navigator
+→ Day 1 / Day 2 / ...
 
-Schedule adjustment is not a Tab. It remains a compact Select-based operation control.
+Execution Package
+→ baseline / explicit Variant
+
+Day Workspace
+→ 行動順 / ルート詳細 / マップ
+```
+
+The visual language is related, while hierarchy and Domain meaning stay distinct.
+
+Viewer-level whole-Day schedule adjustment is not part of the Current Product. Plan displays Canonical Day order; ConcretePlan displays fixed execution Day order. Reordering semantics in upstream data do not create a Viewer control by themselves.
 
 Controls preserve native semantics (`button`, `select`, `details`, ARIA tabs where appropriate), keyboard access, focus visibility, and active state.
 
@@ -183,18 +220,18 @@ constraints?
 ```text
 identity
 composition context
-schedule adjustment?   # compact Select control
-conceptual journey
+conceptual multi-Day journey
 ```
 
 ### ConcretePlan
 
 ```text
 execution overview
-trip weather tabs + selected hourly detail
-schedule adjustment?   # compact Select control
-execution days
-  event timeline + movement connectors + operational constraints
+primary Day navigator
+selected Day
+  context | 3-hour Weather
+  execution package?
+  event timeline / route detail / map
 trip support: fuel | cost
 ```
 
@@ -220,7 +257,9 @@ horizontal ordered-stop selector
 ConcretePlan mobile:
 
 ```text
-Trip weather tab strip
+horizontal Primary Day Navigator
+Selected Day context
+3-hour Weather
 Time + Event
 Move connector
 Operational constraint
@@ -233,7 +272,7 @@ Operational constraints remain visible on Mobile. Secondary supporting facts may
 
 ```text
 patterns/smart/navigation.css  → navigation / relation navigation
-patterns/smart/journey.css     → journey / controls / switch rails
+patterns/smart/journey.css     → journey / Primary Day navigation / controls / switch rails
 patterns/smart/map.css         → map / map-linked selection
 patterns/smart/weather.css     → weather
 patterns/smart/entity.css      → entity hierarchy / appeal / review

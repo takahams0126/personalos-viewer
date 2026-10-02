@@ -432,11 +432,9 @@ function applyPlanRouteDisclosure(routeNode, detailDefinition) {
 function applyPlanContentLayout(root, contentLayout) {
   const identity = blockById(contentLayout, 'identity');
   const composition = blockById(contentLayout, 'composition-context');
-  const reorder = blockById(contentLayout, 'day-reorder');
   const days = blockById(contentLayout, 'days');
   markBlock(nodeForBlock(root, identity), identity);
   markBlock(nodeForBlock(root, composition), composition);
-  markBlock(nodeForBlock(root, reorder), reorder);
 
   const daysNode = nodeForBlock(root, days);
   if (!daysNode || !days?.day) return;
@@ -455,13 +453,70 @@ function applyPlanContentLayout(root, contentLayout) {
   });
 }
 
+function createPrimaryDayTab(dayNode, index) {
+  const day = dayNode.dataset.day || String(index + 1);
+  const panelId = `concrete-day-${day}-panel`;
+  const tabId = `concrete-day-${day}-tab`;
+  const selected = index === 0;
+
+  dayNode.id = panelId;
+  dayNode.dataset.dayNavigationPanel = 'true';
+  dayNode.setAttribute('role', 'tabpanel');
+  dayNode.setAttribute('aria-labelledby', tabId);
+  dayNode.hidden = !selected;
+
+  const tab = document.createElement('button');
+  tab.type = 'button';
+  tab.id = tabId;
+  tab.className = 'primary-day-tab';
+  tab.dataset.day = day;
+  tab.setAttribute('role', 'tab');
+  tab.setAttribute('aria-controls', panelId);
+  tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+  tab.tabIndex = selected ? 0 : -1;
+
+  const label = document.createElement('span');
+  label.className = 'primary-day-tab-label';
+  label.textContent = `Day ${day}`;
+  const date = document.createElement('span');
+  date.className = 'primary-day-tab-date';
+  date.textContent = dayNode.dataset.date || '';
+  const title = document.createElement('span');
+  title.className = 'primary-day-tab-title';
+  title.textContent = dayNode.dataset.dayTitle || `Day ${day}`;
+  tab.append(label, date, title);
+
+  if (dayNode.dataset.hasConstraint === 'true') {
+    const attention = document.createElement('span');
+    attention.className = 'primary-day-tab-attention';
+    attention.textContent = '時刻制約';
+    tab.append(attention);
+  }
+
+  return tab;
+}
+
+function applyPrimaryDayNavigation(daysNode, definition) {
+  if (!daysNode || !definition || definition.view !== 'content-switcher') return;
+  if (daysNode.querySelector(':scope > [data-day-navigation]')) return;
+  const panels = [...daysNode.querySelectorAll(':scope > [data-semantic="execution-day"]')];
+  if (!panels.length) return;
+
+  const navigation = document.createElement('div');
+  navigation.className = 'primary-day-navigation';
+  navigation.dataset.dayNavigation = definition.id || 'primary-day-navigation';
+  navigation.dataset.activeDay = panels[0].dataset.day || '1';
+  navigation.setAttribute('role', 'tablist');
+  navigation.setAttribute('aria-label', '日程');
+  panels.forEach((panel, index) => navigation.append(createPrimaryDayTab(panel, index)));
+  daysNode.insertBefore(navigation, panels[0]);
+}
+
 function applyConcretePlanContentLayout(root, contentLayout) {
   const overviewDefinition = blockById(contentLayout, 'execution-overview');
-  const reorderDefinition = blockById(contentLayout, 'day-reorder');
   const executionDays = blockById(contentLayout, 'execution-days');
   const supportDefinition = blockById(contentLayout, 'trip-supporting-information');
   markBlock(nodeForBlock(root, overviewDefinition), overviewDefinition);
-  markBlock(nodeForBlock(root, reorderDefinition), reorderDefinition);
 
   const daysNode = nodeForBlock(root, executionDays);
   markBlock(daysNode, executionDays);
@@ -474,6 +529,8 @@ function applyConcretePlanContentLayout(root, contentLayout) {
     heading: '旅行情報'
   });
   if (support) support.dataset.supportCount = String(support.children.length - 1);
+
+  applyPrimaryDayNavigation(daysNode, executionDays?.dayNavigation);
 
   const dayDefinition = executionDays?.day;
   if (!dayDefinition?.workspace) return;

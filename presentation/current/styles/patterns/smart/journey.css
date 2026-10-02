@@ -1,45 +1,95 @@
 @layer patterns {
-  /* Shared control grammar: operations stay visually weaker than trip content. */
-  .schedule-adjustment,
-  .concrete-plan-reorder {
-    border-block: var(--border-width) solid var(--line);
-    background: transparent;
-  }
-
-  .schedule-adjustment > h2,
-  .concrete-plan-reorder > h2 {
-    padding: 0;
-    color: var(--muted);
-    font-size: var(--type-control-label);
-  }
-
-  .schedule-adjustment-item,
-  .concrete-plan-reorder .execution-day-assignment {
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .schedule-adjustment-select,
-  .concrete-plan-reorder .execution-day-assignment-select {
-    width: min(100%, 22rem);
-    min-width: 0;
-    height: 1.95rem;
-    padding: 0 .55rem;
-    font-size: var(--type-caption);
-    line-height: 1.2;
-  }
-
-  .concrete-plan-reorder > p,
-  .execution-reorder-note,
-  .schedule-adjustment-note {
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--type-caption);
-    line-height: 1.4;
-  }
-
   .concrete-plan > .plan-navigation { display: none; }
+
+  /* Primary Day navigation selects the execution context; it is stronger than inner view switchers. */
+  .primary-day-tab {
+    flex: 1 0 min(9rem, 20vw);
+    appearance: none;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'label date'
+      'weather weather'
+      'title title'
+      'attention attention';
+    gap: .1rem .45rem;
+    align-items: center;
+    min-width: 8rem;
+    min-height: 5.7rem;
+    margin-block-end: calc(-1 * var(--border-width));
+    padding: .55rem .7rem .65rem;
+    border: 0;
+    border-block-end: .22rem solid transparent;
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .primary-day-tab:hover,
+  .primary-day-tab:focus-visible {
+    background: var(--surface-soft);
+    color: var(--text);
+    outline: none;
+  }
+
+  .primary-day-tab:focus-visible {
+    box-shadow: inset 0 0 0 .12rem color-mix(in srgb, var(--focus-ring) 50%, transparent);
+  }
+
+  .primary-day-tab[aria-selected='true'] {
+    border-block-end-color: var(--accent);
+    background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-page));
+    color: var(--accent-strong);
+  }
+
+  .primary-day-tab-label {
+    grid-area: label;
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .primary-day-tab-date {
+    grid-area: date;
+    justify-self: end;
+    min-width: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .primary-day-tab-weather {
+    grid-area: weather;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    min-width: 0;
+  }
+
+  .primary-day-tab-title {
+    grid-area: title;
+    overflow: hidden;
+    min-width: 0;
+    color: currentColor;
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .primary-day-tab-attention {
+    grid-area: attention;
+    width: fit-content;
+    padding: .08rem .35rem;
+    border-radius: var(--radius-pill);
+    background: var(--caution-soft);
+    color: var(--caution);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+  }
 
   /* Conceptual Plan and ConcretePlan share a row rhythm instead of card rhythm. */
   .plan-sequence,

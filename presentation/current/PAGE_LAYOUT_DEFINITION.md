@@ -2,7 +2,7 @@
 
 Status: active implementation definition
 Scope: Current Leisure Viewer presentation
-Updated: 2026-10-02
+Updated: 2026-10-03
 
 ## Purpose
 
@@ -150,7 +150,6 @@ Primary task: date-independent trip structure.
 ```text
 Identity / summary
 Composition context
-Schedule adjustment?
 Days
   conceptual Journey
 ```
@@ -158,6 +157,7 @@ Days
 Composition contextはPlanが参照するRouteとConcretePlanへのnavigation / structure理解を所有する。
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
 Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
+Planは旅行全体を俯瞰するため、複数DayのDisclosure構成を維持する。Viewer上の日程入れ替えcontrolは持たない。
 
 ### ConcretePlan
 
@@ -166,13 +166,33 @@ Primary task: execution scanability.
 ```text
 Identity
 Execution overview
-Schedule adjustment?
-Execution days
+Primary Day Navigator
+Selected Day Workspace
+  Day context | 3-hour Weather
+  Execution Package Selector?
+  行動順 | ルート詳細? | マップ?
+  Day-specific supporting information?
 Trip supporting information
   Fuel | Cost
 ```
 
-Execution overviewはPlan/status等のtrip contextと日別WeatherをDesktopで並列表示できる。
+Execution overviewは旅行全体のperiod / source Plan / status / Weather state / material attentionだけを扱う。
+Day選択はPrimary Day Navigatorが一元的に所有し、Weatherは独立したDay selectorを持たない。
+
+Primary Day Navigator:
+
+```text
+Day number
+Date / weekday
+Headline Weather?
+Day title
+Material time-constraint indicator?
+```
+
+- 横方向に旅行全Dayを並べ、選択した1 Dayだけを下のWorkspaceに表示する。
+- Day selectionはlocal presentation stateでCanonicalを変更しない。
+- Desktop / Mobileとも同じDay selection ownerを使う。
+- WeatherはDay Navigatorをdecorateしてよいが、Day Navigation自体はWeather availabilityへ依存しない。
 
 Reference Execution Timeline grammar:
 
@@ -199,26 +219,32 @@ Operational boundary
 - Route occurrenceはActions viewではcompactにし、full Route internalsはRoute detail viewへ委譲する。
 - Route内部Actionは通常collapsedだが、明示time constraintを持つoperational-boundary EventはActions viewにも残す。
 
-Day workspace:
+Selected Day Workspace:
 
 ```text
-Day context / Weather
+Day context
+  Day / date / title
+  execution window
+  material time-constraint indicator?
+3-hour Weather?
 Execution Package Selector?
-Action Journey
-Route detail?
-Map?
-Day-specific supporting information
+Day Workspace
+  行動順 / ルート詳細? / マップ?
+Day-specific supporting information?
 ```
 
-Fuel / CostはExecution Daysの後段にまとめ、Primary execution flowより強く見せない。
+Fuel / CostはSelected Day Workspaceの後段にまとめ、Primary execution flowより強く見せない。
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
 
 ## Execution Package / Day Workspace
 
-Execution Package SelectorとDay Workspace switcherは別意味。
+Primary Day Navigator、Execution Package Selector、Day Workspace switcherは別意味。
 
 ```text
+Primary Day Navigator
+→ いつを見るか
+
 Execution Package Selector
 → baseline / explicit Variant
 
@@ -226,7 +252,7 @@ Day Workspace
 → 行動順 / ルート詳細? / マップ?
 ```
 
-local presentation stateのみでCanonicalを変更しない。
+いずれもlocal presentation stateのみでCanonicalを変更しない。
 
 Timeline ↔ Map cross-selectionは、stable explicit bindingが存在する場合だけ追加する。Entity名・座標・表示順の類似性だけからrelationを推測しない。
 
@@ -237,7 +263,8 @@ Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriorit
 - Desktop: concurrent informationを横方向に利用。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
-- ConcretePlan MobileではTime + Event → Move connector → Operational constraint → supporting factsの順を維持する。
+- ConcretePlan Day Navigatorは横scrollを許容し、全Dayを縦積み表示へ戻さない。
+- ConcretePlan MobileではDay context → Weather → Time + Event → Move connector → Operational constraint → supporting factsの順を維持する。
 - Operational constraintをMobileだけ隠さない。
 
 Source DOM reading / focus orderを壊さない。
