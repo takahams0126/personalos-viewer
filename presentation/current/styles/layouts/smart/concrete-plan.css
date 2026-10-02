@@ -31,22 +31,46 @@
   .concrete-plan-reorder .plan-day-assignment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
   .concrete-plan-reorder .execution-day-assignment { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-1) var(--space-2); align-items: center; min-width: 0; padding: var(--space-1) 0; }
 
+  /* Shared journey grid: time | place/action | move | support. */
   .execution-action:not(.route-execution-group) {
     grid-template-columns: minmax(4.75rem, 2fr) minmax(0, 10fr);
     gap: 0 var(--space-2);
   }
+
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
-    grid-template-columns: minmax(12rem, 7fr) minmax(10rem, 3fr) minmax(9rem, 2fr);
+    grid-template-columns: minmax(14rem, 5fr) minmax(10rem, 3fr) minmax(8rem, 2fr);
     gap: var(--space-2) var(--space-3);
     align-items: start;
     padding: var(--space-2) 0;
   }
-  .execution-action:not(.route-execution-group) .action-header { grid-column: 1; min-width: 0; }
-  .execution-action:not(.route-execution-group) .next-move { grid-column: 2; grid-row: 1 / span 6; min-width: 0; padding: 0 var(--space-3); }
+
+  .execution-action:not(.route-execution-group) .action-header {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move {
+    grid-column: 2;
+    grid-row: 1 / span 8;
+    min-width: 0;
+    padding: 0 var(--space-3);
+  }
+
   .execution-action:not(.route-execution-group) .action-stay,
   .execution-action:not(.route-execution-group) .action-todos,
   .execution-action:not(.route-execution-group) .action-facilities,
   .execution-action:not(.route-execution-group) .action-constraints,
-  .execution-action:not(.route-execution-group) .action-attention { grid-column: 3; margin: 0; min-width: 0; }
+  .execution-action:not(.route-execution-group) .action-attention {
+    grid-column: 3;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .action-stay + .action-todos,
+  .execution-action:not(.route-execution-group) .action-todos + .action-facilities,
+  .execution-action:not(.route-execution-group) .action-facilities + .action-constraints,
+  .execution-action:not(.route-execution-group) .action-constraints + .action-attention {
+    margin-block-start: var(--space-2);
+  }
 }
