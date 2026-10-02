@@ -17,13 +17,8 @@
     padding-block: var(--space-3);
   }
 
-  .plan-page > [data-layout-block="day-reorder"] {
-    margin-block: var(--space-4) var(--space-6);
-  }
-
-  .plan-page > [data-layout-block="days"] {
-    margin-block-start: var(--space-7);
-  }
+  .plan-page > [data-layout-block="day-reorder"] { margin-block: var(--space-4) var(--space-6); }
+  .plan-page > [data-layout-block="days"] { margin-block-start: var(--space-7); }
 
   .plan-sequence { display: grid; gap: 0; }
 
@@ -37,15 +32,12 @@
 
   .plan-place .plan-item-kind,
   .plan-movement .plan-item-kind { grid-column: 1; }
-
   .plan-place h4,
   .plan-movement-main { grid-column: 2; }
-
   .plan-place .plan-item-meta,
   .plan-place .plan-item-condition,
   .plan-place .plan-item-actions,
   .plan-movement .plan-item-condition { grid-column: 3; }
-
   .plan-route { grid-column: 1 / -1; }
 
   .plan-sequence-boundary {
