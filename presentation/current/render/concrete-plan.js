@@ -10,22 +10,32 @@ const CONSTRAINT_LABELS = {
 
 async function describeTarget(target, resolver) {
   if (target?.kind === 'route_local') {
-    return { title: target.label || 'ルート内地点', kind: 'route_local', ref: null };
+    return { title: target.label || 'ルート内地点', kind: 'route_local', ref: null, pointType: '' };
   }
   if (target?.entity_type && target?.id) {
     try {
       const described = await resolver.describe(target);
-      return { title: described.title, kind: target.entity_type, ref: target };
+      let pointType = '';
+      if (target.entity_type === 'travel_point') {
+        try {
+          const loaded = await resolver.load(target);
+          pointType = loaded.data?.point_type?.code || '';
+        } catch {
+          pointType = '';
+        }
+      }
+      return { title: described.title, kind: target.entity_type, ref: target, pointType };
     } catch {
       return {
         title: `${target.entity_type}:${target.id}`,
         kind: target.entity_type,
         ref: target,
+        pointType: '',
         unavailable: true
       };
     }
   }
-  return { title: '地点情報なし', kind: 'unknown', ref: null, unavailable: true };
+  return { title: '地点情報なし', kind: 'unknown', ref: null, pointType: '', unavailable: true };
 }
 
 function entityTitle(ref, title, unavailable = false) {
@@ -33,6 +43,21 @@ function entityTitle(ref, title, unavailable = false) {
     return h('a', { attrs: { href: hrefFor(ref) }, text: title });
   }
   return h('span', { text: title });
+}
+
+function eventIconRole(target) {
+  if (target.kind === 'travel_point') return target.pointType || 'travel_point';
+  if (target.kind === 'route_local') return 'route';
+  if (target.kind === 'spot') return 'spot';
+  return 'place';
+}
+
+function renderEventIcon(target) {
+  return h('span', {
+    className: 'action-event-icon',
+    dataset: { iconRole: eventIconRole(target) },
+    attrs: { 'aria-hidden': 'true' }
+  });
 }
 
 async function googleMapsLink(event, resolver) {
@@ -165,19 +190,30 @@ function renderAttention(attention) {
 function renderMove(move) {
   if (!move) return null;
   const summary = [move.transport?.label, move.duration_label, move.distance_label].filter(Boolean).join(' ・ ');
+  const transportMode = move.transport?.code || 'move';
   return h('aside', {
     className: 'next-move',
-    dataset: { semantic: 'next-move', connectionState: move.connection_state?.code || '' }
+    dataset: {
+      semantic: 'next-move',
+      connectionState: move.connection_state?.code || '',
+      transportMode
+    }
   },
-    h('h5', { text: '次の移動' }),
-    summary ? h('p', { className: 'next-move-summary', text: summary }) : null,
-    renderService(move.service),
-    move.connection_margin_label
-      ? h('p', { className: 'connection-margin', text: move.connection_margin_label })
-      : null,
-    move.connection_state?.label
-      ? h('p', { className: 'connection-state', text: move.connection_state.label })
-      : null
+    h('span', {
+      className: 'move-connector-icon',
+      dataset: { iconRole: transportMode },
+      attrs: { 'aria-hidden': 'true' }
+    }),
+    h('div', { className: 'move-connector-content' },
+      summary ? h('p', { className: 'next-move-summary', text: summary }) : null,
+      renderService(move.service),
+      move.connection_margin_label
+        ? h('p', { className: 'connection-margin', text: move.connection_margin_label })
+        : null,
+      move.connection_state?.label
+        ? h('p', { className: 'connection-state', text: move.connection_state.label })
+        : null
+    )
   );
 }
 
@@ -199,19 +235,26 @@ async function renderAction(action, resolver, fuelEvents = []) {
 
   return h('li', {
     className: 'execution-action',
-    dataset: { semantic: 'action', order: action.order, targetKind: target.kind }
+    dataset: {
+      semantic: 'action',
+      order: action.order,
+      targetKind: target.kind,
+      eventIcon: eventIconRole(target)
+    }
   },
     renderTimelineTime(action),
     h('article', { className: 'action-body' },
       h('header', { className: 'action-header' },
-        h('p', { className: 'action-order', text: `#${action.order}` }),
-        h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
-        target.unavailable
-          ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
-          : null,
-        purpose ? h('p', { className: 'action-purpose', text: purpose }) : null,
-        inclusion ? h('p', { className: 'action-inclusion', text: inclusion }) : null,
-        fixedFuelMapLink
+        renderEventIcon(target),
+        h('div', { className: 'action-heading' },
+          h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
+          target.unavailable
+            ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
+            : null,
+          purpose ? h('p', { className: 'action-purpose', text: purpose }) : null,
+          inclusion ? h('p', { className: 'action-inclusion', text: inclusion }) : null,
+          fixedFuelMapLink
+        )
       ),
       renderStay(action),
       renderTodos(action.todos),
