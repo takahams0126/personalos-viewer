@@ -1,0 +1,81 @@
+@layer layout {
+  .plan-overview,
+  .plan-header { max-width: 58rem; }
+
+  .plan-page > [data-layout-block="composition-context"] {
+    display: grid;
+    gap: 0;
+    margin-block: var(--space-5) var(--space-7);
+  }
+
+  .plan-composition-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: center;
+    min-width: 0;
+    padding-block: var(--space-3);
+  }
+
+  .plan-page > [data-layout-block="day-reorder"] { margin-block: var(--space-4) var(--space-6); }
+  .plan-page > [data-layout-block="days"] { margin-block-start: var(--space-7); }
+
+  .plan-sequence { display: grid; gap: 0; }
+
+  .plan-place > article,
+  .plan-movement > article {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(12rem, 1fr) minmax(10rem, .65fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: baseline;
+  }
+
+  .plan-place .plan-item-kind,
+  .plan-movement .plan-item-kind { grid-column: 1; }
+  .plan-place h4,
+  .plan-movement-main { grid-column: 2; }
+  .plan-place .plan-item-meta,
+  .plan-place .plan-item-condition,
+  .plan-place .plan-item-actions,
+  .plan-movement .plan-item-condition { grid-column: 3; }
+  .plan-route { grid-column: 1 / -1; }
+
+  .plan-sequence-boundary {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    padding-block: var(--space-2);
+  }
+
+  .schedule-adjustment {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+    padding: var(--space-3) 0;
+  }
+
+  .schedule-adjustment > h2 { grid-column: 1; margin: .25rem 0 0; }
+  .schedule-adjustment > .schedule-adjustment-group { grid-column: 2; min-width: 0; }
+
+  .schedule-adjustment-group {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-2) var(--space-3);
+    align-items: center;
+  }
+
+  .schedule-adjustment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .schedule-adjustment-item {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-1) var(--space-2);
+    align-items: center;
+    min-width: 0;
+    padding: var(--space-1) 0;
+  }
+}

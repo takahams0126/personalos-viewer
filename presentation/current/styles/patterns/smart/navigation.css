@@ -1,0 +1,100 @@
+@layer patterns {
+  .viewer-product-shell {
+    border-block-end: var(--border-width) solid var(--line);
+    background: color-mix(in srgb, var(--surface-page) 94%, var(--surface));
+  }
+
+  .viewer-brand {
+    color: var(--text);
+    font-weight: var(--font-weight-emphasis);
+    letter-spacing: -0.015em;
+    text-decoration: none;
+  }
+
+  .viewer-brand:hover,
+  .viewer-brand:focus-visible { color: var(--accent-strong); }
+
+  .viewer-global-navigation,
+  .viewer-context-navigation { font-size: var(--type-meta); }
+
+  .viewer-nav-link,
+  .viewer-context-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    padding: .25rem .6rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    text-decoration: none;
+  }
+
+  .viewer-nav-link:hover,
+  .viewer-nav-link:focus-visible,
+  .viewer-context-back:hover,
+  .viewer-context-back:focus-visible {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+
+  .viewer-nav-link[aria-current="page"] {
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .viewer-context-label {
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label-wide);
+    text-transform: uppercase;
+  }
+
+  .plan-composition {
+    border-block: var(--border-width) solid var(--line);
+  }
+
+  .plan-composition > h2 {
+    margin: 0;
+    padding-block: var(--space-3);
+    font-size: var(--type-section-title);
+  }
+
+  .plan-composition-row { border-block-start: var(--border-width) solid var(--line); }
+
+  .plan-composition-row h3 {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-control-label);
+  }
+
+  .plan-composition-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .plan-composition-chip,
+  .plan-composition-execution-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.1rem;
+    padding: .28rem .65rem;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--accent-strong);
+    text-decoration: none;
+  }
+
+  .plan-composition-chip:hover,
+  .plan-composition-chip:focus-visible,
+  .plan-composition-execution-link:hover,
+  .plan-composition-execution-link:focus-visible {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+}

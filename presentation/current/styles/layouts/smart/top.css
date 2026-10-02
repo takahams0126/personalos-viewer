@@ -1,0 +1,30 @@
+@layer layout {
+  .top-hero {
+    max-width: 52rem;
+    margin-block-end: var(--space-7);
+  }
+
+  .top-explorer-layout {
+    display: grid;
+    grid-template-columns: minmax(14rem, 3fr) minmax(0, 9fr);
+    gap: var(--product-grid-gap);
+    align-items: start;
+  }
+
+  html[data-page-type="top"] [data-layout-block="explorer-controls"] {
+    position: sticky;
+    top: var(--space-4);
+    min-width: 0;
+  }
+
+  html[data-page-type="top"] [data-layout-block="results"] { min-width: 0; }
+
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-row {
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+    min-width: 0;
+  }
+}

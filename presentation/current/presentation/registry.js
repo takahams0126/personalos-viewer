@@ -18,12 +18,13 @@ const DEFAULT_PATTERN_SET = Object.freeze({ id: 'default', stylesheets: DEFAULT_
 
 const SMART_PATTERN_STYLESHEETS = Object.freeze([
   ...DEFAULT_PATTERN_STYLESHEETS,
-  new URL('../styles/patterns/smart/product.css', import.meta.url).href,
-  new URL('../styles/patterns/smart/workspace.css', import.meta.url).href,
-  new URL('../styles/patterns/smart/convergence.css', import.meta.url).href,
-  new URL('../styles/patterns/smart/convergence-2.css', import.meta.url).href,
-  new URL('../styles/patterns/smart/review.css', import.meta.url).href,
-  new URL('../styles/patterns/smart/convergence-3.css', import.meta.url).href
+  new URL('../styles/patterns/smart/navigation.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/entity.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/fact.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/journey.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/map.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/weather.css', import.meta.url).href,
+  new URL('../styles/patterns/smart/media.css', import.meta.url).href
 ]);
 
 const SMART_PATTERN_SET = Object.freeze({ id: 'smart', stylesheets: SMART_PATTERN_STYLESHEETS });
@@ -58,11 +59,13 @@ const DEFAULT_LAYOUT_SET = Object.freeze({ id: 'default', stylesheets: DEFAULT_L
 
 const SMART_LAYOUT_STYLESHEETS = Object.freeze([
   ...DEFAULT_LAYOUT_STYLESHEETS,
-  new URL('../styles/layouts/smart/product.css', import.meta.url).href,
-  new URL('../styles/layouts/smart/convergence.css', import.meta.url).href,
-  new URL('../styles/layouts/smart/convergence-2.css', import.meta.url).href,
-  new URL('../styles/layouts/smart/review.css', import.meta.url).href,
-  new URL('../styles/layouts/smart/convergence-3.css', import.meta.url).href
+  new URL('../styles/layouts/smart/shell.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/top.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/spot.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/route.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/plan.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/concrete-plan.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/responsive.css', import.meta.url).href
 ]);
 
 const SMART_LAYOUT_SET = Object.freeze({ id: 'smart', stylesheets: SMART_LAYOUT_STYLESHEETS });

@@ -32,6 +32,17 @@ function startTime(label) {
   return String(label).split('〜')[0] || String(label);
 }
 
+function executionWindow(day) {
+  const actions = [...(day?.actions || [])].sort((a, b) => a.order - b.order);
+  if (!actions.length) return null;
+  const first = actions.find(action => action.arrival_label || action.departure_label);
+  const last = [...actions].reverse().find(action => action.departure_label || action.arrival_label);
+  const start = first?.arrival_label || first?.departure_label || day.start_time_label || '';
+  const end = last?.departure_label || last?.arrival_label || '';
+  if (!start && !end) return null;
+  return { start, end };
+}
+
 function matrixRow(label, periods, selector, className = '') {
   const row = document.createElement('span');
   row.className = ['weather-matrix-row', className].filter(Boolean).join(' ');
@@ -53,7 +64,7 @@ function matrixRow(label, periods, selector, className = '') {
   return row;
 }
 
-function buildHourlyMatrix(weatherDay) {
+function buildHourlyMatrix(weatherDay, executionDay) {
   const periods = weatherDay?.periods || [];
   if (!periods.length) return null;
 
@@ -61,6 +72,21 @@ function buildHourlyMatrix(weatherDay) {
   wrapper.className = 'hourly-weather';
   wrapper.dataset.semantic = 'hourly-weather-presentation';
   wrapper.style.setProperty('--weather-period-count', String(periods.length));
+
+  const window = executionWindow(executionDay);
+  if (window) {
+    const execution = document.createElement('p');
+    execution.className = 'weather-execution-window';
+    execution.dataset.semantic = 'weather-execution-window';
+    const label = document.createElement('span');
+    label.textContent = '標準行程';
+    const value = document.createElement('strong');
+    value.textContent = window.start && window.end && window.start !== window.end
+      ? `${window.start}〜${window.end}`
+      : window.start || window.end;
+    execution.append(label, value);
+    wrapper.append(execution);
+  }
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
@@ -120,7 +146,7 @@ function decorateDaySummary(disclosure, weatherDay) {
   compact.prepend(weatherSymbol(weatherDay.condition, 'weather-symbol weather-symbol-summary'));
 }
 
-function decorateDayWeather(disclosure, weatherDay) {
+function decorateDayWeather(disclosure, weatherDay, executionDay) {
   const weather = disclosure.querySelector('.day-weather');
   if (!weather || weather.dataset.weatherHydrated === 'true') return;
 
@@ -129,7 +155,7 @@ function decorateDayWeather(disclosure, weatherDay) {
     summary.prepend(weatherSymbol(weatherDay.condition, 'weather-symbol weather-symbol-primary'));
   }
 
-  const matrix = buildHourlyMatrix(weatherDay);
+  const matrix = buildHourlyMatrix(weatherDay, executionDay);
   if (matrix) {
     const legacyDetail = weather.querySelector('.weather-detail');
     if (legacyDetail) {
@@ -148,12 +174,14 @@ export function hydrateWeatherPresentation(root, concretePlan) {
   if (!root || !days.length) return;
 
   const dayByOrdinal = new Map(days.map(day => [Number(day.day), day]));
+  const executionDayByOrdinal = new Map((concretePlan?.days || []).map(day => [Number(day.ordinal), day]));
   decorateTripWeather(root, dayByOrdinal);
 
   root.querySelectorAll('.concrete-day-disclosure[data-day]').forEach(disclosure => {
-    const weatherDay = dayByOrdinal.get(Number(disclosure.dataset.day));
+    const ordinal = Number(disclosure.dataset.day);
+    const weatherDay = dayByOrdinal.get(ordinal);
     if (!weatherDay) return;
     decorateDaySummary(disclosure, weatherDay);
-    decorateDayWeather(disclosure, weatherDay);
+    decorateDayWeather(disclosure, weatherDay, executionDayByOrdinal.get(ordinal));
   });
 }

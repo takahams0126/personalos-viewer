@@ -12,17 +12,15 @@ async function resolveSpot(ref, resolver) {
     return {
       ref,
       title: loaded.data.title || loaded.entry.title,
-      summary: loaded.data.summary || '',
-      image: loaded.data.images?.[0]?.url || null,
       unavailable: false
     };
   } catch (error) {
     console.warn('[current-viewer] Route Spot unavailable', ref, error);
     try {
       const described = await resolver.describe(ref);
-      return { ref, title: described.title, summary: '', image: null, unavailable: true };
+      return { ref, title: described.title, unavailable: true };
     } catch {
-      return { ref, title: ref.id, summary: '', image: null, unavailable: true };
+      return { ref, title: ref.id, unavailable: true };
     }
   }
 }
@@ -30,19 +28,19 @@ async function resolveSpot(ref, resolver) {
 async function renderHeroSpots(refs = [], resolver) {
   if (!refs.length) return null;
   const spots = await Promise.all(refs.map(ref => resolveSpot(ref, resolver)));
-  return h('section', { className: 'route-hero-spots', dataset: { semantic: 'hero-spots' } },
-    h('div', { className: 'route-hero-spot-grid' },
-      spots.map(spot =>
-        h('a', { className: 'route-hero-spot-card entity-link-card', attrs: { href: hrefFor(spot.ref) } },
-          spot.image ? h('img', { attrs: { src: spot.image, alt: '', loading: 'lazy', decoding: 'async' } }) : null,
-          h('div', { className: 'route-hero-spot-copy' },
-            h('h3', { text: spot.title }),
-            spot.summary ? h('p', { text: spot.summary }) : null,
-            spot.unavailable ? h('small', { text: '詳細を読み込めませんでした' }) : null
-          )
-        )
-      )
-    )
+  return h('nav', {
+    className: 'route-key-spots',
+    dataset: { semantic: 'hero-spots' },
+    attrs: { 'aria-label': '主役スポット' }
+  },
+    h('span', { className: 'route-key-spots-label', text: '主役スポット' }),
+    h('div', { className: 'route-key-spots-links' }, spots.map(spot =>
+      h('a', {
+        className: 'route-key-spot-link',
+        attrs: { href: hrefFor(spot.ref) },
+        text: spot.title
+      })
+    ))
   );
 }
 
@@ -154,9 +152,9 @@ export async function renderRoute({ route, resolver }) {
         h('h1', { text: route.title }),
         renderChipList(route.theme_chips, { ariaLabel: 'テーマ', className: 'route-theme-chips' }),
         renderFacts(route.hero_facts),
-        renderAppeal(route.appeal)
-      ),
-      await renderHeroSpots(route.hero_spots, resolver)
+        renderAppeal(route.appeal),
+        await renderHeroSpots(route.hero_spots, resolver)
+      )
     ),
     await renderSequence(route.sequence, resolver),
     renderMap(route.map),

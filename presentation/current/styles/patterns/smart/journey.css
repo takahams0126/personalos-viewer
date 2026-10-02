@@ -1,0 +1,261 @@
+@layer patterns {
+  /* Shared control grammar: operations stay visually weaker than trip content. */
+  .schedule-adjustment,
+  .concrete-plan-reorder {
+    border-block: var(--border-width) solid var(--line);
+    background: transparent;
+  }
+
+  .schedule-adjustment > h2,
+  .concrete-plan-reorder > h2 {
+    padding: 0;
+    color: var(--muted);
+    font-size: var(--type-control-label);
+  }
+
+  .schedule-adjustment-item,
+  .concrete-plan-reorder .execution-day-assignment {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .schedule-adjustment-select,
+  .concrete-plan-reorder .execution-day-assignment-select {
+    width: 100%;
+    min-width: 0;
+    height: 2.2rem;
+  }
+
+  .concrete-plan-reorder > p,
+  .execution-reorder-note,
+  .schedule-adjustment-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-meta);
+    line-height: 1.45;
+  }
+
+  .concrete-plan > .plan-navigation { display: none; }
+
+  /* Conceptual Plan and ConcretePlan share a row rhythm instead of card rhythm. */
+  .plan-sequence,
+  .execution-flow {
+    --journey-line: var(--line);
+  }
+
+  .plan-place > article,
+  .plan-movement > article,
+  .plan-sequence-boundary,
+  .execution-action:not(.route-execution-group) {
+    border-block-end: var(--border-width) solid var(--journey-line);
+  }
+
+  .plan-sequence > :last-child,
+  .execution-flow > :last-child { border-block-end: 0; }
+
+  .plan-place > article,
+  .plan-movement > article { padding: var(--space-2) 0; }
+
+  .plan-place .plan-item-kind,
+  .plan-movement .plan-item-kind,
+  .plan-boundary-label,
+  .action-order {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .plan-place h4,
+  .plan-movement-main,
+  .action-header h4 { margin: 0; }
+
+  .plan-movement-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    align-items: baseline;
+  }
+
+  .plan-movement-main > strong::before {
+    content: '→ ';
+    color: var(--accent-strong);
+  }
+
+  .plan-item-meta,
+  .plan-item-condition,
+  .plan-route-identity,
+  .plan-route-summary,
+  .plan-route-intent,
+  .route-execution-identity,
+  .route-execution-endpoints,
+  .route-execution-description {
+    color: var(--muted);
+    font-size: var(--type-meta);
+    line-height: 1.45;
+  }
+
+  .plan-route > article,
+  .route-execution-body {
+    margin-block: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-inline-start: var(--border-width-strong) solid var(--accent);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: var(--surface-soft);
+    box-shadow: none;
+  }
+
+  .plan-route-choice-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block-end: var(--space-2);
+    color: var(--muted);
+    font-size: var(--type-meta);
+  }
+
+  .plan-route-choice-select {
+    min-height: 2rem;
+    border-color: var(--line-interactive);
+    background: var(--surface);
+  }
+
+  .action-body {
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .execution-action:hover > .action-body { background: color-mix(in srgb, var(--surface-soft) 58%, transparent); }
+
+  .action-time-axis {
+    color: var(--accent-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .action-time-departure { color: var(--muted); }
+
+  .action-purpose,
+  .action-inclusion,
+  .action-stay,
+  .action-todos,
+  .action-facilities,
+  .action-constraints,
+  .action-attention,
+  .next-move {
+    font-size: var(--type-meta);
+  }
+
+  .action-todos h5,
+  .action-facilities h5,
+  .action-constraints h5,
+  .action-attention h5,
+  .next-move h5 {
+    margin-block: 0 var(--space-1);
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .action-todos ul,
+  .action-facilities ul,
+  .action-constraints ul,
+  .action-attention ul { margin-block: 0; padding-inline-start: 1.1rem; }
+
+  .execution-action:not(.route-execution-group) .next-move {
+    border: 0;
+    border-inline-start: var(--border-width) solid var(--line);
+    background: transparent;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move::before { display: none; }
+
+  .connection-state,
+  .constraint-state,
+  .connection-margin,
+  .constraint-margin,
+  .service-reservation {
+    color: var(--muted);
+    font-size: var(--type-caption);
+  }
+
+  .action-attention,
+  .action-constraints li[data-margin-state="critical"],
+  .action-constraints li[data-margin-state="violated"] {
+    border-inline-start: var(--border-width-strong) solid var(--caution);
+    padding-inline-start: var(--space-2);
+  }
+
+  .route-execution-action-range { display: none; }
+  .route-execution-label {
+    margin-block: 0 var(--space-1);
+    color: var(--accent-strong);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+  }
+
+  /* Execution package and view switchers are controls, not content cards. */
+  .execution-package-selector { margin-block: var(--space-5) var(--space-3); }
+  .execution-package-selector > h3 { margin-block: 0 var(--space-2); font-size: var(--type-control-label); color: var(--muted); }
+  .execution-package-options { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .execution-package-option {
+    appearance: none;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    padding: .35rem .75rem;
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    cursor: pointer;
+  }
+  .execution-package-option:hover,
+  .execution-package-option:focus-visible { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+  .execution-package-option[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--text-inverse); }
+  .execution-package-note { margin-block: var(--space-2) 0; color: var(--muted); font-size: var(--type-meta); }
+  .execution-packages > [hidden] { display: none; }
+
+  .day-workspace { margin-block: var(--space-5); }
+  .day-workspace-tabs {
+    display: flex;
+    gap: var(--space-1);
+    overflow-x: auto;
+    border-block-end: var(--border-width) solid var(--line);
+    scrollbar-width: thin;
+  }
+  .day-workspace-tab {
+    flex: 0 0 auto;
+    appearance: none;
+    border: 0;
+    border-block-end: .2rem solid transparent;
+    margin-block-end: calc(-1 * var(--border-width));
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    cursor: pointer;
+  }
+  .day-workspace-tab:hover,
+  .day-workspace-tab:focus-visible { background: var(--surface-soft); color: var(--text); }
+  .day-workspace-tab[aria-selected="true"] { border-block-end-color: var(--accent); color: var(--accent-strong); }
+  .day-workspace-panel { padding-block-start: var(--space-3); }
+  .day-workspace-panel > [hidden] { display: none; }
+  .route-execution-time-axis { display: none; }
+
+  .day-workspace[data-active-view="actions"] .route-execution-actions,
+  .day-workspace[data-active-view="actions"] .route-execution-description,
+  .day-workspace[data-active-view="actions"] .route-execution-action-range { display: none; }
+  .day-workspace[data-active-view="actions"] .route-execution-body { background: var(--surface-soft); }
+
+  .day-workspace[data-active-view="route"] .execution-sequence > .execution-action:not(.route-execution-group),
+  .day-workspace[data-active-view="route"] .route-execution-exit { display: none; }
+  .day-workspace[data-active-view="route"] .route-execution-group { padding-inline-start: 0; }
+  .day-workspace[data-active-view="route"] .route-execution-group::before,
+  .day-workspace[data-active-view="route"] .route-execution-group::after { display: none; }
+}

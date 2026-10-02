@@ -1,0 +1,30 @@
+@layer patterns {
+  .spot-hero-copy,
+  .spot-carousel,
+  .spot-usage-decision,
+  .spot-fees,
+  .spot-fact,
+  .spot-fact dd { min-width: 0; }
+
+  .carousel-lightbox-close::before,
+  .carousel-lightbox-close::after,
+  .carousel-lightbox-prev::before,
+  .carousel-lightbox-next::before { display: none !important; }
+
+  .carousel-lightbox-close svg,
+  .carousel-lightbox-nav svg {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    margin: auto;
+    pointer-events: none;
+  }
+
+  .viewer-product-footer {
+    color: var(--muted);
+    font-size: var(--type-meta);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .viewer-product-footer p { margin: 0; }
+}

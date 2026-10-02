@@ -2,6 +2,13 @@ function normalize(value) {
   return String(value || '').normalize('NFKC').toLocaleLowerCase('ja-JP').trim();
 }
 
+const CATALOG_TYPES = new Set(['spot', 'route', 'plan']);
+
+function requestedCatalog() {
+  const value = new URLSearchParams(window.location.search).get('catalog');
+  return CATALOG_TYPES.has(value) ? value : 'all';
+}
+
 function selectedType(root) {
   return root.querySelector('[data-explorer-type]:checked')?.value || 'all';
 }
@@ -100,6 +107,10 @@ export function hydrateExplorer(root) {
   const search = root.querySelector('[data-explorer-search]');
   const area = root.querySelector('[data-explorer-area]');
   const category = root.querySelector('[data-explorer-category]');
+
+  const catalog = requestedCatalog();
+  const catalogControl = typeControls.find(control => control.value === catalog);
+  if (catalogControl) catalogControl.checked = true;
 
   for (const control of typeControls) {
     control.addEventListener('change', () => {

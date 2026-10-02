@@ -1,0 +1,277 @@
+@layer patterns {
+  .entity-kind,
+  .plan-header .entity-kind {
+    margin-block-end: var(--space-2);
+    color: var(--accent);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+  }
+
+  .entity-chip {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .content-section { border-block-start-color: var(--line); }
+
+  .content-section > h2,
+  .execution-overview > h2,
+  .plan-days > h2,
+  .plan-fuel > h2,
+  .plan-cost > h2,
+  .trip-supporting-information > h2 {
+    margin-block-end: var(--space-3);
+    font-size: var(--type-section-title);
+  }
+
+  .entity-link-card {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: none;
+  }
+
+  .entity-link-card:hover,
+  .entity-link-card:focus-visible {
+    border-color: var(--accent-muted);
+    background: var(--surface-faint);
+  }
+
+  .top-filter-panel {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: none;
+  }
+
+  .top-type-option span,
+  .top-filter-field input,
+  .top-filter-field select {
+    border-color: var(--line);
+    background: var(--surface-faint);
+  }
+
+  .top-type-option input:checked + span {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .top-type-option input:focus-visible + span,
+  .top-filter-field input:focus,
+  .top-filter-field select:focus {
+    border-color: var(--accent);
+    outline: 0.18rem solid color-mix(in srgb, var(--focus-ring) 22%, transparent);
+    outline-offset: 0;
+  }
+
+  .top-result-row { box-shadow: none; }
+  .top-result-thumbnail { background: var(--accent-soft); }
+
+  .route-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .route-meta .entity-kind { margin: 0; }
+
+  .route-identity {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin: 0;
+  }
+
+  .route-identity > div {
+    display: flex;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .route-identity dt,
+  .route-identity dd {
+    margin: 0;
+    font-size: var(--type-meta);
+  }
+
+  .route-identity dt { color: var(--muted); }
+  .route-identity dt::after { content: ':'; }
+
+  .route-occurrence-badge {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+  }
+
+  .route-occurrence-badge[data-code="required"] {
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
+
+  .route-appeal-lead {
+    margin: 0;
+    padding-block-start: var(--space-4);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .route-appeal-lead > h2 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-entity-title);
+  }
+
+  .route-appeal-summary {
+    max-width: 58rem;
+    margin-block-end: var(--space-3);
+    font-size: var(--type-value);
+    line-height: 1.7;
+  }
+
+  .route-strengths {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .route-strengths > * {
+    padding: var(--space-2) 0;
+    border-block-end: var(--border-width) solid var(--line);
+    box-shadow: none;
+  }
+
+  .route-key-spots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .route-key-spots-label {
+    color: var(--muted);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .route-key-spots-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .route-key-spot-link {
+    color: var(--accent-strong);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    text-underline-offset: .16em;
+  }
+
+  .spot-practical-information {
+    background: transparent;
+  }
+
+  .spot-reference-utility {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    align-items: baseline;
+    padding-block: var(--space-2);
+  }
+
+  .spot-reference-label {
+    color: var(--muted);
+    font-size: var(--type-meta);
+  }
+
+  .spot-reference-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .spot-facilities {
+    padding: var(--space-3) 0;
+    border: 0;
+    border-block-start: var(--border-width) solid var(--line);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .spot-highlight-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spot-highlight-list li {
+    position: relative;
+    padding: var(--space-2) 0 var(--space-2) var(--space-4);
+    line-height: 1.6;
+  }
+
+  .spot-highlight-list li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: .85rem;
+    width: .42rem;
+    height: .42rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .spot-review {
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-4);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .spot-review-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .spot-review-positive,
+  .spot-review-caution {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .spot-review-positive h4,
+  .spot-review-caution h4 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-control-label);
+  }
+
+  .spot-review-positive li,
+  .spot-review-caution li {
+    margin-block: var(--space-1);
+    line-height: 1.55;
+  }
+
+  .plan-day-disclosure {
+    border-color: var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: none;
+  }
+
+  .plan-day-disclosure > summary:hover,
+  .plan-day-disclosure > summary:focus-visible,
+  .plan-day-disclosure[open] > summary {
+    background: var(--surface-subtle);
+  }
+
+  .plan-day-number { color: var(--accent); }
+}
