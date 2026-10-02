@@ -23,9 +23,7 @@
     min-width: 0;
   }
 
-  .concrete-plan > [data-layout-block="day-reorder"] {
-    margin-block: var(--space-4) var(--space-6);
-  }
+  .concrete-plan > [data-layout-block="day-reorder"] { margin-block: var(--space-4) var(--space-6); }
 
   .concrete-plan-reorder {
     display: grid;
@@ -54,9 +52,7 @@
     padding: var(--space-1) 0;
   }
 
-  .concrete-plan > [data-layout-block="execution-days"] {
-    margin-block-start: var(--space-7);
-  }
+  .concrete-plan > [data-layout-block="execution-days"] { margin-block-start: var(--space-7); }
 
   .execution-action:not(.route-execution-group) {
     grid-template-columns: minmax(4.75rem, 2fr) minmax(0, 10fr);
@@ -71,10 +67,7 @@
     padding: var(--space-2) 0;
   }
 
-  .execution-action:not(.route-execution-group) .action-header {
-    grid-column: 1;
-    min-width: 0;
-  }
+  .execution-action:not(.route-execution-group) .action-header { grid-column: 1; min-width: 0; }
 
   .execution-action:not(.route-execution-group) .next-move {
     grid-column: 2;
@@ -115,7 +108,5 @@
     border-block-start: 0;
   }
 
-  .trip-supporting-information[data-support-count="1"] {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  .trip-supporting-information[data-support-count="1"] { grid-template-columns: minmax(0, 1fr); }
 }
