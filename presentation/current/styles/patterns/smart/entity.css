@@ -16,6 +16,7 @@
   }
 
   .content-section { border-block-start-color: var(--line); }
+
   .content-section > h2,
   .execution-overview > h2,
   .plan-days > h2,
@@ -67,12 +68,14 @@
   .top-result-row { box-shadow: none; }
   .top-result-thumbnail { background: var(--accent-soft); }
 
+  /* Route identity is compact metadata. */
   .route-meta {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-2) var(--space-4);
   }
+
   .route-meta .entity-kind { margin: 0; }
 
   .route-identity {
@@ -81,9 +84,22 @@
     gap: var(--space-2) var(--space-4);
     margin: 0;
   }
-  .route-identity > div { display: flex; gap: var(--space-1); min-width: 0; padding: 0; border: 0; background: transparent; }
+
+  .route-identity > div {
+    display: flex;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
   .route-identity dt,
-  .route-identity dd { margin: 0; font-size: var(--type-meta); }
+  .route-identity dd {
+    margin: 0;
+    font-size: var(--type-meta);
+  }
+
   .route-identity dt { color: var(--muted); }
   .route-identity dt::after { content: ':'; }
 
@@ -92,17 +108,70 @@
     background: var(--accent-soft);
     color: var(--accent-strong);
   }
-  .route-occurrence-badge[data-code="required"] { background: var(--accent); color: var(--text-inverse); }
+
+  .route-occurrence-badge[data-code="required"] {
+    background: var(--accent);
+    color: var(--text-inverse);
+  }
 
   .route-appeal-lead {
     margin-block-start: var(--space-5);
     padding-block-start: var(--space-4);
     border-block-start: var(--border-width) solid var(--line);
   }
-  .route-appeal-lead > h2 { margin-block-end: var(--space-2); font-size: var(--type-entity-title); }
-  .route-appeal-summary { max-width: 58rem; margin-block-end: var(--space-3); font-size: var(--type-value); line-height: 1.7; }
-  .route-strengths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
-  .route-strengths > * { padding: var(--space-3); box-shadow: none; }
+
+  .route-appeal-lead > h2 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-entity-title);
+  }
+
+  .route-appeal-summary {
+    max-width: 58rem;
+    margin-block-end: var(--space-3);
+    font-size: var(--type-value);
+    line-height: 1.7;
+  }
+
+  .route-strengths {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .route-strengths > * {
+    padding: var(--space-2) 0;
+    border-block-end: var(--border-width) solid var(--line);
+    box-shadow: none;
+  }
+
+  .route-key-spots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .route-key-spots-label {
+    color: var(--muted);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .route-key-spots-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .route-key-spot-link {
+    color: var(--accent-strong);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    text-underline-offset: .16em;
+  }
 
   .spot-reference-utility {
     display: flex;
@@ -111,18 +180,39 @@
     align-items: baseline;
     padding-block: var(--space-2);
   }
-  .spot-reference-label { color: var(--muted); font-size: var(--type-meta); }
-  .spot-reference-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
-  .spot-facilities {
-    padding: var(--space-4);
-    border: var(--border-width) solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--surface-faint);
+  .spot-reference-label {
+    color: var(--muted);
+    font-size: var(--type-meta);
   }
 
-  .spot-highlight-list { margin: 0; padding: 0; list-style: none; }
-  .spot-highlight-list li { position: relative; padding: var(--space-2) 0 var(--space-2) var(--space-4); line-height: 1.6; }
+  .spot-reference-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Facilities are practical information, not a decorative card. */
+  .spot-facilities {
+    padding: var(--space-3) 0;
+    border: 0;
+    border-block-start: var(--border-width) solid var(--line);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .spot-highlight-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spot-highlight-list li {
+    position: relative;
+    padding: var(--space-2) 0 var(--space-2) var(--space-4);
+    line-height: 1.6;
+  }
+
   .spot-highlight-list li::before {
     content: '';
     position: absolute;
@@ -139,10 +229,33 @@
     padding-block-start: var(--space-4);
     border-block-start: var(--border-width) solid var(--line);
   }
+
+  .spot-review-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
   .spot-review-positive,
-  .spot-review-caution { padding: 0; background: transparent; box-shadow: none; }
+  .spot-review-caution {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .spot-review-positive h4,
-  .spot-review-caution h4 { margin-block-end: var(--space-2); font-size: var(--type-control-label); }
+  .spot-review-caution h4 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-control-label);
+  }
+
+  .spot-review-positive li,
+  .spot-review-caution li {
+    margin-block: var(--space-1);
+    line-height: 1.55;
+  }
 
   .plan-day-disclosure {
     border-color: var(--line);
@@ -150,8 +263,12 @@
     background: var(--surface);
     box-shadow: none;
   }
+
   .plan-day-disclosure > summary:hover,
   .plan-day-disclosure > summary:focus-visible,
-  .plan-day-disclosure[open] > summary { background: var(--surface-subtle); }
+  .plan-day-disclosure[open] > summary {
+    background: var(--surface-subtle);
+  }
+
   .plan-day-number { color: var(--accent); }
 }
