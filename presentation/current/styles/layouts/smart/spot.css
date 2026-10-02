@@ -1,22 +1,40 @@
 @layer layout {
   .spot-page { gap: clamp(2.75rem, 4.5vw, 4.5rem); }
+
   .spot-hero {
     grid-template-columns: minmax(0, 5fr) minmax(22rem, 7fr);
     gap: clamp(1.5rem, 3vw, 3rem);
     align-items: start;
   }
+
   .spot-hero-copy,
   .spot-carousel { min-width: 0; }
-  .spot-carousel { position: sticky; top: var(--space-5); }
 
+  .spot-carousel {
+    position: sticky;
+    top: var(--space-5);
+  }
+
+  /* Address is usually short; usage/pricing may be arbitrarily richer. */
   .spot-decision-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3);
+    grid-template-columns: minmax(10rem, 4fr) minmax(0, 8fr);
+    gap: var(--space-3) var(--space-5);
     align-items: start;
   }
-  .spot-usage-expanded { grid-column: 1 / -1; }
+
+  .spot-decision-grid > :only-child { grid-column: 1 / -1; }
+
   .spot-highlight-list,
-  .spot-review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-5); }
-  .spot-supporting-information { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .spot-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-5);
+  }
+
+  .spot-supporting-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
 }
