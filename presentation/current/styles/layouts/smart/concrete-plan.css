@@ -88,26 +88,29 @@
 
   .concrete-plan > [data-layout-block="execution-days"] { margin-block-start: var(--space-6); }
 
+  /* Execution Timeline: compact Event + connector, not card + move-column. */
   .execution-action:not(.route-execution-group) {
-    grid-template-columns: minmax(4.75rem, 2fr) minmax(0, 10fr);
+    grid-template-columns: minmax(3.75rem, max-content) minmax(0, 1fr);
     gap: 0 var(--space-2);
+  }
+
+  .execution-action:not(.route-execution-group) .action-time-axis {
+    padding-block-start: .5rem;
+    font-size: var(--type-caption);
   }
 
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
-    grid-template-columns: minmax(12rem, 7fr) minmax(10rem, 3fr) minmax(9rem, 2fr);
-    gap: var(--space-2) var(--space-3);
+    grid-template-columns: minmax(0, 7fr) minmax(11rem, 5fr);
+    gap: var(--space-1) var(--space-3);
     align-items: start;
-    padding: var(--space-2) 0;
+    margin-block-end: 0;
+    padding: .42rem 0 .5rem;
   }
 
-  .execution-action:not(.route-execution-group) .action-header { grid-column: 1; min-width: 0; }
-
-  .execution-action:not(.route-execution-group) .next-move {
-    grid-column: 2;
-    grid-row: 1 / span 6;
+  .execution-action:not(.route-execution-group) .action-header {
+    grid-column: 1;
     min-width: 0;
-    padding: 0 var(--space-3);
   }
 
   .execution-action:not(.route-execution-group) .action-stay,
@@ -115,8 +118,13 @@
   .execution-action:not(.route-execution-group) .action-facilities,
   .execution-action:not(.route-execution-group) .action-constraints,
   .execution-action:not(.route-execution-group) .action-attention {
-    grid-column: 3;
+    grid-column: 2;
     margin: 0;
+    min-width: 0;
+  }
+
+  .execution-action:not(.route-execution-group) .next-move {
+    grid-column: 1 / -1;
     min-width: 0;
   }
 
@@ -147,5 +155,17 @@
   @media (max-width: 64rem) {
     .concrete-plan-reorder .plan-day-assignment-grid { grid-template-columns: 1fr; }
     .concrete-plan-reorder .execution-day-assignment { grid-template-columns: max-content minmax(0, 1fr); }
+
+    .execution-action:not(.route-execution-group) .action-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .execution-action:not(.route-execution-group) .action-stay,
+    .execution-action:not(.route-execution-group) .action-todos,
+    .execution-action:not(.route-execution-group) .action-facilities,
+    .execution-action:not(.route-execution-group) .action-constraints,
+    .execution-action:not(.route-execution-group) .action-attention {
+      grid-column: 1;
+    }
   }
 }
