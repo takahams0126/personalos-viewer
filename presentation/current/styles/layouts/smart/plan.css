@@ -17,7 +17,6 @@
     padding-block: var(--space-2);
   }
 
-  .plan-page > [data-layout-block="day-reorder"] { margin-block: var(--space-3) var(--space-5); }
   .plan-page > [data-layout-block="days"] { margin-block-start: var(--space-6); }
 
   .plan-sequence { display: grid; gap: 0; }
@@ -44,56 +43,5 @@
     display: grid;
     grid-template-columns: 4.5rem minmax(0, 1fr);
     padding-block: var(--space-2);
-  }
-
-  .schedule-adjustment {
-    display: grid;
-    grid-template-columns: 6.5rem minmax(0, 1fr);
-    gap: var(--space-1) var(--space-3);
-    align-items: start;
-    padding: var(--space-2) 0;
-  }
-
-  .schedule-adjustment > h2 {
-    grid-column: 1;
-    margin: .1rem 0 0;
-  }
-
-  .schedule-adjustment > .schedule-adjustment-group {
-    grid-column: 2;
-    min-width: 0;
-  }
-
-  .schedule-adjustment-group {
-    display: grid;
-    gap: var(--space-1);
-    align-items: center;
-  }
-
-  .schedule-adjustment-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, max-content));
-    gap: var(--space-1) var(--space-4);
-    justify-content: start;
-  }
-
-  .schedule-adjustment-item {
-    display: grid;
-    grid-template-columns: max-content minmax(12rem, 20rem);
-    gap: var(--space-1) var(--space-2);
-    align-items: center;
-    min-width: 0;
-    padding: 0;
-  }
-
-  .schedule-adjustment-item label,
-  .schedule-adjustment-item > span,
-  .schedule-adjustment-note {
-    font-size: var(--type-caption);
-  }
-
-  @media (max-width: 64rem) {
-    .schedule-adjustment-grid { grid-template-columns: 1fr; }
-    .schedule-adjustment-item { grid-template-columns: max-content minmax(0, 1fr); }
   }
 }
