@@ -42,8 +42,10 @@ function activateDay(navigation, nextTab, { focus = false } = {}) {
   });
 
   navigation.dataset.activeDay = day;
-  nextTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  if (focus) nextTab.focus();
+  if (focus) {
+    nextTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    nextTab.focus();
+  }
   return selectedPanel;
 }
 
