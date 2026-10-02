@@ -198,7 +198,7 @@ function buildSegmentLegend(segmentViews, pointTitleById) {
   return legend;
 }
 
-function bindRouteSequence(view, markerViews) {
+function bindRouteSequence(view, markerViews, map, maps) {
   const page = view.closest('.route-page');
   if (!page) return;
   const sequenceItems = [...page.querySelectorAll('.route-sequence-item[data-order]')];
@@ -209,13 +209,29 @@ function bindRouteSequence(view, markerViews) {
 
   const apply = order => {
     sequenceItems.forEach(item => {
-      item.dataset.mapActive = String(item.dataset.order) === String(order) ? 'true' : 'false';
+      const active = String(item.dataset.order) === String(order);
+      item.dataset.mapActive = active ? 'true' : 'false';
+      item.dataset.mapSelected = active && pinnedOrder === String(order) ? 'true' : 'false';
     });
     markerViews.forEach(item => {
       const active = String(item.point.order) === String(order);
-      item.marker.setOpacity(!order || active ? 1 : 0.45);
+      item.marker.setOpacity(!order || active ? 1 : 0.42);
       item.marker.setZIndex(active ? 100 : undefined);
     });
+  };
+
+  const select = (order, { openPopup = false, scrollSequence = false } = {}) => {
+    pinnedOrder = order ? String(order) : null;
+    apply(pinnedOrder);
+    if (!pinnedOrder) return;
+    const markerView = markerByOrder.get(pinnedOrder);
+    if (!markerView) return;
+    map.panTo(markerView.marker.getPosition());
+    if (openPopup) maps.event.trigger(markerView.marker, 'click');
+    if (scrollSequence) {
+      const target = sequenceItems.find(node => String(node.dataset.order) === pinnedOrder);
+      target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   };
 
   sequenceItems.forEach(item => {
@@ -227,24 +243,23 @@ function bindRouteSequence(view, markerViews) {
     item.addEventListener('pointerleave', () => apply(pinnedOrder));
     item.addEventListener('focusin', () => apply(order));
     item.addEventListener('focusout', () => apply(pinnedOrder));
+    item.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (event.target.closest('a, button')) return;
+      event.preventDefault();
+      select(pinnedOrder === order ? null : order, { openPopup: true });
+    });
     item.addEventListener('click', event => {
       if (event.target.closest('a, button')) return;
-      pinnedOrder = pinnedOrder === order ? null : order;
-      apply(pinnedOrder);
-      if (pinnedOrder) markerView.marker.setAnimation(globalThis.google?.maps?.Animation?.BOUNCE || null);
-      setTimeout(() => markerView.marker.setAnimation(null), 550);
+      select(pinnedOrder === order ? null : order, { openPopup: true });
     });
   });
 
   markerViews.forEach(item => {
-    item.marker.addListener('mouseover', () => apply(String(item.point.order)));
+    const order = String(item.point.order);
+    item.marker.addListener('mouseover', () => apply(order));
     item.marker.addListener('mouseout', () => apply(pinnedOrder));
-    item.marker.addListener('click', () => {
-      pinnedOrder = String(item.point.order);
-      apply(pinnedOrder);
-      const target = sequenceItems.find(node => String(node.dataset.order) === pinnedOrder);
-      target?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    });
+    item.marker.addListener('click', () => select(order, { scrollSequence: true }));
   });
 }
 
@@ -297,14 +312,14 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
         infoWindow.setContent(infoContent(point, pointTitles[index]));
         infoWindow.open({ map, anchor: marker });
       });
-      markerViews.push({ point, marker });
+      markerViews.push({ point, marker, title: pointTitles[index] });
     });
 
     view.querySelector('.map-segment-legend')?.remove();
     const legend = buildSegmentLegend(segmentViews, pointTitleById);
     if (legend) canvas.insertAdjacentElement('afterend', legend);
 
-    bindRouteSequence(view, markerViews);
+    bindRouteSequence(view, markerViews, map, maps);
 
     if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
     state?.remove();
