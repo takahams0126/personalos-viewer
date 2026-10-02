@@ -1,0 +1,9 @@
+@layer layout {
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  html[data-page-type="top"] [data-layout-block="results"] .top-result-row {
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    min-width: 0;
+  }
+}

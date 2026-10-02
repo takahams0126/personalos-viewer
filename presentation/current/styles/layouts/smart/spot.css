@@ -1,0 +1,22 @@
+@layer layout {
+  .spot-page { gap: clamp(2.75rem, 4.5vw, 4.5rem); }
+  .spot-hero {
+    grid-template-columns: minmax(0, 5fr) minmax(22rem, 7fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+  }
+  .spot-hero-copy,
+  .spot-carousel { min-width: 0; }
+  .spot-carousel { position: sticky; top: var(--space-5); }
+
+  .spot-decision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    align-items: start;
+  }
+  .spot-usage-expanded { grid-column: 1 / -1; }
+  .spot-highlight-list,
+  .spot-review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-5); }
+  .spot-supporting-information { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+}

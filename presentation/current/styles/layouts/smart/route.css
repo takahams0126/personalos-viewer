@@ -1,0 +1,22 @@
+@layer layout {
+  .route-page { gap: clamp(2.75rem, 4.5vw, 4.5rem); }
+  .route-hero-copy { max-width: 58rem; }
+
+  .route-workspace {
+    display: grid;
+    grid-template-columns: minmax(15rem, 4fr) minmax(0, 8fr);
+    gap: var(--product-grid-gap);
+    align-items: stretch;
+  }
+  .route-workspace > [data-layout-slot] { min-width: 0; margin-block: 0; }
+  .route-workspace [data-layout-slot="primary"] {
+    max-height: clamp(28rem, 50vw, 38rem);
+    overflow: auto;
+    padding-inline-end: var(--space-1);
+  }
+  .route-workspace [data-layout-slot="secondary"] .map-canvas { min-height: clamp(28rem, 50vw, 38rem); }
+  .route-workspace .route-map-section,
+  .route-workspace .route-sequence-section { margin-block: 0; padding-block-start: 0; border-block-start: 0; }
+  .route-workspace .route-sequence { display: grid; gap: var(--space-1); }
+  .route-workspace .route-sequence-body { padding: var(--space-2) var(--space-3); box-shadow: none; }
+}
