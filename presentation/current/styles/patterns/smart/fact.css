@@ -82,15 +82,37 @@
     line-height: 1.45;
   }
 
+  /* Trip support is tabular information, not a card collection. */
   .plan-fuel,
   .plan-cost {
-    padding-block: var(--space-5);
-    border-block-start: var(--border-width) solid var(--line);
+    padding-block: var(--space-3);
+    border-block-start: 0;
+  }
+
+  .plan-fuel > h2,
+  .plan-cost > h2 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-entity-title);
+  }
+
+  .plan-fuel .semantic-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) minmax(0, 1.5fr);
+    gap: var(--space-2);
+    padding-block: var(--space-1);
+    border-block-end: var(--border-width) solid var(--line);
+    font-size: var(--type-meta);
+  }
+
+  .plan-fuel h3 {
+    margin: var(--space-3) 0 var(--space-1);
+    color: var(--muted);
+    font-size: var(--type-control-label);
   }
 
   .plan-fuel ul,
   .plan-cost ul {
-    margin-block: var(--space-3) 0;
+    margin-block: var(--space-1) 0;
     padding: 0;
     list-style: none;
   }
@@ -98,38 +120,54 @@
   .plan-fuel li,
   .plan-cost li {
     display: grid;
-    grid-template-columns: minmax(12rem, 1fr) max-content;
-    gap: var(--space-1) var(--space-4);
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: .15rem var(--space-3);
     align-items: baseline;
-    padding: var(--space-3) 0;
+    margin: 0;
+    padding: var(--space-2) 0;
+    border: 0;
     border-block-end: var(--border-width) solid var(--line);
+    border-radius: 0;
     background: transparent;
     box-shadow: none;
+    font-size: var(--type-meta);
   }
 
   .plan-fuel li:last-child,
   .plan-cost li:last-child { border-block-end: 0; }
 
+  .plan-fuel li > strong,
+  .plan-cost li > strong { min-width: 0; }
+
+  .plan-fuel li > span,
+  .plan-cost li > span {
+    justify-self: end;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
   .plan-fuel li > p,
   .plan-cost li > p,
   .plan-fuel li > a {
     grid-column: 1 / -1;
-    margin-block: var(--space-1) 0;
+    margin: 0;
     color: var(--muted);
-    font-size: var(--type-meta);
-    line-height: 1.45;
+    font-size: var(--type-caption);
+    line-height: 1.4;
   }
 
   .cost-total {
+    margin: 0 0 var(--space-2);
     color: var(--accent-strong);
-    font-size: var(--type-section-title);
+    font-size: var(--type-value);
     font-weight: var(--font-weight-emphasis);
+    font-variant-numeric: tabular-nums;
   }
 
   .plan-fuel .google-maps-link {
     justify-self: start;
-    min-height: 1.9rem;
-    padding: .2rem .55rem;
-    font-size: var(--type-meta);
+    min-height: 1.7rem;
+    padding: .1rem .45rem;
+    font-size: var(--type-caption);
   }
 }
