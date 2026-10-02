@@ -1,29 +1,32 @@
-const SYMBOL_BY_CODE = Object.freeze({
-  clear: '☀',
-  clear_day: '☀',
-  sunny: '☀',
-  partly_cloudy: '⛅',
-  partly_cloudy_day: '⛅',
-  cloudy: '☁',
-  overcast: '☁',
-  drizzle: '🌦',
-  rain: '🌧',
-  showers: '🌧',
-  fog: '🌫',
-  mist: '🌫',
-  snow: '❄',
-  sleet: '🌨',
-  thunderstorm: '⛈',
-  thunderstorms: '⛈'
+const ICON_BY_CODE = Object.freeze({
+  clear: 'clear-day',
+  clear_day: 'clear-day',
+  sunny: 'clear-day',
+  mostly_clear: 'clear-day',
+  mostly_clear_day: 'clear-day',
+  partly_cloudy: 'partly-cloudy-day',
+  partly_cloudy_day: 'partly-cloudy-day',
+  cloudy: 'cloudy',
+  overcast: 'cloudy',
+  drizzle: 'rain',
+  light_rain: 'rain',
+  rain: 'rain',
+  showers: 'rain',
+  heavy_rain: 'rain',
+  extreme_rain: 'rain',
+  thunderstorm: 'thunderstorms-day-rain',
+  thunderstorms: 'thunderstorms-day-rain'
 });
 
-function weatherSymbol(condition, className) {
+function weatherIcon(condition, className) {
   const code = condition?.code ? String(condition.code).toLowerCase() : '';
-  const symbol = SYMBOL_BY_CODE[code] || '•';
-  const node = document.createElement('span');
+  const slug = ICON_BY_CODE[code] || 'not-available';
+  const node = document.createElement('img');
   node.className = className;
-  node.textContent = symbol;
+  node.src = new URL(`../assets/weather/${slug}.svg`, import.meta.url).href;
+  node.alt = '';
   node.setAttribute('aria-hidden', 'true');
+  node.loading = 'lazy';
   return node;
 }
 
@@ -88,62 +91,57 @@ function buildHourlyMatrix(weatherDay, executionDay) {
     wrapper.append(execution);
   }
 
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'hourly-weather-toggle';
-  toggle.setAttribute('aria-expanded', 'false');
-
-  const title = document.createElement('span');
-  title.className = 'hourly-weather-toggle-label';
-  title.textContent = '3時間ごとの天気';
-
-  const preview = document.createElement('span');
-  preview.className = 'weather-matrix weather-matrix-preview';
-  preview.append(
+  const matrix = document.createElement('div');
+  matrix.className = 'weather-matrix weather-matrix-complete';
+  matrix.append(
     matrixRow('', periods, period => startTime(period.time_label), 'weather-matrix-time-row'),
     matrixRow('天気', periods, period => {
-      const icon = weatherSymbol(period.condition, 'weather-symbol weather-symbol-hourly');
+      const icon = weatherIcon(period.condition, 'weather-icon weather-icon-hourly');
       icon.title = period.condition?.label || '';
       return icon;
-    }, 'weather-matrix-icon-row')
-  );
-
-  toggle.append(title, preview);
-
-  const detail = document.createElement('div');
-  detail.className = 'weather-matrix weather-matrix-detail';
-  detail.hidden = true;
-  detail.append(
+    }, 'weather-matrix-icon-row'),
     matrixRow('気温', periods, period => period.temperature_label),
     matrixRow('降水確率', periods, period => period.precipitation_probability_label),
     matrixRow('降水量', periods, period => period.precipitation_amount_label),
     matrixRow('風', periods, period => period.wind_label)
   );
 
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-    detail.hidden = open;
-  });
-
-  wrapper.append(toggle, detail);
+  wrapper.append(matrix);
   return wrapper;
 }
 
-function decorateTripWeather(root, dayByOrdinal) {
+function decorateTripWeather(root, dayByOrdinal, executionDayByOrdinal) {
+  const list = root.querySelector('.trip-weather-days');
+  if (list) list.dataset.presentation = 'icon-strip';
+
   root.querySelectorAll('.trip-weather-day[data-day]').forEach(row => {
-    const weatherDay = dayByOrdinal.get(Number(row.dataset.day));
+    const ordinal = Number(row.dataset.day);
+    const weatherDay = dayByOrdinal.get(ordinal);
     if (!weatherDay) return;
-    const condition = row.querySelector('.trip-weather-condition');
-    if (!condition || condition.querySelector('.weather-symbol')) return;
-    condition.prepend(weatherSymbol(weatherDay.condition, 'weather-symbol weather-symbol-daily'));
+    const executionDay = executionDayByOrdinal.get(ordinal);
+
+    const dayLabel = document.createElement('strong');
+    dayLabel.className = 'trip-weather-day-label';
+    dayLabel.textContent = `Day ${ordinal}`;
+
+    const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-trip');
+
+    const condition = document.createElement('span');
+    condition.className = 'trip-weather-condition';
+    condition.textContent = weatherDay.condition?.label || '—';
+
+    const date = document.createElement('span');
+    date.className = 'trip-weather-date';
+    date.textContent = [executionDay?.date, executionDay?.weekday_label].filter(Boolean).join(' ');
+
+    row.replaceChildren(dayLabel, icon, condition, date);
   });
 }
 
 function decorateDaySummary(disclosure, weatherDay) {
   const compact = disclosure.querySelector('.concrete-day-weather');
-  if (!compact || compact.querySelector('.weather-symbol')) return;
-  compact.prepend(weatherSymbol(weatherDay.condition, 'weather-symbol weather-symbol-summary'));
+  if (!compact || compact.querySelector('.weather-icon')) return;
+  compact.prepend(weatherIcon(weatherDay.condition, 'weather-icon weather-icon-summary'));
 }
 
 function decorateDayWeather(disclosure, weatherDay, executionDay) {
@@ -151,8 +149,10 @@ function decorateDayWeather(disclosure, weatherDay, executionDay) {
   if (!weather || weather.dataset.weatherHydrated === 'true') return;
 
   const summary = weather.querySelector('.weather-summary');
-  if (summary && !summary.querySelector('.weather-symbol')) {
-    summary.prepend(weatherSymbol(weatherDay.condition, 'weather-symbol weather-symbol-primary'));
+  if (summary) {
+    const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-primary');
+    const condition = summary.querySelector('strong');
+    summary.replaceChildren(icon, condition || document.createTextNode(weatherDay.condition?.label || ''));
   }
 
   const matrix = buildHourlyMatrix(weatherDay, executionDay);
@@ -160,7 +160,7 @@ function decorateDayWeather(disclosure, weatherDay, executionDay) {
     const legacyDetail = weather.querySelector('.weather-detail');
     if (legacyDetail) {
       legacyDetail.before(matrix);
-      legacyDetail.hidden = true;
+      legacyDetail.remove();
     } else {
       weather.append(matrix);
     }
@@ -175,7 +175,7 @@ export function hydrateWeatherPresentation(root, concretePlan) {
 
   const dayByOrdinal = new Map(days.map(day => [Number(day.day), day]));
   const executionDayByOrdinal = new Map((concretePlan?.days || []).map(day => [Number(day.ordinal), day]));
-  decorateTripWeather(root, dayByOrdinal);
+  decorateTripWeather(root, dayByOrdinal, executionDayByOrdinal);
 
   root.querySelectorAll('.concrete-day-disclosure[data-day]').forEach(disclosure => {
     const ordinal = Number(disclosure.dataset.day);
