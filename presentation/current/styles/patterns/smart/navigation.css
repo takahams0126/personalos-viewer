@@ -59,7 +59,7 @@
 
   .plan-composition > h2 {
     margin: 0;
-    padding-block: var(--space-3);
+    padding-block: var(--space-2);
     font-size: var(--type-section-title);
   }
 
@@ -68,25 +68,28 @@
   .plan-composition-row h3 {
     margin: 0;
     color: var(--muted);
-    font-size: var(--type-control-label);
+    font-size: var(--type-meta);
   }
 
   .plan-composition-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
+    gap: var(--space-1) var(--space-2);
   }
 
   .plan-composition-chip,
   .plan-composition-execution-link {
     display: inline-flex;
     align-items: center;
-    min-height: 2.1rem;
-    padding: .28rem .65rem;
+    justify-self: start;
+    width: auto;
+    min-height: 1.9rem;
+    padding: .2rem .55rem;
     border: var(--border-width) solid var(--line-interactive);
     border-radius: var(--radius-pill);
-    background: var(--surface);
+    background: transparent;
     color: var(--accent-strong);
+    font-size: var(--type-meta);
     text-decoration: none;
   }
 
