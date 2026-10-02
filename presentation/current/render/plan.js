@@ -119,24 +119,6 @@ async function renderMovement(item, resolver) {
   );
 }
 
-async function renderRouteStops(routeData, resolver) {
-  const sequence = routeData?.sequence || [];
-  if (!sequence.length) return null;
-  const items = await Promise.all(sequence.map(async stop => {
-    const spot = await describeRef(stop.spot_ref, resolver);
-    return h('li', { className: 'plan-route-stop', dataset: { semantic: 'route-stop', order: stop.order } },
-      h('span', { className: 'plan-route-stop-order', text: String(stop.order) }),
-      h('strong', {}, entityTitle(stop.spot_ref, spot.title, spot.unavailable)),
-      stop.visit_purpose?.label ? h('span', { className: 'plan-route-stop-purpose', text: stop.visit_purpose.label }) : null,
-      stop.inclusion_requirement?.label ? h('span', { className: 'plan-route-stop-inclusion', text: stop.inclusion_requirement.label }) : null
-    );
-  }));
-  return h('section', { className: 'plan-route-sequence', dataset: { semantic: 'route-sequence' } },
-    h('h5', { text: 'ルート内の立ち寄り順' }),
-    h('ol', {}, items)
-  );
-}
-
 async function loadRouteChoice(ref, relation, resolver) {
   try {
     const loaded = await resolver.load(ref);
@@ -147,20 +129,20 @@ async function loadRouteChoice(ref, relation, resolver) {
   }
 }
 
-async function renderRouteChoiceDetail(choice, resolver) {
+function renderRouteChoiceDetail(choice) {
   const routeData = choice.routeData;
   const identity = routeData ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join(' / ') : '';
   const condition = choice.relation?.selection_condition?.text;
   const replacementIntent = choice.relation?.replacement_intent;
-  const routeStops = routeData ? await renderRouteStops(routeData, resolver) : null;
-  return h('div', { className: 'plan-route-choice-detail', dataset: { semantic: 'selected-route-detail', routeId: choice.ref?.id || '' } },
+  return h('div', {
+    className: 'plan-route-choice-detail',
+    dataset: { semantic: 'selected-route-detail', routeId: choice.ref?.id || '' }
+  },
     h('h4', {}, entityTitle(choice.ref, choice.title, choice.unavailable)),
     identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
-    routeData?.summary ? h('p', { className: 'plan-route-summary', text: routeData.summary }) : null,
     replacementIntent ? h('p', { className: 'plan-route-intent', text: replacementIntent }) : null,
     condition ? h('p', { className: 'plan-item-condition', text: `選択条件: ${condition}` }) : null,
-    choice.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null,
-    routeStops
+    choice.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
   );
 }
 
@@ -169,17 +151,23 @@ async function renderRoute(item, resolver) {
     loadRouteChoice(item.route_ref, { selection_condition: item.selection_condition }, resolver),
     ...(item.alternatives || []).map(alternative => loadRouteChoice(alternative.route_ref, alternative, resolver))
   ]);
-  const detailNodes = await Promise.all(choices.map(choice => renderRouteChoiceDetail(choice, resolver)));
+  const detailNodes = choices.map(renderRouteChoiceDetail);
   const detailHost = h('div', { className: 'plan-route-choice-host' }, detailNodes[0]);
-  const select = h('select', { className: 'plan-route-choice-select', attrs: { 'aria-label': '表示するルート' }, dataset: { semantic: 'route-choice-control' } },
-    choices.map((choice, index) => h('option', { attrs: { value: index }, text: index === 0 ? `${choice.title}（標準）` : choice.title }))
-  );
+  const select = h('select', {
+    className: 'plan-route-choice-select',
+    attrs: { 'aria-label': '表示するルート' },
+    dataset: { semantic: 'route-choice-control' }
+  }, choices.map((choice, index) =>
+    h('option', { attrs: { value: index }, text: index === 0 ? `${choice.title}（標準）` : choice.title })
+  ));
   select.addEventListener('change', () => detailHost.replaceChildren(detailNodes[Number(select.value)]));
   return h('li', { className: 'plan-sequence-item plan-route', dataset: { kind: 'route', semantic: 'route-occurrence' } },
     h('article', {},
       h('p', { className: 'plan-item-kind', text: 'ルート' }),
       h('section', { className: 'plan-route-choice', dataset: { semantic: 'route-choice' } },
-        choices.length > 1 ? h('label', { className: 'plan-route-choice-label' }, h('span', { text: 'ルート選択' }), select) : null,
+        choices.length > 1
+          ? h('label', { className: 'plan-route-choice-label' }, h('span', { text: 'ルート選択' }), select)
+          : null,
         detailHost
       )
     )
@@ -190,7 +178,11 @@ async function renderSequenceItem(item, resolver) {
   if (item.kind === 'place') return renderPlace(item, resolver);
   if (item.kind === 'movement') return renderMovement(item, resolver);
   if (item.kind === 'route') return renderRoute(item, resolver);
-  return h('li', { className: 'plan-sequence-item component-unavailable', dataset: { kind: item.kind || 'unknown' }, text: `未対応のsequence item: ${item.kind || 'unknown'}` });
+  return h('li', {
+    className: 'plan-sequence-item component-unavailable',
+    dataset: { kind: item.kind || 'unknown' },
+    text: `未対応のsequence item: ${item.kind || 'unknown'}`
+  });
 }
 
 async function renderBoundary(label, ref, resolver) {
@@ -208,8 +200,15 @@ async function renderDay(day, resolver, openByDefault) {
     renderBoundary('END', day.end_ref, resolver),
     Promise.all((day.sequence || []).map(item => renderSequenceItem(item, resolver)))
   ]);
-  return h('details', { className: 'plan-day-disclosure', dataset: { semantic: 'day', sourceDay: day.ordinal }, attrs: { open: openByDefault } },
-    h('summary', {}, h('span', { className: 'plan-day-number', text: `Day ${day.ordinal}` }), h('span', { className: 'plan-day-title', text: day.title })),
+  return h('details', {
+    className: 'plan-day-disclosure',
+    dataset: { semantic: 'day', sourceDay: day.ordinal },
+    attrs: { open: openByDefault }
+  },
+    h('summary', {},
+      h('span', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
+      h('span', { className: 'plan-day-title', text: day.title })
+    ),
     h('div', { className: 'plan-day-body' },
       day.summary ? h('p', { className: 'plan-day-summary', text: day.summary }) : null,
       h('ol', { className: 'plan-sequence', dataset: { semantic: 'conceptual-sequence' } }, start, items, end)
@@ -221,6 +220,7 @@ function buildReorderControls(plan, assignments, dayNodes, daysHost) {
   if (!plan.reorder_groups?.length) return null;
   const dayByOrdinal = new Map((plan.days || []).map(day => [day.ordinal, day]));
   const selectBySlot = new Map();
+
   function refresh() {
     daysHost.replaceChildren();
     for (const slot of [...assignments.keys()].sort((a, b) => a - b)) {
@@ -232,18 +232,25 @@ function buildReorderControls(plan, assignments, dayNodes, daysHost) {
       if (number) number.textContent = `Day ${slot}`;
       daysHost.append(node);
     }
-    for (const [slot, select] of selectBySlot.entries()) select.value = String(assignments.get(slot));
+    for (const [slot, select] of selectBySlot.entries()) {
+      select.value = String(assignments.get(slot));
+    }
   }
 
   const groups = plan.reorder_groups.map(group => {
     const ordinals = [...(group.day_ordinals || [])].sort((a, b) => a - b);
     const rows = ordinals.map(slot => {
-      const select = h('select', { className: 'plan-day-assignment-select schedule-adjustment-select', attrs: { 'aria-label': `Day ${slot} の内容` }, dataset: { semantic: 'day-assignment-control', slot } },
-        ordinals.map(sourceOrdinal => {
-          const day = dayByOrdinal.get(sourceOrdinal);
-          return h('option', { attrs: { value: sourceOrdinal }, text: `Day ${sourceOrdinal} ${day?.title || ''}`.trim() });
-        })
-      );
+      const select = h('select', {
+        className: 'plan-day-assignment-select schedule-adjustment-select',
+        attrs: { 'aria-label': `Day ${slot} の内容` },
+        dataset: { semantic: 'day-assignment-control', slot }
+      }, ordinals.map(sourceOrdinal => {
+        const day = dayByOrdinal.get(sourceOrdinal);
+        return h('option', {
+          attrs: { value: sourceOrdinal },
+          text: `Day ${sourceOrdinal} ${day?.title || ''}`.trim()
+        });
+      }));
       select.value = String(assignments.get(slot));
       selectBySlot.set(slot, select);
       select.addEventListener('change', () => {
@@ -254,25 +261,39 @@ function buildReorderControls(plan, assignments, dayNodes, daysHost) {
         assignments.set(slot, selectedSource);
         refresh();
       });
-      return h('div', { className: 'plan-day-assignment schedule-adjustment-item', dataset: { semantic: 'day-assignment', slot } },
+      return h('div', {
+        className: 'plan-day-assignment schedule-adjustment-item',
+        dataset: { semantic: 'day-assignment', slot }
+      },
         h('span', { className: 'plan-day-assignment-slot schedule-adjustment-slot', text: `Day ${slot}` }),
         select
       );
     });
     return h('div', { className: 'plan-reorder-group schedule-adjustment-group' },
-      h('p', { className: 'schedule-adjustment-note', text: `${group.factor?.label || '条件'}に応じて入れ替え可能` }),
+      h('p', {
+        className: 'schedule-adjustment-note',
+        text: `${group.factor?.label || '条件'}に応じて入れ替え可能`
+      }),
       h('div', { className: 'plan-day-assignment-grid schedule-adjustment-grid' }, rows)
     );
   });
+
   refresh();
-  return h('section', { className: 'plan-reorder schedule-adjustment', dataset: { semantic: 'day-reorder' } }, h('h2', { text: '日程調整' }), groups);
+  return h('section', {
+    className: 'plan-reorder schedule-adjustment',
+    dataset: { semantic: 'day-reorder' }
+  }, h('h2', { text: '日程調整' }), groups);
 }
 
 export async function renderPlan({ plan, manifestEntry, resolver }) {
   const orderedDays = [...(plan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
   const openByDefault = orderedDays.length === 1;
-  const dayNodesArray = await Promise.all(orderedDays.map(day => renderDay(day, resolver, openByDefault)));
-  const dayNodes = new Map(orderedDays.map((day, index) => [day.ordinal, dayNodesArray[index]]));
+  const dayNodesArray = await Promise.all(
+    orderedDays.map(day => renderDay(day, resolver, openByDefault))
+  );
+  const dayNodes = new Map(
+    orderedDays.map((day, index) => [day.ordinal, dayNodesArray[index]])
+  );
   const assignments = new Map(orderedDays.map(day => [day.ordinal, day.ordinal]));
   const daysHost = h('div', { className: 'plan-days-list' });
   const reorder = buildReorderControls(plan, assignments, dayNodes, daysHost);
@@ -286,6 +307,9 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
     ),
     composition,
     reorder,
-    h('section', { className: 'plan-days', dataset: { semantic: 'days' } }, h('h2', { text: '日程' }), daysHost)
+    h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
+      h('h2', { text: '日程' }),
+      daysHost
+    )
   );
 }
