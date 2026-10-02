@@ -89,11 +89,9 @@ function renderFees(fees) {
 function renderUsageDecision(fees, facts = []) {
   const feeNode = renderFees(fees);
   if (!facts.length && !feeNode) return null;
-  const feeCount = fees?.items?.length || 0;
-  const density = facts.length + feeCount;
   return h('section', {
-    className: `spot-usage-decision spot-usage-${density <= 2 ? 'compact' : density <= 5 ? 'standard' : 'expanded'}`,
-    dataset: { semantic: 'utilization-decision', density: density <= 2 ? 'compact' : density <= 5 ? 'standard' : 'expanded' }
+    className: 'spot-usage-decision',
+    dataset: { semantic: 'utilization-decision' }
   },
     h('h2', { text: '利用判断' }),
     facts.length ? renderFacts(facts, 'spot-major-facts') : null,
@@ -128,12 +126,12 @@ function renderCarousel(images = [], title = '') {
 
   const controls = images.length > 1
     ? h('div', { className: 'carousel-controls' },
-        h('button', { attrs: { type: 'button', 'data-carousel-prev': true, 'aria-label': '前の画像' }, text: '‹' }),
+        h('button', { attrs: { type: 'button', 'data-carousel-prev': true, 'aria-label': '前の画像' }, text: '前へ' }),
         h('p', { className: 'carousel-status', attrs: { 'aria-live': 'polite' } },
           h('span', { attrs: { 'data-carousel-current': true }, text: '1' }),
           ` / ${images.length}`
         ),
-        h('button', { attrs: { type: 'button', 'data-carousel-next': true, 'aria-label': '次の画像' }, text: '›' })
+        h('button', { attrs: { type: 'button', 'data-carousel-next': true, 'aria-label': '次の画像' }, text: '次へ' })
       )
     : null;
 
