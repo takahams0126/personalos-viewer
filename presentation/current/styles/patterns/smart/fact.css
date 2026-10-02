@@ -27,6 +27,7 @@
     gap: var(--space-2) var(--space-4);
     min-width: 0;
   }
+
   .spot-major-facts .spot-fact {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -34,9 +35,19 @@
     align-items: baseline;
     min-width: 0;
   }
+
   .spot-major-facts dt,
-  .spot-fee-scope { color: var(--muted); font-size: var(--type-meta); }
-  .spot-major-facts dd { margin: 0; min-width: 0; font-weight: var(--font-weight-strong); overflow-wrap: anywhere; }
+  .spot-fee-scope {
+    color: var(--muted);
+    font-size: var(--type-meta);
+  }
+
+  .spot-major-facts dd {
+    margin: 0;
+    min-width: 0;
+    font-weight: var(--font-weight-strong);
+    overflow-wrap: anywhere;
+  }
 
   .spot-fees {
     min-width: 0;
@@ -44,8 +55,14 @@
     padding-block-start: var(--space-2);
     border-block-start: var(--border-width) solid var(--line);
   }
-  .spot-fees h3 { margin-block-end: var(--space-2); font-size: var(--type-control-label); }
+
+  .spot-fees h3 {
+    margin-block-end: var(--space-2);
+    font-size: var(--type-control-label);
+  }
+
   .spot-fee-list { display: grid; gap: var(--space-1); }
+
   .spot-fee-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(8rem, 14rem);
@@ -53,17 +70,31 @@
     align-items: baseline;
     min-width: 0;
   }
+
   .spot-fee-scope,
-  .spot-fee-value { min-width: 0; overflow-wrap: anywhere; }
-  .spot-fee-value { font-size: var(--type-value); line-height: 1.45; }
+  .spot-fee-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .spot-fee-value {
+    font-size: var(--type-value);
+    line-height: 1.45;
+  }
 
   .plan-fuel,
   .plan-cost {
     padding-block: var(--space-5);
     border-block-start: var(--border-width) solid var(--line);
   }
+
   .plan-fuel ul,
-  .plan-cost ul { margin-block: var(--space-3) 0; padding: 0; list-style: none; }
+  .plan-cost ul {
+    margin-block: var(--space-3) 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .plan-fuel li,
   .plan-cost li {
     display: grid;
@@ -75,11 +106,30 @@
     background: transparent;
     box-shadow: none;
   }
+
   .plan-fuel li:last-child,
   .plan-cost li:last-child { border-block-end: 0; }
+
   .plan-fuel li > p,
   .plan-cost li > p,
-  .plan-fuel li > a { grid-column: 1 / -1; margin-block: var(--space-1) 0; color: var(--muted); font-size: var(--type-meta); line-height: 1.45; }
-  .cost-total { color: var(--accent-strong); font-size: var(--type-section-title); font-weight: var(--font-weight-emphasis); }
-  .plan-fuel .google-maps-link { justify-self: start; min-height: 1.9rem; padding: .2rem .55rem; font-size: var(--type-meta); }
+  .plan-fuel li > a {
+    grid-column: 1 / -1;
+    margin-block: var(--space-1) 0;
+    color: var(--muted);
+    font-size: var(--type-meta);
+    line-height: 1.45;
+  }
+
+  .cost-total {
+    color: var(--accent-strong);
+    font-size: var(--type-section-title);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .plan-fuel .google-maps-link {
+    justify-self: start;
+    min-height: 1.9rem;
+    padding: .2rem .55rem;
+    font-size: var(--type-meta);
+  }
 }
