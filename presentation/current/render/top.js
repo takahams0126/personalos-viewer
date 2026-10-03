@@ -2,7 +2,7 @@ import { hrefFor } from '../core/router.js';
 import { renderChipList } from './components/presentation.js';
 import { h } from './dom.js';
 
-const EXPLORER_TYPES = new Set(['spot', 'route', 'plan']);
+const EXPLORER_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
 
 function explorerEntries(manifest) {
   return (manifest.entities || []).filter(entry =>
@@ -10,7 +10,7 @@ function explorerEntries(manifest) {
   );
 }
 
-function renderTypeOption(value, label, checked = false) {
+function renderTypeOption(value, label) {
   const id = `top-type-${value}`;
   return h('label', { className: 'top-type-option', attrs: { for: id } },
     h('input', {
@@ -18,8 +18,7 @@ function renderTypeOption(value, label, checked = false) {
         id,
         type: 'radio',
         name: 'top-entity-type',
-        value,
-        checked
+        value
       },
       dataset: { explorerType: value }
     }),
@@ -35,10 +34,10 @@ function renderFilterPanel(manifest) {
     h('fieldset', { className: 'top-type-filter' },
       h('legend', { text: '種類' }),
       h('div', { className: 'top-type-options' },
-        renderTypeOption('all', 'すべて', true),
         renderTypeOption('spot', 'スポット'),
         renderTypeOption('route', 'ルート'),
-        renderTypeOption('plan', 'プラン')
+        renderTypeOption('plan', 'プラン'),
+        renderTypeOption('concrete_plan', '実施プラン')
       )
     ),
     h('div', { className: 'top-filter-field top-search-field' },
@@ -141,7 +140,7 @@ export function renderTop({ manifest }) {
       h('h1', { text: '行き先とプランを探す' }),
       h('p', {
         className: 'top-intro',
-        text: 'スポット、ルート、プランを一覧から探し、条件で絞り込めます。'
+        text: 'スポット、ルート、プラン、実施プランを一覧から探し、条件で絞り込めます。'
       })
     ),
     h('div', { className: 'top-explorer-layout' },
