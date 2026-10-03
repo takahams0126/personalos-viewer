@@ -6,15 +6,25 @@
     display: grid;
     gap: 0;
     margin-block: var(--space-4) var(--space-5);
+    max-width: 68rem;
   }
 
   .plan-composition-row {
     display: grid;
-    grid-template-columns: 6.5rem minmax(0, 1fr);
+    grid-template-columns: 7rem minmax(0, 1fr);
     gap: var(--space-2) var(--space-3);
     align-items: center;
     min-width: 0;
     padding-block: var(--space-2);
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .plan-composition-row:last-child { border-block-end: 0; }
+
+  .plan-composition-row > h3 {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--type-control-label);
   }
 
   .plan-page > [data-layout-block="days"] {
@@ -27,26 +37,20 @@
     font-size: var(--type-section-title);
   }
 
-  /* Plan shares the Day Navigator behavior with ConcretePlan, but its conceptual
-     Day tabs stay compact because there is no date / weather / constraint layer. */
-  .plan-day-navigation .primary-day-tab {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'label'
-      'title';
-    min-height: 3.65rem;
-    padding-block: .5rem .6rem;
-  }
-
-  .plan-day-navigation .primary-day-tab-label,
-  .plan-day-navigation .primary-day-tab-title {
-    justify-self: start;
-  }
-
-  .plan-days-list {
+  .plan-day-navigation {
+    display: flex;
+    overflow-x: auto;
     min-width: 0;
+    margin-block-end: var(--space-4);
+    border-block-end: var(--border-width) solid var(--line);
+    scrollbar-width: thin;
   }
 
+  .plan-day-navigation .primary-day-tab {
+    flex-basis: min(10rem, 21vw);
+  }
+
+  .plan-days-list { min-width: 0; }
   .plan-day-panel[hidden] { display: none; }
 
   .plan-day-context {
@@ -67,12 +71,10 @@
     letter-spacing: var(--tracking-label);
   }
 
-  .plan-day-context .plan-day-title {
-    font-size: var(--type-page-title);
-  }
+  .plan-day-context .plan-day-title { font-size: var(--type-page-title); }
 
   .plan-day-summary {
-    max-width: 58rem;
+    max-width: 64rem;
     margin-block: 0 var(--space-3);
     color: var(--text-soft);
     line-height: 1.55;
@@ -81,57 +83,72 @@
   .plan-sequence {
     display: grid;
     gap: 0;
-    margin-block-start: var(--space-3);
+    max-width: 68rem;
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .plan-place > article,
-  .plan-movement > article {
-    display: grid;
-    grid-template-columns: 4.5rem minmax(12rem, 1fr) minmax(10rem, .65fr);
-    gap: var(--space-2) var(--space-4);
-    align-items: baseline;
-  }
+  .plan-route-choice-host { margin-block-start: var(--space-1); }
 
-  .plan-place .plan-item-kind,
-  .plan-movement .plan-item-kind { grid-column: 1; }
-  .plan-place h4,
-  .plan-movement-main { grid-column: 2; }
-  .plan-place .plan-item-meta,
-  .plan-place .plan-item-condition,
-  .plan-place .plan-item-actions,
-  .plan-movement .plan-item-condition { grid-column: 3; }
-  .plan-route { grid-column: 1 / -1; }
+  .plan-route-choice-detail > h4 { margin-block: 0 var(--space-1); }
 
-  .plan-route-choice-host {
-    margin-block-start: var(--space-2);
-  }
-
-  .plan-route-choice-detail > h4 {
-    margin-block: 0 var(--space-1);
-  }
-
-  .plan-route-choice-detail > p {
-    margin-block: var(--space-1) 0;
-  }
-
-  .plan-sequence-boundary {
-    display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
-    padding-block: var(--space-2);
-  }
+  .plan-route-choice-detail > p { margin-block: var(--space-1) 0; }
 
   @media (max-width: 52rem) {
-    .plan-place > article,
-    .plan-movement > article {
-      grid-template-columns: 4rem minmax(0, 1fr);
-      gap: var(--space-1) var(--space-3);
+    .plan-page > [data-layout-block="composition-context"] { margin-block-end: var(--space-4); }
+
+    .plan-composition-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-1);
+      padding-block: var(--space-3);
     }
 
-    .plan-place .plan-item-meta,
-    .plan-place .plan-item-condition,
-    .plan-place .plan-item-actions,
-    .plan-movement .plan-item-condition {
-      grid-column: 2;
+    .plan-day-navigation {
+      margin-inline: -.75rem;
+      padding-inline: .75rem;
     }
+
+    .plan-day-navigation .primary-day-tab {
+      flex: 0 0 min(9rem, 45vw);
+      min-width: 7.5rem;
+    }
+
+    .plan-day-context {
+      display: grid;
+      gap: .15rem;
+    }
+
+    .plan-day-context .plan-day-title { font-size: clamp(1.35rem, 7vw, 1.85rem); }
+
+    .plan-sequence { max-width: none; }
+
+    .plan-journey-event,
+    .plan-journey-connector {
+      grid-template-columns: 1.6rem minmax(0, 1fr);
+      gap: .55rem;
+    }
+
+    .plan-journey-event::before,
+    .plan-journey-connector::before { inset-inline-start: .76rem; }
+
+    .plan-event-icon { width: 1.55rem; height: 1.55rem; }
+    .plan-move-icon { width: 1.3rem; height: 1.3rem; }
+
+    .plan-move-body {
+      display: grid;
+      gap: .05rem;
+    }
+
+    .plan-event-facts > div {
+      grid-template-columns: 4.75rem minmax(0, 1fr);
+    }
+
+    .plan-route-body { padding: .65rem .7rem; }
+    .plan-route-choice-label {
+      display: grid;
+      align-items: start;
+    }
+    .plan-route-choice-select { max-width: 100%; }
   }
 }
