@@ -1,7 +1,7 @@
 @layer patterns {
   .spot-access-block,
   .spot-usage-decision {
-    padding: var(--space-3) 0;
+    padding: var(--space-2) 0;
     border-block-start: var(--border-width) solid var(--line);
     min-width: 0;
   }
@@ -9,7 +9,7 @@
   .spot-access-block h2,
   .spot-usage-decision h2,
   .spot-facilities h2 {
-    margin-block-end: var(--space-2);
+    margin-block-end: var(--space-1);
     color: var(--muted);
     font-size: var(--type-control-label);
   }
@@ -18,13 +18,13 @@
     margin: 0;
     max-width: 32rem;
     font-weight: var(--font-weight-strong);
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   .spot-major-facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: var(--space-2) var(--space-4);
+    gap: var(--space-1) var(--space-3);
     min-width: 0;
   }
 
@@ -51,13 +51,13 @@
 
   .spot-fees {
     min-width: 0;
-    margin-block-start: var(--space-3);
+    margin-block-start: var(--space-2);
     padding-block-start: var(--space-2);
     border-block-start: var(--border-width) solid var(--line);
   }
 
   .spot-fees h3 {
-    margin-block-end: var(--space-2);
+    margin-block-end: var(--space-1);
     font-size: var(--type-control-label);
   }
 
@@ -65,7 +65,7 @@
 
   .spot-fee-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(8rem, 14rem);
+    grid-template-columns: minmax(0, 1fr) max-content;
     gap: var(--space-2);
     align-items: baseline;
     min-width: 0;
@@ -79,95 +79,238 @@
 
   .spot-fee-value {
     font-size: var(--type-value);
-    line-height: 1.45;
+    line-height: 1.35;
   }
 
-  /* Trip support is tabular information, not a card collection. */
-  .plan-fuel,
-  .plan-cost {
-    padding-block: var(--space-3);
-    border-block-start: 0;
-  }
-
-  .plan-fuel > h2,
-  .plan-cost > h2 {
-    margin-block-end: var(--space-2);
-    font-size: var(--type-entity-title);
-  }
-
-  .plan-fuel .semantic-row {
-    display: grid;
-    grid-template-columns: minmax(8rem, 1fr) minmax(0, 1.5fr);
-    gap: var(--space-2);
-    padding-block: var(--space-1);
+  /* Fuel is an operational plan, not a two-column supporting card. */
+  .support-panel-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    align-items: baseline;
+    justify-content: space-between;
+    padding-block-end: var(--space-3);
     border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .support-panel-header > h2 {
+    margin: 0;
+    font-size: var(--type-section-title);
+  }
+
+  .fuel-summary-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem var(--space-4);
+    margin: 0;
+  }
+
+  .fuel-summary-fact {
+    display: inline-flex;
+    gap: .4rem;
+    align-items: baseline;
     font-size: var(--type-meta);
   }
 
-  .plan-fuel h3 {
-    margin: var(--space-3) 0 var(--space-1);
-    color: var(--muted);
-    font-size: var(--type-control-label);
+  .fuel-summary-fact dt { color: var(--muted); }
+  .fuel-summary-fact dd {
+    margin: 0;
+    font-weight: var(--font-weight-strong);
+    font-variant-numeric: tabular-nums;
   }
 
-  .plan-fuel ul,
-  .plan-cost ul {
-    margin-block: var(--space-1) 0;
+  .fuel-event-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .plan-fuel li,
-  .plan-cost li {
+  .fuel-event-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) max-content;
-    gap: .15rem var(--space-3);
-    align-items: baseline;
-    margin: 0;
-    padding: var(--space-2) 0;
-    border: 0;
+    grid-template-columns: 9rem minmax(12rem, .8fr) minmax(0, 1.4fr) auto;
+    gap: var(--space-2) var(--space-3);
+    align-items: center;
+    min-width: 0;
+    padding-block: var(--space-3);
     border-block-end: var(--border-width) solid var(--line);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    font-size: var(--type-meta);
   }
 
-  .plan-fuel li:last-child,
-  .plan-cost li:last-child { border-block-end: 0; }
+  .fuel-event-row:last-child { border-block-end: 0; }
 
-  .plan-fuel li > strong,
-  .plan-cost li > strong { min-width: 0; }
-
-  .plan-fuel li > span,
-  .plan-cost li > span {
-    justify-self: end;
-    white-space: nowrap;
-    font-variant-numeric: tabular-nums;
+  .fuel-event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .4rem;
+    align-items: center;
   }
 
-  .plan-fuel li > p,
-  .plan-cost li > p,
-  .plan-fuel li > a {
-    grid-column: 1 / -1;
-    margin: 0;
+  .fuel-day-badge,
+  .fuel-importance,
+  .fuel-timing {
+    width: fit-content;
     color: var(--muted);
     font-size: var(--type-caption);
-    line-height: 1.4;
+    font-weight: var(--font-weight-strong);
   }
 
+  .fuel-day-badge {
+    color: var(--accent-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .fuel-event-row[data-importance='required'] .fuel-importance {
+    padding: .08rem .35rem;
+    border-radius: var(--radius-pill);
+    background: var(--caution-soft);
+    color: var(--caution);
+  }
+
+  .fuel-station-title {
+    min-width: 0;
+    font-size: var(--type-entity-title);
+  }
+
+  .fuel-event-context {
+    min-width: 0;
+    margin: 0;
+    color: var(--text-soft);
+    font-size: var(--type-meta);
+    line-height: 1.45;
+  }
+
+  .fuel-event-row .google-maps-link {
+    justify-self: end;
+    white-space: nowrap;
+  }
+
+  .support-empty { color: var(--muted); }
+
+  /* Cost is a comparison surface. Primary row stays short; long rationale becomes numbered notes. */
   .cost-total {
-    margin: 0 0 var(--space-2);
+    margin: 0;
     color: var(--accent-strong);
     font-size: var(--type-value);
     font-weight: var(--font-weight-emphasis);
     font-variant-numeric: tabular-nums;
   }
 
-  .plan-fuel .google-maps-link {
-    justify-self: start;
-    min-height: 1.7rem;
-    padding: .1rem .45rem;
+  .cost-group {
+    margin-block-start: var(--space-5);
+  }
+
+  .cost-group > h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-soft);
+    font-size: var(--type-entity-title);
+  }
+
+  .cost-table {
+    display: grid;
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .cost-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(8rem, max-content);
+    gap: var(--space-3);
+    align-items: center;
+    min-width: 0;
+    padding-block: .75rem;
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .cost-item {
+    display: grid;
+    gap: .12rem;
+    min-width: 0;
+  }
+
+  .cost-item-label {
+    min-width: 0;
+    font-size: var(--type-body);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .cost-item-detail {
+    color: var(--muted);
+    font-size: var(--type-meta);
+    line-height: 1.4;
+  }
+
+  .cost-amount {
+    display: flex;
+    gap: .35rem;
+    align-items: baseline;
+    justify-content: flex-end;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cost-amount > strong {
+    font-size: var(--type-value);
+  }
+
+  .cost-state {
+    color: var(--muted);
     font-size: var(--type-caption);
+  }
+
+  .cost-amount sup {
+    font-size: var(--type-caption);
+  }
+
+  .cost-notes {
+    margin-block-start: var(--space-5);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .cost-notes > h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--muted);
+    font-size: var(--type-control-label);
+  }
+
+  .cost-notes ol {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-inline-start: 1.8rem;
+  }
+
+  .cost-notes li {
+    padding-inline-start: .25rem;
+    color: var(--text-soft);
+    font-size: var(--type-meta);
+    line-height: 1.5;
+  }
+
+  .cost-awaiting-structured-data .cost-item-label {
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 52rem) {
+    .support-panel-header {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .fuel-event-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .35rem;
+    }
+
+    .fuel-event-row .google-maps-link { justify-self: start; }
+
+    .cost-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-2);
+    }
+
+    .cost-item-label { font-size: var(--type-meta); }
+    .cost-amount > strong { font-size: var(--type-body); }
   }
 }
