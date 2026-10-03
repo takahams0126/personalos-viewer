@@ -118,6 +118,17 @@
       grid-template-columns: 3.25rem minmax(0, 1fr);
     }
 
+    /* Plan identity must be bounded before the peer-navigation rails appear. */
+    .plan-overview,
+    .plan-overview > h1,
+    .plan-overview > p {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
     /* Plan composition is content, not a horizontal control rail. */
     .plan-composition,
     .plan-composition-row,
