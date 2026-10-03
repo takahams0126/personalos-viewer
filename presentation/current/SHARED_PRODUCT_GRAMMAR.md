@@ -15,6 +15,14 @@ Every change answers two questions:
 
 No `convergence-N.css`, review patch, or page-local override layer is allowed.
 
+## Product visibility principle
+
+Primary content is visible by default. Peer selection uses a content switcher / Tab. Disclosure is reserved for secondary detail.
+
+Desktop unused space is not a reason to push primary decision information below the fold. When two concurrent primary roles fit the shared Product Grid, use horizontal composition rather than hiding one role or creating unnecessary vertical depth.
+
+This principle does not mean "put everything in the hero". Secondary facilities, long notes, provenance, and optional detail remain subordinate.
+
 ## Navigation
 
 - Product catalog: Explorer / Plans / Routes / Spots.
@@ -35,6 +43,7 @@ Plan remains conceptual and ConcretePlan remains actual-world execution. The vis
 Normal journey rows are not Cards. Explicit Route groups, hard boundaries, and material attention may receive stronger treatment.
 
 Plan Route occurrence does not duplicate Route summary / full stop sequence. Route detail remains the Route page owner's responsibility.
+Selected Route identity / family / variant that explains the Plan occurrence is Primary content and remains visible without an extra Disclosure action.
 
 ### Execution Timeline
 
@@ -70,31 +79,41 @@ Route-internal Actions remain collapsed in Actions view except explicit operatio
 
 ## Primary Day Navigation
 
-ConcretePlan is a one-day-at-a-time Execution Workspace.
+Plan and ConcretePlan share one interaction grammar for selecting a Day, while preserving different Domain semantics.
 
 ```text
-Trip context
+Plan
+Trip design context
 → Primary Day Navigator
-→ Selected Day Workspace
+→ Selected conceptual Day
+
+ConcretePlan
+Trip execution context
+→ Primary Day Navigator
+→ Selected execution Day
 ```
 
-Primary Day Navigator owns the only Day selection on ConcretePlan.
-
-A Day tab may show only already-published or directly-presented facts:
+Plan Day tab:
 
 ```text
 Day number
+Day title
+```
+
+ConcretePlan Day tab may additionally show already-published execution facts:
+
+```text
 Date / weekday
 Headline Weather?
-Day title
 Material time-constraint presence?
 ```
 
-- Selecting a Day switches the complete Day context: Weather / Execution Package / Journey / Route detail / Map / Day support.
+- Selecting a Plan Day switches only the conceptual Day Journey.
+- Selecting a ConcretePlan Day switches the complete execution Day context: Weather / Execution Package / Journey / Route detail / Map / Day support.
 - Day selection is local presentation state and is never persisted as Canonical truth.
-- Weather may decorate Day tabs but never owns or duplicates Day selection.
+- Weather may decorate ConcretePlan Day tabs but never owns or duplicates Day selection.
 - Desktop and Mobile use the same Day navigation model. Mobile may horizontally scroll the Day rail; it does not fall back to vertically stacking every Day.
-- Plan keeps its whole-trip multi-Day overview; Primary Day Navigation is ConcretePlan-specific because its purpose is execution rather than conceptual overview.
+- Plan and ConcretePlan share the Day interaction owner; page-specific data decoration remains separate.
 
 ## Map
 
@@ -138,6 +157,8 @@ Weather unavailable on one Day must not break Day Navigation. Day Navigation is 
 - Information volume grows naturally; the Viewer does not score content into arbitrary compact/standard/expanded classes.
 - Route hero Spot references are compact context, not duplicate Spot cards.
 - Fuel / Cost and other dense comparable support use structured rows/table-like presentation rather than Card collections.
+- Spot Quick Practical uses existing access / usage decision / pricing / reference semantics and is part of the desktop Hero identity rail when it materially helps the immediate use decision.
+- Facilities and longer optional detail remain supporting content; the same fact is not duplicated above and below the Hero.
 
 ## Media
 
@@ -145,11 +166,11 @@ Carousel and Lightbox controls use local inline SVG geometry, not external SVG a
 
 ## Control / Disclosure
 
-Controls are intentionally weaker than Product content, except the Primary Day Navigator which establishes the current execution context.
+Controls are intentionally weaker than Product content, except Primary Day Navigation which establishes the current Day context.
 
 ```text
 Primary Day Navigator
-→ choose which execution Day is current
+→ choose which Day context is current
 
 Tab / Switch rail
 → switch peer content panels at the same hierarchy
@@ -158,11 +179,13 @@ Select
 → choose an assignment/value from alternatives
 
 Disclosure
-→ reveal secondary detail without changing peer context
+→ reveal genuinely secondary detail without changing peer context
 
 Link
 → navigate to another Entity
 ```
+
+Primary content is not placed behind a Disclosure merely to shorten the page. In particular, selected Plan Route identity/detail is initially visible; only optional secondary detail belongs behind Disclosure.
 
 ConcretePlan switch hierarchy:
 
@@ -197,14 +220,13 @@ controls 3 | results 9
 ### Spot
 
 ```text
-identity 5 | media 7
-practical information in the identity rail
-appeal/review after the complete hero workspace
+identity + quick practical 5 | media 7
+appeal 5 | review 7        # reviewが存在する場合
 facilities?
 related spots
 ```
 
-Desktop Media does not overlap later content. Mobile priority remains Media → Identity → Practical information.
+Desktop Media does not overlap later content. Quick Practical uses the left Hero rail instead of leaving unused space while pushing decision facts below the fold. Mobile priority remains Media → Identity / Summary → Quick Practical → Appeal / Review.
 
 ### Route
 
@@ -220,7 +242,9 @@ constraints?
 ```text
 identity
 composition context
-conceptual multi-Day journey
+primary Day navigator
+selected conceptual Day journey
+  selected Route identity/detail inline
 ```
 
 ### ConcretePlan
@@ -243,8 +267,11 @@ Spot mobile:
 
 ```text
 Media
-Identity
-Practical information
+Identity / Summary
+Quick Practical
+Appeal
+Review?
+Support
 ```
 
 Route mobile:
@@ -252,6 +279,14 @@ Route mobile:
 ```text
 Map
 horizontal ordered-stop selector
+```
+
+Plan mobile:
+
+```text
+horizontal Primary Day Navigator
+Selected conceptual Day
+Journey
 ```
 
 ConcretePlan mobile:
