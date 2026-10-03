@@ -17,9 +17,72 @@
     padding-block: var(--space-2);
   }
 
-  .plan-page > [data-layout-block="days"] { margin-block-start: var(--space-6); }
+  .plan-page > [data-layout-block="days"] {
+    position: relative;
+    margin-block-start: var(--space-6);
+  }
 
-  .plan-sequence { display: grid; gap: 0; }
+  .plan-page > [data-layout-block="days"] > h2 {
+    margin-block: 0 var(--space-2);
+    font-size: var(--type-section-title);
+  }
+
+  /* Plan shares the Day Navigator behavior with ConcretePlan, but its conceptual
+     Day tabs stay compact because there is no date / weather / constraint layer. */
+  .plan-day-navigation .primary-day-tab {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'label'
+      'title';
+    min-height: 3.65rem;
+    padding-block: .5rem .6rem;
+  }
+
+  .plan-day-navigation .primary-day-tab-label,
+  .plan-day-navigation .primary-day-tab-title {
+    justify-self: start;
+  }
+
+  .plan-days-list {
+    min-width: 0;
+  }
+
+  .plan-day-panel[hidden] { display: none; }
+
+  .plan-day-context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: baseline;
+    margin-block-end: var(--space-2);
+  }
+
+  .plan-day-context .plan-day-number,
+  .plan-day-context .plan-day-title { margin: 0; }
+
+  .plan-day-context .plan-day-number {
+    color: var(--accent-strong);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .plan-day-context .plan-day-title {
+    font-size: var(--type-page-title);
+  }
+
+  .plan-day-summary {
+    max-width: 58rem;
+    margin-block: 0 var(--space-3);
+    color: var(--text-soft);
+    line-height: 1.55;
+  }
+
+  .plan-sequence {
+    display: grid;
+    gap: 0;
+    margin-block-start: var(--space-3);
+  }
 
   .plan-place > article,
   .plan-movement > article {
@@ -39,9 +102,36 @@
   .plan-movement .plan-item-condition { grid-column: 3; }
   .plan-route { grid-column: 1 / -1; }
 
+  .plan-route-choice-host {
+    margin-block-start: var(--space-2);
+  }
+
+  .plan-route-choice-detail > h4 {
+    margin-block: 0 var(--space-1);
+  }
+
+  .plan-route-choice-detail > p {
+    margin-block: var(--space-1) 0;
+  }
+
   .plan-sequence-boundary {
     display: grid;
     grid-template-columns: 4.5rem minmax(0, 1fr);
     padding-block: var(--space-2);
+  }
+
+  @media (max-width: 52rem) {
+    .plan-place > article,
+    .plan-movement > article {
+      grid-template-columns: 4rem minmax(0, 1fr);
+      gap: var(--space-1) var(--space-3);
+    }
+
+    .plan-place .plan-item-meta,
+    .plan-place .plan-item-condition,
+    .plan-place .plan-item-actions,
+    .plan-movement .plan-item-condition {
+      grid-column: 2;
+    }
   }
 }

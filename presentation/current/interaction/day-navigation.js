@@ -4,9 +4,9 @@ function tabsFor(navigation) {
 
 function panelsFor(navigation) {
   const workspace = navigation.closest('[data-semantic="days"]');
-  return workspace
-    ? [...workspace.querySelectorAll(':scope > [data-day-navigation-panel]')]
-    : [];
+  if (!workspace) return [];
+  return [...workspace.querySelectorAll('[data-day-navigation-panel]')]
+    .filter(panel => panel.closest('[data-semantic="days"]') === workspace);
 }
 
 function announceShown(panel) {

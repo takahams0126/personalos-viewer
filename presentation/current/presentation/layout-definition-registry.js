@@ -56,12 +56,7 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           slots: Object.freeze({ primary: Object.freeze(['spot-hero-copy']), secondary: Object.freeze(['image-carousel']) }),
           narrowView: VIEW.STACK
         }),
-        Object.freeze({
-          id: 'practical-information',
-          view: VIEW.GRID,
-          semantics: Object.freeze(['access', 'utilization-decision', 'references'])
-        }),
-        Object.freeze({ id: 'appeal-review', sourceSemantic: 'appeal', view: VIEW.STACK }),
+        Object.freeze({ id: 'appeal-review', sourceSemantic: 'appeal', view: VIEW.SPLIT, narrowView: VIEW.STACK }),
         Object.freeze({ id: 'supporting-information', view: VIEW.GRID, semantics: Object.freeze(['facilities']) }),
         Object.freeze({ id: 'related-spots', sourceSemantic: 'related-spots', view: VIEW.GRID })
       ])
@@ -88,17 +83,17 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
         Object.freeze({
           id: 'days',
           sourceSemantic: 'days',
-          view: VIEW.DISCLOSURE,
+          view: VIEW.CONTENT_SWITCHER,
+          dayNavigation: Object.freeze({
+            id: 'plan-day-navigation',
+            view: VIEW.CONTENT_SWITCHER,
+            panelSemantic: 'day',
+            variant: 'plan',
+            defaultDay: 'first'
+          }),
           day: Object.freeze({
             context: VIEW.STACK,
-            sequence: VIEW.ORDERED_FLOW,
-            routeDetail: Object.freeze({
-              id: 'route-detail',
-              view: VIEW.DISCLOSURE,
-              sourceSemantic: 'route-occurrence',
-              detailSemantic: 'selected-route-detail',
-              defaultOpen: false
-            })
+            sequence: VIEW.ORDERED_FLOW
           })
         })
       ])
@@ -114,6 +109,8 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
           dayNavigation: Object.freeze({
             id: 'primary-day-navigation',
             view: VIEW.CONTENT_SWITCHER,
+            panelSemantic: 'execution-day',
+            variant: 'execution',
             defaultDay: 'first'
           }),
           day: Object.freeze({

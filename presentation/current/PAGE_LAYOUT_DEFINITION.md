@@ -75,6 +75,9 @@ Blockは既知Semantic roleをuser-facing unitへbindingしたもの。
 CardはBlockの同義語ではない。
 Card / Row / Grid / Inline / Disclosure / Attention surfaceは `PRODUCT_UI_FOUNDATION.md` のContainer Ruleに従う。
 
+Primary peer selectionはcontent-switcher、Primary contentは初期表示、Disclosureはsecondary detailに限定する。
+DesktopでPrimary contentの横に未使用空間がある場合は、意味を隠して縦方向へ送らずShared Product Gridを使って同時表示する。
+
 ## Surface definitions
 
 ### TOP
@@ -96,27 +99,28 @@ Primary task: Spot identity / value / practical decision information.
 
 ```text
 Hero
-  identity 5 | media 7
+  identity + summary + quick practical 5 | media 7
 
-Practical information
-  access 4 | utilization / pricing 8
-  references full width
-
-Appeal / review
+Appeal 5 | Review 7        # Reviewが存在する場合
 Supporting facilities?
 Related spots
 ```
 
-Heroへ可変長の料金・設備情報を押し込まない。
+Quick practicalはHero左railで判断に必要な主要情報を見せる。
+対象は既存Semanticのaccess / usage decision / pricing / reference utility links。
+Facilitiesや長いsecondary detailはHero外へ残してよい。
+Heroへ情報を無制限に押し込まず、同じFactをHeroと下段に複製しない。
 料金・予約・利用条件等はSemantic structureそのものが伸縮し、runtime density scoringを行わない。
+Reviewが無い場合はAppealがfull widthを使う。
 
 Mobile priority:
 
 ```text
 media
-identity
-practical information
-appeal / review
+identity / summary
+quick practical
+appeal
+review?
 support
 ```
 
@@ -150,14 +154,32 @@ Primary task: date-independent trip structure.
 ```text
 Identity / summary
 Composition context
-Days
+Primary Day Navigator
+Selected conceptual Day
+  Day context
   conceptual Journey
 ```
 
 Composition contextはPlanが参照するRouteとConcretePlanへのnavigation / structure理解を所有する。
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
 Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
-Planは旅行全体を俯瞰するため、複数DayのDisclosure構成を維持する。Viewer上の日程入れ替えcontrolは持たない。
+
+Primary Day Navigator:
+
+```text
+Day number
+Day title
+```
+
+- Canonical Day orderを横方向のpeer tabとして表示する。
+- 選択した1 DayだけをJourney workspaceへ表示する。
+- Day selectionはlocal presentation stateでありCanonical orderや内容を変更しない。
+- ConcretePlanと同じDay interaction ownerを使うが、Planには日付 / Weather / time constraintを表示しない。
+- Mobileでも全Day縦積みに戻さずhorizontal scrollを許容する。
+
+Plan Route occurrenceはPrimary Journey contentなのでselected Route identity/detailを初期表示する。
+Alternativeが複数ある場合のRoute selectorは維持するが、selected Route detailを「詳細を見る」Disclosureへ隠さない。
+Route full sequenceはRoute page ownerに残す。
 
 ### ConcretePlan
 
@@ -237,13 +259,16 @@ Fuel / CostはSelected Day Workspaceの後段にまとめ、Primary execution fl
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
 
-## Execution Package / Day Workspace
+## Day Navigation / Execution Package / Day Workspace
 
-Primary Day Navigator、Execution Package Selector、Day Workspace switcherは別意味。
+PlanとConcretePlanのPrimary Day Navigator、ConcretePlanのExecution Package Selector、Day Workspace switcherは別意味。
 
 ```text
-Primary Day Navigator
-→ いつを見るか
+Plan Primary Day Navigator
+→ どのconceptual Dayを見るか
+
+ConcretePlan Primary Day Navigator
+→ どのexecution Dayを見るか
 
 Execution Package Selector
 → baseline / explicit Variant
@@ -263,8 +288,9 @@ Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriorit
 - Desktop: concurrent informationを横方向に利用。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
-- ConcretePlan Day Navigatorは横scrollを許容し、全Dayを縦積み表示へ戻さない。
+- Plan / ConcretePlan Day Navigatorは横scrollを許容し、全Dayを縦積み表示へ戻さない。
 - ConcretePlan MobileではDay context → Weather → Time + Event → Move connector → Operational constraint → supporting factsの順を維持する。
+- Spot MobileではMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順を維持する。
 - Operational constraintをMobileだけ隠さない。
 
 Source DOM reading / focus orderを壊さない。
