@@ -136,6 +136,7 @@ Constraints?
 ```
 
 AppealはIdentity Hero内部の補足ではなく、Workspaceへ導く独立lead Block。
+Appeal strengthsは長文を横分割せず、1列の縦scanを基本とする。
 Sequence and Map share the same explicit baseline order and local selection state.
 Map geometryからorderを推測しない。
 
@@ -143,9 +144,11 @@ Mobile priority:
 
 ```text
 Map
-horizontal ordered-stop selector
+vertical ordered sequence
 supporting condition
 ```
+
+MobileでSequenceを1行横scroll card列へ変換しない。
 
 ### Plan
 
@@ -174,7 +177,7 @@ Day title
 - Canonical Day orderを横方向のpeer tabとして表示する。
 - 選択した1 DayだけをJourney workspaceへ表示する。
 - Day selectionはlocal presentation stateでありCanonical orderや内容を変更しない。
-- ConcretePlanと同じDay interaction ownerを使うが、Planには日付 / Weather / time constraintを表示しない。
+- ConcretePlanとinteraction primitiveを共有できるが、Planには日付 / Weather / time constraintを表示しない。
 - Mobileでも全Day縦積みに戻さずhorizontal scrollを許容する。
 
 Plan Route occurrenceはPrimary Journey contentなのでselected Route identity/detailを初期表示する。
@@ -188,33 +191,38 @@ Primary task: execution scanability.
 ```text
 Identity
 Execution overview
-Primary Day Navigator
-Selected Day Workspace
+  source Plan / period / status / compact attention control
+Compact itinerary overview
+  DAY / date / weekday / headline Weather / Day title
+Primary Workspace
+  [DAY1] [DAY2] ... [給油] [費用]
+Selected Day
   Day context | 3-hour Weather
   Execution Package Selector?
   行動順 | ルート詳細? | マップ?
   Day-specific supporting information?
-Trip supporting information
-  Fuel | Cost
+Selected Fuel
+  structured operational rows
+Selected Cost
+  trip/day structured rows + annotations
 ```
 
-Execution overviewは旅行全体のperiod / source Plan / status / Weather state / material attentionだけを扱う。
-Day選択はPrimary Day Navigatorが一元的に所有し、Weatherは独立したDay selectorを持たない。
+Execution overviewは旅行全体のperiod / source Plan / material statusをcompact metadataとして扱う。
+Weather synthetic等のsecondary noticeや確認事項本文をPrimary Journeyより大きい常時表示にしない。Material attentionはcompact controlから確認できるsecondary surfaceへ移せる。
+Compact itinerary overviewは旅行全Dayを短くscanするOverviewであり、Primary Workspace tabとは別責務。
 
-Primary Day Navigator:
+Primary Workspace:
 
 ```text
-Day number
-Date / weekday
-Headline Weather?
-Day title
-Material time-constraint indicator?
+DAY1 | DAY2 | ... | 給油 | 費用
 ```
 
-- 横方向に旅行全Dayを並べ、選択した1 Dayだけを下のWorkspaceに表示する。
-- Day selectionはlocal presentation stateでCanonicalを変更しない。
-- Desktop / Mobileとも同じDay selection ownerを使う。
-- WeatherはDay Navigatorをdecorateしてよいが、Day Navigation自体はWeather availabilityへ依存しない。
+- Day / Fuel / Costは同階層のpeer contentとして切り替える。
+- Day選択時だけ、そのDayのWeather / Execution Package / Journey / Route detail / Map / Day supportを表示する。
+- Fuel / Costをページ最下部へ常時並べてPrimary Workspaceと二重表示しない。
+- selectionはlocal presentation stateでCanonicalを変更しない。
+- Desktop / Mobileとも同じownerを使う。
+- Weather availabilityはWorkspace navigation成立条件ではない。
 
 Reference Execution Timeline grammar:
 
@@ -255,20 +263,22 @@ Day Workspace
 Day-specific supporting information?
 ```
 
-Fuel / CostはSelected Day Workspaceの後段にまとめ、Primary execution flowより強く見せない。
+Fuelはimportance / Day / station / timing / contextをstructured operational rowとしてscanできる形にする。
+CostはPublished Cost Semanticからtrip/day scope、short label、detail、amount/state、annotationをそのまま使い、Viewerが文字列解析で分類しない。
+長文annotationを金額比較rowへ押し込まず、参照可能な注釈として分離する。
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
 
-## Day Navigation / Execution Package / Day Workspace
+## Navigation / Execution Package / Day Workspace
 
-PlanとConcretePlanのPrimary Day Navigator、ConcretePlanのExecution Package Selector、Day Workspace switcherは別意味。
+PlanのPrimary Day Navigator、ConcretePlanのPrimary Workspace、Execution Package Selector、Day Workspace switcherは別意味。
 
 ```text
 Plan Primary Day Navigator
 → どのconceptual Dayを見るか
 
-ConcretePlan Primary Day Navigator
-→ どのexecution Dayを見るか
+ConcretePlan Primary Workspace
+→ どのexecution Day / Fuel / Costを見るか
 
 Execution Package Selector
 → baseline / explicit Variant
@@ -288,8 +298,10 @@ Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriorit
 - Desktop: concurrent informationを横方向に利用。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
-- Plan / ConcretePlan Day Navigatorは横scrollを許容し、全Dayを縦積み表示へ戻さない。
-- ConcretePlan MobileではDay context → Weather → Time + Event → Move connector → Operational constraint → supporting factsの順を維持する。
+- Plan Day Navigator / ConcretePlan Primary Workspaceは必要に応じて横scrollを許容するが、content本体を横overflowさせない。
+- Route MobileはMap → vertical ordered sequenceのreading orderとし、sequence自体を横scroll card列へしない。
+- ConcretePlan Mobileでは選択contentをviewport内へreflowし、Weatherのwide hourly dataだけはcomponent内部scrollを許容する。
+- CostはMobileで金額を右端固定したdesktop tableのままにせず、1列semantic rowへreflowする。
 - Spot MobileではMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順を維持する。
 - Operational constraintをMobileだけ隠さない。
 
