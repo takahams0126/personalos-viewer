@@ -66,8 +66,9 @@ async function renderTopPage(app, pageLayoutDefinition) {
   const manifest = await manifestStore.ensure();
   document.documentElement.dataset.pageType = 'top';
   document.title = 'レジャー | PersonalOS Viewer';
-  app.replaceChildren(renderTop({ manifest }));
-  applyPageLayoutDefinition({ root: app, pageType: 'top', definition: pageLayoutDefinition });
+  const page = renderTop({ manifest });
+  app.replaceChildren(page);
+  applyPageLayoutDefinition({ root: page, pageType: 'top', definition: pageLayoutDefinition });
   hydrateExplorer(app);
 }
 
@@ -98,7 +99,7 @@ export async function startCurrentViewer({ presentation }) {
 
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
-  applyPageLayoutDefinition({ root: app, pageType: request.type, definition: pageLayoutDefinition });
+  applyPageLayoutDefinition({ root: page, pageType: request.type, definition: pageLayoutDefinition });
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
 
