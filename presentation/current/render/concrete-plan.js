@@ -311,9 +311,7 @@ async function renderRouteExecutionGroup(relation, routeActions, resolver, fuelE
     firstAction ? describeTarget(firstAction.target, resolver) : null,
     lastAction ? describeTarget(lastAction.target, resolver) : null
   ]);
-  const actionNodes = await Promise.all(
-    routeActions.map(action => renderAction(action, resolver, fuelEvents))
-  );
+  const actionNodes = await Promise.all(routeActions.map(action => renderAction(action, resolver, fuelEvents)));
   const startLabel = actionStartLabel(firstAction);
   const endLabel = actionEndLabel(lastAction);
 
@@ -340,36 +338,17 @@ async function renderRouteExecutionGroup(relation, routeActions, resolver, fuelE
         h('h4', {}, entityTitle(relation.route_ref, resolved.title, resolved.unavailable)),
         resolved.identity ? h('p', { className: 'route-execution-identity', text: resolved.identity }) : null,
         startTarget && endTarget
-          ? h('p', {
-              className: 'route-execution-endpoints',
-              dataset: { semantic: 'route-execution-endpoints' },
-              text: `${startTarget.title} → ${endTarget.title}`
-            })
+          ? h('p', { className: 'route-execution-endpoints', dataset: { semantic: 'route-execution-endpoints' }, text: `${startTarget.title} → ${endTarget.title}` })
           : null,
         resolved.routeData?.summary
-          ? h('p', {
-              className: 'route-execution-description',
-              dataset: { semantic: 'route-execution-description' },
-              text: resolved.routeData.summary
-            })
+          ? h('p', { className: 'route-execution-description', dataset: { semantic: 'route-execution-description' }, text: resolved.routeData.summary })
           : null,
-        h('p', {
-          className: 'route-execution-action-range',
-          dataset: { semantic: 'route-execution-action-range' },
-          text: `Action ${relation.from_action_order}〜${relation.to_action_order}`
-        }),
-        resolved.unavailable
-          ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' })
-          : null
+        h('p', { className: 'route-execution-action-range', dataset: { semantic: 'route-execution-action-range' }, text: `Action ${relation.from_action_order}〜${relation.to_action_order}` }),
+        resolved.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
       ),
-      h('ol', {
-        className: 'execution-flow route-execution-actions',
-        dataset: { semantic: 'route-execution-actions' }
-      }, actionNodes),
+      h('ol', { className: 'execution-flow route-execution-actions', dataset: { semantic: 'route-execution-actions' } }, actionNodes),
       lastAction?.next_move
-        ? h('div', { className: 'route-execution-exit', dataset: { semantic: 'route-execution-exit' } },
-            renderMove(lastAction.next_move)
-          )
+        ? h('div', { className: 'route-execution-exit', dataset: { semantic: 'route-execution-exit' } }, renderMove(lastAction.next_move))
         : null
     )
   );
@@ -384,7 +363,6 @@ async function renderExecutionSequence(actions, routes, resolver, fuelEvents = [
   for (let index = 0; index < orderedActions.length;) {
     const action = orderedActions[index];
     const relation = routeByStart.get(action.order);
-
     if (!relation) {
       nodes.push(await renderAction(action, resolver, fuelEvents));
       index += 1;
@@ -397,13 +375,11 @@ async function renderExecutionSequence(actions, routes, resolver, fuelEvents = [
       routeActions.push(orderedActions[cursor]);
       cursor += 1;
     }
-
     if (!routeActions.length) {
       nodes.push(await renderAction(action, resolver, fuelEvents));
       index += 1;
       continue;
     }
-
     nodes.push(await renderRouteExecutionGroup(relation, routeActions, resolver, fuelEvents));
     index = cursor;
   }
@@ -444,9 +420,7 @@ async function renderMapPreview(artifactRef, artifactLoader, resolver) {
 async function renderVariant(variant, resolver, artifactLoader) {
   return h('details', { className: 'day-variant', dataset: { semantic: 'variant' } },
     h('summary', { text: variant.intent || variant.variant_id || '代替案' }),
-    variant.selection_condition?.text
-      ? h('p', { className: 'variant-condition', text: variant.selection_condition.text })
-      : null,
+    variant.selection_condition?.text ? h('p', { className: 'variant-condition', text: variant.selection_condition.text }) : null,
     await renderActions(variant.actions, resolver),
     await renderMapPreview(variant.map_artifact_ref, artifactLoader, resolver)
   );
@@ -467,7 +441,6 @@ function renderWeather(weatherDay) {
     weatherDay.precipitation_amount_label && `降水量 ${weatherDay.precipitation_amount_label}`,
     weatherDay.wind_label && `風 ${weatherDay.wind_label}`
   ].filter(Boolean);
-
   const periods = weatherDay.periods || [];
   return h('section', { className: 'day-weather', dataset: { semantic: 'day-weather' } },
     h('h4', { text: '天気' }),
@@ -495,30 +468,6 @@ function renderWeather(weatherDay) {
   );
 }
 
-function dayFuelSuggestions(fuelEvents, ordinal) {
-  return (fuelEvents || []).filter(event =>
-    event.day_ordinal === ordinal &&
-    event.importance?.code === 'recommended' &&
-    ['preferred', 'fallback'].includes(event.timing?.code)
-  );
-}
-
-async function renderDayFuelSuggestions(events, resolver) {
-  if (!events?.length) return null;
-  const items = await Promise.all(events.map(async event =>
-    h('li', { dataset: { semantic: 'fuel-suggestion', timing: event.timing?.code || '' } },
-      h('strong', { text: event.station_title || '給油候補' }),
-      h('p', { text: [event.importance?.label, event.timing?.label].filter(Boolean).join(' ・ ') }),
-      event.context ? h('p', { text: event.context }) : null,
-      await googleMapsLink(event, resolver)
-    )
-  ));
-  return h('section', { className: 'day-fuel-suggestions', dataset: { semantic: 'fuel-suggestions' } },
-    h('h3', { text: '給油候補' }),
-    h('ul', {}, items)
-  );
-}
-
 function dayExecutionWindow(day) {
   const actions = [...(day.actions || [])].sort((a, b) => a.order - b.order);
   const first = actions.find(action => action.arrival_label || action.departure_label);
@@ -534,21 +483,20 @@ function dayHasTimeConstraint(day) {
   return (day.actions || []).some(action => action.time_constraints?.length);
 }
 
+function formatDate(date) {
+  return String(date || '').replaceAll('-', '/');
+}
+
 function renderDayContext(day, sourceDay) {
   const window = dayExecutionWindow(day);
   const hasConstraint = dayHasTimeConstraint(day);
   return h('header', { className: 'concrete-day-context', dataset: { semantic: 'day-context' } },
-    h('p', {
-      className: 'concrete-day-kicker',
-      text: [`Day ${day.ordinal}`, day.date, day.weekday_label].filter(Boolean).join(' · ')
-    }),
+    h('p', { className: 'concrete-day-kicker', text: [`Day ${day.ordinal}`, formatDate(day.date), day.weekday_label].filter(Boolean).join(' · ') }),
     h('h2', { text: sourceDay?.title || `Day ${day.ordinal}` }),
     sourceDay?.summary ? h('p', { className: 'day-summary', text: sourceDay.summary }) : null,
     h('div', { className: 'concrete-day-context-facts' },
       window ? h('p', { className: 'concrete-day-window', text: window }) : null,
-      hasConstraint
-        ? h('p', { className: 'concrete-day-constraint-indicator', text: '時刻制約あり' })
-        : null
+      hasConstraint ? h('p', { className: 'concrete-day-constraint-indicator', text: '時刻制約あり' }) : null
     )
   );
 }
@@ -557,7 +505,6 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
   const sourceDay = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
   const weatherDay = concretePlan.weather?.days?.find(item => item.day === day.ordinal);
   const variants = await Promise.all((day.variants || []).map(variant => renderVariant(variant, resolver, artifactLoader)));
-  const fuelSuggestions = dayFuelSuggestions(fuelEvents, day.ordinal);
   const title = sourceDay?.title || `Day ${day.ordinal}`;
   const hasConstraint = dayHasTimeConstraint(day);
 
@@ -575,7 +522,6 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
     h('div', { className: 'concrete-day-body' },
       renderDayContext(day, sourceDay),
       renderWeather(weatherDay),
-      await renderDayFuelSuggestions(fuelSuggestions, resolver),
       await renderExecutionSequence(day.actions, day.routes, resolver, fuelEvents),
       await renderMapPreview(day.map_artifact_ref, artifactLoader, resolver),
       variants.length
@@ -588,90 +534,190 @@ async function renderDay(day, sourcePlan, concretePlan, resolver, artifactLoader
   );
 }
 
+function renderAttentionDetails(plan) {
+  const items = [];
+  if (plan.weather?.notice) items.push({ semantic: 'weather', text: plan.weather.notice });
+  for (const item of plan.status?.attention || []) items.push(item);
+  if (!items.length) return null;
+  return h('details', { className: 'execution-attention-popover', dataset: { semantic: 'execution-attention' } },
+    h('summary', { className: 'execution-warning-trigger' },
+      h('span', { className: 'execution-warning-icon', attrs: { 'aria-hidden': 'true' }, text: '⚠' }),
+      h('span', { text: `${items.length}件の確認事項` })
+    ),
+    h('div', { className: 'execution-attention-panel' },
+      h('h3', { text: '確認事項' }),
+      h('ul', {}, items.map(item =>
+        h('li', { dataset: { level: item.level || '', semantic: item.semantic || '' }, text: item.text })
+      ))
+    )
+  );
+}
+
 function renderExecutionOverview(plan, sourcePlan) {
+  const sourceRef = plan.source_plan_ref;
   const status = plan.status;
   return h('section', { className: 'execution-overview', dataset: { semantic: 'execution-overview' } },
-    h('h2', { text: '実施計画' }),
-    plan.period?.label ? textRow('実施期間', plan.period.label) : null,
-    sourcePlan?.title ? textRow('基本Plan', sourcePlan.title) : null,
-    status?.state?.label ? textRow('状態', status.state.label) : null,
-    plan.weather?.state?.label ? textRow('天気情報', plan.weather.state.label) : null,
-    plan.weather?.notice ? h('p', { className: 'weather-notice', text: plan.weather.notice }) : null,
-    status?.attention?.length
-      ? h('section', { className: 'execution-attention', dataset: { semantic: 'execution-attention' } },
-          h('h3', { text: '確認事項' }),
-          h('ul', {}, status.attention.map(item =>
-            h('li', { dataset: { level: item.level || '', semantic: item.semantic || '' }, text: item.text })
-          ))
-        )
-      : null
+    h('dl', { className: 'execution-meta' },
+      sourcePlan?.title
+        ? h('div', { className: 'execution-meta-row' },
+            h('dt', { text: '計画プラン' }),
+            h('dd', {}, sourceRef ? h('a', { attrs: { href: hrefFor(sourceRef) }, text: sourcePlan.title }) : sourcePlan.title)
+          )
+        : null,
+      plan.period?.label
+        ? h('div', { className: 'execution-meta-row' }, h('dt', { text: '実施期間' }), h('dd', { text: plan.period.label }))
+        : null,
+      status?.state?.label
+        ? h('div', { className: 'execution-meta-row execution-meta-status' },
+            h('dt', { text: '状態' }),
+            h('dd', {}, h('span', { className: 'execution-status-label', text: status.state.label }), renderAttentionDetails(plan))
+          )
+        : null
+    )
   );
+}
+
+function renderItineraryOverview(concretePlan, sourcePlan) {
+  const days = [...(concretePlan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
+  if (!days.length) return null;
+  return h('section', { className: 'itinerary-overview', dataset: { semantic: 'itinerary-overview' } },
+    h('h2', { text: '日程' }),
+    h('ol', { className: 'itinerary-overview-list' }, days.map(day => {
+      const sourceDay = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
+      return h('li', {
+        className: 'itinerary-day-row',
+        dataset: { itineraryDay: day.ordinal, day: day.ordinal }
+      },
+        h('strong', { className: 'itinerary-day-label', text: `DAY${day.ordinal}` }),
+        h('time', { className: 'itinerary-day-date', text: formatDate(day.date) }),
+        day.weekday_label ? h('span', { className: 'itinerary-day-weekday', text: day.weekday_label.replace('曜日', '') }) : null,
+        h('span', { className: 'itinerary-day-weather', dataset: { weatherSlot: '' } }),
+        h('span', { className: 'itinerary-day-title', text: sourceDay?.title || `Day ${day.ordinal}` }),
+        dayHasTimeConstraint(day)
+          ? h('span', { className: 'itinerary-day-attention', attrs: { title: '時刻制約あり', 'aria-label': '時刻制約あり' }, text: '⚠' })
+          : null
+      );
+    }))
+  );
+}
+
+function renderFuelFact(label, value) {
+  if (!value) return null;
+  return h('div', { className: 'fuel-summary-fact' }, h('dt', { text: label }), h('dd', { text: value }));
 }
 
 async function renderFuelSummary(fuel, resolver) {
   if (!fuel) return null;
-  const events = fuel.events || [];
-  const required = events.filter(event => event.importance?.code === 'required');
-  const recommended = events.filter(event => event.importance?.code === 'recommended');
-  const requiredItems = await Promise.all(required.map(async event =>
-    h('li', {},
-      h('strong', { text: event.station_title || '給油' }),
-      event.day_ordinal ? h('span', { text: ` Day ${event.day_ordinal}` }) : null,
-      event.context ? h('p', { text: event.context }) : null,
-      await googleMapsLink(event, resolver)
-    )
-  ));
-  const recommendedItems = await Promise.all(recommended.map(async event =>
-    h('li', {},
-      h('strong', { text: event.station_title || '給油候補' }),
-      event.day_ordinal ? h('span', { text: ` Day ${event.day_ordinal}` }) : null,
-      event.context ? h('p', { text: event.context }) : null,
+  const events = [...(fuel.events || [])].sort((a, b) => {
+    const priority = value => value?.importance?.code === 'required' ? 0 : 1;
+    return priority(a) - priority(b) || (a.day_ordinal || 99) - (b.day_ordinal || 99);
+  });
+  const items = await Promise.all(events.map(async event =>
+    h('li', {
+      className: 'fuel-event-row',
+      dataset: { semantic: 'fuel-event', importance: event.importance?.code || '', timing: event.timing?.code || '' }
+    },
+      h('div', { className: 'fuel-event-meta' },
+        event.day_ordinal ? h('span', { className: 'fuel-day-badge', text: `DAY${event.day_ordinal}` }) : null,
+        event.importance?.label ? h('span', { className: 'fuel-importance', text: event.importance.label }) : null,
+        event.timing?.label ? h('span', { className: 'fuel-timing', text: event.timing.label }) : null
+      ),
+      h('strong', { className: 'fuel-station-title', text: event.station_title || '給油ポイント' }),
+      event.context ? h('p', { className: 'fuel-event-context', text: event.context }) : null,
       await googleMapsLink(event, resolver)
     )
   ));
   return h('section', { className: 'plan-fuel', dataset: { semantic: 'fuel' } },
-    h('h2', { text: '給油計画' }),
-    fuel.distance_label ? textRow('想定走行距離', fuel.distance_label) : null,
-    fuel.fuel_economy_label ? textRow('想定燃費', fuel.fuel_economy_label) : null,
-    fuel.estimated_liters_label ? textRow('想定使用量', fuel.estimated_liters_label) : null,
-    requiredItems.length
-      ? h('section', { className: 'fuel-required', dataset: { semantic: 'required-refuel' } },
-          h('h3', { text: '必須給油' }),
-          h('ul', {}, requiredItems)
-        )
-      : null,
-    recommendedItems.length
-      ? h('section', { className: 'fuel-recommended', dataset: { semantic: 'recommended-refuel' } },
-          h('h3', { text: '推奨給油' }),
-          h('ul', {}, recommendedItems)
-        )
-      : null
+    h('header', { className: 'support-panel-header' },
+      h('h2', { text: '給油計画' }),
+      h('dl', { className: 'fuel-summary-facts' },
+        renderFuelFact('想定走行距離', fuel.distance_label),
+        renderFuelFact('想定燃費', fuel.fuel_economy_label),
+        renderFuelFact('想定使用量', fuel.estimated_liters_label)
+      )
+    ),
+    items.length ? h('ol', { className: 'fuel-event-list' }, items) : h('p', { className: 'support-empty', text: '給油予定はありません。' })
+  );
+}
+
+function costScopeCode(item) {
+  if (typeof item?.scope === 'string') return item.scope;
+  return item?.scope?.code || '';
+}
+
+function costText(value) {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  return value.label || value.text || '';
+}
+
+function renderCostGroup(title, items, notes) {
+  if (!items.length) return null;
+  return h('section', { className: 'cost-group' },
+    h('h3', { text: title }),
+    h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title } },
+      items.map(item => {
+        const note = costText(item.note || item.annotation) || item.reason || '';
+        const noteNumber = note ? notes.push(note) : null;
+        const label = item.label || item.category?.label || item.meaning || '費用';
+        const detail = costText(item.detail);
+        const amount = item.amount_label || item.amount_state?.label || '—';
+        return h('div', { className: 'cost-row', attrs: { role: 'row' } },
+          h('div', { className: 'cost-item', attrs: { role: 'cell' } },
+            h('strong', { className: 'cost-item-label', text: label }),
+            detail ? h('span', { className: 'cost-item-detail', text: detail }) : null
+          ),
+          h('div', { className: 'cost-amount', attrs: { role: 'cell' } },
+            h('strong', { text: amount }),
+            item.amount_state?.label && item.amount_label
+              ? h('span', { className: 'cost-state', text: item.amount_state.label })
+              : null,
+            noteNumber ? h('sup', {}, h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })) : null
+          )
+        );
+      })
+    )
   );
 }
 
 function renderCost(plan) {
   if (!plan.cost) return null;
-  return h('section', { className: 'plan-cost', dataset: { semantic: 'cost' } },
-    h('h2', { text: '費用' }),
-    plan.cost.total_label ? h('p', { className: 'cost-total', text: plan.cost.total_label }) : null,
-    plan.cost.items?.length
-      ? h('ul', {}, plan.cost.items.map(item => {
-          const amount = item.amount_label || item.amount_state?.label || '';
-          return h('li', {},
-            h('strong', { text: item.meaning }),
-            amount ? ` — ${amount}` : '',
-            item.reason ? h('p', { text: item.reason }) : null
-          );
-        }))
-      : null
-  );
-}
+  const items = plan.cost.items || [];
+  const notes = [];
+  const hasExplicitScope = items.some(item => costScopeCode(item) || item.day_ordinal || item.label || item.detail || item.category);
+  const groups = [];
 
-function renderExecutionNavigation(concretePlan) {
-  const sourceRef = concretePlan.source_plan_ref;
-  return h('nav', { className: 'plan-navigation', attrs: { 'aria-label': 'Plan表示' } },
-    sourceRef ? h('a', { attrs: { href: hrefFor(sourceRef) }, text: '計画' }) : null,
-    h('span', { attrs: { 'aria-current': 'page' }, text: '実施' })
+  if (hasExplicitScope) {
+    const trip = items.filter(item => costScopeCode(item) === 'trip');
+    const dayItems = items.filter(item => costScopeCode(item) === 'day' || item.day_ordinal);
+    const other = items.filter(item => !trip.includes(item) && !dayItems.includes(item));
+    if (trip.length) groups.push(renderCostGroup('旅程全体料金', trip, notes));
+    const ordinals = [...new Set(dayItems.map(item => item.day_ordinal).filter(Boolean))].sort((a, b) => a - b);
+    for (const ordinal of ordinals) {
+      groups.push(renderCostGroup(`DAY${ordinal}`, dayItems.filter(item => item.day_ordinal === ordinal), notes));
+    }
+    const dayWithoutOrdinal = dayItems.filter(item => !item.day_ordinal);
+    if (dayWithoutOrdinal.length) groups.push(renderCostGroup('日別料金', dayWithoutOrdinal, notes));
+    if (other.length) groups.push(renderCostGroup('その他', other, notes));
+  } else {
+    groups.push(renderCostGroup('費用項目', items, notes));
+  }
+
+  return h('section', {
+    className: `plan-cost${hasExplicitScope ? '' : ' cost-awaiting-structured-data'}`,
+    dataset: { semantic: 'cost', costStructure: hasExplicitScope ? 'structured' : 'legacy' }
+  },
+    h('header', { className: 'support-panel-header' },
+      h('h2', { text: '費用' }),
+      plan.cost.total_label ? h('p', { className: 'cost-total', text: plan.cost.total_label }) : null
+    ),
+    groups,
+    notes.length
+      ? h('section', { className: 'cost-notes', attrs: { 'aria-label': '費用注釈' } },
+          h('h3', { text: '注釈' }),
+          h('ol', {}, notes.map((note, index) => h('li', { attrs: { id: `cost-note-${index + 1}` }, text: note })))
+        )
+      : null
   );
 }
 
@@ -687,15 +733,14 @@ export async function renderConcretePlan({ concretePlan, sourcePlan, resolver, a
     className: 'concrete-plan',
     dataset: { semantic: 'concrete-plan', entityId: concretePlan.id }
   },
-    renderExecutionNavigation(concretePlan),
     h('header', { className: 'plan-header' },
       h('p', { className: 'entity-kind', text: 'Concrete Plan' }),
       h('h1', { text: concretePlan.title })
     ),
     renderExecutionOverview(concretePlan, sourcePlan),
+    renderItineraryOverview(concretePlan, sourcePlan),
     h('section', { className: 'plan-days concrete-plan-days', dataset: { semantic: 'days' } },
-      h('h2', { text: '日程' }),
-      dayNodes
+      h('div', { className: 'concrete-day-panels' }, dayNodes)
     ),
     fuelSummary,
     renderCost(concretePlan)
