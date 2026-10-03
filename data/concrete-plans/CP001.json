@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "entity_type": "concrete_plan",
   "id": "CP001",
   "title": "屋久島 4泊5日基本Plan",
@@ -2332,66 +2332,139 @@
     ]
   },
   "cost": {
-    "total_label": "算定済み分 ¥360,737",
+    "total": {
+      "coverage": {
+        "code": "partial",
+        "label": "未算定あり"
+      },
+      "amount_label": "¥360,737",
+      "amount_state": {
+        "code": "estimated",
+        "label": "見積"
+      }
+    },
     "items": [
       {
-        "meaning": "航空券＋民宿ふれんど4泊 ダイナミックパッケージ・大人2名",
+        "scope": "trip",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "航空券",
         "amount_state": {
           "code": "confirmed",
           "label": "確定"
         },
-        "amount_label": "¥319,400"
+        "detail": "JAL/JAC往復・大人2名",
+        "amount_label": "¥319,400",
+        "annotation": "民宿ふれんど4泊の宿泊費を含むダイナミックパッケージ総額として計上"
       },
       {
-        "meaning": "タイムズカーレンタル 屋久島空港 2026-10-19 15:00〜2026-10-23 14:00",
+        "scope": "trip",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "レンタカー",
         "amount_state": {
           "code": "confirmed",
           "label": "確定"
         },
+        "detail": "タイムズカーレンタル 屋久島空港・2026-10-19 15:00〜2026-10-23 14:00",
         "amount_label": "¥22,737"
       },
       {
-        "meaning": "楠川温泉 大人2名",
+        "scope": "day",
+        "category": {
+          "code": "bath",
+          "label": "入浴"
+        },
+        "label": "楠川温泉",
         "amount_state": {
           "code": "estimated",
           "label": "見積"
         },
+        "day_ordinal": 3,
+        "detail": "大人2名",
         "amount_label": "¥600",
-        "reason": "Spot Canonicalの参考料金300円/人を2名分として計算"
+        "annotation": "Spot Canonicalの参考料金300円/人を2名分として計算"
       },
       {
-        "meaning": "PANORAMA 夕食 大人2名",
+        "scope": "day",
+        "category": {
+          "code": "meal",
+          "label": "食事"
+        },
+        "label": "PANORAMA",
         "amount_state": {
           "code": "estimated",
           "label": "見積"
         },
+        "day_ordinal": 4,
+        "detail": "夕食・大人2名",
         "amount_label": "¥7,000",
-        "reason": "Spot Canonicalの参考平均3,500円/人を2名分として計算"
+        "annotation": "Spot Canonicalの参考平均3,500円/人を2名分として計算"
       },
       {
-        "meaning": "荒川登山バス往復＋山岳部環境保全協力金 大人2名",
+        "scope": "day",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "荒川登山バス往復",
         "amount_state": {
           "code": "confirmed",
           "label": "確定"
         },
-        "amount_label": "¥6,000"
+        "day_ordinal": 2,
+        "detail": "大人2名",
+        "amount_label": "¥4,000",
+        "annotation": "2026年公式料金の往復バス代2,000円/人を2名分として計上"
       },
       {
-        "meaning": "レンタカー燃料",
+        "scope": "day",
+        "category": {
+          "code": "contribution",
+          "label": "協力金"
+        },
+        "label": "山岳部環境保全協力金",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "day_ordinal": 2,
+        "detail": "日帰り入山・大人2名",
+        "amount_label": "¥2,000",
+        "annotation": "2026年公式の日帰り協力金1,000円/人を2名分として計上"
+      },
+      {
+        "scope": "trip",
+        "category": {
+          "code": "fuel",
+          "label": "燃料"
+        },
+        "label": "レンタカー燃料",
         "amount_state": {
           "code": "unpriced",
           "label": "未算定"
         },
-        "reason": "baselineの実道路distanceは198.655kmまで確定したが、貸出車両の実燃費・給油量・給油単価は現時点で確定していないため"
+        "annotation": "baselineの実道路distanceは198.655kmまで確定したが、貸出車両の実燃費・給油量・給油単価は現時点で確定していないため"
       },
       {
-        "meaning": "和食の海舟 Day1夕食 大人2名",
+        "scope": "day",
+        "category": {
+          "code": "meal",
+          "label": "食事"
+        },
+        "label": "和食の海舟",
         "amount_state": {
           "code": "estimated",
           "label": "見積"
         },
+        "day_ordinal": 1,
+        "detail": "夕食・大人2名",
         "amount_label": "¥5,000",
-        "reason": "S0051の夕食参考価格2,000〜3,000円/人から2名分の計画値として中間値を採用"
+        "annotation": "S0051の夕食参考価格2,000〜3,000円/人から2名分の計画値として中間値を採用"
       }
     ]
   }
