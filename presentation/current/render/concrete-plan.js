@@ -640,38 +640,22 @@ async function renderFuelSummary(fuel, resolver) {
   );
 }
 
-function costScopeCode(item) {
-  if (typeof item?.scope === 'string') return item.scope;
-  return item?.scope?.code || '';
-}
-
-function costText(value) {
-  if (!value) return '';
-  if (typeof value === 'string') return value;
-  return value.label || value.text || '';
-}
-
 function renderCostGroup(title, items, notes) {
   if (!items.length) return null;
   return h('section', { className: 'cost-group' },
     h('h3', { text: title }),
     h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title } },
       items.map(item => {
-        const note = costText(item.note || item.annotation) || item.reason || '';
-        const noteNumber = note ? notes.push(note) : null;
-        const label = item.label || item.category?.label || item.meaning || '費用';
-        const detail = costText(item.detail);
-        const amount = item.amount_label || item.amount_state?.label || '—';
+        const noteNumber = item.annotation ? notes.push(item.annotation) : null;
+        const amount = item.amount_label || item.amount_state.label;
         return h('div', { className: 'cost-row', attrs: { role: 'row' } },
           h('div', { className: 'cost-item', attrs: { role: 'cell' } },
-            h('strong', { className: 'cost-item-label', text: label }),
-            detail ? h('span', { className: 'cost-item-detail', text: detail }) : null
+            h('strong', { className: 'cost-item-label', text: item.label }),
+            item.detail ? h('span', { className: 'cost-item-detail', text: item.detail }) : null
           ),
           h('div', { className: 'cost-amount', attrs: { role: 'cell' } },
             h('strong', { text: amount }),
-            item.amount_state?.label && item.amount_label
-              ? h('span', { className: 'cost-state', text: item.amount_state.label })
-              : null,
+            item.amount_label ? h('span', { className: 'cost-state', text: item.amount_state.label }) : null,
             noteNumber ? h('sup', {}, h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })) : null
           )
         );
@@ -680,38 +664,38 @@ function renderCostGroup(title, items, notes) {
   );
 }
 
+function renderCostTotal(total) {
+  if (!total) return null;
+  const qualifiers = [total.amount_state?.label, total.coverage?.label].filter(Boolean);
+  const text = total.amount_label
+    ? `合計 ${total.amount_label}${qualifiers.length ? `（${qualifiers.join('・')}）` : ''}`
+    : qualifiers.join('・');
+  return text ? h('p', { className: 'cost-total', text }) : null;
+}
+
 function renderCost(plan) {
   if (!plan.cost) return null;
   const items = plan.cost.items || [];
   const notes = [];
-  const hasExplicitScope = items.some(item => costScopeCode(item) || item.day_ordinal || item.label || item.detail || item.category);
-  const groups = [];
-
-  if (hasExplicitScope) {
-    const trip = items.filter(item => costScopeCode(item) === 'trip');
-    const dayItems = items.filter(item => costScopeCode(item) === 'day' || item.day_ordinal);
-    const other = items.filter(item => !trip.includes(item) && !dayItems.includes(item));
-    if (trip.length) groups.push(renderCostGroup('旅程全体料金', trip, notes));
-    const ordinals = [...new Set(dayItems.map(item => item.day_ordinal).filter(Boolean))].sort((a, b) => a - b);
-    for (const ordinal of ordinals) {
-      groups.push(renderCostGroup(`DAY${ordinal}`, dayItems.filter(item => item.day_ordinal === ordinal), notes));
-    }
-    const dayWithoutOrdinal = dayItems.filter(item => !item.day_ordinal);
-    if (dayWithoutOrdinal.length) groups.push(renderCostGroup('日別料金', dayWithoutOrdinal, notes));
-    if (other.length) groups.push(renderCostGroup('その他', other, notes));
-  } else {
-    groups.push(renderCostGroup('費用項目', items, notes));
-  }
+  const trip = items.filter(item => item.scope === 'trip');
+  const dayItems = items.filter(item => item.scope === 'day');
+  const ordinals = [...new Set(dayItems.map(item => item.day_ordinal))].sort((a, b) => a - b);
 
   return h('section', {
-    className: `plan-cost${hasExplicitScope ? '' : ' cost-awaiting-structured-data'}`,
-    dataset: { semantic: 'cost', costStructure: hasExplicitScope ? 'structured' : 'legacy' }
+    className: 'plan-cost',
+    dataset: { semantic: 'cost', costStructure: 'structured-v8' }
   },
     h('header', { className: 'support-panel-header' },
       h('h2', { text: '費用' }),
-      plan.cost.total_label ? h('p', { className: 'cost-total', text: plan.cost.total_label }) : null
+      renderCostTotal(plan.cost.total)
     ),
-    groups,
+    renderCostGroup('旅程全体料金', trip, notes),
+    dayItems.length
+      ? h('section', { className: 'cost-day-groups' },
+          h('h3', { text: '日別料金' }),
+          ordinals.map(ordinal => renderCostGroup(`DAY${ordinal}`, dayItems.filter(item => item.day_ordinal === ordinal), notes))
+        )
+      : null,
     notes.length
       ? h('section', { className: 'cost-notes', attrs: { 'aria-label': '費用注釈' } },
           h('h3', { text: '注釈' }),
