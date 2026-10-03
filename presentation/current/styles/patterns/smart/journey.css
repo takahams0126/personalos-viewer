@@ -1,25 +1,17 @@
 @layer patterns {
-  .concrete-plan > .plan-navigation { display: none; }
-
-  /* Primary Day navigation selects the execution context; it is stronger than inner view switchers. */
+  /* Primary Day navigation is a compact peer selector. */
   .primary-day-tab {
-    flex: 1 0 min(9rem, 20vw);
+    flex: 1 0 min(8rem, 20vw);
     appearance: none;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas:
-      'label date'
-      'weather weather'
-      'title title'
-      'attention attention';
-    gap: .1rem .45rem;
-    align-items: center;
-    min-width: 8rem;
-    min-height: 5.7rem;
+    gap: .08rem;
+    align-content: center;
+    min-width: 7rem;
+    min-height: 3.8rem;
     margin-block-end: calc(-1 * var(--border-width));
-    padding: .55rem .7rem .65rem;
+    padding: .45rem .65rem .55rem;
     border: 0;
-    border-block-end: .22rem solid transparent;
+    border-block-end: .2rem solid transparent;
     background: transparent;
     color: var(--text-soft);
     font: inherit;
@@ -40,37 +32,22 @@
 
   .primary-day-tab[aria-selected='true'] {
     border-block-end-color: var(--accent);
-    background: color-mix(in srgb, var(--accent-soft) 52%, var(--surface-page));
+    background: color-mix(in srgb, var(--accent-soft) 48%, var(--surface-page));
     color: var(--accent-strong);
   }
 
   .primary-day-tab-label {
-    grid-area: label;
     font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
   }
 
-  .primary-day-tab-date {
-    grid-area: date;
-    justify-self: end;
-    min-width: 0;
-    color: var(--muted);
-    font-size: var(--type-caption);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .primary-day-tab-weather {
-    grid-area: weather;
-    display: flex;
-    align-items: center;
-    gap: .35rem;
-    min-width: 0;
-  }
+  .primary-day-tab-date,
+  .primary-day-tab-weather,
+  .primary-day-tab-attention { display: none; }
 
   .primary-day-tab-title {
-    grid-area: title;
     overflow: hidden;
     min-width: 0;
     color: currentColor;
@@ -80,38 +57,14 @@
     white-space: nowrap;
   }
 
-  .primary-day-tab-attention {
-    grid-area: attention;
-    width: fit-content;
-    padding: .08rem .35rem;
-    border-radius: var(--radius-pill);
-    background: var(--caution-soft);
-    color: var(--caution);
-    font-size: var(--type-caption);
-    font-weight: var(--font-weight-strong);
-  }
-
-  /* Conceptual Plan and ConcretePlan share a row rhythm instead of card rhythm. */
   .plan-sequence,
   .execution-flow {
     --journey-line: var(--line);
   }
 
-  .plan-place > article,
-  .plan-movement > article,
-  .plan-sequence-boundary,
-  .execution-action:not(.route-execution-group) {
-    border-block-end: var(--border-width) solid var(--journey-line);
-  }
-
   .plan-sequence > :last-child,
   .execution-flow > :last-child { border-block-end: 0; }
 
-  .plan-place > article,
-  .plan-movement > article { padding: var(--space-2) 0; }
-
-  .plan-place .plan-item-kind,
-  .plan-movement .plan-item-kind,
   .plan-boundary-label,
   .action-order {
     margin: 0;
@@ -121,26 +74,7 @@
     letter-spacing: var(--tracking-label);
   }
 
-  .plan-place h4,
-  .plan-movement-main,
-  .action-header h4 { margin: 0; }
-
-  .plan-movement-main {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1) var(--space-2);
-    align-items: baseline;
-  }
-
-  .plan-movement-main > strong::before {
-    content: '→ ';
-    color: var(--accent-strong);
-  }
-
-  .plan-item-meta,
-  .plan-item-condition,
   .plan-route-identity,
-  .plan-route-summary,
   .plan-route-intent,
   .route-execution-identity,
   .route-execution-endpoints,
@@ -150,14 +84,180 @@
     line-height: 1.45;
   }
 
-  .plan-route > article,
-  .route-execution-body {
-    margin-block: var(--space-3);
-    padding: var(--space-3) var(--space-4);
+  /* Plan and ConcretePlan share semantic journey icons. */
+  .plan-event-icon,
+  .plan-move-icon,
+  .action-event-icon,
+  .move-connector-icon {
+    --journey-icon: url('../../../assets/icons/timeline/place.svg');
+    display: grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--surface-page);
+    color: var(--accent-strong);
+  }
+
+  .plan-event-icon::before,
+  .plan-move-icon::before,
+  .action-event-icon::before,
+  .move-connector-icon::before {
+    content: '';
+    width: .95rem;
+    height: .95rem;
+    background: currentColor;
+    -webkit-mask: var(--journey-icon) center / contain no-repeat;
+    mask: var(--journey-icon) center / contain no-repeat;
+  }
+
+  .plan-event-icon[data-icon-role='home'],
+  .action-event-icon[data-icon-role='home'] { --journey-icon: url('../../../assets/icons/timeline/home.svg'); }
+  .plan-event-icon[data-icon-role='station'],
+  .action-event-icon[data-icon-role='station'] { --journey-icon: url('../../../assets/icons/timeline/station.svg'); }
+  .plan-event-icon[data-icon-role='airport'],
+  .action-event-icon[data-icon-role='airport'] { --journey-icon: url('../../../assets/icons/timeline/airport.svg'); }
+  .plan-event-icon[data-icon-role='rental_car'],
+  .plan-event-icon[data-icon-role='parking'],
+  .action-event-icon[data-icon-role='rental_car'],
+  .action-event-icon[data-icon-role='parking'] { --journey-icon: url('../../../assets/icons/timeline/car.svg'); }
+  .plan-event-icon[data-icon-role='bus_stop'],
+  .action-event-icon[data-icon-role='bus_stop'] { --journey-icon: url('../../../assets/icons/timeline/bus.svg'); }
+  .plan-event-icon[data-icon-role='spot'],
+  .action-event-icon[data-icon-role='spot'] { --journey-icon: url('../../../assets/icons/timeline/spot.svg'); }
+  .plan-event-icon[data-icon-role='route'],
+  .action-event-icon[data-icon-role='route'] { --journey-icon: url('../../../assets/icons/timeline/route.svg'); }
+
+  .plan-move-icon[data-icon-role='walk'],
+  .move-connector-icon[data-icon-role='walk'] { --journey-icon: url('../../../assets/icons/timeline/walk.svg'); }
+  .plan-move-icon[data-icon-role='bus'],
+  .move-connector-icon[data-icon-role='bus'] { --journey-icon: url('../../../assets/icons/timeline/bus.svg'); }
+  .plan-move-icon[data-icon-role='airplane'],
+  .move-connector-icon[data-icon-role='airplane'] { --journey-icon: url('../../../assets/icons/timeline/airport.svg'); }
+  .plan-move-icon[data-icon-role='rental_car'],
+  .plan-move-icon[data-icon-role='car'],
+  .move-connector-icon[data-icon-role='rental_car'],
+  .move-connector-icon[data-icon-role='car'] { --journey-icon: url('../../../assets/icons/timeline/car.svg'); }
+  .plan-move-icon[data-icon-role='train'],
+  .move-connector-icon[data-icon-role='train'] { --journey-icon: url('../../../assets/icons/timeline/train.svg'); }
+  .plan-move-icon[data-icon-role='move'],
+  .move-connector-icon[data-icon-role='move'] { --journey-icon: url('../../../assets/icons/timeline/move.svg'); }
+
+  /* Conceptual Plan Journey: Event anchors with lightweight movement connectors. */
+  .plan-journey-event,
+  .plan-journey-connector {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+    padding: .35rem 0;
+  }
+
+  .plan-journey-event::before,
+  .plan-journey-connector::before {
+    content: '';
+    position: absolute;
+    inset-block: -.15rem;
+    inset-inline-start: .82rem;
+    width: var(--border-width);
+    background: var(--journey-line);
+  }
+
+  .plan-journey-event:first-child::before { inset-block-start: 1rem; }
+  .plan-journey-event:last-child::before { inset-block-end: calc(100% - 1rem); }
+
+  .plan-event-icon,
+  .plan-move-icon { position: relative; z-index: 1; }
+
+  .plan-move-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin: .12rem;
+    border-color: var(--line);
+    color: var(--muted);
+  }
+
+  .plan-move-icon::before { width: .8rem; height: .8rem; }
+
+  .plan-event-body,
+  .plan-move-body { min-width: 0; }
+
+  .plan-event-body > h4,
+  .plan-route-choice-detail > h4 {
+    margin: 0;
+    font-size: var(--type-entity-title);
+  }
+
+  .plan-event-meta {
+    margin: .1rem 0 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-event-todos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .7rem;
+    margin: .25rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--text-soft);
+    font-size: var(--type-caption);
+  }
+
+  .plan-event-todos li::before {
+    content: '✓';
+    margin-inline-end: .3rem;
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+  }
+
+  .plan-event-facts {
+    display: grid;
+    gap: .15rem;
+    margin: .35rem 0 0;
+  }
+
+  .plan-event-facts > div {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: var(--space-2);
+    align-items: start;
+    font-size: var(--type-meta);
+  }
+
+  .plan-event-facts dt { color: var(--muted); font-weight: var(--font-weight-strong); }
+  .plan-event-facts dd { margin: 0; min-width: 0; line-height: 1.45; }
+
+  .plan-move-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .1rem .55rem;
+    align-items: baseline;
+    padding-block: .08rem;
+    color: var(--text-soft);
+    font-size: var(--type-meta);
+  }
+
+  .plan-move-mode { color: var(--text); }
+  .plan-move-endpoints { min-width: 0; }
+
+  .plan-route-body {
+    margin-block: .15rem;
+    padding: .7rem .85rem;
     border-inline-start: var(--border-width-strong) solid var(--accent);
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
     background: var(--surface-soft);
-    box-shadow: none;
+  }
+
+  .plan-route-label {
+    margin: 0 0 .2rem;
+    color: var(--accent-strong);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
   }
 
   .plan-route-choice-label {
@@ -175,6 +275,9 @@
     background: var(--surface);
   }
 
+  .plan-route-choice-detail > p { margin: .12rem 0 0; }
+
+  /* Execution Timeline. */
   .action-body {
     border-color: transparent;
     border-radius: 0;
@@ -191,7 +294,6 @@
 
   .action-time-departure { color: var(--muted); }
 
-  /* Execution events use semantic icons as recognition aids; text remains authoritative. */
   .action-header {
     display: grid;
     grid-template-columns: 1.75rem minmax(0, 1fr);
@@ -200,46 +302,7 @@
   }
 
   .action-heading { min-width: 0; }
-
-  .action-event-icon,
-  .move-connector-icon {
-    --journey-icon: url('../../../assets/icons/timeline/place.svg');
-    display: grid;
-    place-items: center;
-    width: 1.65rem;
-    height: 1.65rem;
-    border: var(--border-width) solid var(--line-interactive);
-    border-radius: var(--radius-pill);
-    background: var(--surface-page);
-    color: var(--accent-strong);
-  }
-
-  .action-event-icon::before,
-  .move-connector-icon::before {
-    content: '';
-    width: .95rem;
-    height: .95rem;
-    background: currentColor;
-    -webkit-mask: var(--journey-icon) center / contain no-repeat;
-    mask: var(--journey-icon) center / contain no-repeat;
-  }
-
-  .action-event-icon[data-icon-role='home'] { --journey-icon: url('../../../assets/icons/timeline/home.svg'); }
-  .action-event-icon[data-icon-role='station'] { --journey-icon: url('../../../assets/icons/timeline/station.svg'); }
-  .action-event-icon[data-icon-role='airport'] { --journey-icon: url('../../../assets/icons/timeline/airport.svg'); }
-  .action-event-icon[data-icon-role='rental_car'] { --journey-icon: url('../../../assets/icons/timeline/car.svg'); }
-  .action-event-icon[data-icon-role='parking'] { --journey-icon: url('../../../assets/icons/timeline/car.svg'); }
-  .action-event-icon[data-icon-role='bus_stop'] { --journey-icon: url('../../../assets/icons/timeline/bus.svg'); }
-  .action-event-icon[data-icon-role='spot'] { --journey-icon: url('../../../assets/icons/timeline/spot.svg'); }
-  .action-event-icon[data-icon-role='route'] { --journey-icon: url('../../../assets/icons/timeline/route.svg'); }
-
-  .move-connector-icon[data-icon-role='walk'] { --journey-icon: url('../../../assets/icons/timeline/walk.svg'); }
-  .move-connector-icon[data-icon-role='bus'] { --journey-icon: url('../../../assets/icons/timeline/bus.svg'); }
-  .move-connector-icon[data-icon-role='airplane'] { --journey-icon: url('../../../assets/icons/timeline/airport.svg'); }
-  .move-connector-icon[data-icon-role='rental_car'],
-  .move-connector-icon[data-icon-role='car'] { --journey-icon: url('../../../assets/icons/timeline/car.svg'); }
-  .move-connector-icon[data-icon-role='train'] { --journey-icon: url('../../../assets/icons/timeline/train.svg'); }
-  .move-connector-icon[data-icon-role='move'] { --journey-icon: url('../../../assets/icons/timeline/move.svg'); }
+  .action-header h4 { margin: 0; }
 
   .action-purpose,
   .action-inclusion,
@@ -248,9 +311,7 @@
   .action-facilities,
   .action-constraints,
   .action-attention,
-  .next-move {
-    font-size: var(--type-meta);
-  }
+  .next-move { font-size: var(--type-meta); }
 
   .action-todos h5,
   .action-facilities h5,
@@ -267,7 +328,6 @@
   .action-constraints ul,
   .action-attention ul { margin-block: 0; padding-inline-start: 1.1rem; }
 
-  /* Movement is the connector to the next event, not a competing content card. */
   .execution-action:not(.route-execution-group) .next-move,
   .route-execution-exit .next-move {
     position: relative;
@@ -300,15 +360,8 @@
     color: var(--muted);
   }
 
-  .move-connector-icon::before {
-    width: .82rem;
-    height: .82rem;
-  }
-
-  .move-connector-content {
-    min-width: 0;
-    padding-block: .02rem;
-  }
+  .move-connector-icon::before { width: .82rem; height: .82rem; }
+  .move-connector-content { min-width: 0; padding-block: .02rem; }
 
   .next-move-summary {
     margin: 0;
@@ -330,13 +383,7 @@
   .next-move .connection-margin,
   .next-move .connection-state { margin: 0; }
 
-  /* Operational timing is shown where the decision happens: on the event and its connector. */
-  .action-constraints {
-    padding: 0;
-    border: 0;
-    background: transparent;
-  }
-
+  .action-constraints { padding: 0; border: 0; background: transparent; }
   .action-constraints > h5 { display: none; }
 
   .action-constraints ul {
@@ -361,20 +408,9 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .action-constraints li[data-constraint-kind='latest_safe'] {
-    border-inline-start-color: var(--accent);
-    background: var(--accent-soft);
-  }
-
-  .action-constraints li[data-constraint-kind='hard_limit'] {
-    border-inline-start-color: var(--caution);
-    background: var(--caution-soft);
-  }
-
-  .action-constraints li[data-constraint-kind='next_service'] {
-    border-inline-start-color: var(--info);
-    background: var(--info-soft);
-  }
+  .action-constraints li[data-constraint-kind='latest_safe'] { border-inline-start-color: var(--accent); background: var(--accent-soft); }
+  .action-constraints li[data-constraint-kind='hard_limit'] { border-inline-start-color: var(--caution); background: var(--caution-soft); }
+  .action-constraints li[data-constraint-kind='next_service'] { border-inline-start-color: var(--info); background: var(--info-soft); }
 
   .constraint-state,
   .constraint-margin {
@@ -386,17 +422,11 @@
   }
 
   .constraint-state { font-weight: var(--font-weight-strong); }
-
   .action-constraints li[data-margin-state='comfortable'] .constraint-state,
-  .action-constraints li[data-margin-state='safe'] .constraint-state {
-    color: var(--positive);
-  }
-
+  .action-constraints li[data-margin-state='safe'] .constraint-state { color: var(--positive); }
   .action-constraints li[data-margin-state='tight'] .constraint-state,
   .action-constraints li[data-margin-state='critical'] .constraint-state,
-  .action-constraints li[data-margin-state='violated'] .constraint-state {
-    color: var(--caution);
-  }
+  .action-constraints li[data-margin-state='violated'] .constraint-state { color: var(--caution); }
 
   .action-constraints .constraint-service {
     grid-column: 1 / -1;
@@ -423,10 +453,7 @@
     margin-block-start: .15rem;
   }
 
-  .next-move .connection-margin {
-    margin-inline-end: var(--space-2);
-    font-variant-numeric: tabular-nums;
-  }
+  .next-move .connection-margin { margin-inline-end: var(--space-2); font-variant-numeric: tabular-nums; }
 
   .next-move .connection-state {
     padding: .08rem .4rem;
@@ -436,33 +463,21 @@
   }
 
   .next-move[data-connection-state='comfortable'] .connection-state,
-  .next-move[data-connection-state='safe'] .connection-state {
-    background: var(--positive-soft);
-    color: var(--positive);
-  }
+  .next-move[data-connection-state='safe'] .connection-state { background: var(--positive-soft); color: var(--positive); }
 
   .next-move[data-connection-state='tight'] .connection-state,
   .next-move[data-connection-state='critical'] .connection-state,
-  .next-move[data-connection-state='violated'] .connection-state {
-    background: var(--caution-soft);
-    color: var(--caution);
-  }
+  .next-move[data-connection-state='violated'] .connection-state { background: var(--caution-soft); color: var(--caution); }
 
   .next-move[data-connection-state='tight'] .move-connector-icon,
   .next-move[data-connection-state='critical'] .move-connector-icon,
-  .next-move[data-connection-state='violated'] .move-connector-icon {
-    border-color: var(--caution);
-    color: var(--caution);
-  }
+  .next-move[data-connection-state='violated'] .move-connector-icon { border-color: var(--caution); color: var(--caution); }
 
   .connection-state,
   .constraint-state,
   .connection-margin,
   .constraint-margin,
-  .service-reservation {
-    color: var(--muted);
-    font-size: var(--type-caption);
-  }
+  .service-reservation { color: var(--muted); font-size: var(--type-caption); }
 
   .action-attention,
   .action-constraints li[data-margin-state='critical'],
@@ -479,8 +494,8 @@
     font-weight: var(--font-weight-strong);
   }
 
-  /* One switch-rail family for package choice and workspace views. */
-  .execution-package-selector { margin-block: var(--space-5) var(--space-3); }
+  /* Shared switch rail. */
+  .execution-package-selector { margin-block: var(--space-4) var(--space-3); }
   .execution-package-selector > h3 {
     margin-block: 0 var(--space-1);
     font-size: var(--type-caption);
@@ -542,8 +557,7 @@
   }
 
   .execution-packages > [hidden] { display: none; }
-
-  .day-workspace { margin-block: var(--space-5); }
+  .day-workspace { margin-block: var(--space-4); }
   .day-workspace-panel { padding-block-start: var(--space-3); }
   .day-workspace-panel > [hidden] { display: none; }
   .route-execution-time-axis { display: none; }
