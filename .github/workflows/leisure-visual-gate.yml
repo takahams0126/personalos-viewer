@@ -63,6 +63,7 @@ jobs:
           OUT = Path('visual-reality')
           BASE = 'http://127.0.0.1:8000/presentation/current/'
           diagnostics = []
+          workspace_diagnostics = {}
 
           surfaces = [
               ('explorer', ''),
@@ -107,6 +108,35 @@ jobs:
               time.sleep(1.2)
               record_console(driver, context)
 
+          def capture_workspace_state(driver, mode):
+              workspace_diagnostics[mode] = driver.execute_script("""
+                const root = document.querySelector('.concrete-plan');
+                const workspace = root?.querySelector(':scope > [data-semantic="concrete-primary-workspace"]');
+                const rootChildren = root ? [...root.children].map(node => ({
+                  tag: node.tagName,
+                  cls: node.className,
+                  semantic: node.dataset?.semantic || '',
+                  hidden: Boolean(node.hidden)
+                })) : [];
+                const anyFuel = root?.querySelector('[data-semantic="fuel"]');
+                const anyCost = root?.querySelector('[data-semantic="cost"]');
+                return {
+                  rootChildren,
+                  directFuel: Boolean(root && [...root.children].find(node => node.dataset?.semantic === 'fuel')),
+                  directCost: Boolean(root && [...root.children].find(node => node.dataset?.semantic === 'cost')),
+                  anyFuel: Boolean(anyFuel),
+                  anyCost: Boolean(anyCost),
+                  fuelParentSemantic: anyFuel?.parentElement?.dataset?.semantic || '',
+                  costParentSemantic: anyCost?.parentElement?.dataset?.semantic || '',
+                  workspace: Boolean(workspace),
+                  tabs: workspace ? [...workspace.querySelectorAll(':scope > .concrete-primary-tabs [role="tab"]')].map(tab => ({
+                    text: tab.textContent,
+                    viewId: tab.dataset?.viewId || '',
+                    sourceSemantic: tab.dataset?.sourceSemantic || ''
+                  })) : []
+                };
+              """)
+
           for mode, width, height in [('desktop', 1440, 1100), ('mobile', 390, 844)]:
               driver = driver_for(width, height)
               try:
@@ -116,6 +146,7 @@ jobs:
                       full_page_shot(driver, context, width)
 
                   load(driver, '?type=concrete_plan&id=CP001', f'{mode}-concrete-tabs')
+                  capture_workspace_state(driver, mode)
                   for tab_name in ('fuel', 'cost'):
                       selector = f'.concrete-primary-tabs [data-view-id="{tab_name}"]'
                       matches = driver.find_elements(By.CSS_SELECTOR, selector)
@@ -131,6 +162,7 @@ jobs:
                   driver.quit()
 
           (OUT / 'diagnostics.json').write_text(json.dumps(diagnostics, ensure_ascii=False, indent=2), encoding='utf-8')
+          (OUT / 'workspace-diagnostics.json').write_text(json.dumps(workspace_diagnostics, ensure_ascii=False, indent=2), encoding='utf-8')
           PY
 
       - name: Upload visual reality
