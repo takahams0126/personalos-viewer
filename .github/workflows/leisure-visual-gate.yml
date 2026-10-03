@@ -1,8 +1,6 @@
 name: Leisure Visual Reality Gate
 
 on:
-  push:
-    branches: [work/leisure-product-final-convergence]
   workflow_dispatch:
 
 permissions:
