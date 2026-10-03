@@ -7,14 +7,13 @@
     object-fit: contain;
   }
 
-  .weather-icon-day-tab { width: 1.8rem; }
+  .weather-icon-itinerary { width: 1.45rem; }
   .weather-icon-hourly { width: 2.2rem; }
 
-  .primary-day-tab-condition {
+  .itinerary-weather-label {
     overflow: hidden;
-    color: currentColor;
+    color: var(--text-soft);
     font-size: var(--type-caption);
-    font-weight: var(--font-weight-strong);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -119,6 +118,6 @@
 
   @media (max-width: 52rem) {
     .selected-day-weather { padding: var(--space-2); }
-    .weather-icon-day-tab { width: 1.55rem; }
+    .weather-icon-itinerary { width: 1.25rem; }
   }
 }
