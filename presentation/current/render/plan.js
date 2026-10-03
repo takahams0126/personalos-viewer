@@ -194,20 +194,24 @@ async function renderBoundary(label, ref, resolver) {
   );
 }
 
-async function renderDay(day, resolver, openByDefault) {
+async function renderDay(day, resolver) {
   const [start, end, items] = await Promise.all([
     renderBoundary('START', day.start_ref, resolver),
     renderBoundary('END', day.end_ref, resolver),
     Promise.all((day.sequence || []).map(item => renderSequenceItem(item, resolver)))
   ]);
-  return h('details', {
-    className: 'plan-day-disclosure',
-    dataset: { semantic: 'day', sourceDay: day.ordinal },
-    attrs: { open: openByDefault }
+  return h('section', {
+    className: 'plan-day-panel',
+    dataset: {
+      semantic: 'day',
+      day: day.ordinal,
+      sourceDay: day.ordinal,
+      dayTitle: day.title || `Day ${day.ordinal}`
+    }
   },
-    h('summary', {},
-      h('span', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
-      h('span', { className: 'plan-day-title', text: day.title })
+    h('header', { className: 'plan-day-context' },
+      h('p', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
+      h('h3', { className: 'plan-day-title', text: day.title })
     ),
     h('div', { className: 'plan-day-body' },
       day.summary ? h('p', { className: 'plan-day-summary', text: day.summary }) : null,
@@ -218,10 +222,7 @@ async function renderDay(day, resolver, openByDefault) {
 
 export async function renderPlan({ plan, manifestEntry, resolver }) {
   const orderedDays = [...(plan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
-  const openByDefault = orderedDays.length === 1;
-  const dayNodes = await Promise.all(
-    orderedDays.map(day => renderDay(day, resolver, openByDefault))
-  );
+  const dayNodes = await Promise.all(orderedDays.map(day => renderDay(day, resolver)));
   const composition = await renderPlanComposition(plan, manifestEntry, resolver);
 
   return h('article', { className: 'plan-page', dataset: { semantic: 'plan' } },
