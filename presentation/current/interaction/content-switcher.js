@@ -8,6 +8,10 @@ function panelFor(switcher, tab) {
   return switcher.querySelector(`#${CSS.escape(panelId)}`);
 }
 
+function belongsToSwitcher(node, switcher) {
+  return Boolean(node && node.closest('[data-content-switcher]') === switcher);
+}
+
 function activateTab(switcher, nextTab, { focus = false } = {}) {
   const tabs = tabsFor(switcher);
   const sourceSemantic = nextTab.dataset.sourceSemantic;
@@ -41,7 +45,7 @@ function activateTab(switcher, nextTab, { focus = false } = {}) {
 
 function routeDetailTarget(event, switcher, tabs) {
   const routeLink = event.target.closest('[data-semantic="route-execution-summary"] h4 a');
-  if (!routeLink || !switcher.contains(routeLink)) return null;
+  if (!routeLink || !belongsToSwitcher(routeLink, switcher)) return null;
   if (switcher.dataset.activeView === 'route') return null;
   return tabs.find(tab => tab.dataset.viewId === 'route') || null;
 }
@@ -63,13 +67,13 @@ function hydrateSwitcher(switcher) {
     }
 
     const tab = event.target.closest('[role="tab"]');
-    if (!tab || !switcher.contains(tab)) return;
+    if (!tab || !belongsToSwitcher(tab, switcher)) return;
     activateTab(switcher, tab);
   });
 
   switcher.addEventListener('keydown', event => {
     const current = event.target.closest('[role="tab"]');
-    if (!current || !switcher.contains(current)) return;
+    if (!current || !belongsToSwitcher(current, switcher)) return;
 
     const index = tabs.indexOf(current);
     if (index < 0) return;

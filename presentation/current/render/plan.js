@@ -7,11 +7,21 @@ function machineLabel(ref) {
 }
 
 async function describeRef(ref, resolver) {
-  if (!ref) return { title: '参照情報なし', unavailable: true };
+  if (!ref) return { title: '参照情報なし', unavailable: true, pointType: '' };
   try {
-    return await resolver.describe(ref);
+    const described = await resolver.describe(ref);
+    let pointType = '';
+    if (ref.entity_type === 'travel_point') {
+      try {
+        const loaded = await resolver.load(ref);
+        pointType = loaded.data?.point_type?.code || '';
+      } catch {
+        pointType = '';
+      }
+    }
+    return { ...described, pointType, unavailable: false };
   } catch {
-    return { title: machineLabel(ref), unavailable: true };
+    return { title: machineLabel(ref), unavailable: true, pointType: '' };
   }
 }
 
@@ -20,6 +30,24 @@ function entityTitle(ref, title, unavailable = false) {
     return h('a', { attrs: { href: hrefFor(ref) }, text: title });
   }
   return h('span', { text: title });
+}
+
+function sameRef(a, b) {
+  return Boolean(a?.entity_type && a?.id && b?.entity_type && b?.id && a.entity_type === b.entity_type && a.id === b.id);
+}
+
+function eventIconRole(ref, described) {
+  if (ref?.entity_type === 'spot') return 'spot';
+  if (ref?.entity_type === 'travel_point') return described?.pointType || 'place';
+  return 'place';
+}
+
+function renderJourneyIcon(role, className) {
+  return h('span', {
+    className,
+    dataset: { iconRole: role || 'place' },
+    attrs: { 'aria-hidden': 'true' }
+  });
 }
 
 function concretePlanRef(manifestEntry) {
@@ -79,42 +107,82 @@ async function renderPlanComposition(plan, manifestEntry, resolver) {
   );
 }
 
-function renderOptionalList(title, values, className) {
+function renderOptionalList(values) {
   if (!values?.length) return null;
-  return h('section', { className }, h('h5', { text: title }), h('ul', {}, values.map(value => h('li', { text: value }))));
+  return h('ul', { className: 'plan-event-todos', dataset: { semantic: 'todos' } },
+    values.map(value => h('li', { text: value }))
+  );
 }
 
-function renderRelationFacts(item) {
-  const rows = [];
-  if (item.visit_purpose?.label) rows.push(h('p', { className: 'plan-item-meta', text: `目的: ${item.visit_purpose.label}` }));
-  if (item.inclusion_requirement?.label) rows.push(h('p', { className: 'plan-item-meta', text: `扱い: ${item.inclusion_requirement.label}` }));
-  if (item.condition?.text) rows.push(h('p', { className: 'plan-item-condition', text: `条件: ${item.condition.text}` }));
-  return rows;
+function renderEventMeta(item) {
+  const values = [item.visit_purpose?.label, item.inclusion_requirement?.label].filter(Boolean);
+  if (!values.length) return null;
+  return h('p', { className: 'plan-event-meta', text: values.join(' · ') });
 }
 
-async function renderPlace(item, resolver) {
+function renderCondition(item) {
+  if (!item.condition?.text) return null;
+  return h('dl', { className: 'plan-event-facts' },
+    h('div', {}, h('dt', { text: '条件' }), h('dd', { text: item.condition.text }))
+  );
+}
+
+async function renderPlace(item, resolver, { boundary = '' } = {}) {
   const target = await describeRef(item.target_ref, resolver);
-  return h('li', { className: 'plan-sequence-item plan-place', dataset: { kind: 'place', semantic: 'place' } },
-    h('article', {},
-      h('p', { className: 'plan-item-kind', text: '地点' }),
+  return h('li', {
+    className: 'plan-journey-event plan-place',
+    dataset: { kind: 'place', semantic: 'place', boundary }
+  },
+    renderJourneyIcon(eventIconRole(item.target_ref, target), 'plan-event-icon'),
+    h('article', { className: 'plan-event-body' },
+      boundary ? h('p', { className: 'plan-boundary-label', text: boundary }) : null,
       h('h4', {}, entityTitle(item.target_ref, target.title, target.unavailable)),
       target.unavailable ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' }) : null,
-      ...renderRelationFacts(item),
-      renderOptionalList('やること', item.actions, 'plan-item-actions')
+      renderEventMeta(item),
+      renderCondition(item),
+      renderOptionalList(item.actions)
     )
   );
 }
 
+async function renderBoundary(label, ref, resolver) {
+  return renderPlace({ kind: 'place', target_ref: ref }, resolver, { boundary: label });
+}
+
 async function renderMovement(item, resolver) {
   const [from, to] = await Promise.all([describeRef(item.from_ref, resolver), describeRef(item.to_ref, resolver)]);
-  return h('li', { className: 'plan-sequence-item plan-movement', dataset: { kind: 'movement', semantic: 'movement' } },
-    h('article', {},
-      h('p', { className: 'plan-item-kind', text: '移動' }),
-      h('p', { className: 'plan-movement-main' },
-        h('strong', { text: item.transport?.label || '移動' }),
-        h('span', {}, entityTitle(item.from_ref, from.title, from.unavailable), ' → ', entityTitle(item.to_ref, to.title, to.unavailable))
+  const mode = item.transport?.code || 'move';
+  return h('li', {
+    className: 'plan-journey-connector plan-movement',
+    dataset: { kind: 'movement', semantic: 'movement', transportMode: mode }
+  },
+    renderJourneyIcon(mode, 'plan-move-icon'),
+    h('div', { className: 'plan-move-body' },
+      h('strong', { className: 'plan-move-mode', text: item.transport?.label || '移動' }),
+      h('span', { className: 'plan-move-endpoints' },
+        entityTitle(item.from_ref, from.title, from.unavailable),
+        ' → ',
+        entityTitle(item.to_ref, to.title, to.unavailable)
       ),
-      item.condition?.text ? h('p', { className: 'plan-item-condition', text: `条件: ${item.condition.text}` }) : null
+      item.condition?.text
+        ? h('dl', { className: 'plan-event-facts' },
+            h('div', {}, h('dt', { text: '条件' }), h('dd', { text: item.condition.text }))
+          )
+        : null
+    )
+  );
+}
+
+async function renderImplicitDestination(ref, resolver) {
+  const target = await describeRef(ref, resolver);
+  return h('li', {
+    className: 'plan-journey-event plan-waypoint',
+    dataset: { semantic: 'place', kind: 'waypoint' }
+  },
+    renderJourneyIcon(eventIconRole(ref, target), 'plan-event-icon'),
+    h('article', { className: 'plan-event-body' },
+      h('h4', {}, entityTitle(ref, target.title, target.unavailable)),
+      target.unavailable ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' }) : null
     )
   );
 }
@@ -141,7 +209,11 @@ function renderRouteChoiceDetail(choice) {
     h('h4', {}, entityTitle(choice.ref, choice.title, choice.unavailable)),
     identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
     replacementIntent ? h('p', { className: 'plan-route-intent', text: replacementIntent }) : null,
-    condition ? h('p', { className: 'plan-item-condition', text: `選択条件: ${condition}` }) : null,
+    condition
+      ? h('dl', { className: 'plan-event-facts' },
+          h('div', {}, h('dt', { text: '選択条件' }), h('dd', { text: condition }))
+        )
+      : null,
     choice.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
   );
 }
@@ -161,12 +233,16 @@ async function renderRoute(item, resolver) {
     h('option', { attrs: { value: index }, text: index === 0 ? `${choice.title}（標準）` : choice.title })
   ));
   select.addEventListener('change', () => detailHost.replaceChildren(detailNodes[Number(select.value)]));
-  return h('li', { className: 'plan-sequence-item plan-route', dataset: { kind: 'route', semantic: 'route-occurrence' } },
-    h('article', {},
-      h('p', { className: 'plan-item-kind', text: 'ルート' }),
+  return h('li', {
+    className: 'plan-journey-event plan-route',
+    dataset: { kind: 'route', semantic: 'route-occurrence' }
+  },
+    renderJourneyIcon('route', 'plan-event-icon'),
+    h('article', { className: 'plan-event-body plan-route-body' },
+      h('p', { className: 'plan-route-label', text: 'ルート' }),
       h('section', { className: 'plan-route-choice', dataset: { semantic: 'route-choice' } },
         choices.length > 1
-          ? h('label', { className: 'plan-route-choice-label' }, h('span', { text: 'ルート選択' }), select)
+          ? h('label', { className: 'plan-route-choice-label' }, h('span', { text: '実施ルート' }), select)
           : null,
         detailHost
       )
@@ -174,32 +250,46 @@ async function renderRoute(item, resolver) {
   );
 }
 
-async function renderSequenceItem(item, resolver) {
-  if (item.kind === 'place') return renderPlace(item, resolver);
-  if (item.kind === 'movement') return renderMovement(item, resolver);
-  if (item.kind === 'route') return renderRoute(item, resolver);
-  return h('li', {
-    className: 'plan-sequence-item component-unavailable',
-    dataset: { kind: item.kind || 'unknown' },
-    text: `未対応のsequence item: ${item.kind || 'unknown'}`
-  });
-}
+async function renderJourney(day, resolver) {
+  const nodes = [await renderBoundary('START', day.start_ref, resolver)];
+  const sequence = day.sequence || [];
 
-async function renderBoundary(label, ref, resolver) {
-  const target = await describeRef(ref, resolver);
-  return h('li', { className: 'plan-sequence-boundary', dataset: { semantic: label.toLowerCase() } },
-    h('span', { className: 'plan-boundary-label', text: label }),
-    h('strong', {}, entityTitle(ref, target.title, target.unavailable)),
-    target.unavailable ? h('span', { className: 'component-unavailable', text: ' 参照不可' }) : null
-  );
+  for (let index = 0; index < sequence.length; index += 1) {
+    const item = sequence[index];
+    if (item.kind === 'movement') {
+      nodes.push(await renderMovement(item, resolver));
+      const next = sequence[index + 1];
+      const isFinalDestination = sameRef(item.to_ref, day.end_ref) && index === sequence.length - 1;
+      if (!isFinalDestination) {
+        if (next?.kind === 'place' && sameRef(next.target_ref, item.to_ref)) {
+          nodes.push(await renderPlace(next, resolver));
+          index += 1;
+        } else if (next?.kind !== 'route') {
+          nodes.push(await renderImplicitDestination(item.to_ref, resolver));
+        }
+      }
+      continue;
+    }
+    if (item.kind === 'place') {
+      nodes.push(await renderPlace(item, resolver));
+      continue;
+    }
+    if (item.kind === 'route') {
+      nodes.push(await renderRoute(item, resolver));
+      continue;
+    }
+    nodes.push(h('li', {
+      className: 'plan-journey-event component-unavailable',
+      dataset: { kind: item.kind || 'unknown' },
+      text: `未対応のsequence item: ${item.kind || 'unknown'}`
+    }));
+  }
+
+  nodes.push(await renderBoundary('END', day.end_ref, resolver));
+  return h('ol', { className: 'plan-sequence plan-journey', dataset: { semantic: 'conceptual-sequence' } }, nodes);
 }
 
 async function renderDay(day, resolver) {
-  const [start, end, items] = await Promise.all([
-    renderBoundary('START', day.start_ref, resolver),
-    renderBoundary('END', day.end_ref, resolver),
-    Promise.all((day.sequence || []).map(item => renderSequenceItem(item, resolver)))
-  ]);
   return h('section', {
     className: 'plan-day-panel',
     dataset: {
@@ -215,7 +305,7 @@ async function renderDay(day, resolver) {
     ),
     h('div', { className: 'plan-day-body' },
       day.summary ? h('p', { className: 'plan-day-summary', text: day.summary }) : null,
-      h('ol', { className: 'plan-sequence', dataset: { semantic: 'conceptual-sequence' } }, start, items, end)
+      await renderJourney(day, resolver)
     )
   );
 }

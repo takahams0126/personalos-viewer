@@ -2,7 +2,7 @@
   .route-page {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2.75rem, 4.5vw, 4.5rem) var(--product-grid-gap);
+    gap: clamp(2rem, 3.2vw, 3rem) var(--product-grid-gap);
     align-items: start;
   }
 
@@ -17,20 +17,22 @@
     min-width: 0;
   }
 
-  .route-hero-copy { max-width: 58rem; }
+  .route-hero-copy { max-width: 64rem; }
 
   .route-page > [data-layout-block="appeal"],
   .route-page > .route-appeal {
-    max-width: 60rem;
+    max-width: 64rem;
     margin-block: 0;
   }
 
-  /* Normal path: layout applier has grouped sequence and map. */
+  /* Appeal is reading content. Keep strengths vertical even when the default layout can fan cards out. */
+  .route-strengths { grid-template-columns: minmax(0, 1fr); }
+
   .route-workspace {
     display: grid;
-    grid-template-columns: minmax(15rem, 4fr) minmax(0, 8fr);
+    grid-template-columns: minmax(16rem, 4fr) minmax(0, 8fr);
     gap: var(--product-grid-gap);
-    align-items: stretch;
+    align-items: start;
   }
 
   .route-workspace > [data-layout-slot] {
@@ -39,20 +41,19 @@
   }
 
   .route-workspace [data-layout-slot="primary"] {
-    max-height: clamp(30rem, 52vw, 40rem);
+    max-height: clamp(24rem, 42vw, 32rem);
     overflow: auto;
     padding-inline-end: var(--space-1);
   }
 
   .route-workspace [data-layout-slot="secondary"] .map-canvas {
-    min-height: clamp(30rem, 52vw, 40rem);
+    min-height: clamp(24rem, 42vw, 32rem);
   }
 
-  /* Runtime fallback: semantic nodes are direct Route children when the applier root is #app. */
   .route-page > .route-sequence-section[data-semantic="sequence"] {
     grid-column: 1 / span 4;
     min-width: 0;
-    max-height: clamp(30rem, 52vw, 40rem);
+    max-height: clamp(24rem, 42vw, 32rem);
     overflow: auto;
     margin-block: 0;
     padding-block-start: 0;
@@ -69,7 +70,7 @@
   }
 
   .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas {
-    min-height: clamp(30rem, 52vw, 40rem);
+    min-height: clamp(24rem, 42vw, 32rem);
   }
 
   .route-workspace .route-map-section,
@@ -82,14 +83,14 @@
   .route-workspace .route-sequence,
   .route-page > .route-sequence-section .route-sequence {
     display: grid;
-    gap: var(--space-1);
+    gap: 0;
   }
 
   .route-workspace .route-sequence-body,
   .route-page > .route-sequence-section .route-sequence-body {
-    padding: var(--space-2) var(--space-3);
+    padding: .35rem .45rem .55rem;
     box-shadow: none;
   }
 
-  .route-page > [data-layout-block="supporting-conditions"] { max-width: 60rem; }
+  .route-page > [data-layout-block="supporting-conditions"] { max-width: 64rem; }
 }

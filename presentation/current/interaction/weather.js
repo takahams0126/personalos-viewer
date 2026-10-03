@@ -104,30 +104,24 @@ function buildHourlyMatrix(weatherDay) {
   return wrapper;
 }
 
-function decorateDayNavigation(root, dayByOrdinal) {
-  root.querySelectorAll('[data-day-navigation] [role="tab"][data-day]').forEach(tab => {
-    if (tab.querySelector('.primary-day-tab-weather')) return;
-    const ordinal = Number(tab.dataset.day);
+function decorateItineraryOverview(root, dayByOrdinal) {
+  root.querySelectorAll('[data-itinerary-day][data-day]').forEach(row => {
+    const ordinal = Number(row.dataset.day);
     const weatherDay = dayByOrdinal.get(ordinal);
-    if (!weatherDay) return;
+    const slot = row.querySelector('[data-weather-slot]');
+    if (!weatherDay || !slot || slot.childElementCount) return;
 
-    const weather = document.createElement('span');
-    weather.className = 'primary-day-tab-weather';
-    weather.append(weatherIcon(weatherDay.condition, 'weather-icon weather-icon-day-tab'));
-
-    const condition = document.createElement('span');
-    condition.className = 'primary-day-tab-condition';
-    condition.textContent = weatherDay.condition?.label || '—';
-    weather.append(condition);
-
-    const title = tab.querySelector('.primary-day-tab-title');
-    if (title) tab.insertBefore(weather, title);
-    else tab.append(weather);
+    const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-itinerary');
+    icon.title = weatherDay.condition?.label || '';
+    const label = document.createElement('span');
+    label.className = 'itinerary-weather-label';
+    label.textContent = weatherDay.condition?.label || '—';
+    slot.append(icon, label);
   });
 }
 
 function decorateDayWeather(root, dayByOrdinal) {
-  root.querySelectorAll('[data-day-navigation-panel][data-day]').forEach(panel => {
+  root.querySelectorAll('[data-semantic="execution-day"][data-day]').forEach(panel => {
     if (panel.querySelector('[data-semantic="hourly-weather-presentation"]')) return;
     const ordinal = Number(panel.dataset.day);
     const weatherDay = dayByOrdinal.get(ordinal);
@@ -156,6 +150,6 @@ export function hydrateWeatherPresentation(root, concretePlan) {
   if (!root || !days.length) return;
 
   const dayByOrdinal = new Map(days.map(day => [Number(day.day), day]));
-  decorateDayNavigation(root, dayByOrdinal);
+  decorateItineraryOverview(root, dayByOrdinal);
   decorateDayWeather(root, dayByOrdinal);
 }

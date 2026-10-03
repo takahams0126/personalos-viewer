@@ -101,17 +101,20 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
     concrete_plan: Object.freeze({
       id: 'concrete-plan-content-v1',
       blocks: Object.freeze([
-        Object.freeze({ id: 'execution-overview', sourceSemantic: 'execution-overview', view: VIEW.GRID }),
+        Object.freeze({ id: 'execution-overview', sourceSemantic: 'execution-overview', view: VIEW.STRUCTURED_LIST }),
+        Object.freeze({ id: 'itinerary-overview', sourceSemantic: 'itinerary-overview', view: VIEW.STRUCTURED_LIST }),
         Object.freeze({
           id: 'execution-days',
           sourceSemantic: 'days',
           view: VIEW.CONTENT_SWITCHER,
-          dayNavigation: Object.freeze({
-            id: 'primary-day-navigation',
+          primaryWorkspace: Object.freeze({
+            id: 'concrete-primary-workspace',
             view: VIEW.CONTENT_SWITCHER,
-            panelSemantic: 'execution-day',
-            variant: 'execution',
-            defaultDay: 'first'
+            dayPanelSemantic: 'execution-day',
+            supportSemantics: Object.freeze([
+              Object.freeze({ semantic: 'fuel', id: 'fuel', label: '給油' }),
+              Object.freeze({ semantic: 'cost', id: 'cost', label: '費用' })
+            ])
           }),
           day: Object.freeze({
             context: VIEW.STACK,
@@ -134,15 +137,8 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
                 Object.freeze({ id: 'route', label: 'ルート詳細', sourceSemantic: 'execution-sequence', availabilitySemantic: 'route-execution-group', view: VIEW.TIMELINE, mode: 'route-detail', optional: true }),
                 Object.freeze({ id: 'map', label: 'マップ', sourceSemantic: 'map', view: VIEW.MAP, mode: 'map', optional: true })
               ])
-            }),
-            supporting: Object.freeze({ view: VIEW.STACK, semantics: Object.freeze(['fuel-suggestions']) })
+            })
           })
-        }),
-        Object.freeze({
-          id: 'trip-supporting-information',
-          view: VIEW.GRID,
-          semantics: Object.freeze(['fuel', 'cost']),
-          optional: true
         })
       ])
     })

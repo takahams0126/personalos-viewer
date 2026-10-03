@@ -86,18 +86,29 @@ function renderBadges(item) {
   return badges.length ? h('div', { className: 'route-occurrence-badges' }, badges) : null;
 }
 
-async function renderAlternatives(alternatives = [], resolver) {
+function renderRelationRow(label, value, className = '') {
+  if (!value) return null;
+  return h('div', { className: ['route-relation-row', className].filter(Boolean).join(' ') },
+    h('dt', { text: label }),
+    h('dd', {}, value)
+  );
+}
+
+async function renderAlternatives(alternatives = [], resolver, parentOrder) {
   if (!alternatives.length) return null;
   const items = await Promise.all(alternatives.map(async alternative => {
     const spot = await resolveSpot(alternative.spot_ref, resolver);
-    return h('li', {},
-      h('p', { className: 'route-alternative-line' },
-        h('span', { className: 'route-inline-label', text: '代替' }),
-        h('a', { attrs: { href: hrefFor(spot.ref) }, text: spot.title })
+    return h('li', {
+      className: 'route-alternative-item',
+      dataset: { semantic: 'route-alternative', parentOrder }
+    },
+      h('dl', { className: 'route-relation-facts' },
+        renderRelationRow('代替', h('a', { attrs: { href: hrefFor(spot.ref) }, text: spot.title })),
+        alternative.selection_condition?.text
+          ? renderRelationRow('条件', alternative.selection_condition.text, 'route-alternative-condition')
+          : null
       ),
-      alternative.selection_condition?.text
-        ? h('p', { className: 'route-alternative-condition', text: `選択条件 ${alternative.selection_condition.text}` })
-        : null
+      h('p', { className: 'route-alternative-parent', text: `#${parentOrder} の代替` })
     );
   }));
   return h('ul', { className: 'route-alternatives' }, items);
@@ -117,9 +128,9 @@ async function renderSequenceItem(item, resolver) {
       ),
       spot.unavailable ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' }) : null,
       item.condition?.text
-        ? h('p', { className: 'route-condition' }, h('span', { className: 'route-inline-label', text: '条件' }), item.condition.text)
+        ? h('dl', { className: 'route-relation-facts' }, renderRelationRow('条件', item.condition.text, 'route-condition'))
         : null,
-      await renderAlternatives(item.alternatives, resolver)
+      await renderAlternatives(item.alternatives, resolver, item.order)
     )
   );
 }

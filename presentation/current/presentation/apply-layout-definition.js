@@ -471,40 +471,108 @@ function applyPlanContentLayout(root, contentLayout) {
   });
 }
 
+function buildConcretePrimaryWorkspace(root, daysNode, definition) {
+  if (!root || !daysNode || !definition || definition.view !== 'content-switcher') return null;
+  if (root.querySelector(':scope > [data-semantic="concrete-primary-workspace"]')) return null;
+
+  const dayPanels = [...daysNode.querySelectorAll('[data-semantic="execution-day"]')]
+    .filter(panel => panel.closest('[data-semantic="days"]') === daysNode);
+  if (!dayPanels.length) return null;
+
+  const sources = dayPanels.map(panel => ({
+    id: `day-${panel.dataset.day || 'day'}`,
+    label: `DAY${panel.dataset.day || ''}`,
+    sourceSemantic: `workspace-day-${panel.dataset.day || 'day'}`,
+    node: panel,
+    mode: 'day'
+  }));
+
+  for (const support of definition.supportSemantics || []) {
+    const node = directChildBySemantic(root, support.semantic);
+    if (!node) continue;
+    sources.push({
+      id: support.id,
+      label: support.label,
+      sourceSemantic: `workspace-${support.id}`,
+      node,
+      mode: support.id
+    });
+  }
+
+  const workspace = document.createElement('section');
+  workspace.className = 'concrete-primary-workspace';
+  workspace.dataset.semantic = 'concrete-primary-workspace';
+  workspace.dataset.contentSwitcher = definition.id || 'concrete-primary-workspace';
+  workspace.dataset.activeView = sources[0].id;
+  workspace.dataset.activeMode = sources[0].mode;
+
+  const tabList = document.createElement('div');
+  tabList.className = 'day-workspace-tabs concrete-primary-tabs';
+  tabList.setAttribute('role', 'tablist');
+  tabList.setAttribute('aria-label', '旅行内容');
+
+  const panel = document.createElement('div');
+  panel.id = 'concrete-primary-workspace-panel';
+  panel.className = 'day-workspace-panel concrete-primary-panel';
+  panel.setAttribute('role', 'tabpanel');
+
+  sources.forEach((source, index) => {
+    const definitionForTab = {
+      id: source.id,
+      label: source.label,
+      sourceSemantic: source.sourceSemantic,
+      mode: source.mode,
+      view: 'content-switcher'
+    };
+    const tabId = `concrete-primary-${source.id}-tab`;
+    const tab = createTab({
+      id: tabId,
+      definition: definitionForTab,
+      panelId: panel.id,
+      selected: index === 0
+    });
+    tabList.append(tab);
+    if (index === 0) panel.setAttribute('aria-labelledby', tabId);
+
+    source.node.dataset.layoutSource = source.sourceSemantic;
+    source.node.hidden = index !== 0;
+    panel.append(source.node);
+  });
+
+  workspace.append(tabList, panel);
+  daysNode.replaceWith(workspace);
+  return workspace;
+}
+
 function applyConcretePlanContentLayout(root, contentLayout) {
   const overviewDefinition = blockById(contentLayout, 'execution-overview');
+  const itineraryDefinition = blockById(contentLayout, 'itinerary-overview');
   const executionDays = blockById(contentLayout, 'execution-days');
-  const supportDefinition = blockById(contentLayout, 'trip-supporting-information');
+
   markBlock(nodeForBlock(root, overviewDefinition), overviewDefinition);
+  markBlock(nodeForBlock(root, itineraryDefinition), itineraryDefinition);
 
   const daysNode = nodeForBlock(root, executionDays);
   markBlock(daysNode, executionDays);
-  const support = ensureSemanticGroup({
-    root,
-    definition: supportDefinition,
-    semantic: 'trip-supporting-information',
-    className: 'trip-supporting-information',
-    before: null,
-    heading: '旅行情報'
-  });
-  if (support) support.dataset.supportCount = String(support.children.length - 1);
-
-  applyPrimaryDayNavigation(daysNode, executionDays?.dayNavigation);
+  if (!daysNode) return;
 
   const dayDefinition = executionDays?.day;
-  if (!dayDefinition?.workspace) return;
-  root.querySelectorAll('[data-semantic="execution-day"]').forEach(dayNode => {
-    const body = dayNode.querySelector(':scope > .concrete-day-body');
-    if (!body) return;
-    const dayKey = dayNode.dataset.day || 'day';
-    const packagesContainer = buildExecutionPackages(body, dayDefinition, dayKey);
-    if (!packagesContainer) return;
-    const packages = [...packagesContainer.querySelectorAll(':scope > [data-semantic="execution-package"]')];
-    packages.forEach(packageNode => {
-      const packageKey = packageNode.dataset.packageId || 'package';
-      applyDayWorkspace(packageNode, dayDefinition.workspace, `day-${dayKey}-${packageKey}-workspace`);
+  if (dayDefinition?.workspace) {
+    root.querySelectorAll('[data-semantic="execution-day"]').forEach(dayNode => {
+      const body = dayNode.querySelector(':scope > .concrete-day-body');
+      if (!body) return;
+      const dayKey = dayNode.dataset.day || 'day';
+      const packagesContainer = buildExecutionPackages(body, dayDefinition, dayKey);
+      if (!packagesContainer) return;
+      const packages = [...packagesContainer.querySelectorAll(':scope > [data-semantic="execution-package"]')];
+      packages.forEach(packageNode => {
+        const packageKey = packageNode.dataset.packageId || 'package';
+        applyDayWorkspace(packageNode, dayDefinition.workspace, `day-${dayKey}-${packageKey}-workspace`);
+      });
     });
-  });
+  }
+
+  buildConcretePrimaryWorkspace(root, daysNode, executionDays.primaryWorkspace);
 }
 
 const CONTENT_LAYOUT_APPLIERS = Object.freeze({
