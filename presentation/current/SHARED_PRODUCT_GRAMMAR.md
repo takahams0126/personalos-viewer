@@ -77,9 +77,9 @@ Viewer never derives new timetable times, safe-line times, margins, or margin-st
 
 Route-internal Actions remain collapsed in Actions view except explicit operational-boundary Events that carry published time constraints.
 
-## Primary Day Navigation
+## Day / Primary Workspace Navigation
 
-Plan and ConcretePlan share one interaction grammar for selecting a Day, while preserving different Domain semantics.
+Plan and ConcretePlan share the peer-selection interaction grammar while preserving different Domain semantics.
 
 ```text
 Plan
@@ -89,8 +89,9 @@ Trip design context
 
 ConcretePlan
 Trip execution context
-→ Primary Day Navigator
-→ Selected execution Day
+→ compact itinerary overview
+→ Primary Workspace [DAY1..DAYN | 給油 | 費用]
+→ selected execution content
 ```
 
 Plan Day tab:
@@ -100,20 +101,23 @@ Day number
 Day title
 ```
 
-ConcretePlan Day tab may additionally show already-published execution facts:
+ConcretePlan itinerary overview may show already-published execution facts:
 
 ```text
+Day number
 Date / weekday
 Headline Weather?
+Day title
 Material time-constraint presence?
 ```
 
 - Selecting a Plan Day switches only the conceptual Day Journey.
+- ConcretePlan Primary Workspace switches complete peer content: one execution Day, Fuel, or Cost.
 - Selecting a ConcretePlan Day switches the complete execution Day context: Weather / Execution Package / Journey / Route detail / Map / Day support.
-- Day selection is local presentation state and is never persisted as Canonical truth.
-- Weather may decorate ConcretePlan Day tabs but never owns or duplicates Day selection.
-- Desktop and Mobile use the same Day navigation model. Mobile may horizontally scroll the Day rail; it does not fall back to vertically stacking every Day.
-- Plan and ConcretePlan share the Day interaction owner; page-specific data decoration remains separate.
+- Selection is local presentation state and is never persisted as Canonical truth.
+- Weather decorates the compact itinerary overview / selected Day context but never owns Day selection.
+- Desktop and Mobile use the same navigation model. Mobile may horizontally scroll peer tabs; it does not vertically stack every Day.
+- Plan and ConcretePlan may share interaction primitives; page-specific semantics remain separate.
 
 ## Map
 
@@ -137,7 +141,7 @@ ConcretePlan Timeline ↔ Map selection is added only when an explicit stable bi
 ConcretePlan Weather belongs to the selected Day, not to an independent trip-level Day selector.
 
 ```text
-Primary Day Navigator
+compact itinerary overview
 → selected Day headline Weather
 → 3-hour icon timeline
 → one disclosure reveals temperature / precipitation / wind metrics
@@ -147,7 +151,7 @@ Meteocons are local Viewer assets. Runtime CDN dependency is not part of the Wea
 
 The selected Day's hourly view may use only already-published Weather periods and Action time labels. The Viewer does not forecast, aggregate, or evaluate Weather.
 
-Weather unavailable on one Day must not break Day Navigation. Day Navigation is the owner; Weather is optional decoration/content.
+Weather unavailable on one Day must not break Primary Workspace navigation. Weather is optional decoration/content.
 
 ## Entity / Fact
 
@@ -166,11 +170,11 @@ Carousel and Lightbox controls use local inline SVG geometry, not external SVG a
 
 ## Control / Disclosure
 
-Controls are intentionally weaker than Product content, except Primary Day Navigation which establishes the current Day context.
+Controls are intentionally weaker than Product content, except Primary peer navigation which establishes the current workspace context.
 
 ```text
-Primary Day Navigator
-→ choose which Day context is current
+Primary Day / Workspace Navigator
+→ choose which conceptual Day or execution peer content is current
 
 Tab / Switch rail
 → switch peer content panels at the same hierarchy
@@ -190,14 +194,15 @@ Primary content is not placed behind a Disclosure merely to shorten the page. In
 ConcretePlan switch hierarchy:
 
 ```text
-Primary Day Navigator
-→ Day 1 / Day 2 / ...
+Primary Workspace
+→ DAY1 / DAY2 / ... / 給油 / 費用
 
-Execution Package
-→ baseline / explicit Variant
+Selected Day only:
+  Execution Package
+  → baseline / explicit Variant
 
-Day Workspace
-→ 行動順 / ルート詳細 / マップ
+  Day Workspace
+  → 行動順 / ルート詳細 / マップ
 ```
 
 The visual language is related, while hierarchy and Domain meaning stay distinct.
@@ -251,12 +256,16 @@ selected conceptual Day journey
 
 ```text
 execution overview
-primary Day navigator
-selected Day
+compact itinerary overview
+primary workspace [DAY1..DAYN | 給油 | 費用]
+selected Day:
   context | 3-hour Weather
   execution package?
   event timeline / route detail / map
-trip support: fuel | cost
+selected Fuel:
+  structured operational rows
+selected Cost:
+  trip/day structured rows + annotations
 ```
 
 Surface-specific grouping / orderingはPage Layout Definitionが所有する。Shared grammar自体へPage固有例外を埋め込まない。
@@ -278,7 +287,8 @@ Route mobile:
 
 ```text
 Map
-horizontal ordered-stop selector
+vertical ordered sequence
+supporting condition
 ```
 
 Plan mobile:
@@ -292,9 +302,10 @@ Journey
 ConcretePlan mobile:
 
 ```text
-horizontal Primary Day Navigator
-Selected Day context
-3-hour Weather
+compact itinerary overview
+horizontal Primary Workspace
+Selected Day context / Fuel / Cost
+3-hour Weather when Day selected
 Time + Event
 Move connector
 Operational constraint
