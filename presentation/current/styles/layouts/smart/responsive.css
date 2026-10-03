@@ -118,6 +118,20 @@
       grid-template-columns: 3.25rem minmax(0, 1fr);
     }
 
+    /* Plan composition is content, not a horizontal control rail. */
+    .plan-composition-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1) var(--space-2);
+      min-width: 0;
+    }
+
+    .plan-composition-chip,
+    .plan-composition-execution-link {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
     .execution-meta-row {
       grid-template-columns: 6rem minmax(0, 1fr);
     }
@@ -153,6 +167,32 @@
     .execution-package-selector,
     .execution-packages { grid-column: 1; }
 
+    /* Hourly weather is a bounded data viewport, never a page-width overflow source. */
+    .selected-day-weather,
+    .hourly-weather-toggle,
+    .weather-matrix-preview,
+    .weather-matrix-detail {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .hourly-weather-toggle,
+    .weather-matrix-preview,
+    .weather-matrix-detail {
+      width: 100%;
+    }
+
+    .weather-matrix-preview,
+    .weather-matrix-detail {
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+    }
+
+    .weather-matrix {
+      width: max-content;
+      max-width: none;
+    }
+
     .execution-action:not(.route-execution-group) {
       grid-template-columns: 3.6rem minmax(0, 1fr);
       gap: 0 var(--space-2);
@@ -176,6 +216,26 @@
 
     .execution-action:not(.route-execution-group) .next-move {
       padding-block-start: var(--space-1);
+    }
+
+    /* Cost comparisons reflow to one readable column on mobile. */
+    .plan-cost,
+    .cost-table,
+    .cost-row,
+    .cost-item { min-width: 0; max-width: 100%; }
+
+    .cost-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .25rem;
+      align-items: start;
+    }
+
+    .cost-item-detail { overflow-wrap: anywhere; }
+
+    .cost-amount {
+      justify-content: flex-start;
+      max-width: 100%;
+      white-space: normal;
     }
 
     .viewer-product-footer {
@@ -218,10 +278,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .cost-row {
-      grid-template-columns: minmax(0, 1fr) auto;
     }
   }
 }
