@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--product-grid-gap);
-    row-gap: clamp(1.75rem, 3vw, 2.75rem);
+    row-gap: clamp(1.5rem, 2.4vw, 2.25rem);
     align-items: start;
   }
 
@@ -12,12 +12,10 @@
     min-width: 0;
   }
 
-  /* Desktop hero uses the actual product grid: identity + quick practical on the left,
-     media on the right. Primary decision content is not moved below the hero. */
   .spot-hero {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-4) var(--product-grid-gap);
+    gap: var(--space-3) var(--product-grid-gap);
     align-items: start;
     min-width: 0;
   }
@@ -33,11 +31,24 @@
     position: static;
   }
 
+  .spot-carousel .carousel-slide img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .spot-carousel .carousel-controls {
+    margin-block-start: var(--space-2);
+  }
+
+  .spot-carousel .carousel-thumbs {
+    margin-block-start: var(--space-2);
+    grid-auto-columns: minmax(3.8rem, 1fr);
+  }
+
   .spot-decision-grid {
     display: grid;
-    gap: var(--space-3);
-    margin-block-start: var(--space-4);
-    padding-block-start: var(--space-3);
+    gap: var(--space-2);
+    margin-block-start: var(--space-3);
+    padding-block-start: var(--space-2);
     border-block-start: var(--border-width) solid var(--line);
   }
 
@@ -49,13 +60,13 @@
   }
 
   .spot-hero-copy > [data-semantic="references"] {
-    margin-block-start: var(--space-2);
+    margin-block-start: var(--space-1);
     border-block-start: var(--border-width) solid var(--line);
   }
 
   .spot-hero-copy .spot-fee-row {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
+    gap: .2rem;
   }
 
   .spot-page > [data-layout-block="appeal-review"],
@@ -68,8 +79,6 @@
     grid-column: 1 / -1;
   }
 
-  /* Appeal and review are peer decision-support content on desktop, not two long
-     full-width vertical sections. */
   .spot-appeal:has(> .spot-review) {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -88,7 +97,7 @@
     min-width: 0;
     margin-block-start: 0;
     padding-block-start: 0;
-    padding-inline-start: var(--space-5);
+    padding-inline-start: var(--space-4);
     border-block-start: 0;
     border-inline-start: var(--border-width) solid var(--line);
   }
@@ -100,13 +109,13 @@
   .spot-review-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2) var(--space-5);
+    gap: var(--space-2) var(--space-4);
   }
 
   .spot-highlight-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2) var(--space-5);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
   }
 
   .spot-supporting-information {
@@ -123,19 +132,19 @@
     .spot-hero {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-5);
+      gap: var(--space-4);
     }
 
     .spot-carousel { grid-column: 1; grid-row: 1; }
     .spot-hero-copy { grid-column: 1; grid-row: 2; }
 
-    .spot-appeal:has(> .spot-review) {
-      display: block;
-    }
+    .spot-carousel .carousel-slide img { aspect-ratio: 4 / 3; }
+
+    .spot-appeal:has(> .spot-review) { display: block; }
 
     .spot-appeal:has(> .spot-review) > .spot-review {
-      margin-block-start: var(--space-5);
-      padding-block-start: var(--space-4);
+      margin-block-start: var(--space-4);
+      padding-block-start: var(--space-3);
       padding-inline-start: 0;
       border-block-start: var(--border-width) solid var(--line);
       border-inline-start: 0;
