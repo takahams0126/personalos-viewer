@@ -2,6 +2,7 @@ import { h } from '../render/dom.js';
 
 const CATALOGS = Object.freeze([
   { id: 'all', label: 'Explorer', href: '?' },
+  { id: 'concrete_plan', label: 'ConcretePlans', href: '?catalog=concrete_plan' },
   { id: 'plan', label: 'Plans', href: '?catalog=plan' },
   { id: 'route', label: 'Routes', href: '?catalog=route' },
   { id: 'spot', label: 'Spots', href: '?catalog=spot' }
@@ -15,11 +16,12 @@ const PAGE_LABELS = Object.freeze({
 });
 
 function currentCatalog(request) {
+  const catalogs = ['concrete_plan', 'plan', 'route', 'spot'];
   if (request?.kind === 'top') {
     const catalog = new URLSearchParams(window.location.search).get('catalog');
-    return ['plan', 'route', 'spot'].includes(catalog) ? catalog : 'all';
+    return catalogs.includes(catalog) ? catalog : 'all';
   }
-  if (request?.kind === 'entity' && ['plan', 'route', 'spot'].includes(request.type)) {
+  if (request?.kind === 'entity' && catalogs.includes(request.type)) {
     return request.type;
   }
   return null;
