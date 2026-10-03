@@ -36,7 +36,6 @@
 
     .viewer-context-navigation { justify-content: flex-start; }
 
-    /* Explorer: controls remain usable above results instead of a squeezed desktop rail. */
     .top-explorer-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
@@ -45,7 +44,6 @@
 
     html[data-page-type="top"] [data-layout-block="explorer-controls"] { position: static; }
 
-    /* Spot: media is the visual anchor, then decision information in reading order. */
     .spot-page { display: block; }
 
     .spot-hero {
@@ -67,7 +65,7 @@
 
     .spot-decision-grid:empty { display: none; }
 
-    /* Route: Map first, then a vertical ordered journey. No horizontal card carousel. */
+    /* Route becomes map + vertical sequence; never a horizontal occurrence carousel. */
     .route-page { display: block; }
 
     .route-workspace {
@@ -120,7 +118,6 @@
       grid-template-columns: 3.25rem minmax(0, 1fr);
     }
 
-    /* ConcretePlan: metadata, itinerary, primary workspace, then selected content. */
     .execution-meta-row {
       grid-template-columns: 6rem minmax(0, 1fr);
     }
@@ -128,9 +125,19 @@
     .itinerary-overview-list { overflow: hidden; }
 
     .itinerary-day-row {
-      grid-template-columns: 3.5rem 5.6rem 1.35rem 5.25rem minmax(8rem, 1fr) auto;
-      overflow-x: auto;
+      grid-template-columns: 3.4rem 5.5rem 1.2rem 1.5rem minmax(0, 1fr) auto;
+      gap: .25rem .4rem;
+      min-width: 0;
+      overflow: visible;
+      font-size: var(--type-caption);
     }
+
+    .itinerary-day-weather {
+      gap: 0;
+      justify-content: center;
+    }
+
+    .itinerary-weather-label { display: none; }
 
     .concrete-primary-tabs {
       overflow-x: auto;
@@ -203,11 +210,15 @@
     .route-strengths { grid-template-columns: minmax(0, 1fr); }
 
     .itinerary-day-row {
-      grid-template-columns: 3.2rem 5.2rem 1.2rem 4.8rem minmax(7rem, 1fr) auto;
-      font-size: var(--type-caption);
+      grid-template-columns: 3rem 5.15rem 1rem 1.35rem minmax(0, 1fr) auto;
+      gap: .2rem .3rem;
     }
 
-    .itinerary-weather-label { display: none; }
+    .itinerary-day-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     .cost-row {
       grid-template-columns: minmax(0, 1fr) auto;
