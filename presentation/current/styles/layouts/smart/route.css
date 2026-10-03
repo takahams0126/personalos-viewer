@@ -25,6 +25,9 @@
     margin-block: 0;
   }
 
+  /* Appeal is reading content. Keep strengths vertical even when the default layout can fan cards out. */
+  .route-strengths { grid-template-columns: minmax(0, 1fr); }
+
   .route-workspace {
     display: grid;
     grid-template-columns: minmax(16rem, 4fr) minmax(0, 8fr);
