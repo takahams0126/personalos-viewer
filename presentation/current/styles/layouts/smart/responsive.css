@@ -119,16 +119,30 @@
     }
 
     /* Plan composition is content, not a horizontal control rail. */
+    .plan-composition,
+    .plan-composition-row,
+    .plan-composition-links {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .plan-composition-row { overflow: hidden; }
+
     .plan-composition-links {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-1) var(--space-2);
-      min-width: 0;
+      overflow: hidden;
     }
 
     .plan-composition-chip,
     .plan-composition-execution-link {
+      display: inline-flex;
+      flex: 0 1 auto;
+      min-width: 0;
       max-width: 100%;
+      white-space: normal;
       overflow-wrap: anywhere;
     }
 
