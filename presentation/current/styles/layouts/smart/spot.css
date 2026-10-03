@@ -12,60 +12,50 @@
     min-width: 0;
   }
 
-  /* Desktop product workspace: identity and practical facts occupy the left rail;
-     media is the right visual anchor. Nothing below the hero may share these rows. */
-  .spot-hero { display: contents; }
+  /* Desktop hero uses the actual product grid: identity + quick practical on the left,
+     media on the right. Primary decision content is not moved below the hero. */
+  .spot-hero {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-4) var(--product-grid-gap);
+    align-items: start;
+    min-width: 0;
+  }
 
   .spot-hero-copy {
     grid-column: 1 / span 5;
-    grid-row: 1;
     min-width: 0;
   }
 
   .spot-carousel {
     grid-column: 6 / -1;
-    grid-row: 1 / span 4;
     min-width: 0;
     position: static;
   }
 
-  .spot-decision-grid:empty { display: none; }
-
-  /* Normal path: layout applier has grouped practical semantics. */
-  .spot-practical-information {
-    grid-column: 1 / span 5;
-    grid-row: 2 / span 3;
+  .spot-decision-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
-    align-items: start;
-    align-self: start;
-    padding-block: var(--space-4);
-    border-block: var(--border-width) solid var(--line);
+    margin-block-start: var(--space-4);
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-width) solid var(--line);
   }
 
-  .spot-practical-information > [data-semantic="access"],
-  .spot-practical-information > [data-semantic="utilization-decision"],
-  .spot-practical-information > [data-semantic="references"] {
-    grid-column: 1;
+  .spot-decision-grid:empty { display: none; }
+
+  .spot-decision-grid > [data-semantic="access"],
+  .spot-decision-grid > [data-semantic="utilization-decision"] {
     min-width: 0;
   }
 
-  /* Runtime-safe direct semantic layout. This is the same Product composition when
-     the semantic grouper has not wrapped the practical nodes yet. */
-  .spot-page > [data-semantic="access"] {
-    grid-column: 1 / span 5;
-    grid-row: 2;
+  .spot-hero-copy > [data-semantic="references"] {
+    margin-block-start: var(--space-2);
+    border-block-start: var(--border-width) solid var(--line);
   }
 
-  .spot-page > [data-semantic="utilization-decision"] {
-    grid-column: 1 / span 5;
-    grid-row: 3;
-  }
-
-  .spot-page > [data-semantic="references"] {
-    grid-column: 1 / span 5;
-    grid-row: 4;
+  .spot-hero-copy .spot-fee-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
   }
 
   .spot-page > [data-layout-block="appeal-review"],
@@ -78,14 +68,42 @@
     grid-column: 1 / -1;
   }
 
-  /* Narrow left-rail pricing is more legible as label/value rows that may stack. */
-  .spot-practical-information .spot-fee-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
+  /* Appeal and review are peer decision-support content on desktop, not two long
+     full-width vertical sections. */
+  .spot-appeal:has(> .spot-review) {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-3) var(--product-grid-gap);
+    align-items: start;
   }
 
-  .spot-highlight-list,
+  .spot-appeal:has(> .spot-review) > h2,
+  .spot-appeal:has(> .spot-review) > .spot-highlight-list {
+    grid-column: 1;
+  }
+
+  .spot-appeal:has(> .spot-review) > .spot-review {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    min-width: 0;
+    margin-block-start: 0;
+    padding-block-start: 0;
+    padding-inline-start: var(--space-5);
+    border-block-start: 0;
+    border-inline-start: var(--border-width) solid var(--line);
+  }
+
+  .spot-appeal:has(> .spot-review) .spot-highlight-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .spot-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-5);
+  }
+
+  .spot-highlight-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2) var(--space-5);
@@ -101,12 +119,32 @@
 
   @media (max-width: 52rem) {
     .spot-page { display: block; }
-    .spot-hero { display: grid; grid-template-columns: 1fr; gap: var(--space-5); }
+
+    .spot-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-5);
+    }
+
     .spot-carousel { grid-column: 1; grid-row: 1; }
     .spot-hero-copy { grid-column: 1; grid-row: 2; }
-    .spot-practical-information { margin-block: var(--space-5); }
-    .spot-page > [data-semantic="access"],
-    .spot-page > [data-semantic="utilization-decision"],
-    .spot-page > [data-semantic="references"] { margin-block: var(--space-3); }
+
+    .spot-appeal:has(> .spot-review) {
+      display: block;
+    }
+
+    .spot-appeal:has(> .spot-review) > .spot-review {
+      margin-block-start: var(--space-5);
+      padding-block-start: var(--space-4);
+      padding-inline-start: 0;
+      border-block-start: var(--border-width) solid var(--line);
+      border-inline-start: 0;
+    }
+
+    .spot-highlight-list,
+    .spot-review-grid,
+    .spot-supporting-information {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 }
