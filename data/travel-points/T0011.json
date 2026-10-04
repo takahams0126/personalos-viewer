@@ -10,11 +10,28 @@
   "location": {
     "text": "鹿児島県熊毛郡屋久島町小瀬田815-85"
   },
+  "facts": [
+    {
+      "semantic": "operation_hours",
+      "label": "営業時間",
+      "value": "08:00〜18:00"
+    },
+    {
+      "semantic": "closed_days",
+      "label": "定休日",
+      "value": "日曜日"
+    }
+  ],
   "links": [
     {
       "semantic": "google_maps",
       "label": "Google Mapsで開く",
       "url": "https://www.google.com/maps/search/?api=1&query=ENEOS+%E5%B1%8B%E4%B9%85%E5%B3%B6%E7%A9%BA%E6%B8%AF%E5%89%8DSS&query_place_id=ChIJZwss3W_hPDURGzQj7q9XS8Q"
+    },
+    {
+      "semantic": "official",
+      "label": "公式情報",
+      "url": "https://eneos-ss.com/search/ss/pc/detail.php?SCODE=960126"
     }
   ]
 }

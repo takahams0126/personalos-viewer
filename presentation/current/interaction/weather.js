@@ -4,29 +4,38 @@ const ICON_BY_CODE = Object.freeze({
   sunny: 'clear-day',
   mostly_clear: 'clear-day',
   mostly_clear_day: 'clear-day',
+  mainly_clear: 'clear-day',
   partly_cloudy: 'partly-cloudy-day',
   partly_cloudy_day: 'partly-cloudy-day',
   cloudy: 'cloudy',
   overcast: 'cloudy',
+  fog: 'fog',
   drizzle: 'rain',
   light_rain: 'rain',
   rain: 'rain',
+  rain_showers: 'rain',
   showers: 'rain',
   heavy_rain: 'rain',
   extreme_rain: 'rain',
+  snow: 'snow',
+  snow_showers: 'snow',
   thunderstorm: 'thunderstorms-day-rain',
   thunderstorms: 'thunderstorms-day-rain'
 });
+
+const METEOCONS_BASE = 'https://cdn.meteocons.com/3.0.0-next.10/svg/fill';
 
 function weatherIcon(condition, className) {
   const code = condition?.code ? String(condition.code).toLowerCase() : '';
   const slug = ICON_BY_CODE[code] || 'not-available';
   const node = document.createElement('img');
   node.className = className;
-  node.src = new URL(`../assets/weather/${slug}.svg`, import.meta.url).href;
+  node.src = `${METEOCONS_BASE}/${slug}.svg`;
   node.alt = '';
+  node.dataset.weatherCode = code || 'not-available';
   node.setAttribute('aria-hidden', 'true');
   node.loading = 'lazy';
+  node.decoding = 'async';
   return node;
 }
 
@@ -61,15 +70,23 @@ function buildHourlyMatrix(weatherDay) {
   if (!periods.length) return null;
 
   const wrapper = document.createElement('section');
-  wrapper.className = 'hourly-weather';
+  wrapper.className = 'selected-day-weather hourly-weather';
   wrapper.dataset.semantic = 'hourly-weather-presentation';
   wrapper.style.setProperty('--weather-period-count', String(periods.length));
+
+  const header = document.createElement('header');
+  header.className = 'hourly-weather-header';
+
+  const heading = document.createElement('h3');
+  heading.textContent = '3時間天気';
 
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'hourly-weather-toggle';
   toggle.setAttribute('aria-expanded', 'false');
-  toggle.textContent = '詳細を表示';
+  toggle.textContent = '詳細表示';
+
+  header.append(heading, toggle);
 
   const viewport = document.createElement('div');
   viewport.className = 'weather-matrix-viewport';
@@ -99,11 +116,11 @@ function buildHourlyMatrix(weatherDay) {
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-    toggle.textContent = open ? '詳細を表示' : '詳細を閉じる';
+    toggle.textContent = open ? '詳細表示' : '詳細非表示';
     detailRows.forEach(row => { row.hidden = open; });
   });
 
-  wrapper.append(toggle, viewport);
+  wrapper.append(header, viewport);
   return wrapper;
 }
 
@@ -132,18 +149,11 @@ function decorateDayWeather(root, dayByOrdinal) {
 
     const source = panel.querySelector(':scope .day-weather');
     if (!source) return;
-    const matrix = buildHourlyMatrix(weatherDay);
-    if (!matrix) {
+    const presentation = buildHourlyMatrix(weatherDay);
+    if (!presentation) {
       source.remove();
       return;
     }
-
-    const presentation = document.createElement('section');
-    presentation.className = 'selected-day-weather';
-    presentation.dataset.semantic = 'selected-day-weather';
-    const heading = document.createElement('h3');
-    heading.textContent = '3時間天気';
-    presentation.append(heading, matrix);
     source.replaceWith(presentation);
   });
 }
