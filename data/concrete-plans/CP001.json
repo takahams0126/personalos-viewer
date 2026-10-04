@@ -2,7 +2,7 @@
   "schema_version": 8,
   "entity_type": "concrete_plan",
   "id": "CP001",
-  "title": "屋久島 4泊5日基本Plan",
+  "title": "屋久島 4泊5日 過去プラン",
   "period": {
     "start": "2026-10-19",
     "end": "2026-10-23",
@@ -1070,16 +1070,6 @@
         }
       ],
       "start_time_label": "09:30",
-      "routes": [
-        {
-          "route_ref": {
-            "entity_type": "route",
-            "id": "R011"
-          },
-          "from_action_order": 1,
-          "to_action_order": 11
-        }
-      ],
       "variants": [
         {
           "variant_id": "CP3-V1",

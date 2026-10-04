@@ -76,7 +76,7 @@
         "entity_type": "concrete_plan",
         "id": "CP001"
       },
-      "title": "屋久島 4泊5日基本Plan",
+      "title": "屋久島 4泊5日 過去プラン",
       "data_path": "data/concrete-plans/CP001.json",
       "explorer": {
         "type_label": "実施プラン",
@@ -89,7 +89,7 @@
         ],
         "image": {
           "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
-          "alt": "屋久島 4泊5日基本Plan"
+          "alt": "屋久島 4泊5日 過去プラン"
         }
       }
     },

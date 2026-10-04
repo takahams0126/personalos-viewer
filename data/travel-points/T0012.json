@@ -10,18 +10,6 @@
   "location": {
     "text": "鹿児島県熊毛郡屋久島町安房540-9"
   },
-  "facts": [
-    {
-      "semantic": "operation_hours",
-      "label": "営業時間",
-      "value": "月〜土 7:30〜20:00 / 日祝 8:00〜19:30"
-    },
-    {
-      "semantic": "closed_days",
-      "label": "定休日",
-      "value": "1月1日・1月2日"
-    }
-  ],
   "links": [
     {
       "semantic": "google_maps",
@@ -32,6 +20,18 @@
       "semantic": "official",
       "label": "公式情報",
       "url": "https://eneos-ss.com/search/ss/pc/detail.php?SCODE=046325"
+    }
+  ],
+  "facts": [
+    {
+      "semantic": "operation_hours",
+      "label": "営業時間",
+      "value": "月〜土 7:30〜20:00 / 日祝 8:00〜19:30"
+    },
+    {
+      "semantic": "closed_days",
+      "label": "定休日",
+      "value": "1月1日・1月2日"
     }
   ]
 }
