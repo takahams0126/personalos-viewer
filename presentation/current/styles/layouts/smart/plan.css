@@ -4,10 +4,16 @@
   .plan-overview,
   .plan-header { max-width: 58rem; }
 
+  .plan-overview {
+    margin-block-end: var(--space-3);
+  }
+
+  .plan-overview > p:last-child { margin-block-end: 0; }
+
   .plan-page > [data-layout-block="composition-context"],
   .plan-composition {
     width: min(100%, 64rem);
-    margin-block: var(--space-2) 0;
+    margin-block: 0;
   }
 
   .plan-composition-row {
@@ -164,11 +170,7 @@
   .plan-route-choice-host { margin-block-start: var(--space-1); }
 
   .plan-route-choice-control-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-1) var(--space-2);
-    margin-block-end: var(--space-2);
+    margin-block: .3rem var(--space-2);
   }
 
   .plan-route-choice-control-label {
@@ -178,13 +180,14 @@
   }
 
   .plan-route-choice-select {
-    min-height: 1.9rem;
-    max-width: min(100%, 26rem);
-    padding: .15rem 1.8rem .15rem .5rem;
+    min-height: 2rem;
+    width: min(100%, 30rem);
+    max-width: 100%;
+    padding: .18rem 1.8rem .18rem .5rem;
     font-size: var(--type-meta);
   }
 
-  .plan-route-choice-detail {
+  .plan-route-choice-content {
     display: grid;
     gap: var(--space-2);
     min-width: 0;
@@ -192,22 +195,10 @@
 
   .plan-route-utility {
     display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
-    gap: .15rem var(--space-2);
+    justify-content: space-between;
+    gap: var(--space-2);
     min-width: 0;
-  }
-
-  .plan-route-title {
-    margin: 0;
-    min-width: 0;
-    font-size: var(--type-entity-title);
-  }
-
-  .plan-route-identity {
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--type-caption);
   }
 
   .plan-route-page-link {
@@ -265,6 +256,8 @@
   }
 
   @media (max-width: 52rem) {
+    .plan-overview { margin-block-end: var(--space-3); }
+
     .plan-composition-row {
       grid-template-columns: 6rem minmax(0, 1fr);
       gap: var(--space-2);
@@ -314,24 +307,7 @@
       grid-template-columns: 4.75rem minmax(0, 1fr);
     }
 
-    .plan-route-body { padding: .6rem .65rem; }
-
-    .plan-route-choice-control-row {
-      align-items: stretch;
-    }
-
-    .plan-route-choice-select {
-      width: 100%;
-      max-width: none;
-    }
-
-    .plan-route-utility {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: .12rem var(--space-2);
-    }
-
-    .plan-route-title { grid-column: 1 / -1; }
-    .plan-route-page-link { margin-inline-start: 0; }
+    .plan-route-body { padding: .55rem .6rem; }
+    .plan-route-choice-select { width: 100%; }
   }
 }
