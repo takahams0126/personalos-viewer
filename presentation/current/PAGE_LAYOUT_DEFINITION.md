@@ -113,6 +113,7 @@ Quick practicalはHero左railで判断に必要な主要情報を見せる。
 Facilitiesや長いsecondary detailはHero外へ残してよい。
 Heroへ情報を無制限に押し込まず、同じFactをHeroと下段に複製しない。
 料金・予約・利用条件等はSemantic structureそのものが伸縮し、runtime density scoringを行わない。
+Reviewが無い場合はAppealがfull widthを使う。
 
 Mobile priority:
 
