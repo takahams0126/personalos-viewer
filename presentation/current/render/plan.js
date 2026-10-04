@@ -309,8 +309,8 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
       plan.summary ? h('p', { text: plan.summary }) : null
     ),
     composition,
-    itinerary,
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
+      itinerary,
       h('div', { className: 'plan-days-list' }, dayNodes)
     )
   );
