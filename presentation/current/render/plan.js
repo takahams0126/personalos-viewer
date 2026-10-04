@@ -184,12 +184,16 @@ async function loadRouteChoice(ref, relation, resolver) {
   }
 }
 
-function routeChoiceLabel(choice, index) {
+function routeChoiceIdentity(choice) {
   const routeData = choice.routeData;
-  const identity = routeData
+  return routeData
     ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join('・')
     : choice.title;
-  return index === 0 ? `標準・${identity}` : identity;
+}
+
+function routeChoiceLabel(choice, index, total) {
+  const identity = routeChoiceIdentity(choice);
+  return total > 1 && index === 0 ? `標準・${identity}` : identity;
 }
 
 async function renderRouteStops(routeData, resolver) {
@@ -256,9 +260,13 @@ async function renderRoute(item, resolver) {
         attrs: { 'aria-label': '表示するルート' },
         dataset: { semantic: 'route-choice-control' }
       }, choices.map((choice, index) =>
-        h('option', { attrs: { value: index }, text: routeChoiceLabel(choice, index) })
+        h('option', { attrs: { value: index }, text: routeChoiceLabel(choice, index, choices.length) })
       ))
     : null;
+  const identityControl = select || h('p', {
+    className: 'plan-route-current',
+    text: routeChoiceIdentity(choices[0])
+  });
 
   select?.addEventListener('change', () => {
     const index = Number(select.value);
@@ -277,7 +285,7 @@ async function renderRoute(item, resolver) {
           h('span', { className: 'plan-route-choice-control-label', text: 'ルート' }),
           routeLink
         ),
-        select ? h('div', { className: 'plan-route-choice-control-row' }, select) : null,
+        h('div', { className: 'plan-route-choice-control-row' }, identityControl),
         contentHost
       )
     )
