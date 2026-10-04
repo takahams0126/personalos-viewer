@@ -31,23 +31,32 @@
     font-size: var(--type-control-label);
   }
 
+  .hourly-weather {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
   .hourly-weather-toggle {
     appearance: none;
-    display: block;
-    width: 100%;
+    justify-self: start;
+    min-height: 1.8rem;
     margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: inherit;
+    padding: .15rem .45rem;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--surface-page);
+    color: var(--accent-strong);
     font: inherit;
-    text-align: start;
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
     cursor: pointer;
   }
 
-  .hourly-weather-toggle:hover .weather-matrix-preview,
-  .hourly-weather-toggle:focus-visible .weather-matrix-preview {
-    background: color-mix(in srgb, var(--surface) 72%, transparent);
+  .hourly-weather-toggle:hover,
+  .hourly-weather-toggle:focus-visible {
+    border-color: var(--accent-muted);
+    background: var(--accent-soft);
   }
 
   .hourly-weather-toggle:focus-visible {
@@ -55,24 +64,20 @@
     outline-offset: .12rem;
   }
 
+  .weather-matrix-viewport {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    border-block: var(--border-width) solid var(--line);
+    background: var(--surface-page);
+    scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
+  }
+
   .weather-matrix {
     display: grid;
     min-width: max-content;
-  }
-
-  .weather-matrix-preview,
-  .weather-matrix-detail {
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-
-  .weather-matrix-preview {
-    border-block: var(--border-width) solid var(--line);
-    background: var(--surface-page);
-  }
-
-  .weather-matrix-detail {
-    border-block-end: var(--border-width) solid var(--line);
     background: var(--surface-page);
   }
 
@@ -85,17 +90,19 @@
   }
 
   .weather-matrix-row:last-child { border-block-end: 0; }
+  .weather-matrix-row[hidden] { display: none; }
   .weather-matrix-icon-row { min-height: 2.8rem; }
 
   .weather-matrix-label {
     position: sticky;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     align-self: stretch;
     display: grid;
     align-items: center;
     padding-inline: var(--space-2);
-    background: inherit;
+    border-inline-end: var(--border-width) solid var(--line);
+    background: var(--surface-page);
     color: var(--muted);
     font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);

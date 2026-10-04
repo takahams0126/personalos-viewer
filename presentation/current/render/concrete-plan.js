@@ -592,10 +592,7 @@ function renderItineraryOverview(concretePlan, sourcePlan) {
         h('time', { className: 'itinerary-day-date', text: formatDate(day.date) }),
         day.weekday_label ? h('span', { className: 'itinerary-day-weekday', text: day.weekday_label.replace('曜日', '') }) : null,
         h('span', { className: 'itinerary-day-weather', dataset: { weatherSlot: '' } }),
-        h('span', { className: 'itinerary-day-title', text: sourceDay?.title || `Day ${day.ordinal}` }),
-        dayHasTimeConstraint(day)
-          ? h('span', { className: 'itinerary-day-attention', attrs: { title: '時刻制約あり', 'aria-label': '時刻制約あり' }, text: '⚠' })
-          : null
+        h('span', { className: 'itinerary-day-title', text: sourceDay?.title || `Day ${day.ordinal}` })
       );
     }))
   );

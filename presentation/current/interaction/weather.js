@@ -69,38 +69,41 @@ function buildHourlyMatrix(weatherDay) {
   toggle.type = 'button';
   toggle.className = 'hourly-weather-toggle';
   toggle.setAttribute('aria-expanded', 'false');
-  toggle.setAttribute('aria-label', '3時間天気の詳細を表示');
+  toggle.textContent = '詳細を表示';
 
-  const preview = document.createElement('span');
-  preview.className = 'weather-matrix weather-matrix-preview';
-  preview.append(
+  const viewport = document.createElement('div');
+  viewport.className = 'weather-matrix-viewport';
+
+  const matrix = document.createElement('div');
+  matrix.className = 'weather-matrix';
+
+  const detailRows = [
+    matrixRow('気温', periods, period => period.temperature_label, 'weather-matrix-detail-row'),
+    matrixRow('降水確率', periods, period => period.precipitation_probability_label, 'weather-matrix-detail-row'),
+    matrixRow('降水量', periods, period => period.precipitation_amount_label, 'weather-matrix-detail-row'),
+    matrixRow('風', periods, period => period.wind_label, 'weather-matrix-detail-row')
+  ];
+  detailRows.forEach(row => { row.hidden = true; });
+
+  matrix.append(
     matrixRow('', periods, period => startTime(period.time_label), 'weather-matrix-time-row'),
     matrixRow('天気', periods, period => {
       const icon = weatherIcon(period.condition, 'weather-icon weather-icon-hourly');
       icon.title = period.condition?.label || '';
       return icon;
-    }, 'weather-matrix-icon-row')
+    }, 'weather-matrix-icon-row'),
+    ...detailRows
   );
-  toggle.append(preview);
-
-  const detail = document.createElement('div');
-  detail.className = 'weather-matrix weather-matrix-detail';
-  detail.hidden = true;
-  detail.append(
-    matrixRow('気温', periods, period => period.temperature_label),
-    matrixRow('降水確率', periods, period => period.precipitation_probability_label),
-    matrixRow('降水量', periods, period => period.precipitation_amount_label),
-    matrixRow('風', periods, period => period.wind_label)
-  );
+  viewport.append(matrix);
 
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-    toggle.setAttribute('aria-label', open ? '3時間天気の詳細を表示' : '3時間天気の詳細を閉じる');
-    detail.hidden = open;
+    toggle.textContent = open ? '詳細を表示' : '詳細を閉じる';
+    detailRows.forEach(row => { row.hidden = open; });
   });
 
-  wrapper.append(toggle, detail);
+  wrapper.append(toggle, viewport);
   return wrapper;
 }
 
