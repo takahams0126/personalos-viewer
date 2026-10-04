@@ -146,12 +146,12 @@
 
   .itinerary-day-row {
     display: grid;
-    grid-template-columns: 3.5rem 5.5rem 1.5rem 4.75rem minmax(0, 1fr);
-    gap: .2rem .5rem;
+    grid-template-columns: 3.25rem 5.2rem 1.3rem 4.25rem minmax(0, 1fr);
+    gap: .16rem .42rem;
     align-items: center;
     min-width: 0;
-    min-height: 2.35rem;
-    padding-block: .2rem;
+    min-height: 2.2rem;
+    padding-block: .16rem;
     border-block-end: var(--border-width) solid var(--line);
     font-size: var(--type-meta);
   }
@@ -234,7 +234,7 @@
   }
 
   .concrete-day-context > h2 {
-    margin-block: .15rem var(--space-1);
+    margin-block: .1rem var(--space-1);
     font-size: var(--type-page-title);
   }
 
@@ -249,9 +249,9 @@
 
   .concrete-day-context .day-summary {
     max-width: 64rem;
-    margin-block: var(--space-2);
+    margin-block: var(--space-1) var(--space-2);
     color: var(--text-soft);
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   .concrete-day-context-facts {
@@ -259,7 +259,7 @@
     flex-wrap: wrap;
     gap: var(--space-1) var(--space-3);
     align-items: center;
-    margin-block-start: var(--space-2);
+    margin-block-start: var(--space-1);
   }
 
   .concrete-day-window {
@@ -397,21 +397,20 @@
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-body {
-    margin-block: .2rem;
-    padding: .42rem .55rem;
+    margin-block: .12rem;
+    padding: .32rem .45rem;
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: .08rem;
+    gap: 0;
     min-width: 0;
   }
 
-  .day-workspace[data-active-view="actions"] .route-execution-summary > .route-execution-label {
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--type-caption);
+  .day-workspace[data-active-view="actions"] .route-execution-summary > .route-execution-label,
+  .day-workspace[data-active-view="actions"] .route-execution-identity {
+    display: none;
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-summary > h4 {
@@ -421,16 +420,9 @@
     overflow-wrap: anywhere;
   }
 
-  .day-workspace[data-active-view="actions"] .route-execution-identity {
-    min-width: 0;
-    margin: 0;
-    font-size: var(--type-caption);
-    overflow-wrap: anywhere;
-  }
-
   .day-workspace[data-active-view="actions"] .route-execution-actions:has(.action-constraints) {
     display: grid;
-    margin: var(--space-1) 0 0;
+    margin: .25rem 0 0;
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action { display: none; }
@@ -454,11 +446,20 @@
   }
 
   .fuel-event-row {
-    display: grid;
-    gap: .25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .22rem;
     padding-block: var(--space-2);
     border-block-end: var(--border-width) solid var(--line);
   }
+
+  .fuel-station-details { display: contents; }
+  .fuel-event-meta { order: 1; }
+  .fuel-station-title { order: 2; font-size: var(--type-entity-title); }
+  .fuel-station-address { order: 3; }
+  .fuel-station-facts { order: 4; }
+  .fuel-event-context { order: 5; }
+  .fuel-station-actions { order: 6; }
 
   .fuel-event-meta,
   .fuel-station-actions {
@@ -468,14 +469,19 @@
     align-items: center;
   }
 
-  .fuel-station-title { font-size: var(--type-entity-title); }
   .fuel-event-context,
   .fuel-station-address { margin: 0; color: var(--text-soft); font-size: var(--type-meta); }
+
+  .fuel-event-context {
+    margin-block-start: .3rem;
+    padding-block-start: .35rem;
+    border-block-start: var(--border-width) solid var(--line);
+  }
 
   .fuel-station-facts {
     display: grid;
     gap: .15rem;
-    margin: .15rem 0 0;
+    margin: .1rem 0 0;
   }
 
   .fuel-station-facts > div {
@@ -488,7 +494,7 @@
   .fuel-station-facts dt { color: var(--muted); }
   .fuel-station-facts dd { margin: 0; }
 
-  .fuel-station-actions { margin-block-start: .2rem; }
+  .fuel-station-actions { margin-block-start: .25rem; }
 
   .fuel-station-action {
     display: inline-flex;
@@ -502,6 +508,102 @@
     font-weight: var(--font-weight-strong);
     text-decoration: none;
   }
+
+  .plan-cost .support-panel-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .cost-total {
+    margin: 0;
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-emphasis);
+  }
+
+  .cost-group > h3,
+  .cost-day-groups > h3 {
+    margin: var(--space-3) 0 var(--space-1);
+    color: var(--text-soft);
+    font-size: var(--type-meta);
+  }
+
+  .cost-table {
+    display: grid;
+    min-width: 0;
+  }
+
+  .cost-row {
+    display: grid;
+    grid-template-columns: minmax(11rem, .85fr) minmax(7.5rem, .35fr) minmax(14rem, 1.2fr);
+    gap: .35rem var(--space-3);
+    align-items: baseline;
+    min-width: 0;
+    padding-block: .5rem;
+    border-block-end: var(--border-width) solid var(--line);
+  }
+
+  .cost-item { display: contents; }
+  .cost-item-label { grid-column: 1; min-width: 0; }
+  .cost-amount {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    align-items: baseline;
+    justify-content: flex-end;
+    min-width: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .cost-item-detail {
+    grid-column: 3;
+    min-width: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    line-height: 1.4;
+  }
+  .cost-state { color: var(--muted); font-size: var(--type-caption); }
+
+  .cost-day-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+    margin-block-start: var(--space-2);
+  }
+
+  .cost-day-groups > h3 { grid-column: 1 / -1; margin-block-end: 0; }
+  .cost-day-groups > .cost-group { min-width: 0; }
+  .cost-day-groups > .cost-group > h3 {
+    margin-block-start: 0;
+    padding-block-end: .25rem;
+    border-block-end: .12rem solid var(--accent-muted);
+    color: var(--accent-strong);
+  }
+
+  .cost-day-groups .cost-row {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: .2rem .55rem;
+    padding-block: .38rem;
+  }
+
+  .cost-day-groups .cost-item-label { grid-column: 1; }
+  .cost-day-groups .cost-amount { grid-column: 2; }
+  .cost-day-groups .cost-item-detail {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .cost-notes {
+    margin-block-start: var(--space-3);
+    padding-block-start: var(--space-2);
+    border-block-start: var(--border-width) solid var(--line);
+  }
+
+  .cost-notes > h3 { margin-block-end: var(--space-1); font-size: var(--type-meta); }
+  .cost-notes ol { margin: 0; color: var(--text-soft); font-size: var(--type-caption); }
 
   @media (max-width: 52rem) {
     .execution-meta-row {
@@ -520,14 +622,14 @@
 
     .itinerary-overview {
       margin-block: 0 var(--space-2);
-      padding-block: var(--space-2);
+      padding-block: var(--space-1);
     }
 
     .itinerary-day-row {
-      grid-template-columns: 3rem 4.8rem 1rem 2.15rem minmax(0, 1fr);
-      gap: .15rem .28rem;
+      grid-template-columns: 2.8rem 4.55rem .9rem 2.1rem minmax(0, 1fr);
+      gap: .12rem .22rem;
       min-width: 0;
-      min-height: 2.35rem;
+      min-height: 2.15rem;
       overflow: visible;
       font-size: var(--type-caption);
     }
@@ -556,18 +658,41 @@
       gap: 0 var(--space-2);
       padding-inline-start: var(--space-5);
     }
+
+    .cost-row {
+      grid-template-columns: minmax(0, 1fr) max-content;
+      gap: .18rem .55rem;
+      padding-block: .38rem;
+    }
+
+    .cost-item-label { grid-column: 1; }
+    .cost-amount { grid-column: 2; }
+    .cost-item-detail {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .cost-day-groups {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
   }
 
   @media (max-width: 38rem) {
     .itinerary-day-row {
-      grid-template-columns: 2.75rem 4.65rem .9rem 2rem minmax(0, 1fr);
-      gap: .12rem .22rem;
+      grid-template-columns: 2.65rem 4.4rem .85rem 2rem minmax(0, 1fr);
+      gap: .1rem .18rem;
     }
 
     .itinerary-day-title {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .plan-cost .support-panel-header {
+      display: grid;
+      gap: .15rem;
     }
   }
 }
