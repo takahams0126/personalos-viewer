@@ -42,22 +42,22 @@
 
   .map-popup {
     display: grid;
-    gap: .65rem;
-    min-width: 13rem;
-    max-width: 20rem;
-    padding: .2rem;
+    gap: .55rem;
+    min-width: 11rem;
+    max-width: 18rem;
+    padding: .15rem;
     color: #1f2933;
   }
 
   .map-popup-title {
     font-size: .95rem;
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
   .map-popup-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: .45rem;
+    gap: .4rem;
   }
 
   .map-popup-actions a {
@@ -80,10 +80,31 @@
   }
 
   .map-segment-legend {
+    display: grid;
+    gap: var(--space-1);
+    margin-block-start: var(--space-2);
+  }
+
+  .map-segment-selected-context {
+    display: none;
+    min-width: 0;
+    padding: .45rem .55rem;
+    border-inline-start: .22rem solid var(--accent);
+    background: var(--surface-soft);
+    color: var(--text-soft);
+    font-size: var(--type-meta);
+    font-weight: var(--font-weight-strong);
+    line-height: 1.4;
+  }
+
+  .map-segment-details > summary {
+    display: none;
+  }
+
+  .map-segment-list {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1);
-    margin-block-start: var(--space-2);
   }
 
   .map-segment-legend-item {
@@ -91,7 +112,7 @@
     grid-template-columns: max-content minmax(0, 1fr);
     gap: var(--space-1);
     align-items: center;
-    max-width: 18rem;
+    max-width: 20rem;
     border: var(--border-width) solid transparent;
     border-radius: var(--radius-pill);
     padding: .28rem .55rem;
@@ -111,6 +132,7 @@
   .map-segment-number {
     color: var(--segment-color);
     font-weight: var(--font-weight-emphasis);
+    white-space: nowrap;
   }
 
   .map-segment-label {
@@ -132,5 +154,39 @@
   .google-maps-link:focus-visible {
     border-color: var(--accent);
     background: var(--accent-soft);
+  }
+
+  @media (max-width: 52rem) {
+    .map-segment-selected-context { display: block; }
+
+    .map-segment-details > summary {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      min-height: 1.9rem;
+      padding: .18rem .55rem;
+      border: var(--border-width) solid var(--line-interactive);
+      border-radius: var(--radius-pill);
+      color: var(--accent-strong);
+      font-size: var(--type-caption);
+      font-weight: var(--font-weight-strong);
+      list-style: none;
+    }
+
+    .map-segment-details > summary::-webkit-details-marker { display: none; }
+
+    .map-segment-list {
+      display: grid;
+      gap: .2rem;
+      margin-block-start: .35rem;
+    }
+
+    .map-segment-legend-item {
+      width: 100%;
+      max-width: none;
+      border-radius: var(--radius-sm);
+      padding: .35rem .45rem;
+      text-align: start;
+    }
   }
 }
