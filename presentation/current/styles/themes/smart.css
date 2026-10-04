@@ -3,18 +3,17 @@
     color-scheme: light dark;
     --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Yu Gothic UI", sans-serif;
 
-    /* Final typography roles. Page CSS consumes roles rather than inventing sizes. */
-    --type-display: clamp(2.15rem, 3.7vw, 3.7rem);
-    --type-page-title: clamp(1.95rem, 3vw, 3.05rem);
-    --type-section-title: clamp(1.28rem, 1.8vw, 1.62rem);
-    --type-entity-title: 1.08rem;
+    /* Operational UI typography: context titles support the work, they do not dominate it. */
+    --type-display: clamp(1.9rem, 3.1vw, 3.1rem);
+    --type-page-title: clamp(1.65rem, 2.4vw, 2.5rem);
+    --type-section-title: clamp(1.15rem, 1.5vw, 1.38rem);
+    --type-entity-title: 1.05rem;
     --type-value: 1rem;
     --type-body: 0.96rem;
     --type-meta: 0.8rem;
     --type-caption: 0.74rem;
     --type-control-label: 0.78rem;
 
-    /* Compatibility aliases for Default patterns while Smart converges on the roles above. */
     --font-size-display: var(--type-page-title);
     --font-size-display-large: var(--type-display);
     --font-size-section: var(--type-section-title);
@@ -82,6 +81,23 @@
     --radius-pill: 999px;
 
     --shadow-raised: 0 0.75rem 2rem rgba(39, 69, 59, 0.1);
+  }
+
+  @media (max-width: 52rem) {
+    :root {
+      --type-display: 1.75rem;
+      --type-page-title: 1.5rem;
+      --type-section-title: 1.08rem;
+      --type-entity-title: 1rem;
+    }
+  }
+
+  @media (max-width: 38rem) {
+    :root {
+      --type-display: 1.65rem;
+      --type-page-title: 1.42rem;
+      --type-section-title: 1.04rem;
+    }
   }
 
   @media (prefers-color-scheme: dark) {

@@ -2,7 +2,7 @@
   .route-page {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: clamp(2rem, 3.2vw, 3rem) var(--product-grid-gap);
+    gap: clamp(1.5rem, 2.6vw, 2.4rem) var(--product-grid-gap);
     align-items: start;
   }
 
@@ -17,7 +17,17 @@
     min-width: 0;
   }
 
+  .route-hero {
+    padding-block-start: .65rem;
+    border-block-start: .28rem solid var(--accent);
+  }
+
   .route-hero-copy { max-width: 64rem; }
+
+  .route-meta {
+    margin-block-end: .35rem;
+    color: var(--text-soft);
+  }
 
   .route-page > [data-layout-block="appeal"],
   .route-page > .route-appeal {
@@ -25,7 +35,6 @@
     margin-block: 0;
   }
 
-  /* Appeal is reading content. Keep strengths vertical even when the default layout can fan cards out. */
   .route-strengths { grid-template-columns: minmax(0, 1fr); }
 
   .route-workspace {
@@ -35,41 +44,20 @@
     align-items: start;
   }
 
+  .route-mobile-view-controls { display: none; }
+
   .route-workspace > [data-layout-slot] {
     min-width: 0;
     margin-block: 0;
   }
 
-  .route-workspace [data-layout-slot="primary"] {
+  .route-workspace > [data-layout-slot="primary"] {
     max-height: clamp(24rem, 42vw, 32rem);
     overflow: auto;
     padding-inline-end: var(--space-1);
   }
 
-  .route-workspace [data-layout-slot="secondary"] .map-canvas {
-    min-height: clamp(24rem, 42vw, 32rem);
-  }
-
-  .route-page > .route-sequence-section[data-semantic="sequence"] {
-    grid-column: 1 / span 4;
-    min-width: 0;
-    max-height: clamp(24rem, 42vw, 32rem);
-    overflow: auto;
-    margin-block: 0;
-    padding-block-start: 0;
-    padding-inline-end: var(--space-1);
-    border-block-start: 0;
-  }
-
-  .route-page > .route-map-section[data-semantic="conceptual-map"] {
-    grid-column: 5 / -1;
-    min-width: 0;
-    margin-block: 0;
-    padding-block-start: 0;
-    border-block-start: 0;
-  }
-
-  .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas {
+  .route-workspace > [data-layout-slot="secondary"] .map-canvas {
     min-height: clamp(24rem, 42vw, 32rem);
   }
 
@@ -80,15 +68,13 @@
     border-block-start: 0;
   }
 
-  .route-workspace .route-sequence,
-  .route-page > .route-sequence-section .route-sequence {
+  .route-workspace .route-sequence {
     display: grid;
     gap: 0;
   }
 
-  .route-workspace .route-sequence-body,
-  .route-page > .route-sequence-section .route-sequence-body {
-    padding: .35rem .45rem .55rem;
+  .route-workspace .route-sequence-body {
+    padding: .3rem .4rem .45rem;
     box-shadow: none;
   }
 

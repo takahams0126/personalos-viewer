@@ -20,7 +20,7 @@
     main {
       min-width: 0;
       max-width: 100%;
-      padding-block: var(--space-5) var(--space-8);
+      padding-block: var(--space-4) var(--space-7);
     }
 
     .viewer-product-shell {
@@ -33,7 +33,7 @@
     .top-explorer-layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-5);
+      gap: var(--space-3);
     }
 
     html[data-page-type="top"] [data-layout-block="explorer-controls"] { position: static; }
@@ -59,64 +59,86 @@
 
     .spot-decision-grid:empty { display: none; }
 
-    /* Route keeps semantic DOM order: vertical sequence first, then map. */
     .route-page { display: block; }
 
     .route-workspace {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--space-5);
-      min-width: 0;
+      display: block;
       width: 100%;
+      min-width: 0;
     }
 
-    .route-workspace [data-layout-slot="primary"],
-    .route-workspace [data-layout-slot="secondary"] {
+    .route-mobile-view-controls {
+      position: sticky;
+      inset-block-start: .2rem;
+      z-index: 12;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .25rem;
+      margin-block-end: .55rem;
+      padding: .22rem;
+      border: var(--border-width) solid var(--line);
+      border-radius: var(--radius-control);
+      background: color-mix(in srgb, var(--surface-page) 96%, transparent);
+      backdrop-filter: blur(.35rem);
+    }
+
+    .route-view-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2rem;
+      border-radius: calc(var(--radius-control) - .2rem);
+      color: var(--muted);
+      font-size: var(--type-meta);
+      font-weight: var(--font-weight-strong);
+      cursor: pointer;
+    }
+
+    .route-view-control:checked + .route-view-label {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      box-shadow: inset 0 -2px 0 var(--accent);
+    }
+
+    .route-workspace > [data-layout-slot] {
       width: 100%;
       min-width: 0;
       max-width: 100%;
+      margin: 0;
     }
 
-    .route-workspace [data-layout-slot="primary"] {
+    .route-workspace > [data-layout-slot] > h2 { display: none; }
+
+    .route-workspace:has(.route-view-control[value="sequence"]:checked) > [data-layout-slot="secondary"] {
+      display: none;
+    }
+
+    .route-workspace:has(.route-view-control[value="map"]:checked) > [data-layout-slot="primary"] {
+      display: none;
+    }
+
+    .route-workspace > [data-layout-slot="primary"] {
       max-height: none;
       overflow: visible;
       padding-inline-end: 0;
     }
 
-    .route-workspace [data-layout-slot="secondary"] .map-canvas,
-    .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas {
+    .route-workspace > [data-layout-slot="secondary"] .map-canvas {
       width: 100%;
-      min-height: 20rem;
+      min-height: 0;
+      height: clamp(22rem, 68vh, 34rem);
     }
 
-    .route-workspace .route-sequence,
-    .route-page > .route-sequence-section .route-sequence {
+    .route-workspace .route-sequence {
       display: grid;
       width: 100%;
       min-width: 0;
       gap: 0;
     }
 
-    .route-workspace .route-sequence-item,
-    .route-page > .route-sequence-section .route-sequence-item {
+    .route-workspace .route-sequence-item {
       width: 100%;
       min-width: 0;
-    }
-
-    .route-page > .route-map-section[data-semantic="conceptual-map"],
-    .route-page > .route-sequence-section[data-semantic="sequence"] {
-      display: block;
-      width: 100%;
-      margin-block: var(--space-5);
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .route-page > .route-sequence-section[data-semantic="sequence"] {
-      max-height: none;
-      overflow: visible;
-      padding-inline-end: 0;
     }
 
     .route-relation-row {
@@ -135,7 +157,7 @@
       width: min(100% - 1rem, var(--product-detail-max));
     }
 
-    main { padding-block: var(--space-4) var(--space-7); }
+    main { padding-block: var(--space-3) var(--space-6); }
 
     .viewer-shell-primary {
       align-items: flex-start;

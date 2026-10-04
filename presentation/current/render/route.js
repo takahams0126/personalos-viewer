@@ -64,7 +64,10 @@ function renderAppeal(appeal) {
 
 function renderMap(map) {
   if (!map?.artifact_ref) return null;
-  return h('section', { className: 'route-map-section content-section', dataset: { semantic: 'conceptual-map' } },
+  return h('section', {
+    className: 'route-map-section content-section',
+    dataset: { semantic: 'conceptual-map', layoutSlot: 'secondary' }
+  },
     h('h2', { text: '地図' }),
     h('figure', { className: 'map-view route-map', dataset: { mapArtifactId: map.artifact_ref } },
       h('div', { className: 'map-canvas', attrs: { role: 'img', 'aria-label': 'ルートマップ' } }),
@@ -138,9 +141,39 @@ async function renderSequenceItem(item, resolver) {
 async function renderSequence(sequence = [], resolver) {
   if (!sequence.length) return null;
   const items = await Promise.all(sequence.map(item => renderSequenceItem(item, resolver)));
-  return h('section', { className: 'route-sequence-section content-section', dataset: { semantic: 'sequence' } },
+  return h('section', {
+    className: 'route-sequence-section content-section',
+    dataset: { semantic: 'sequence', layoutSlot: 'primary' }
+  },
     h('h2', { text: '立ち寄り順' }),
     h('ol', { className: 'route-sequence' }, items)
+  );
+}
+
+function renderRouteWorkspace(route, sequence, map) {
+  if (!sequence && !map) return null;
+  const sequenceId = `route-${route.id}-view-sequence`;
+  const mapId = `route-${route.id}-view-map`;
+  return h('section', {
+    className: 'route-workspace',
+    dataset: { semantic: 'route-workspace' }
+  },
+    sequence && map
+      ? h('div', { className: 'route-mobile-view-controls', attrs: { 'aria-label': 'ルート表示切替' } },
+          h('input', {
+            className: 'route-view-control visually-hidden',
+            attrs: { id: sequenceId, type: 'radio', name: `route-${route.id}-view`, value: 'sequence', checked: true }
+          }),
+          h('label', { className: 'route-view-label', attrs: { for: sequenceId }, text: '立ち寄り順' }),
+          h('input', {
+            className: 'route-view-control visually-hidden',
+            attrs: { id: mapId, type: 'radio', name: `route-${route.id}-view`, value: 'map' }
+          }),
+          h('label', { className: 'route-view-label', attrs: { for: mapId }, text: '地図' })
+        )
+      : null,
+    sequence,
+    map
   );
 }
 
@@ -153,6 +186,10 @@ function renderConstraints(constraints = []) {
 }
 
 export async function renderRoute({ route, resolver }) {
+  const sequence = await renderSequence(route.sequence, resolver);
+  const map = renderMap(route.map);
+  const workspace = renderRouteWorkspace(route, sequence, map);
+
   return h('article', { className: 'route-page', dataset: { semantic: 'route', entityId: route.id } },
     h('header', { className: 'route-hero' },
       h('div', { className: 'route-hero-copy' },
@@ -167,8 +204,7 @@ export async function renderRoute({ route, resolver }) {
         await renderHeroSpots(route.hero_spots, resolver)
       )
     ),
-    await renderSequence(route.sequence, resolver),
-    renderMap(route.map),
+    workspace,
     renderConstraints(route.constraints)
   );
 }
