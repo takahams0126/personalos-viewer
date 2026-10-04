@@ -53,7 +53,7 @@ async function titleForPoint(point, resolver) {
     const described = await resolver.describe(point.entity_ref);
     return described.title;
   } catch {
-    return `${point.entity_ref.entity_type}:${point.id}`;
+    return `${point.entity_ref.entity_type}:${point.entity_ref.id}`;
   }
 }
 
