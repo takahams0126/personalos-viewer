@@ -77,6 +77,7 @@ Card / Row / Grid / Inline / Disclosure / Attention surfaceは `PRODUCT_UI_FOUND
 
 Primary peer selectionはcontent-switcher、Primary contentは初期表示、Disclosureはsecondary detailに限定する。
 DesktopでPrimary contentの横に未使用空間がある場合は、意味を隠して縦方向へ送らずShared Product Gridを使って同時表示する。
+ただしSemantic reading orderを崩してまで2-column化しない。Desktop/Mobileで同じ意味順序を共有し、横並びは理解を高める箇所だけに限定する。
 
 ## Surface definitions
 
@@ -112,7 +113,6 @@ Quick practicalはHero左railで判断に必要な主要情報を見せる。
 Facilitiesや長いsecondary detailはHero外へ残してよい。
 Heroへ情報を無制限に押し込まず、同じFactをHeroと下段に複製しない。
 料金・予約・利用条件等はSemantic structureそのものが伸縮し、runtime density scoringを行わない。
-Reviewが無い場合はAppealがfull widthを使う。
 
 Mobile priority:
 
@@ -144,12 +144,13 @@ Map geometryからorderを推測しない。
 Mobile priority:
 
 ```text
-Map
 vertical ordered sequence
+Map
 supporting condition
 ```
 
 MobileでSequenceを1行横scroll card列へ変換しない。
+Sequence / MapのDOM reading orderをそのまま利用し、Mobile専用のorder inversionを行わない。
 
 ### Plan
 
@@ -157,25 +158,30 @@ Primary task: date-independent trip structure.
 
 ```text
 Identity / summary
-Composition context
+Execution relation?             # explicit ConcretePlan relation only
+Compact itinerary overview
+  DAY / Day title
 Primary Day Navigator
+  DAY1 | DAY2 | ...
 Selected conceptual Day
   Day context
   conceptual Journey
 ```
 
-Composition contextはPlanが参照するRouteとConcretePlanへのnavigation / structure理解を所有する。
+Plan上部はRoute ref一覧を再掲しない。Routeは各Day Journey内のexplicit Route occurrenceが所有する。
+ConcretePlan relationが存在する場合だけ、`実施プラン | ConcretePlan` のcompact relation rowとして表示する。
+Compact itinerary overviewはCanonical Day orderとDay titleを5行等のstructured listとしてscanする。Planは日付非依存なのでdate / weekday / Weatherを持ち込まない。
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
 Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
 
 Primary Day Navigator:
 
 ```text
-Day number
-Day title
+DAY1 | DAY2 | ...
 ```
 
 - Canonical Day orderを横方向のpeer tabとして表示する。
+- Day titleはCompact itinerary overviewとSelected Day headerが所有し、Tabは選択controlに専念する。
 - 選択した1 DayだけをJourney workspaceへ表示する。
 - Day selectionはlocal presentation stateでありCanonical orderや内容を変更しない。
 - ConcretePlanとinteraction primitiveを共有できるが、Planには日付 / Weather / time constraintを表示しない。
@@ -198,7 +204,8 @@ Compact itinerary overview
 Primary Workspace
   [DAY1] [DAY2] ... [給油] [費用]
 Selected Day
-  Day context | 3-hour Weather
+  Day context
+  3-hour Weather
   Execution Package Selector?
   行動順 | ルート詳細? | マップ?
   Day-specific supporting information?
@@ -222,8 +229,9 @@ DAY1 | DAY2 | ... | 給油 | 費用
 - Day選択時だけ、そのDayのWeather / Execution Package / Journey / Route detail / Map / Day supportを表示する。
 - Fuel / Costをページ最下部へ常時並べてPrimary Workspaceと二重表示しない。
 - selectionはlocal presentation stateでCanonicalを変更しない。
-- Desktop / Mobileとも同じownerを使う。
+- Desktop / Mobileとも同じownerとreading orderを使う。
 - Weather availabilityはWorkspace navigation成立条件ではない。
+- Tab railはhorizontal navigationであり、vertical scrollbarを持たせない。
 
 Reference Execution Timeline grammar:
 
@@ -234,7 +242,7 @@ time  Event
       │
 time  Event
 
-Event side support
+Event support
   Todo / Facility / Stay / Purpose / Inclusion
 
 Operational boundary
@@ -249,6 +257,7 @@ Operational boundary
 - Viewerは時刻・safe line・margin・stateを再計算しない。
 - Route occurrenceはActions viewではcompactにし、full Route internalsはRoute detail viewへ委譲する。
 - Route内部Actionは通常collapsedだが、明示time constraintを持つoperational-boundary EventはActions viewにも残す。
+- Event supportはDesktopでも右側固定railを前提にせず、Eventの下に自然に流れる1-column grammarを基本とする。
 
 Selected Day Workspace:
 
@@ -264,6 +273,7 @@ Day Workspace
 Day-specific supporting information?
 ```
 
+Day contextと3-hour WeatherはDesktopでも縦reading orderとし、Weatherをtitle横の固定2-columnへ置かない。
 Fuelはimportance / Day / station / timing / contextをstructured operational rowとしてscanできる形にする。
 CostはPublished Cost Semanticからtrip/day scope、short label、detail、amount/state、annotationをそのまま使い、Viewerが文字列解析で分類しない。
 長文annotationを金額比較rowへ押し込まず、参照可能な注釈として分離する。
@@ -289,19 +299,23 @@ Day Workspace
 ```
 
 いずれもlocal presentation stateのみでCanonicalを変更しない。
+Tab / switcher railは横方向のpeer controlとし、`overflow-x` は必要に応じて許容するが `overflow-y` は発生させない。
 
 Timeline ↔ Map cross-selectionは、stable explicit bindingが存在する場合だけ追加する。Entity名・座標・表示順の類似性だけからrelationを推測しない。
 
 ## Responsive rule
 
-Responsiveは単純なcolumn stackだけでなく、Page purposeを保つpriority transformationとする。
+Responsiveは単純なcolumn stackだけでなく、Page purposeとSemantic priorityを保つpriority transformationとする。
 
-- Desktop: concurrent informationを横方向に利用。
+- Base reading orderをDesktop / Tablet / Mobileで共有し、viewport差で意味順序を不用意に反転しない。
+- Desktop: Sequence × Map等、同時比較が明確に価値を持つ箇所だけ横方向を利用する。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
-- Plan Day Navigator / ConcretePlan Primary Workspaceは必要に応じて横scrollを許容するが、content本体を横overflowさせない。
-- Route MobileはMap → vertical ordered sequenceのreading orderとし、sequence自体を横scroll card列へしない。
-- ConcretePlan Mobileでは選択contentをviewport内へreflowし、Weatherのwide hourly dataだけはcomponent内部scrollを許容する。
+- Plan Day Navigator / ConcretePlan Primary Workspaceは必要に応じて横scrollを許容するが、縦scrollbarを出さずcontent本体を横overflowさせない。
+- Route Mobileはvertical ordered sequence → Mapのreading orderとし、sequence自体を横scroll card列へしない。
+- ConcretePlanではDay context → Weather → Journeyの順を全viewportで維持する。
+- Weatherのwide hourly dataだけはcomponent内部scrollを許容し、Page全体へoverflowを伝播させない。
+- Timeline / Event supportは狭幅で自然に1列へ収まり、Desktop専用右railをNormal grammarにしない。
 - CostはMobileで金額を右端固定したdesktop tableのままにせず、1列semantic rowへreflowする。
 - Spot MobileではMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順を維持する。
 - Operational constraintをMobileだけ隠さない。
