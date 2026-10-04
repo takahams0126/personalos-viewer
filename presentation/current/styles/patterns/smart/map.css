@@ -40,6 +40,12 @@
     cursor: pointer;
   }
 
+  .map-view {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+  }
+
   .map-popup-overlay[hidden] { display: none !important; }
 
   .map-popup-overlay {
@@ -162,17 +168,19 @@
 
   .map-segment-legend {
     display: grid;
-    gap: var(--space-1);
-    margin-block-start: var(--space-2);
-    padding-block-start: var(--space-1);
-    border-block-start: var(--border-width) solid var(--line);
+    gap: var(--space-2);
+    margin-block-start: var(--space-3);
+    padding-block-start: 0;
+    border-block-start: 0;
   }
 
   .map-segment-selected-context {
-    display: none;
+    display: block;
     min-width: 0;
-    padding: .42rem .55rem;
+    padding: .5rem .6rem;
+    border: var(--border-width) solid var(--line);
     border-inline-start: .22rem solid var(--accent);
+    border-radius: var(--radius-sm);
     background: var(--surface-subtle);
     color: var(--text-soft);
     font-size: var(--type-meta);
@@ -180,14 +188,35 @@
     line-height: 1.4;
   }
 
-  .map-segment-details > summary {
-    display: none;
+  .map-segment-details {
+    min-width: 0;
+    padding-block-start: var(--space-1);
+    border-block-start: var(--border-width) solid var(--line);
   }
+
+  .map-segment-details > summary {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    min-height: 1.9rem;
+    padding: .18rem .55rem;
+    border: var(--border-width) solid var(--line-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--surface-faint);
+    color: var(--accent-strong);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .map-segment-details > summary::-webkit-details-marker { display: none; }
 
   .map-segment-list {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1);
+    margin-block-start: .4rem;
   }
 
   .map-segment-legend-item {
@@ -253,25 +282,6 @@
     .map-popup-overlay-title { font-size: .84rem; }
     .map-popup-overlay-actions { padding: .45rem; }
     .map-popup-overlay-action { min-height: 2.15rem; font-size: .74rem; }
-
-    .map-segment-selected-context { display: block; }
-
-    .map-segment-details > summary {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      min-height: 1.9rem;
-      padding: .18rem .55rem;
-      border: var(--border-width) solid var(--line-interactive);
-      border-radius: var(--radius-pill);
-      background: var(--surface-faint);
-      color: var(--accent-strong);
-      font-size: var(--type-caption);
-      font-weight: var(--font-weight-strong);
-      list-style: none;
-    }
-
-    .map-segment-details > summary::-webkit-details-marker { display: none; }
 
     .map-segment-list {
       display: grid;

@@ -62,19 +62,20 @@ Desktop baseline:
 
 ```text
 12 columns
-Explorer max: 64rem
-standard detail max: 64rem
+Explorer max: 60rem
+standard detail max: 60rem
 centered in viewport
 ```
 
 広いDesktop viewportでもcontentを無制限に横へ伸ばさない。Product frameは中央配置し、outer gutterを確保する。
 `viewportを使い切る`こと自体を価値にせず、短い視線移動と情報clusterのまとまりを優先する。
+Page全体の幅をMap / Mediaの最大サイズに合わせない。広さが必要な要素はShared Frame内部のworkspace配分で優先し、通常contentを不必要に横へ伸ばさない。
 
 Reference allocation:
 
 ```text
-Spot          information 5 / media 7
-Route         sequence 4 / map 8
+Spot          information 2 / media 3
+Route         sequence 1 / map 3
 Plan          context 3 / journey 9
 ConcretePlan  time 2 / journey 7 / support 3
 ```
@@ -82,12 +83,14 @@ ConcretePlan  time 2 / journey 7 / support 3
 比率はSurfaceの責務に合わせてLayout ownerで具体化できるが、各Pageが独自page width / gutter systemを発明しない。
 Primary contentやsupport headerの関連情報をviewport左右端へ不用意に引き裂かず、意味上近い情報はclusterとして近接配置する。
 Cost / Weather / Fuel等のsupport surfaceは、必要以上にframe全幅へstretchせず、内容に見合うbounded widthを持てる。
+Attention / Constraintも警告であることだけを理由にframe全幅へ伸ばさず、内容に見合うbounded widthを基本とする。
 
 Explorer resultはDesktopでも1列compact listを基本とする。複数列Gridによって無関係な2件のrow heightを同期させたり、候補比較のために必要以上の横幅を要求しない。
 Route page link、Weather detail control、Fuel summary、Cost total等のowner utility / metadataはviewport端へ押し出さず、owner heading / labelの近くにclusterする。
 
 Responsiveは単純stackではなくpriority transformationを行う。
 Peer selectorは横方向をPrimary軸とし、vertical scrollbarを発生させない。候補が収まらない場合だけcomponent内部のhorizontal scrollを使う。
+Mobile Mapはfigure / Cardのnested marginやpaddingで不必要に縮めず、Page gutter内の利用可能幅をPrimary spatial workspaceとして使う。
 
 ## Typography Roles
 
@@ -125,6 +128,8 @@ Page CSSが個別に新しいfont scaleを増殖させない。
 
 Route / Executionの空間理解。Mapとordered sequence / legendを同一workspaceとして扱う。
 PersonalOS marker / route geometryをPrimaryにし、base mapのPOI / locality labelは必要に応じて弱化できる。Google側の詳細名称確認は`Google Mapsで開く`へ委譲し、Viewer Mapでlabel同士を競合させない。
+Map canvas / selected segment / segment listは役割を分け、1つのCard内部で視覚的に重ねない。Map canvasはspatial workspace、selected segmentはcurrent context、segment listはnavigation / controlとして独立させる。
+Route Desktopではordered sequenceをcompact indexとして必要最小限の幅に抑え、Mapへより多くのworkspace幅を配分する。
 
 ### Weather
 
@@ -134,6 +139,7 @@ Desktopではタイトルとdetail controlを同じ意味clusterとして近接�
 ### Media
 
 Spotのvisual anchor。Carousel / Lightboxは同じMedia grammarを共有する。
+Spot MediaのためにProduct Frame自体を広げず、Hero内部でinformation / media比率を調整して成立させる。
 
 ### Control / Disclosure
 
@@ -167,6 +173,7 @@ Attention surface
 ```
 
 「意味の塊だからCard」は禁止。
+Review summaryはCardを必須にせず、positive / cautionを見出し + structured listで表現できる場合はその形を優先する。
 
 ## Smart Physical Ownership
 
