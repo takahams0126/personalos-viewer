@@ -1,15 +1,8 @@
-import { hrefFor, isDetailPageRef } from '../core/router.js';
-
 let mapsPromise;
 
 const SEGMENT_COLORS = Object.freeze([
   '#1565c0', '#d81b60', '#00897b', '#ef6c00', '#6a1b9a',
   '#2e7d32', '#c62828', '#00838f', '#5d4037', '#3949ab'
-]);
-
-const CIRCLED_NUMBERS = Object.freeze([
-  '', '①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩',
-  '⑪', '⑫', '⑬', '⑭', '⑮', '⑯', '⑰', '⑱', '⑲', '⑳'
 ]);
 
 function loadGoogleMaps() {
@@ -73,18 +66,11 @@ function infoContent(point, title) {
   const actions = document.createElement('div');
   actions.className = 'map-popup-actions';
 
-  if (point.entity_ref && isDetailPageRef(point.entity_ref)) {
-    const internal = document.createElement('a');
-    internal.href = hrefFor(point.entity_ref);
-    internal.textContent = 'PersonalOSで見る';
-    actions.append(internal);
-  }
-
   const external = document.createElement('a');
   external.href = googleMapsUrl(point);
   external.target = '_blank';
   external.rel = 'noopener noreferrer';
-  external.textContent = 'Google Maps';
+  external.textContent = 'Google Mapsで開く';
   actions.append(external);
 
   node.append(actions);
@@ -95,12 +81,6 @@ function segmentColor(segment, index) {
   const order = Number(segment.order);
   const paletteIndex = Number.isFinite(order) && order > 0 ? order - 1 : index;
   return SEGMENT_COLORS[paletteIndex % SEGMENT_COLORS.length];
-}
-
-function segmentNumber(segment, index) {
-  const order = Number(segment.order);
-  const value = Number.isFinite(order) && order > 0 ? order : index + 1;
-  return CIRCLED_NUMBERS[value] || String(value);
 }
 
 function drawResolvedSegment(maps, map, segment, bounds, index) {
@@ -152,47 +132,100 @@ function setSegmentFocus(segmentViews, active) {
   }
 }
 
-function buildSegmentLegend(segmentViews, pointTitleById) {
+function buildSegmentLegend(segmentViews, pointTitleById, pointOrderById) {
   if (segmentViews.length <= 1) return null;
   const legend = document.createElement('div');
   legend.className = 'map-segment-legend';
   legend.dataset.semantic = 'map-segment-legend';
   legend.setAttribute('aria-label', '移動経路');
+
+  const selectedContext = document.createElement('div');
+  selectedContext.className = 'map-segment-selected-context';
+  selectedContext.textContent = '地図上の区間を選択できます';
+
+  const details = document.createElement('details');
+  details.className = 'map-segment-details';
+  const summary = document.createElement('summary');
+  summary.textContent = '区間一覧';
+  const list = document.createElement('div');
+  list.className = 'map-segment-list';
+  details.append(summary, list);
+  legend.append(selectedContext, details);
+
+  const mobileQuery = globalThis.matchMedia?.('(max-width: 52rem)');
+  const syncDetailsMode = () => {
+    if (!mobileQuery) {
+      details.open = true;
+      return;
+    }
+    if (!mobileQuery.matches) details.open = true;
+    else if (!details.dataset.userOpened) details.open = false;
+  };
+  details.addEventListener('toggle', () => {
+    if (mobileQuery?.matches && details.open) details.dataset.userOpened = 'true';
+  });
+  mobileQuery?.addEventListener?.('change', () => {
+    delete details.dataset.userOpened;
+    syncDetailsMode();
+  });
+  syncDetailsMode();
+
   let pinned = null;
 
   segmentViews.forEach(item => {
     const segment = item.segment;
     const fromTitle = pointTitleById.get(segment.from_point_id) || segment.from_point_id;
     const toTitle = pointTitleById.get(segment.to_point_id) || segment.to_point_id;
+    const fromOrder = pointOrderById.get(segment.from_point_id);
+    const toOrder = pointOrderById.get(segment.to_point_id);
+    const orderLabel = fromOrder && toOrder
+      ? `${fromOrder} → ${toOrder}`
+      : String(segment.order || item.index + 1);
+    const contextLabel = `${orderLabel}  ${fromTitle} → ${toTitle}`;
+
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'map-segment-legend-item';
     button.style.setProperty('--segment-color', item.color);
     button.setAttribute('aria-pressed', 'false');
-    button.setAttribute('aria-label', `経路 ${segment.order || item.index + 1}: ${fromTitle} から ${toTitle}`);
+    button.setAttribute('aria-label', `経路 ${contextLabel}`);
 
     const number = document.createElement('span');
     number.className = 'map-segment-number';
-    number.textContent = segmentNumber(segment, item.index);
+    number.textContent = orderLabel;
     const label = document.createElement('span');
     label.className = 'map-segment-label';
     label.textContent = `${fromTitle} → ${toTitle}`;
     button.append(number, label);
 
-    const preview = () => setSegmentFocus(segmentViews, item);
-    const restore = () => setSegmentFocus(segmentViews, pinned);
+    const showContext = () => {
+      selectedContext.textContent = contextLabel;
+    };
+    const preview = () => {
+      setSegmentFocus(segmentViews, item);
+      showContext();
+    };
+    const restore = () => {
+      setSegmentFocus(segmentViews, pinned);
+      if (!pinned) selectedContext.textContent = '地図上の区間を選択できます';
+    };
     button.addEventListener('pointerenter', preview);
     button.addEventListener('pointerleave', restore);
     button.addEventListener('focus', preview);
     button.addEventListener('blur', restore);
     button.addEventListener('click', () => {
       pinned = pinned === item ? null : item;
-      legend.querySelectorAll('.map-segment-legend-item').forEach(control => {
+      list.querySelectorAll('.map-segment-legend-item').forEach(control => {
         control.setAttribute('aria-pressed', control === button && pinned === item ? 'true' : 'false');
       });
       setSegmentFocus(segmentViews, pinned);
+      selectedContext.textContent = pinned ? contextLabel : '地図上の区間を選択できます';
+      if (mobileQuery?.matches) {
+        details.open = false;
+        delete details.dataset.userOpened;
+      }
     });
-    legend.append(button);
+    list.append(button);
   });
 
   return legend;
@@ -308,6 +341,7 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     const pointById = new Map(points.map(point => [point.point_id, point]));
     const pointTitles = await Promise.all(points.map(point => titleForPoint(point, resolver)));
     const pointTitleById = new Map(points.map((point, index) => [point.point_id, pointTitles[index]]));
+    const pointOrderById = new Map(points.map(point => [point.point_id, point.order]));
 
     const segmentViews = (artifact.segments || []).map((segment, index) =>
       drawResolvedSegment(maps, map, segment, bounds, index)
@@ -335,7 +369,7 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     });
 
     view.querySelector('.map-segment-legend')?.remove();
-    const legend = buildSegmentLegend(segmentViews, pointTitleById);
+    const legend = buildSegmentLegend(segmentViews, pointTitleById, pointOrderById);
     if (legend) canvas.insertAdjacentElement('afterend', legend);
 
     bindRouteSequence(view, markerViews, map, maps);
