@@ -4,11 +4,9 @@ Current Viewer is rebuilt directly from the published HTML Boundary JSON.
 
 ## Status
 
-Technical validation is **CLOSED**. Primary pages, graph drill-down, Plan ↔ ConcretePlan navigation, explicit Map Artifact rendering, and Viewer-wide Presentation Preset composition are implemented.
+Technical validation and product-level presentation convergence are **CLOSED**. Primary pages, graph drill-down, Plan ↔ ConcretePlan navigation, explicit Map Artifact rendering, Viewer-wide Presentation Preset composition, and representative Desktop / Mobile review are implemented.
 
-Current work is now **Page Layout Definition + product presentation convergence**, not another feasibility phase.
-
-Root production routing still points to `presentation/modern/` until the Current promotion gate is explicitly closed.
+`presentation/current/` is the official production presentation. Root production routing points to Current.
 
 ## Implemented surfaces
 
@@ -16,7 +14,7 @@ Root production routing still points to `presentation/modern/` until the Current
 (no query)
   → manifest.json Explorer facet
   → TOP search / type / area / category filtering
-  → Spot / Route / Plan navigation
+  → Spot / Route / Plan / ConcretePlan navigation
 
 ?type=spot&id=S0014
   → Spot Public JSON
@@ -113,6 +111,7 @@ Presentation Implementation
 ### Common Page Layout
 
 Defines the Viewer-wide page frame and common slots, such as App / navigation shell, title area, and content area.
+Global catalog navigation is `Explorer / ConcretePlans / Plans / Routes / Spots` and maps directly to the Explorer entity-type catalog state.
 
 ### Content Layout Definition
 
@@ -130,7 +129,7 @@ Current has one Viewer-wide Presentation Preset selection.
 
 ```text
 config.js
-  presentationPreset: 'default'
+  presentationPreset: 'smart'
           ↓
 presentation/registry.js
           ↓
@@ -160,8 +159,8 @@ Smart:
 ```text
 pageLayoutDefinition = leisure-page-layout-v1
 theme                = smart
-patternSet           = smart
-layoutSet            = smart
+patternSet            = smart
+layoutSet             = smart
 ```
 
 ### Ownership
@@ -216,9 +215,7 @@ styles/layouts/default/settings.css    Default page/detail/explorer measures
 styles/layouts/default/*.css           Default spatial compositions / reflow
 ```
 
-Technical-validation CSS still contains migration debt. Convergence classifies it into the formal ownership model instead of treating page CSS as a hidden second Theme.
-
-The next reusable extraction boundary is not “all similar CSS”. It is:
+The reusable extraction boundary is not “all similar CSS”. It is:
 
 ```text
 repeated semantic DOM grammar
@@ -245,7 +242,7 @@ Current navigation separates:
 
 ```text
 Global navigation
-→ Leisure TOP
+→ Explorer / ConcretePlans / Plans / Routes / Spots
 
 Context navigation
 → actual previous Entity in the current browsing path
@@ -272,44 +269,16 @@ ConcretePlan Execution Map
 → no geometry-to-segment reconstruction
 ```
 
-The current Google Maps marker / `InfoWindow` implementation is a technical-validation implementation, not the final Current presentation requirement.
-Before Current promotion, close one Map modernization scope covering:
-
-```text
-current Google Maps marker API
-marker accessibility
-popup composition
-mobile behavior
-Execution segment presentation
-```
-
-Modern / `_prototype/poc/**` are evidence only. Do not import their data path or fetch convention.
+The current Google Maps implementation is a presentation adapter over explicit published Map Artifacts. Map modernization must remain within this boundary and must not move geographic inference into the Viewer.
 
 ## Accessibility / interaction
 
 Native semantic HTML and small adapters remain the default. Add a third-party component library only when a concrete interaction/accessibility cost justifies the dependency.
 
-Before Current promotion, finish at least:
-- content-switcher semantics / keyboard / focus behavior
-- carousel semantics / keyboard / focus behavior
-- touch/responsive behavior
-- Map marker/popup accessibility
-- source DOM reading/focus order across responsive layouts
+Current product review covers the primary Desktop / Mobile surfaces. Future accessibility or interaction improvements remain normal product maintenance and do not block Current production identity unless a material regression is found.
 
 ## Development contract
 
 See `DEVELOPMENT.md` for code/comment/CSS ownership rules.
 See `styles/README.md` for style-boundary details.
 Repository-level physical architecture is in `../../VIEWER_ARCHITECTURE.md`.
-
-## Next phase
-
-```text
-1. validate Page Layout Definition with ConcretePlan reference implementation
-2. converge Plan / Route / Spot Content Layouts and Blocks
-3. finish Smart implementation against the accepted layout skeleton
-4. Map / Weather rich presentation finishing
-5. accessibility / carousel / interaction finishing
-6. cross-surface minimum usable Current review
-7. explicit root promotion: modern → current
-```
