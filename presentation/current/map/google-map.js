@@ -263,6 +263,25 @@ function bindRouteSequence(view, markerViews, map, maps) {
   });
 }
 
+function observeMapResize(canvas, map, maps, bounds) {
+  if (!globalThis.ResizeObserver || !canvas) return;
+  let lastWidth = 0;
+  let lastHeight = 0;
+  const observer = new ResizeObserver(entries => {
+    const entry = entries[0];
+    const width = Math.round(entry?.contentRect?.width || canvas.clientWidth || 0);
+    const height = Math.round(entry?.contentRect?.height || canvas.clientHeight || 0);
+    if (!width || !height || (width === lastWidth && height === lastHeight)) return;
+    lastWidth = width;
+    lastHeight = height;
+    requestAnimationFrame(() => {
+      maps.event.trigger(map, 'resize');
+      if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
+    });
+  });
+  observer.observe(canvas);
+}
+
 async function hydrateMapView(view, { artifactLoader, resolver }) {
   if (view.dataset.mapState === 'ready' || view.dataset.mapState === 'loading') return;
   view.dataset.mapState = 'loading';
@@ -322,6 +341,7 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     bindRouteSequence(view, markerViews, map, maps);
 
     if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
+    observeMapResize(canvas, map, maps, bounds);
     state?.remove();
     view.dataset.mapState = 'ready';
   } catch (error) {

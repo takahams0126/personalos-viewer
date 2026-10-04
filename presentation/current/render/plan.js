@@ -60,50 +60,37 @@ function concretePlanRef(manifestEntry) {
   return relations[0]?.target_ref || null;
 }
 
-function routeRefsFromPlan(plan) {
-  const refs = [];
-  const seen = new Set();
-  const add = ref => {
-    if (!ref?.entity_type || !ref?.id) return;
-    const key = `${ref.entity_type}:${ref.id}`;
-    if (seen.has(key)) return;
-    seen.add(key);
-    refs.push(ref);
-  };
-  for (const day of plan.days || []) {
-    for (const item of day.sequence || []) {
-      if (item.kind !== 'route') continue;
-      add(item.route_ref);
-      for (const alternative of item.alternatives || []) add(alternative.route_ref);
-    }
-  }
-  return refs;
+async function renderPlanComposition(manifestEntry, resolver) {
+  const executionRef = concretePlanRef(manifestEntry);
+  if (!executionRef) return null;
+  const execution = await describeRef(executionRef, resolver);
+  return h('section', { className: 'plan-composition', dataset: { semantic: 'plan-composition' } },
+    h('div', { className: 'plan-composition-row plan-composition-execution' },
+      h('h2', { text: '実施プラン' }),
+      execution.unavailable
+        ? h('span', { className: 'plan-composition-value', text: execution.title })
+        : h('a', {
+            className: 'plan-composition-execution-link',
+            attrs: { href: hrefFor(executionRef) },
+            text: execution.title || executionRef.id
+          })
+    )
+  );
 }
 
-async function renderPlanComposition(plan, manifestEntry, resolver) {
-  const routeRefs = routeRefsFromPlan(plan);
-  const routes = await Promise.all(routeRefs.map(async ref => ({ ref, ...(await describeRef(ref, resolver)) })));
-  const executionRef = concretePlanRef(manifestEntry);
-  const execution = executionRef ? await describeRef(executionRef, resolver) : null;
-  if (!routes.length && !executionRef) return null;
-  return h('section', { className: 'plan-composition', dataset: { semantic: 'plan-composition' } },
-    h('h2', { text: 'プラン構成' }),
-    h('div', { className: 'plan-composition-row plan-composition-routes' },
-      h('h3', { text: '計画プラン' }),
-      routes.length
-        ? h('div', { className: 'plan-composition-links' }, routes.map(route =>
-            h('a', { className: 'plan-composition-chip', attrs: { href: hrefFor(route.ref) }, text: route.title })
-          ))
-        : h('span', { className: 'plan-composition-empty', text: 'ルート参照なし' })
-    ),
-    executionRef
-      ? h('div', { className: 'plan-composition-row plan-composition-execution' },
-          h('h3', { text: '実施プラン' }),
-          execution?.unavailable
-            ? h('span', { text: execution.title })
-            : h('a', { className: 'plan-composition-execution-link', attrs: { href: hrefFor(executionRef) }, text: execution?.title || executionRef.id })
-        )
-      : null
+function renderPlanItineraryOverview(days = []) {
+  if (!days.length) return null;
+  return h('section', {
+    className: 'plan-itinerary-overview itinerary-overview',
+    dataset: { semantic: 'plan-itinerary-overview' }
+  },
+    h('h2', { text: '日程' }),
+    h('ol', { className: 'plan-itinerary-overview-list itinerary-overview-list' }, days.map(day =>
+      h('li', { className: 'plan-itinerary-day-row', dataset: { day: day.ordinal } },
+        h('strong', { className: 'plan-itinerary-day-label itinerary-day-label', text: `DAY${day.ordinal}` }),
+        h('span', { className: 'plan-itinerary-day-title', text: day.title || `Day ${day.ordinal}` })
+      )
+    ))
   );
 }
 
@@ -313,7 +300,8 @@ async function renderDay(day, resolver) {
 export async function renderPlan({ plan, manifestEntry, resolver }) {
   const orderedDays = [...(plan.days || [])].sort((a, b) => a.ordinal - b.ordinal);
   const dayNodes = await Promise.all(orderedDays.map(day => renderDay(day, resolver)));
-  const composition = await renderPlanComposition(plan, manifestEntry, resolver);
+  const composition = await renderPlanComposition(manifestEntry, resolver);
+  const itinerary = renderPlanItineraryOverview(orderedDays);
 
   return h('article', { className: 'plan-page', dataset: { semantic: 'plan' } },
     h('header', { className: 'plan-overview', dataset: { semantic: 'plan-overview' } },
@@ -322,7 +310,7 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
     ),
     composition,
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
-      h('h2', { text: '日程' }),
+      itinerary,
       h('div', { className: 'plan-days-list' }, dayNodes)
     )
   );

@@ -8,16 +8,6 @@
   @media (max-width: 64rem) {
     .spot-highlight-list,
     .spot-review-grid { grid-template-columns: minmax(0, 1fr); }
-
-    .execution-action:not(.route-execution-group) .action-body {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .execution-action:not(.route-execution-group) .action-stay,
-    .execution-action:not(.route-execution-group) .action-todos,
-    .execution-action:not(.route-execution-group) .action-facilities,
-    .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention { grid-column: 1; }
   }
 
   @media (max-width: 52rem) {
@@ -27,7 +17,11 @@
       width: min(100% - 1.5rem, var(--product-detail-max));
     }
 
-    main { padding-block: var(--space-5) var(--space-8); }
+    main {
+      min-width: 0;
+      max-width: 100%;
+      padding-block: var(--space-5) var(--space-8);
+    }
 
     .viewer-product-shell {
       grid-template-columns: minmax(0, 1fr);
@@ -65,16 +59,21 @@
 
     .spot-decision-grid:empty { display: none; }
 
-    /* Route becomes map + vertical sequence; never a horizontal occurrence carousel. */
+    /* Route keeps semantic DOM order: vertical sequence first, then map. */
     .route-page { display: block; }
 
     .route-workspace {
       display: flex;
       flex-direction: column;
       gap: var(--space-5);
+      min-width: 0;
     }
 
-    .route-workspace [data-layout-slot="secondary"] { order: -1; }
+    .route-workspace [data-layout-slot="primary"],
+    .route-workspace [data-layout-slot="secondary"] {
+      min-width: 0;
+      max-width: 100%;
+    }
 
     .route-workspace [data-layout-slot="primary"] {
       max-height: none;
@@ -84,6 +83,7 @@
 
     .route-workspace [data-layout-slot="secondary"] .map-canvas,
     .route-page > .route-map-section[data-semantic="conceptual-map"] .map-canvas {
+      width: 100%;
       min-height: 20rem;
     }
 
@@ -101,166 +101,22 @@
       min-width: 0;
     }
 
-    .route-page > .route-map-section[data-semantic="conceptual-map"] {
+    .route-page > .route-map-section[data-semantic="conceptual-map"],
+    .route-page > .route-sequence-section[data-semantic="sequence"] {
       display: block;
       margin-block: var(--space-5);
+      min-width: 0;
+      max-width: 100%;
     }
 
     .route-page > .route-sequence-section[data-semantic="sequence"] {
-      display: block;
       max-height: none;
       overflow: visible;
-      margin-block: var(--space-5);
       padding-inline-end: 0;
     }
 
     .route-relation-row {
       grid-template-columns: 3.25rem minmax(0, 1fr);
-    }
-
-    /* Plan identity must be bounded before the peer-navigation rails appear. */
-    .plan-overview,
-    .plan-overview > h1,
-    .plan-overview > p {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      white-space: normal;
-      overflow-wrap: anywhere;
-    }
-
-    /* Plan composition is content, not a horizontal control rail. */
-    .plan-composition,
-    .plan-composition-row,
-    .plan-composition-links {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-    }
-
-    .plan-composition-row { overflow: hidden; }
-
-    .plan-composition-links {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-1);
-      overflow: hidden;
-    }
-
-    .plan-composition-chip,
-    .plan-composition-execution-link {
-      display: inline-flex;
-      width: fit-content;
-      min-width: 0;
-      max-width: 100%;
-      white-space: normal;
-      overflow-wrap: anywhere;
-    }
-
-    .execution-meta-row {
-      grid-template-columns: 6rem minmax(0, 1fr);
-    }
-
-    .itinerary-overview-list { overflow: hidden; }
-
-    .itinerary-day-row {
-      grid-template-columns: 3.4rem 5.5rem 1.2rem 1.5rem minmax(0, 1fr) auto;
-      gap: .25rem .4rem;
-      min-width: 0;
-      overflow: visible;
-      font-size: var(--type-caption);
-    }
-
-    .itinerary-day-weather {
-      gap: 0;
-      justify-content: center;
-    }
-
-    .itinerary-weather-label { display: none; }
-
-    .concrete-primary-tabs {
-      overflow-x: auto;
-      scrollbar-width: thin;
-    }
-
-    .concrete-day-body {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .concrete-day-context,
-    .selected-day-weather,
-    .execution-package-selector,
-    .execution-packages { grid-column: 1; }
-
-    /* Hourly weather is a bounded data viewport, never a page-width overflow source. */
-    .selected-day-weather,
-    .hourly-weather-toggle,
-    .weather-matrix-preview,
-    .weather-matrix-detail {
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .hourly-weather-toggle,
-    .weather-matrix-preview,
-    .weather-matrix-detail {
-      width: 100%;
-    }
-
-    .weather-matrix-preview,
-    .weather-matrix-detail {
-      overflow-x: auto;
-      overscroll-behavior-inline: contain;
-    }
-
-    .weather-matrix {
-      width: max-content;
-      max-width: none;
-    }
-
-    .execution-action:not(.route-execution-group) {
-      grid-template-columns: 3.6rem minmax(0, 1fr);
-      gap: 0 var(--space-2);
-      padding-inline-start: var(--space-5);
-    }
-
-    .execution-action:not(.route-execution-group) .action-body {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .execution-action:not(.route-execution-group) .action-header,
-    .execution-action:not(.route-execution-group) .next-move,
-    .execution-action:not(.route-execution-group) .action-stay,
-    .execution-action:not(.route-execution-group) .action-todos,
-    .execution-action:not(.route-execution-group) .action-facilities,
-    .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention {
-      grid-column: 1;
-      grid-row: auto;
-    }
-
-    .execution-action:not(.route-execution-group) .next-move {
-      padding-block-start: var(--space-1);
-    }
-
-    /* Cost comparisons reflow to one readable column on mobile. */
-    .plan-cost,
-    .cost-table,
-    .cost-row,
-    .cost-item { min-width: 0; max-width: 100%; }
-
-    .cost-row {
-      grid-template-columns: minmax(0, 1fr);
-      gap: .25rem;
-      align-items: start;
-    }
-
-    .cost-item-detail { overflow-wrap: anywhere; }
-
-    .cost-amount {
-      justify-content: flex-start;
-      max-width: 100%;
-      white-space: normal;
     }
 
     .viewer-product-footer {
@@ -286,6 +142,7 @@
     .viewer-global-navigation {
       width: 100%;
       overflow-x: auto;
+      overflow-y: hidden;
       flex-wrap: nowrap;
       scrollbar-width: none;
     }
@@ -293,16 +150,5 @@
     .viewer-global-navigation::-webkit-scrollbar { display: none; }
 
     .route-strengths { grid-template-columns: minmax(0, 1fr); }
-
-    .itinerary-day-row {
-      grid-template-columns: 3rem 5.15rem 1rem 1.35rem minmax(0, 1fr) auto;
-      gap: .2rem .3rem;
-    }
-
-    .itinerary-day-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
 }
