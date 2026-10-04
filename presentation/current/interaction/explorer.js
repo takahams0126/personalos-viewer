@@ -3,14 +3,15 @@ function normalize(value) {
 }
 
 const CATALOG_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
+const DEFAULT_CATALOG = 'spot';
 
 function requestedCatalog() {
   const value = new URLSearchParams(window.location.search).get('catalog');
-  return CATALOG_TYPES.has(value) ? value : 'all';
+  return CATALOG_TYPES.has(value) ? value : DEFAULT_CATALOG;
 }
 
 function selectedType(root) {
-  return root.querySelector('[data-explorer-type]:checked')?.value || 'all';
+  return root.querySelector('[data-explorer-type]:checked')?.value || DEFAULT_CATALOG;
 }
 
 function categoryOptions(cards, type) {
@@ -55,14 +56,12 @@ function rebuildCategory(root, cards) {
   option.value = '';
   option.textContent = type === 'plan'
     ? 'プランでは使用しません'
-    : type === 'concrete_plan'
-      ? '実施プランでは使用しません'
-      : '種類を選択してください';
+    : '実施プランでは使用しません';
   select.append(option);
 }
 
 function matchesCard(card, state) {
-  if (state.type !== 'all' && card.dataset.entityType !== state.type) return false;
+  if (card.dataset.entityType !== state.type) return false;
 
   if (state.area) {
     const areas = (card.dataset.areaIds || '').split('|').filter(Boolean);
@@ -79,30 +78,28 @@ function matchesCard(card, state) {
   return true;
 }
 
-function applyFilters(root, cards) {
+function filteredCards(root, cards) {
   const search = root.querySelector('[data-explorer-search]');
   const area = root.querySelector('[data-explorer-area]');
   const category = root.querySelector('[data-explorer-category]');
-
   const state = {
     type: selectedType(root),
     query: normalize(search?.value),
     area: area?.value || '',
     category: category?.value || ''
   };
+  return new Set(cards.filter(card => matchesCard(card, state)));
+}
 
-  let visible = 0;
-  for (const card of cards) {
-    const match = matchesCard(card, state);
-    card.hidden = !match;
-    if (match) visible += 1;
-  }
+function applyFilters(root, cards) {
+  const visibleCards = filteredCards(root, cards);
+  for (const card of cards) card.hidden = !visibleCards.has(card);
 
   const count = root.querySelector('[data-explorer-count]');
-  if (count) count.textContent = `${visible}件`;
+  if (count) count.textContent = `${visibleCards.size}件`;
 
   const empty = root.querySelector('[data-explorer-empty]');
-  if (empty) empty.hidden = visible !== 0;
+  if (empty) empty.hidden = visibleCards.size !== 0;
 }
 
 export function hydrateExplorer(root) {
@@ -113,7 +110,9 @@ export function hydrateExplorer(root) {
   const category = root.querySelector('[data-explorer-category]');
 
   const catalog = requestedCatalog();
-  const catalogControl = typeControls.find(control => control.value === catalog);
+  const catalogControl = typeControls.find(control => control.value === catalog)
+    || typeControls.find(control => control.value === DEFAULT_CATALOG)
+    || typeControls[0];
   if (catalogControl) catalogControl.checked = true;
 
   for (const control of typeControls) {
