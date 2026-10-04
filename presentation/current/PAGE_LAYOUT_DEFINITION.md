@@ -2,7 +2,7 @@
 
 Status: active implementation definition
 Scope: Current Leisure Viewer presentation
-Updated: 2026-10-03
+Updated: 2026-10-04
 
 ## Purpose
 
@@ -38,8 +38,8 @@ Page
 └─ Product footer
 ```
 
-Global catalog navigationはExplorer / Plans / Routes / Spots。
-Plans / Routes / SpotsはTOP ExplorerのEntity type filterへの入口であり、新しいDomain hierarchyではない。
+Global catalog navigationはExplorer / ConcretePlans / Plans / Routes / Spots。
+ConcretePlans / Plans / Routes / SpotsはTOP ExplorerのEntity type filterへの入口であり、新しいDomain hierarchyではない。
 
 ## View grammar
 
@@ -90,6 +90,7 @@ explorer controls 3 | results 9
 ```
 
 - Explorer controlsはDesktopではscan中の操作rail。
+- 種類filterはSpot / Route / Plan / ConcretePlanの明示selectionを持ち、Explorer自体は全catalog表示の入口とする。
 - ResultsはPrimary workspace。
 - Mobileではcontrols → resultsのreading orderへ戻す。
 

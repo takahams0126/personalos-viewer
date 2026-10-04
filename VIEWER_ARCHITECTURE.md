@@ -15,7 +15,7 @@ This file owns only repository/runtime layout and implementation-facing boundari
 ├─ data/**                     # shared published Public Entity JSON
 ├─ maps/**                     # shared published artifacts
 └─ presentation/
-   ├─ current/                 # current Viewer implementation
+   ├─ current/                 # official Viewer implementation
    ├─ modern/                  # previous Modern reference presentation
    └─ legacy/                  # frozen Legacy comparison snapshot
 ```
@@ -24,7 +24,7 @@ Presentation generations do not own the shared published Boundary.
 
 ## Current Viewer direction
 
-`presentation/current/` is rebuilt from the current HTML Boundary JSON. Previous Modern and Legacy code are evidence/reference only and must not be imported by Current.
+`presentation/current/` is the official Viewer presentation rebuilt from the current HTML Boundary JSON. Previous Modern and Legacy code are evidence/reference only and must not be imported by Current.
 
 Normal flow:
 
@@ -133,13 +133,13 @@ ConcretePlan Execution Map
 ```
 
 Google Places / Routes resolution stays upstream. The browser adapter only renders published positions/paths and presentation interaction.
-The current validation marker/popup implementation is not the final Current Map presentation contract; marker API/accessibility/popup/mobile behavior are a pre-promotion convergence scope.
+Map presentation maintenance must stay within this boundary and must not move geographic resolution into Current.
 
 ## Generation roles
 
 ### current
 
-Only active development target. It may consume `/manifest.json`, `/data/**`, and `/maps/**`.
+Official production presentation and active development target. It may consume `/manifest.json`, `/data/**`, and `/maps/**`.
 
 ### modern
 
@@ -151,9 +151,8 @@ Frozen comparison snapshot. Its source tree is mechanically guarded. Normal buil
 
 ## Default routing
 
-Root `index.html` owns only the default presentation selection. While Current has not completed its promotion gate, default routing remains `presentation/modern/`.
-
-Promotion requires an explicit decision after Current architecture/documentation coherence, Default Preset convergence, Map/accessibility finishing, and minimum usable cross-page review are closed.
+Root `index.html` owns only the default presentation selection and routes to `presentation/current/`.
+Modern and Legacy are not fallback production routes.
 
 ## Publishing
 

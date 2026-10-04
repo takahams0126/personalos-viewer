@@ -8,12 +8,12 @@
 <body>
   <p>Viewerを開いています…</p>
   <script>
-    const DEFAULT_PRESENTATION = 'modern';
+    const DEFAULT_PRESENTATION = 'current';
     const target = new URL(`./presentation/${DEFAULT_PRESENTATION}/`, window.location.href);
     target.search = window.location.search;
     target.hash = window.location.hash;
     window.location.replace(target.href);
   </script>
-  <noscript><a href="./presentation/modern/">Viewerを開く</a></noscript>
+  <noscript><a href="./presentation/current/">Viewerを開く</a></noscript>
 </body>
 </html>

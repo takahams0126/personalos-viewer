@@ -16,8 +16,8 @@ presentation/legacy/**
 
 ## Current state
 
-`presentation/current/` is the only active development target.
-Technical validation is closed; Current is now in architecture stabilization + presentation convergence before final promotion.
+`presentation/current/` is the active and official Viewer presentation.
+Technical validation and product-level presentation convergence are closed for the primary Leisure surfaces.
 
 Current is built from the published Boundary with:
 
@@ -38,7 +38,7 @@ Previous generations are evidence/reference only:
 - `presentation/modern/` — previous Modern Viewer reference
 - `presentation/legacy/` — frozen Legacy comparison snapshot
 
-Root `index.html` is only the default-presentation router. It still routes to Modern until the explicit Current promotion gate is closed.
+Root `index.html` is the default-presentation router and routes to Current.
 
 ## Published Boundary
 

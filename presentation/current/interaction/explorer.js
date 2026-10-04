@@ -2,7 +2,7 @@ function normalize(value) {
   return String(value || '').normalize('NFKC').toLocaleLowerCase('ja-JP').trim();
 }
 
-const CATALOG_TYPES = new Set(['spot', 'route', 'plan']);
+const CATALOG_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
 
 function requestedCatalog() {
   const value = new URLSearchParams(window.location.search).get('catalog');
@@ -53,7 +53,11 @@ function rebuildCategory(root, cards) {
   select.disabled = true;
   const option = document.createElement('option');
   option.value = '';
-  option.textContent = type === 'plan' ? 'プランでは使用しません' : '種類を選択してください';
+  option.textContent = type === 'plan'
+    ? 'プランでは使用しません'
+    : type === 'concrete_plan'
+      ? '実施プランでは使用しません'
+      : '種類を選択してください';
   select.append(option);
 }
 
