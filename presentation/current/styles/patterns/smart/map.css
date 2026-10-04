@@ -1,8 +1,15 @@
 @layer patterns {
   .route-sequence-item {
+    width: 100%;
     border-radius: 0;
     outline: none;
+    cursor: pointer;
     transition: background-color .14s ease, opacity .14s ease;
+  }
+
+  .route-sequence-body {
+    width: 100%;
+    min-width: 0;
   }
 
   .route-sequence-item:focus-visible {
@@ -26,6 +33,11 @@
 
   .route-sequence-item[data-map-selected="true"] .route-sequence-body {
     box-shadow: inset .18rem 0 0 var(--accent);
+  }
+
+  .route-sequence-item a,
+  .route-sequence-item button {
+    cursor: pointer;
   }
 
   .map-popup {
