@@ -1,7 +1,7 @@
 @layer layout {
   :root {
-    --product-page-max: 84rem;
-    --product-detail-max: 80rem;
+    --product-page-max: 76rem;
+    --product-detail-max: 72rem;
     --product-grid-columns: 12;
     --product-grid-gap: clamp(1rem, 1.8vw, 1.75rem);
     --measure-page: var(--product-detail-max);
