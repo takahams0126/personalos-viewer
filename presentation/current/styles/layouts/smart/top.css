@@ -27,7 +27,7 @@
 
   .top-type-filter {
     grid-column: 1 / -1;
-    margin: 0;
+    margin: .45rem 0 0;
     padding: 0;
     border: 0;
   }
