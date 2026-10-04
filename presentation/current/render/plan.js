@@ -184,23 +184,48 @@ async function loadRouteChoice(ref, relation, resolver) {
   }
 }
 
-function renderRouteChoiceDetail(choice) {
+async function renderRouteStops(routeData, resolver) {
+  const sequence = routeData?.sequence || [];
+  if (!sequence.length) return null;
+  const stops = await Promise.all(sequence.map(async item => {
+    const spot = await describeRef(item.spot_ref, resolver);
+    return h('li', { className: 'plan-route-stop' },
+      h('span', { className: 'plan-route-stop-order', text: String(item.order) }),
+      h('span', { className: 'plan-route-stop-title' }, entityTitle(item.spot_ref, spot.title, spot.unavailable))
+    );
+  }));
+  return h('ol', {
+    className: 'plan-route-stops',
+    dataset: { semantic: 'route-stops' },
+    attrs: { 'aria-label': '立ち寄り順' }
+  }, stops);
+}
+
+async function renderRouteChoiceDetail(choice, resolver) {
   const routeData = choice.routeData;
   const identity = routeData ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join(' / ') : '';
   const condition = choice.relation?.selection_condition?.text;
   const replacementIntent = choice.relation?.replacement_intent;
+  const summary = routeData?.summary || '';
   return h('div', {
     className: 'plan-route-choice-detail',
     dataset: { semantic: 'selected-route-detail', routeId: choice.ref?.id || '' }
   },
-    h('h4', {}, entityTitle(choice.ref, choice.title, choice.unavailable)),
-    identity ? h('p', { className: 'plan-route-identity', text: identity }) : null,
+    h('div', { className: 'plan-route-utility' },
+      h('h4', { className: 'plan-route-title' }, entityTitle(choice.ref, choice.title, choice.unavailable)),
+      identity ? h('span', { className: 'plan-route-identity', text: identity }) : null,
+      !choice.unavailable && isDetailPageRef(choice.ref)
+        ? h('a', { className: 'plan-route-page-link', attrs: { href: hrefFor(choice.ref) }, text: 'Routeを見る →' })
+        : null
+    ),
     replacementIntent ? h('p', { className: 'plan-route-intent', text: replacementIntent }) : null,
     condition
-      ? h('dl', { className: 'plan-event-facts' },
+      ? h('dl', { className: 'plan-event-facts plan-route-condition' },
           h('div', {}, h('dt', { text: '選択条件' }), h('dd', { text: condition }))
         )
       : null,
+    summary ? h('p', { className: 'plan-route-summary', text: summary }) : null,
+    await renderRouteStops(routeData, resolver),
     choice.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
   );
 }
@@ -210,27 +235,30 @@ async function renderRoute(item, resolver) {
     loadRouteChoice(item.route_ref, { selection_condition: item.selection_condition }, resolver),
     ...(item.alternatives || []).map(alternative => loadRouteChoice(alternative.route_ref, alternative, resolver))
   ]);
-  const detailNodes = choices.map(renderRouteChoiceDetail);
+  const detailNodes = await Promise.all(choices.map(choice => renderRouteChoiceDetail(choice, resolver)));
   const detailHost = h('div', { className: 'plan-route-choice-host' }, detailNodes[0]);
-  const select = h('select', {
-    className: 'plan-route-choice-select',
-    attrs: { 'aria-label': '表示するルート' },
-    dataset: { semantic: 'route-choice-control' }
-  }, choices.map((choice, index) =>
-    h('option', { attrs: { value: index }, text: index === 0 ? `${choice.title}（標準）` : choice.title })
-  ));
-  select.addEventListener('change', () => detailHost.replaceChildren(detailNodes[Number(select.value)]));
+  const select = choices.length > 1
+    ? h('select', {
+        className: 'plan-route-choice-select',
+        attrs: { 'aria-label': '表示するルート' },
+        dataset: { semantic: 'route-choice-control' }
+      }, choices.map((choice, index) =>
+        h('option', { attrs: { value: index }, text: index === 0 ? `標準 · ${choice.title}` : choice.title })
+      ))
+    : null;
+  select?.addEventListener('change', () => detailHost.replaceChildren(detailNodes[Number(select.value)]));
+
   return h('li', {
     className: 'plan-journey-event plan-route',
     dataset: { kind: 'route', semantic: 'route-occurrence' }
   },
     renderJourneyIcon('route', 'plan-event-icon'),
     h('article', { className: 'plan-event-body plan-route-body' },
-      h('p', { className: 'plan-route-label', text: 'ルート' }),
       h('section', { className: 'plan-route-choice', dataset: { semantic: 'route-choice' } },
-        choices.length > 1
-          ? h('label', { className: 'plan-route-choice-label' }, h('span', { text: '実施ルート' }), select)
-          : null,
+        select ? h('div', { className: 'plan-route-choice-control-row' },
+          h('span', { className: 'plan-route-choice-control-label', text: '実施ルート' }),
+          select
+        ) : null,
         detailHost
       )
     )
