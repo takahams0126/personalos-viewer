@@ -21,7 +21,6 @@
       min-width: 0;
       max-width: 100%;
       padding-block: var(--space-5) var(--space-8);
-      overflow-x: clip;
     }
 
     .viewer-product-shell {
