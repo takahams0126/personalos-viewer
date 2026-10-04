@@ -53,51 +53,20 @@
     text-transform: uppercase;
   }
 
-  .plan-composition {
-    border-block: var(--border-width) solid var(--line);
-  }
-
-  .plan-composition > h2 {
-    margin: 0;
-    padding-block: var(--space-2);
-    font-size: var(--type-section-title);
-  }
-
-  .plan-composition-row { border-block-start: var(--border-width) solid var(--line); }
-
-  .plan-composition-row h3 {
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--type-meta);
-  }
-
-  .plan-composition-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1) var(--space-2);
-  }
-
-  .plan-composition-chip,
   .plan-composition-execution-link {
-    display: inline-flex;
-    align-items: center;
-    justify-self: start;
-    width: auto;
-    min-height: 1.9rem;
-    padding: .2rem .55rem;
-    border: var(--border-width) solid var(--line-interactive);
-    border-radius: var(--radius-pill);
-    background: transparent;
     color: var(--accent-strong);
-    font-size: var(--type-meta);
-    text-decoration: none;
+    font-size: var(--type-body);
+    text-decoration-thickness: .08em;
+    text-underline-offset: .16em;
   }
 
-  .plan-composition-chip:hover,
-  .plan-composition-chip:focus-visible,
   .plan-composition-execution-link:hover,
-  .plan-composition-execution-link:focus-visible {
-    border-color: var(--accent);
-    background: var(--accent-soft);
+  .plan-composition-execution-link:focus-visible { color: var(--accent); }
+
+  .plan-day-navigation,
+  .concrete-primary-tabs,
+  .day-workspace-tabs {
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
   }
 }
