@@ -1,5 +1,4 @@
 import { hrefFor } from '../core/router.js';
-import { renderChipList } from './components/presentation.js';
 import { h } from './dom.js';
 
 const EXPLORER_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
@@ -28,11 +27,8 @@ function renderTypeOption(value, label) {
 
 function renderFilterPanel(manifest) {
   return h('aside', { className: 'top-filter-panel', attrs: { 'aria-label': '検索と絞り込み' } },
-    h('div', { className: 'top-filter-heading' },
-      h('h2', { text: '絞り込み' })
-    ),
     h('fieldset', { className: 'top-type-filter' },
-      h('legend', { text: '種類' }),
+      h('legend', { className: 'visually-hidden', text: '種類' }),
       h('div', { className: 'top-type-options' },
         renderTypeOption('spot', 'スポット'),
         renderTypeOption('route', 'ルート'),
@@ -41,21 +37,21 @@ function renderFilterPanel(manifest) {
       )
     ),
     h('div', { className: 'top-filter-field top-search-field' },
-      h('label', { attrs: { for: 'top-search' }, text: 'キーワード' }),
+      h('label', { className: 'visually-hidden', attrs: { for: 'top-search' }, text: 'キーワード' }),
       h('input', {
         attrs: {
           id: 'top-search',
           type: 'search',
-          placeholder: '名称・概要・タグで検索',
+          placeholder: 'キーワード',
           autocomplete: 'off'
         },
         dataset: { explorerSearch: '' }
       })
     ),
     h('div', { className: 'top-filter-field' },
-      h('label', { attrs: { for: 'top-area' }, text: 'エリア' }),
-      h('select', { attrs: { id: 'top-area' }, dataset: { explorerArea: '' } },
-        h('option', { attrs: { value: '' }, text: 'すべてのエリア' }),
+      h('label', { className: 'visually-hidden', attrs: { for: 'top-area' }, text: 'エリア' }),
+      h('select', { attrs: { id: 'top-area', 'aria-label': 'エリア' }, dataset: { explorerArea: '' } },
+        h('option', { attrs: { value: '' }, text: 'エリア' }),
         (manifest.areas || []).map(area =>
           h('option', { attrs: { value: area.id }, text: area.label })
         )
@@ -66,12 +62,12 @@ function renderFilterPanel(manifest) {
       attrs: { hidden: true },
       dataset: { explorerCategoryField: '' }
     },
-      h('label', { attrs: { for: 'top-category' }, text: 'カテゴリ' }),
+      h('label', { className: 'visually-hidden', attrs: { for: 'top-category' }, text: 'カテゴリ' }),
       h('select', {
-        attrs: { id: 'top-category', disabled: true },
+        attrs: { id: 'top-category', disabled: true, 'aria-label': 'カテゴリ' },
         dataset: { explorerCategory: '' }
       },
-        h('option', { attrs: { value: '' }, text: '種類を選択してください' })
+        h('option', { attrs: { value: '' }, text: 'カテゴリ' })
       )
     )
   );
@@ -91,7 +87,7 @@ function renderResult(entry) {
   ].filter(Boolean).join(' ');
 
   return h('a', {
-    className: 'top-result-row entity-link-card',
+    className: 'top-result-row',
     attrs: { href: hrefFor(entry.ref) },
     dataset: {
       explorerCard: '',
@@ -119,15 +115,9 @@ function renderResult(entry) {
           attrs: { 'aria-hidden': 'true' }
         }, h('span', { text: explorer.type_label })),
     h('div', { className: 'top-result-body' },
-      h('div', { className: 'top-result-meta' },
-        h('span', { className: 'top-result-type', text: explorer.type_label }),
-        h('span', { className: 'top-result-id', text: id })
-      ),
       h('h3', { text: entry.title }),
-      explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null,
-      renderChipList(explorer.tags, { ariaLabel: 'タグ', className: 'top-result-tags', compact: true })
-    ),
-    h('span', { className: 'top-result-arrow', attrs: { 'aria-hidden': 'true' }, text: '›' })
+      explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null
+    )
   );
 }
 
@@ -135,14 +125,6 @@ export function renderTop({ manifest }) {
   const entries = explorerEntries(manifest);
 
   return h('article', { className: 'top-page', dataset: { semantic: 'explorer' } },
-    h('header', { className: 'top-hero' },
-      h('p', { className: 'entity-kind', text: 'PERSONALOS LEISURE' }),
-      h('h1', { text: '行き先とプランを探す' }),
-      h('p', {
-        className: 'top-intro',
-        text: 'スポット、ルート、プラン、実施プランを一覧から探し、条件で絞り込めます。'
-      })
-    ),
     h('div', { className: 'top-explorer-layout' },
       renderFilterPanel(manifest),
       h('section', { className: 'top-results-panel', attrs: { 'aria-labelledby': 'top-results-title' } },
