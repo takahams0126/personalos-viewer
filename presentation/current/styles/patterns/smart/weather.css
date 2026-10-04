@@ -48,15 +48,20 @@
   }
 
   .selected-day-weather {
+    width: fit-content;
+    max-width: 100%;
     min-width: 0;
     padding: var(--space-2);
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--accent-soft) 54%, var(--surface));
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
   }
 
   .hourly-weather {
     display: grid;
     gap: var(--space-1);
+    width: fit-content;
+    max-width: 100%;
     min-width: 0;
   }
 
@@ -82,7 +87,7 @@
     padding: .15rem .5rem;
     border: var(--border-width) solid var(--line-interactive);
     border-radius: var(--radius-pill);
-    background: var(--surface-page);
+    background: var(--surface);
     color: var(--accent-strong);
     font: inherit;
     font-size: var(--type-caption);
@@ -102,25 +107,27 @@
   }
 
   .weather-matrix-viewport {
-    width: 100%;
+    width: max-content;
     min-width: 0;
     max-width: 100%;
     overflow-x: auto;
-    border-block: var(--border-width) solid var(--line);
-    background: var(--surface-page);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
     scrollbar-width: thin;
     overscroll-behavior-inline: contain;
   }
 
   .weather-matrix {
     display: grid;
+    width: max-content;
     min-width: max-content;
-    background: var(--surface-page);
+    background: var(--surface);
   }
 
   .weather-matrix-row {
     display: grid;
-    grid-template-columns: 4.5rem repeat(var(--weather-period-count, 8), minmax(4.15rem, 1fr));
+    grid-template-columns: 4.25rem repeat(var(--weather-period-count, 8), 4.75rem);
     align-items: center;
     min-height: 2rem;
     border-block-end: var(--border-width) solid var(--line);
@@ -139,7 +146,7 @@
     align-items: center;
     padding-inline: var(--space-2);
     border-inline-end: var(--border-width) solid var(--line);
-    background: var(--surface-page);
+    background: var(--surface-subtle);
     color: var(--muted);
     font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);
@@ -149,7 +156,7 @@
     display: grid;
     place-items: center;
     min-width: 0;
-    padding-inline: var(--space-1);
+    padding-inline: .3rem;
     font-size: var(--type-meta);
     font-variant-numeric: tabular-nums;
     text-align: center;
@@ -161,7 +168,21 @@
   }
 
   @media (max-width: 52rem) {
-    .selected-day-weather { padding: var(--space-2); }
+    .selected-day-weather,
+    .hourly-weather {
+      width: 100%;
+    }
+
+    .weather-matrix-viewport {
+      width: 100%;
+      border-inline: 0;
+      border-radius: 0;
+    }
+
+    .weather-matrix-row {
+      grid-template-columns: 4.5rem repeat(var(--weather-period-count, 8), 4.3rem);
+    }
+
     .weather-icon-itinerary { width: 2.2rem; height: 2.2rem; }
     .weather-icon-hourly { width: 3.25rem; height: 3.25rem; }
   }

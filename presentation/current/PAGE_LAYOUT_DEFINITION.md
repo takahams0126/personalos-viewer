@@ -27,6 +27,8 @@ Pageごとに独自container grammarやpage width systemを発明しない。
 
 ViewerはEditorial documentではなくTravel operational UIとして扱う。Page title / selected Day title / section titleはcontextを与える役割であり、Primary data / controlより強くしない。Mobileではtitleがinitial viewportを過度に消費しないscaleを使い、同じ階層問題ならDesktopも共通Typography roleで修正する。
 
+Smartのvisual hierarchyは「薄い」ことを目的にしない。section / row / selected state / popup等のowner boundaryは、過剰な装飾を避けつつも領域を一目で識別できるcontrastを持つ。背景差・single divider・active accentを使い、white surface + 極薄borderだけで意味境界を消さない。
+
 ## Common Page Layout
 
 ```text
@@ -110,6 +112,7 @@ Controls:
 - controlsを大型Cardとして囲わない。
 - Desktopでも結果比較を主役にし、control railのために不要な余白を作らない。
 - Mobileでは375px級initial viewportで結果へ早く到達できる密度をCompletion基準とする。
+- selected Entity type / keyword / area / categoryから1つのfiltered collectionを導出し、その同じcollectionを件数とrendered resultsの双方へ使う。countだけ更新されて結果datasetが追従しない状態を許容しない。
 
 Result row:
 
@@ -122,7 +125,7 @@ thumbnail | title
 - Explorer比較に不要なEntity type / internal IDを表示しない。
 - thumbnailはcompact square + object-fit cover。
 - tags / long metadataをPrimary rowへ常設しない。
-- row上下paddingを抑え、複数候補を同時scanできる。
+- row上下paddingを抑え、複数候補を同時scanできる。375px級では概ね3〜4件以上をviewport内で比較できる密度を目安とする。
 
 ## Spot
 
@@ -196,7 +199,10 @@ color   = secondary identification cue
 - segment identityはartifactのfrom/to pointのexplicit orderから表示する。
 - Desktopはsegment listを同時scan可能。
 - Mobileはselected segment contextをPrimaryにし、全区間はsecondary disclosure。
-- Map popupは`番号 + Spot title`と`Google Mapsで開く`だけ。PersonalOS内部navigationはSequence Spot linkへ一本化する。
+- 近接Markerでも番号が判読できることを優先し、selected markerはz-index / size / contrastを強める。位置座標の恣意的offsetは最終手段とする。
+- Map popupはGoogle標準InfoWindowをProduct surfaceとして露出させず、PersonalOSのcustom overlayとして`番号 + Spot title`と`Google Mapsで開く`だけを表示する。
+- custom popupはaccent title header / close / action areaを持ち、MobileではMap横幅内に収まるbottom-oriented surfaceとしてhorizontal overflowを発生させない。
+- PersonalOS内部navigationはSequence Spot linkへ一本化する。
 
 ## Plan
 
@@ -292,6 +298,7 @@ Modeled Route group:
 - Actions viewのRoute group headerはowner Route identityを1回だけ表示する。
 - `ルート`label、family / variant再掲、endpoint説明、Action range説明を重複表示しない。
 - operational boundaryはcompactに残せる。
+- Route Detail viewはTimelineのtime-axis indentを継承せず、detail surface自身の左基準へ揃える。Desktopで合理的理由のない右寄せを作らない。
 
 ### Weather
 
@@ -314,6 +321,7 @@ Header:
 - cloudy / rain等も背景と十分なcontrastを持つ。
 - 時刻 / 天気 / 気温 / 降水確率 / 降水量 / 風は1つのhorizontal scroll viewport。
 - label列はopaque sticky column。
+- Desktopではperiod cellをviewport全幅へ均等stretchさせない。bounded cell widthのcompact matrixを左基準で配置し、必要な場合のみcomponent内horizontal scrollを使う。
 
 ### Fuel
 
@@ -332,27 +340,34 @@ Google Maps / 公式情報
 - station factsがcontextより先。
 - external linksは小型utility。
 - 上流Public dataに存在しない情報をViewerで補完しない。
+- Desktopでも情報開始位置を左基準へ固定し、カード内を中央寄せしない。各SSは同じscan axisを共有する。
 
 ### Cost
+
+CostのPrimary comparisonは常に`費目 | 金額`。
 
 Trip/Desktop:
 
 ```text
-科目 | 料金 | 備考
+費目                         金額
+航空券                    ¥319,400
+  JAL/JAC往復・大人2名       確定 注1
+レンタカー                  ¥22,737
+  タイムズカー...             確定
 ```
 
-- short label = 科目。
-- amount/state = 料金。
-- item.detail = 備考。
-- 余った中央spaceを空白にせず備考列として使う。
+- short labelとamountをPrimary rowとする。
+- item.detail、amount state、annotationはsecondary informationとして視覚的に一段下げる。
+- detailをPrimary amountと同じ強度の第三列へ押し込まない。
+- Viewerで新しいtotalを再集計しない。
 
 Day/Desktop:
 - DAYごとのcompact groupを横比較しやすいgridへ配置できる。
-- Viewerで新しいtotalを再集計しない。
+- 各DAY内も`費目 | 金額`がPrimary、detail / state / annotationはsecondary。
 
 Mobile:
 - DAYを無理に5列へ押し込まない。
-- compact row/groupへ戻し、科目と料金を同じ行、detailを次行へ折り返せる。
+- compact row/groupへ戻し、費目と金額を同じ行、detailを次行へ折り返せる。
 
 Annotation:
 - `注N`参照 + plain numbered notes。
@@ -413,7 +428,7 @@ same semantics
 - ConcretePlanはDay context → Weather → Journeyのreading orderを全viewportで維持する。
 - Weather wide dataだけはcomponent内部の単一horizontal viewportでscrollする。
 - Timeline / Event supportは狭幅で自然に1列へ収まり、Desktop専用右railをNormal grammarにしない。
-- CostはMobileでも科目と金額のcompact comparisonを維持する。
+- CostはMobileでも費目と金額のcompact comparisonを維持する。
 - Spot MobileはMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順。
 - Operational constraintをMobileだけ隠さない。
 - title / spacing / row densityはMobileで特にcompactにするが、情報階層問題ならDesktopにも共通反映する。
