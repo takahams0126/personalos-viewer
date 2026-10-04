@@ -2,7 +2,13 @@
   .execution-flow,
   .day-workspace,
   .plan-fuel,
-  .plan-cost { max-width: none; }
+  .plan-cost,
+  .concrete-primary-workspace,
+  .concrete-primary-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
 
   .concrete-plan > .plan-header {
     max-width: 64rem;
@@ -32,11 +38,13 @@
   }
 
   .execution-meta-row:last-child { border-block-end: 0; }
+
   .execution-meta-row dt {
     color: var(--muted);
     font-size: var(--type-meta);
     font-weight: var(--font-weight-strong);
   }
+
   .execution-meta-row dd {
     display: flex;
     flex-wrap: wrap;
@@ -115,8 +123,10 @@
   .itinerary-overview-list {
     display: grid;
     gap: 0;
+    min-width: 0;
     margin: 0;
     padding: 0;
+    overflow: hidden;
     list-style: none;
   }
 
@@ -136,6 +146,7 @@
   .itinerary-day-label { color: var(--accent-strong); font-size: var(--type-caption); }
   .itinerary-day-date { font-variant-numeric: tabular-nums; }
   .itinerary-day-weekday { color: var(--muted); }
+
   .itinerary-day-weather {
     display: inline-flex;
     align-items: center;
@@ -143,6 +154,7 @@
     min-width: 0;
     color: var(--text-soft);
   }
+
   .itinerary-day-title {
     overflow: hidden;
     min-width: 0;
@@ -150,11 +162,10 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   .itinerary-day-attention { color: var(--caution); }
 
-  .concrete-primary-workspace {
-    margin-block-start: var(--space-5);
-  }
+  .concrete-primary-workspace { margin-block-start: var(--space-5); }
 
   .concrete-primary-tabs {
     position: sticky;
@@ -162,44 +173,53 @@
     z-index: 20;
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     min-width: 0;
+    max-width: 100%;
     margin-block-end: var(--space-4);
     border-block-end: var(--border-width) solid var(--line);
     background: color-mix(in srgb, var(--surface-page) 96%, transparent);
     backdrop-filter: blur(.4rem);
     scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
   }
 
   .concrete-primary-tabs .day-workspace-tab {
+    flex: 0 0 auto;
     min-width: 4.75rem;
     padding-inline: .85rem;
     font-size: var(--type-meta);
   }
 
-  .concrete-primary-panel { min-width: 0; }
   .concrete-primary-panel > [hidden] { display: none; }
 
+  /* One semantic reading order at every viewport: context → weather → execution. */
   .concrete-day-body {
     display: grid;
-    grid-template-columns: minmax(15rem, 5fr) minmax(0, 7fr);
-    gap: var(--space-4) var(--product-grid-gap);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
     align-items: start;
-  }
-
-  .concrete-day-context {
-    grid-column: 1;
+    width: 100%;
     min-width: 0;
+    max-width: 100%;
   }
 
-  .selected-day-weather {
-    grid-column: 2;
-    min-width: 0;
-  }
-
+  .concrete-day-context,
+  .selected-day-weather,
   .execution-package-selector,
   .execution-packages {
-    grid-column: 1 / -1;
+    grid-column: 1;
+    width: 100%;
     min-width: 0;
+    max-width: 100%;
+  }
+
+  .selected-day-weather,
+  .hourly-weather-toggle,
+  .weather-matrix-preview,
+  .weather-matrix-detail {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .concrete-day-context > h2 {
@@ -217,6 +237,7 @@
   .concrete-day-kicker { color: var(--muted); }
 
   .concrete-day-context .day-summary {
+    max-width: 64rem;
     margin-block: var(--space-2);
     color: var(--text-soft);
     line-height: 1.55;
@@ -247,6 +268,7 @@
   .execution-action:not(.route-execution-group) {
     grid-template-columns: minmax(3.75rem, max-content) minmax(0, 1fr);
     gap: 0 var(--space-2);
+    min-width: 0;
   }
 
   .execution-action:not(.route-execution-group) .action-time-axis {
@@ -254,33 +276,31 @@
     font-size: var(--type-caption);
   }
 
+  /* Event support stays below the Event instead of moving to a desktop-only right rail. */
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(11rem, 5fr);
-    gap: var(--space-1) var(--space-3);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
     align-items: start;
+    min-width: 0;
     margin-block-end: 0;
     padding: .42rem 0 .5rem;
   }
 
-  .execution-action:not(.route-execution-group) .action-header {
-    grid-column: 1;
-    min-width: 0;
-  }
-
+  .execution-action:not(.route-execution-group) .action-header,
+  .execution-action:not(.route-execution-group) .next-move,
   .execution-action:not(.route-execution-group) .action-stay,
   .execution-action:not(.route-execution-group) .action-todos,
   .execution-action:not(.route-execution-group) .action-facilities,
   .execution-action:not(.route-execution-group) .action-constraints,
   .execution-action:not(.route-execution-group) .action-attention {
-    grid-column: 2;
-    margin: 0;
+    grid-column: 1;
     min-width: 0;
+    margin: 0;
   }
 
   .execution-action:not(.route-execution-group) .next-move {
-    grid-column: 1 / -1;
-    min-width: 0;
+    padding-block-start: var(--space-1);
   }
 
   .execution-action:not(.route-execution-group) .action-heading > .action-purpose,
@@ -392,8 +412,10 @@
   .day-workspace[data-active-view="actions"] .route-execution-identity,
   .day-workspace[data-active-view="actions"] .route-execution-endpoints {
     grid-column: 2;
+    min-width: 0;
     margin: 0;
     font-size: var(--type-caption);
+    overflow-wrap: anywhere;
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-actions:has(.action-constraints) {
@@ -402,9 +424,7 @@
   }
 
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action { display: none; }
-
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints) { display: grid; }
-
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints)::after { display: none; }
 
   .concrete-primary-panel > .plan-fuel,
@@ -413,26 +433,6 @@
     margin-inline: auto;
     padding-block: 0;
     border-block-start: 0;
-  }
-
-  @media (max-width: 64rem) {
-    .concrete-day-body {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-3);
-    }
-
-    .concrete-day-context,
-    .selected-day-weather { grid-column: 1; }
-
-    .execution-action:not(.route-execution-group) .action-body {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .execution-action:not(.route-execution-group) .action-stay,
-    .execution-action:not(.route-execution-group) .action-todos,
-    .execution-action:not(.route-execution-group) .action-facilities,
-    .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention { grid-column: 1; }
   }
 
   @media (max-width: 52rem) {
@@ -452,12 +452,19 @@
     .itinerary-overview { margin-block: var(--space-3); }
 
     .itinerary-day-row {
-      grid-template-columns: 3.5rem 5.8rem 1.5rem 5.5rem minmax(9rem, 1fr) auto;
-      gap: .3rem;
-      overflow-x: auto;
+      grid-template-columns: 3.4rem 5.5rem 1.2rem 1.5rem minmax(0, 1fr) auto;
+      gap: .25rem .4rem;
+      min-width: 0;
+      overflow: visible;
       font-size: var(--type-caption);
     }
 
+    .itinerary-day-weather {
+      gap: 0;
+      justify-content: center;
+    }
+
+    .itinerary-weather-label { display: none; }
     .itinerary-day-title { white-space: normal; }
 
     .concrete-primary-tabs {
@@ -473,20 +480,54 @@
 
     .execution-action:not(.route-execution-group) {
       grid-template-columns: 3.6rem minmax(0, 1fr);
+      gap: 0 var(--space-2);
       padding-inline-start: var(--space-5);
     }
 
-    .execution-action:not(.route-execution-group) .action-body { grid-template-columns: 1fr; }
+    .plan-cost,
+    .cost-table,
+    .cost-row,
+    .cost-item {
+      min-width: 0;
+      max-width: 100%;
+    }
 
-    .execution-action:not(.route-execution-group) .action-header,
-    .execution-action:not(.route-execution-group) .next-move,
-    .execution-action:not(.route-execution-group) .action-stay,
-    .execution-action:not(.route-execution-group) .action-todos,
-    .execution-action:not(.route-execution-group) .action-facilities,
-    .execution-action:not(.route-execution-group) .action-constraints,
-    .execution-action:not(.route-execution-group) .action-attention {
+    .cost-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .25rem;
+      align-items: start;
+    }
+
+    .cost-item-detail { overflow-wrap: anywhere; }
+
+    .cost-amount {
+      justify-content: flex-start;
+      max-width: 100%;
+      white-space: normal;
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .itinerary-day-row {
+      grid-template-columns: 3rem 5.15rem 1rem 1.35rem minmax(0, 1fr) auto;
+      gap: .2rem .3rem;
+    }
+
+    .itinerary-day-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .day-workspace[data-active-view="actions"] .route-execution-summary {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .day-workspace[data-active-view="actions"] .route-execution-summary > .route-execution-label,
+    .day-workspace[data-active-view="actions"] .route-execution-summary > h4,
+    .day-workspace[data-active-view="actions"] .route-execution-identity,
+    .day-workspace[data-active-view="actions"] .route-execution-endpoints {
       grid-column: 1;
-      grid-row: auto;
     }
   }
 }
