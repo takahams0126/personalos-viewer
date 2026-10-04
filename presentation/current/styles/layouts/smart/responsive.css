@@ -1,4 +1,46 @@
 @layer layout {
+  @media (min-width: 52.01rem) {
+    .selected-day-weather {
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .execution-package-selector,
+    .execution-package-options,
+    .execution-package-selector > .day-workspace-tabs {
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-inline: contain;
+    }
+
+    .execution-package-options,
+    .execution-package-selector > .day-workspace-tabs {
+      scrollbar-width: thin;
+    }
+
+    .plan-fuel .support-panel-header,
+    .plan-cost .support-panel-header {
+      justify-content: flex-start;
+      gap: var(--space-3);
+    }
+
+    .concrete-primary-panel > .plan-fuel {
+      width: min(100%, 56rem);
+      margin-inline: 0 auto;
+    }
+
+    .concrete-primary-panel > .plan-cost {
+      width: min(100%, 54rem);
+      margin-inline: 0 auto;
+    }
+
+    .cost-day-groups {
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 18rem));
+      justify-content: start;
+    }
+  }
+
   @media (max-width: 72rem) {
     html[data-page-type="top"] [data-layout-block="results"] .top-result-list {
       grid-template-columns: minmax(0, 1fr);

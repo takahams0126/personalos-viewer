@@ -7,6 +7,15 @@ const SEGMENT_COLORS = Object.freeze([
   '#2e7d32', '#c62828', '#00838f', '#5d4037', '#3949ab'
 ]);
 
+const PERSONALOS_MAP_STYLES = Object.freeze([
+  { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+  { featureType: 'transit', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+  { featureType: 'administrative.locality', elementType: 'labels', stylers: [{ lightness: 28 }, { saturation: -35 }] },
+  { featureType: 'administrative.neighborhood', elementType: 'labels', stylers: [{ visibility: 'off' }] },
+  { featureType: 'road', elementType: 'labels', stylers: [{ lightness: 20 }, { saturation: -25 }] },
+  { featureType: 'landscape', elementType: 'labels', stylers: [{ lightness: 24 }, { saturation: -30 }] }
+]);
+
 function loadGoogleMaps() {
   if (globalThis.google?.maps) return Promise.resolve(globalThis.google.maps);
   if (mapsPromise) return mapsPromise;
@@ -350,7 +359,8 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
       zoom: 11,
       gestureHandling: 'cooperative',
       mapTypeControl: false,
-      streetViewControl: false
+      streetViewControl: false,
+      styles: PERSONALOS_MAP_STYLES
     });
     const popup = createGoogleMapPopup({ maps, map });
     map.addListener('click', () => popup.close());
