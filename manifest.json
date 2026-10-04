@@ -77,7 +77,21 @@
         "id": "CP001"
       },
       "title": "屋久島 4泊5日基本Plan",
-      "data_path": "data/concrete-plans/CP001.json"
+      "data_path": "data/concrete-plans/CP001.json",
+      "explorer": {
+        "type_label": "実施プラン",
+        "summary": "縄文杉と白谷雲水峡の山行を軸に、屋久島一周ドライブや温泉を組み合わせる4泊5日の基本旅行プラン。",
+        "tags": [],
+        "area_ids": [
+          "A013",
+          "A014",
+          "A015"
+        ],
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "屋久島 4泊5日基本Plan"
+        }
+      }
     },
     {
       "ref": {
