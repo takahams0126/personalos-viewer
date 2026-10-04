@@ -62,8 +62,8 @@ Desktop baseline:
 
 ```text
 12 columns
-Explorer max: 76rem
-standard detail max: 72rem
+Explorer max: 64rem
+standard detail max: 64rem
 centered in viewport
 ```
 
@@ -82,6 +82,9 @@ ConcretePlan  time 2 / journey 7 / support 3
 比率はSurfaceの責務に合わせてLayout ownerで具体化できるが、各Pageが独自page width / gutter systemを発明しない。
 Primary contentやsupport headerの関連情報をviewport左右端へ不用意に引き裂かず、意味上近い情報はclusterとして近接配置する。
 Cost / Weather / Fuel等のsupport surfaceは、必要以上にframe全幅へstretchせず、内容に見合うbounded widthを持てる。
+
+Explorer resultはDesktopでも1列compact listを基本とする。複数列Gridによって無関係な2件のrow heightを同期させたり、候補比較のために必要以上の横幅を要求しない。
+Route page link、Weather detail control、Fuel summary、Cost total等のowner utility / metadataはviewport端へ押し出さず、owner heading / labelの近くにclusterする。
 
 Responsiveは単純stackではなくpriority transformationを行う。
 Peer selectorは横方向をPrimary軸とし、vertical scrollbarを発生させない。候補が収まらない場合だけcomponent内部のhorizontal scrollを使う。
