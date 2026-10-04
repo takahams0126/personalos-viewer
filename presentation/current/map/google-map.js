@@ -1,3 +1,5 @@
+import { createGoogleMapPopup } from './google-map-popup.js';
+
 let mapsPromise;
 
 const SEGMENT_COLORS = Object.freeze([
@@ -54,27 +56,36 @@ function googleMapsUrl(point) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${point.position.lat},${point.position.lon}`)}`;
 }
 
-function infoContent(point, title) {
-  const node = document.createElement('article');
-  node.className = 'map-popup';
+function popupData(point, title) {
+  return {
+    title: `${point.order ? `${point.order}. ` : ''}${title}`,
+    actions: [{
+      label: 'Google Mapsで開く',
+      href: googleMapsUrl(point),
+      external: true
+    }]
+  };
+}
 
-  const heading = document.createElement('strong');
-  heading.className = 'map-popup-title';
-  heading.textContent = `${point.order ? `${point.order}. ` : ''}${title}`;
-  node.append(heading);
+function markerIcon(maps, active = false) {
+  return {
+    path: maps.SymbolPath.CIRCLE,
+    scale: active ? 12 : 9.5,
+    fillColor: active ? '#0f5144' : '#d84a3d',
+    fillOpacity: 1,
+    strokeColor: '#ffffff',
+    strokeOpacity: 1,
+    strokeWeight: active ? 2.6 : 2.1
+  };
+}
 
-  const actions = document.createElement('div');
-  actions.className = 'map-popup-actions';
-
-  const external = document.createElement('a');
-  external.href = googleMapsUrl(point);
-  external.target = '_blank';
-  external.rel = 'noopener noreferrer';
-  external.textContent = 'Google Mapsで開く';
-  actions.append(external);
-
-  node.append(actions);
-  return node;
+function markerLabel(order) {
+  return {
+    text: String(order || ''),
+    color: '#ffffff',
+    fontSize: '10px',
+    fontWeight: '700'
+  };
 }
 
 function segmentColor(segment, index) {
@@ -231,7 +242,7 @@ function buildSegmentLegend(segmentViews, pointTitleById, pointOrderById) {
   return legend;
 }
 
-function bindRouteSequence(view, markerViews, map, maps) {
+function bindRouteSequence(view, markerViews, map, maps, popup) {
   const page = view.closest('.route-page');
   if (!page) return;
   const sequenceItems = [...page.querySelectorAll('.route-sequence-item[data-order]')];
@@ -248,15 +259,19 @@ function bindRouteSequence(view, markerViews, map, maps) {
     });
     markerViews.forEach(item => {
       const active = String(item.point.order) === String(order);
-      item.marker.setOpacity(!order || active ? 1 : 0.42);
-      item.marker.setZIndex(active ? 100 : undefined);
+      item.marker.setOpacity(!order || active ? 1 : 0.5);
+      item.marker.setIcon(markerIcon(maps, active));
+      item.marker.setZIndex(active ? 100 : Number(item.point.order || 1));
     });
   };
 
   const select = (order, { openPopup = false, scrollSequence = false } = {}) => {
     pinnedOrder = order ? String(order) : null;
     apply(pinnedOrder);
-    if (!pinnedOrder) return;
+    if (!pinnedOrder) {
+      popup.close();
+      return;
+    }
     const markerView = markerByOrder.get(pinnedOrder);
     if (!markerView) return;
     map.panTo(markerView.marker.getPosition());
@@ -296,7 +311,7 @@ function bindRouteSequence(view, markerViews, map, maps) {
   });
 }
 
-function observeMapResize(canvas, map, maps, bounds) {
+function observeMapResize(canvas, map, maps, bounds, popup) {
   if (!globalThis.ResizeObserver || !canvas) return;
   let lastWidth = 0;
   let lastHeight = 0;
@@ -310,6 +325,7 @@ function observeMapResize(canvas, map, maps, bounds) {
     requestAnimationFrame(() => {
       maps.event.trigger(map, 'resize');
       if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
+      popup?.draw?.();
     });
   });
   observer.observe(canvas);
@@ -336,6 +352,8 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
       mapTypeControl: false,
       streetViewControl: false
     });
+    const popup = createGoogleMapPopup({ maps, map });
+    map.addListener('click', () => popup.close());
 
     const bounds = new maps.LatLngBounds();
     const pointById = new Map(points.map(point => [point.point_id, point]));
@@ -350,7 +368,6 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
       drawSemanticConnection(maps, map, connection, pointById, bounds);
     }
 
-    const infoWindow = new maps.InfoWindow();
     const markerViews = [];
     points.forEach((point, index) => {
       const position = latLng(point.position);
@@ -359,11 +376,16 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
         map,
         position,
         title: pointTitles[index],
-        label: String(point.order)
+        label: markerLabel(point.order),
+        icon: markerIcon(maps),
+        zIndex: Number(point.order || index + 1),
+        optimized: true
       });
       marker.addListener('click', () => {
-        infoWindow.setContent(infoContent(point, pointTitles[index]));
-        infoWindow.open({ map, anchor: marker });
+        popup.open({
+          position: marker.getPosition(),
+          data: popupData(point, pointTitles[index])
+        });
       });
       markerViews.push({ point, marker, title: pointTitles[index] });
     });
@@ -372,10 +394,10 @@ async function hydrateMapView(view, { artifactLoader, resolver }) {
     const legend = buildSegmentLegend(segmentViews, pointTitleById, pointOrderById);
     if (legend) canvas.insertAdjacentElement('afterend', legend);
 
-    bindRouteSequence(view, markerViews, map, maps);
+    bindRouteSequence(view, markerViews, map, maps, popup);
 
     if (!bounds.isEmpty()) map.fitBounds(bounds, 36);
-    observeMapResize(canvas, map, maps, bounds);
+    observeMapResize(canvas, map, maps, bounds, popup);
     state?.remove();
     view.dataset.mapState = 'ready';
   } catch (error) {
