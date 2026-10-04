@@ -41,6 +41,9 @@ Page
 Global catalog navigationはExplorer / ConcretePlans / Plans / Routes / Spots。
 ConcretePlans / Plans / Routes / SpotsはTOP ExplorerのEntity type filterへの入口であり、新しいDomain hierarchyではない。
 
+Section boundaryは空要素・空レコード・上下両方の重複border・過大な余白で表現しない。
+意味上の区切りは、owner Blockが持つsingle separatorとcompactなspacingで表現する。
+
 ## View grammar
 
 ```text
@@ -94,6 +97,9 @@ explorer controls 3 | results 9
 - 種類filterはSpot / Route / Plan / ConcretePlanの明示selectionを持ち、Explorer自体は全catalog表示の入口とする。
 - ResultsはPrimary workspace。
 - Mobileではcontrols → resultsのreading orderへ戻す。
+- Mobile controlsは大型Cardとして縦方向を占有せず、filter group / input / selectの操作性を維持したcompact control surfaceとする。
+- Mobile resultsは候補比較を優先するhigh-density listとし、thumbnail / meta / title / summaryのhierarchyを保ちながら1件の縦占有を抑える。
+- Mobile summaryは一覧比較に必要な範囲へ制限し、tag collectionを常時大きく表示しない。
 
 ### Spot
 
@@ -141,6 +147,9 @@ AppealはIdentity Hero内部の補足ではなく、Workspaceへ導く独立lead
 Appeal strengthsは長文を横分割せず、1列の縦scanを基本とする。
 Sequence and Map share the same explicit baseline order and local selection state.
 Map geometryからorderを推測しない。
+Sequence occurrenceは番号・Spot名・必要な短い意味をcompactに保ちつつ、Spot link以外の行全体をMap cross-selectionのinteraction surfaceとして使える幅にする。
+Anchor / button等の明示controlはそのnavigation / control actionを優先する。
+artifact bindingがあるMapは、canvas領域の存在だけでなく実描画成功をWorkspace成立条件として扱う。空canvasを正常表示として完了扱いしない。
 
 Mobile priority:
 
@@ -173,7 +182,7 @@ Plan上部はRoute ref一覧を再掲しない。Routeは各Day Journey内のexp
 ConcretePlan relationが存在する場合だけ、`実施プラン | ConcretePlan` のcompact relation rowとして表示する。
 Compact itinerary overviewはCanonical Day orderとDay titleを5行等のstructured listとしてscanする。Planは日付非依存なのでdate / weekday / Weatherを持ち込まない。
 Plan Journeyはplace / movement / route Semanticを保持しつつ、Object Graphではなく旅行の流れとして読む。
-Route occurrenceはPlan固有condition / alternativeを見せるが、Route内部summary / full stop sequenceを再展開しない。
+Identity / Execution relation / itinerary間はcompact vertical rhythmとsingle separatorを使い、空recordに見える余白や重複境界を作らない。
 
 Primary Day Navigator:
 
@@ -188,9 +197,23 @@ DAY1 | DAY2 | ...
 - ConcretePlanとinteraction primitiveを共有できるが、Planには日付 / Weather / time constraintを表示しない。
 - Mobileでも全Day縦積みに戻さずhorizontal scrollを許容する。
 
-Plan Route occurrenceはPrimary Journey contentなのでselected Route identity/detailを初期表示する。
-Alternativeが複数ある場合のRoute selectorは維持するが、selected Route detailを「詳細を見る」Disclosureへ隠さない。
-Route full sequenceはRoute page ownerに残す。
+Plan Route occurrenceはPrimary Journey contentであり、Route pageへ遷移しなくてもその日の体験を理解できる最小情報を初期表示する。
+
+```text
+compact utility
+  Route title / family / variant / Route Page link
+  alternative selector?        # 複数候補時のみ
+summary
+ordered stops
+```
+
+- Route title / family / variant / navigation / selectorはcompact utilityとしてまとめ、summary / ordered stopsより強く主張しない。
+- summaryはowner Route Public Entityの既存summaryを使う。
+- ordered stopsはowner Route Public Entityのexplicit sequenceを表示用にresolveし、Planへ第二正本として保存しない。
+- full Route metadata / appeal strengths / constraints / MapはPlanへ再展開しない。
+- Alternativeが複数ある場合のRoute selectorは維持する。
+- selector切替時はselected Routeのtitle / family / variant / summary / ordered stops / Route linkを一式同期する。
+- selected Route detailを「詳細を見る」Disclosureへ隠さない。
 
 ### ConcretePlan
 
@@ -219,6 +242,8 @@ Selected Cost
 Execution overviewは旅行全体のperiod / source Plan / material statusをcompact metadataとして扱う。
 Weather synthetic等のsecondary noticeや確認事項本文をPrimary Journeyより大きい常時表示にしない。Material attentionはcompact controlから確認できるsecondary surfaceへ移せる。
 Compact itinerary overviewは旅行全Dayを短くscanするOverviewであり、Primary Workspace tabとは別責務。
+Identity / Execution overview / itinerary / Primary Workspace間はcompact vertical rhythmとsingle separatorを使い、空白をSection境界の代替にしない。
+Compact itinerary overview各行へ、時刻制約の存在だけを示す小型warning glyphを重複表示しない。具体的制約はSelected Day / Action近傍で示す。
 
 Primary Workspace:
 
@@ -266,7 +291,6 @@ Selected Day Workspace:
 Day context
   Day / date / title
   execution window
-  material time-constraint indicator?
 3-hour Weather?
 Execution Package Selector?
 Day Workspace
@@ -275,9 +299,13 @@ Day-specific supporting information?
 ```
 
 Day contextと3-hour WeatherはDesktopでも縦reading orderとし、Weatherをtitle横の固定2-columnへ置かない。
+3-hour Weatherは時刻 / 天気 / 気温 / 降水確率 / 降水量 / 風を1つのhorizontal scroll viewportで扱う。
+preview/detailを別scroll surfaceに分けず、detail開閉が必要な場合も同じmatrix内のrow visibilityだけを切り替える。
+Weatherの左label列は同じmatrix内のsticky columnとし、opaque backgroundと前面layerを持ってdata cellの潜り込みを防ぐ。
 Fuelはimportance / Day / station / timing / contextをstructured operational rowとしてscanできる形にする。
 CostはPublished Cost Semanticからtrip/day scope、short label、detail、amount/state、annotationをそのまま使い、Viewerが文字列解析で分類しない。
-長文annotationを金額比較rowへ押し込まず、参照可能な注釈として分離する。
+Cost rowはMobileでも `item info | amount/state` のcompact comparisonを基本とし、detailだけlabel下へ折り返してよい。右側余白が十分あるのに全itemを1列縦積みへ崩さない。
+長文annotationを金額比較rowへ押し込まず、`注1`等から参照できるplain numbered notesとして分離し、annotationごとのCard surfaceを作らない。
 Route Action rangeがPublic Boundaryで明示されている場合だけRoute Execution Groupを構成する。
 ViewerがAction類似性からRoute relationを推測しない。
 
@@ -312,12 +340,13 @@ Responsiveは単純なcolumn stackだけでなく、Page purposeとSemantic prio
 - Desktop: Sequence × Map等、同時比較が明確に価値を持つ箇所だけ横方向を利用する。
 - Tablet: secondary supportを下段へ移動できる。
 - Mobile: primary visual anchor / identity / journeyを優先し、supporting detailは後続またはdisclosureへ。
+- TOP Mobileはfilter / resultを単に縦積みするだけでなく、候補比較のためcontrolとresult row双方の情報密度を高める。
 - Plan Day Navigator / ConcretePlan Primary Workspaceは必要に応じて横scrollを許容するが、縦scrollbarを出さずcontent本体を横overflowさせない。
 - Route Mobileはvertical ordered sequence → Mapのreading orderとし、sequence自体を横scroll card列へしない。
 - ConcretePlanではDay context → Weather → Journeyの順を全viewportで維持する。
-- Weatherのwide hourly dataだけはcomponent内部scrollを許容し、Page全体へoverflowを伝播させない。
+- Weatherのwide hourly dataだけはcomponent内部の単一horizontal viewportでscrollし、Page全体へoverflowを伝播させない。
 - Timeline / Event supportは狭幅で自然に1列へ収まり、Desktop専用右railをNormal grammarにしない。
-- CostはMobileで金額を右端固定したdesktop tableのままにせず、1列semantic rowへreflowする。
+- CostはMobileでもcompact comparisonを維持し、金額列を保持できる幅では `item info | amount/state` を使う。
 - Spot MobileではMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順を維持する。
 - Operational constraintをMobileだけ隠さない。
 
