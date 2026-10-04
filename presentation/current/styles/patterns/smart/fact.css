@@ -196,14 +196,18 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .cost-group {
-    margin-block-start: var(--space-5);
-  }
+  .cost-group { margin-block-start: var(--space-3); }
 
   .cost-group > h3 {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
     color: var(--text-soft);
-    font-size: var(--type-entity-title);
+    font-size: var(--type-control-label);
+  }
+
+  .cost-day-groups > h3 {
+    margin-block: var(--space-3) var(--space-1);
+    color: var(--muted);
+    font-size: var(--type-control-label);
   }
 
   .cost-table {
@@ -217,75 +221,74 @@
     gap: var(--space-3);
     align-items: center;
     min-width: 0;
-    padding-block: .75rem;
+    padding-block: .55rem;
     border-block-end: var(--border-width) solid var(--line);
   }
 
   .cost-item {
     display: grid;
-    gap: .12rem;
+    gap: .08rem;
     min-width: 0;
   }
 
   .cost-item-label {
     min-width: 0;
     font-size: var(--type-body);
-    line-height: 1.4;
+    line-height: 1.35;
     overflow-wrap: anywhere;
   }
 
   .cost-item-detail {
     color: var(--muted);
-    font-size: var(--type-meta);
-    line-height: 1.4;
+    font-size: var(--type-caption);
+    line-height: 1.35;
   }
 
   .cost-amount {
     display: flex;
-    gap: .35rem;
+    gap: .3rem;
     align-items: baseline;
     justify-content: flex-end;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
 
-  .cost-amount > strong {
-    font-size: var(--type-value);
-  }
+  .cost-amount > strong { font-size: var(--type-value); }
 
   .cost-state {
     color: var(--muted);
     font-size: var(--type-caption);
   }
 
-  .cost-amount sup {
-    font-size: var(--type-caption);
-  }
+  .cost-amount sup { font-size: var(--type-caption); }
 
   .cost-notes {
-    margin-block-start: var(--space-5);
-    padding-block-start: var(--space-3);
+    margin-block-start: var(--space-3);
+    padding-block-start: var(--space-2);
     border-block-start: var(--border-width) solid var(--line);
   }
 
   .cost-notes > h3 {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
     color: var(--muted);
-    font-size: var(--type-control-label);
+    font-size: var(--type-caption);
   }
 
   .cost-notes ol {
     display: grid;
-    gap: var(--space-2);
+    gap: .3rem;
     margin: 0;
-    padding-inline-start: 1.8rem;
+    padding-inline-start: 1.45rem;
   }
 
   .cost-notes li {
-    padding-inline-start: .25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     color: var(--text-soft);
-    font-size: var(--type-meta);
-    line-height: 1.5;
+    font-size: var(--type-caption);
+    line-height: 1.4;
   }
 
   .cost-awaiting-structured-data .cost-item-label {
@@ -306,11 +309,43 @@
     .fuel-event-row .google-maps-link { justify-self: start; }
 
     .cost-row {
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) minmax(6.75rem, max-content);
       gap: var(--space-2);
+      align-items: center;
+      padding-block: .45rem;
     }
 
     .cost-item-label { font-size: var(--type-meta); }
     .cost-amount > strong { font-size: var(--type-body); }
+  }
+}
+
+/* Cost owns its responsive comparison geometry; ConcretePlan only places the panel. */
+@layer layout {
+  @media (max-width: 52rem) {
+    .concrete-primary-panel .cost-row {
+      grid-template-columns: minmax(0, 1fr) minmax(6.75rem, max-content);
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .concrete-primary-panel .cost-amount {
+      justify-content: flex-end;
+      max-width: none;
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .concrete-primary-panel .cost-row {
+      grid-template-columns: minmax(0, 1fr) minmax(5.75rem, max-content);
+      gap: .45rem;
+    }
+
+    .concrete-primary-panel .cost-amount {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      white-space: normal;
+    }
   }
 }
