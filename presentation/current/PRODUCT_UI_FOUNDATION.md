@@ -2,7 +2,7 @@
 
 Status: active implementation foundation
 Scope: Current Leisure Viewer / Smart preset
-Updated: 2026-10-02
+Updated: 2026-10-05
 
 ## Purpose
 
@@ -62,9 +62,13 @@ Desktop baseline:
 
 ```text
 12 columns
-page max: 84rem
-standard detail max: 80rem
+Explorer max: 76rem
+standard detail max: 72rem
+centered in viewport
 ```
+
+広いDesktop viewportでもcontentを無制限に横へ伸ばさない。Product frameは中央配置し、outer gutterを確保する。
+`viewportを使い切る`こと自体を価値にせず、短い視線移動と情報clusterのまとまりを優先する。
 
 Reference allocation:
 
@@ -76,8 +80,11 @@ ConcretePlan  time 2 / journey 7 / support 3
 ```
 
 比率はSurfaceの責務に合わせてLayout ownerで具体化できるが、各Pageが独自page width / gutter systemを発明しない。
+Primary contentやsupport headerの関連情報をviewport左右端へ不用意に引き裂かず、意味上近い情報はclusterとして近接配置する。
+Cost / Weather / Fuel等のsupport surfaceは、必要以上にframe全幅へstretchせず、内容に見合うbounded widthを持てる。
 
 Responsiveは単純stackではなくpriority transformationを行う。
+Peer selectorは横方向をPrimary軸とし、vertical scrollbarを発生させない。候補が収まらない場合だけcomponent内部のhorizontal scrollを使う。
 
 ## Typography Roles
 
@@ -114,10 +121,12 @@ Page CSSが個別に新しいfont scaleを増殖させない。
 ### Map
 
 Route / Executionの空間理解。Mapとordered sequence / legendを同一workspaceとして扱う。
+PersonalOS marker / route geometryをPrimaryにし、base mapのPOI / locality labelは必要に応じて弱化できる。Google側の詳細名称確認は`Google Mapsで開く`へ委譲し、Viewer Mapでlabel同士を競合させない。
 
 ### Weather
 
 日付・時間帯の変化を比較するsupporting decision information。独立巨大Cardへしない。
+Desktopではタイトルとdetail controlを同じ意味clusterとして近接配置し、離れた両端へ配置しない。
 
 ### Media
 
@@ -126,6 +135,7 @@ Spotのvisual anchor。Carousel / Lightboxは同じMedia grammarを共有する�
 ### Control / Disclosure
 
 日程調整、Variant selector、詳細展開等。Main contentより視覚的に弱くする。
+Primary peer selectorは縦scrollを持たない。
 
 ### Attention
 
@@ -232,7 +242,7 @@ Visual reviewはpixel defectの列挙ではなく次を主軸とする。
 2. primary visual anchorが明確か。
 3. scan順序が自然か。
 4. 画面面積が判断価値に比例しているか。
-5. desktop widthを有効利用しているか。
+5. desktop widthを有効利用しつつ、必要以上に横へstretchしていないか。
 6. Cardに依存せず比較できるか。
 7. Entity間を迷わず移動できるか。
 8. MobileでSemantic priorityを維持できるか。
