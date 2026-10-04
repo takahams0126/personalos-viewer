@@ -7,7 +7,7 @@
   .plan-page > [data-layout-block="composition-context"],
   .plan-composition {
     width: min(100%, 64rem);
-    margin-block: var(--space-4) var(--space-4);
+    margin-block: var(--space-2) 0;
   }
 
   .plan-composition-row {
@@ -16,8 +16,8 @@
     gap: var(--space-2) var(--space-3);
     align-items: baseline;
     min-width: 0;
-    padding-block: .45rem;
-    border-block: var(--border-width) solid var(--line);
+    padding-block: .4rem;
+    border-block-end: var(--border-width) solid var(--line);
   }
 
   .plan-composition-row > h2 {
@@ -35,13 +35,13 @@
 
   .plan-itinerary-overview {
     width: min(100%, 68rem);
-    margin-block: var(--space-4) var(--space-5);
-    padding-block: var(--space-3);
-    border-block: var(--border-width) solid var(--line);
+    margin-block: 0 var(--space-3);
+    padding-block: var(--space-2);
+    border-block-end: var(--border-width) solid var(--line);
   }
 
   .plan-itinerary-overview > h2 {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
     font-size: var(--type-section-title);
   }
 
@@ -59,8 +59,8 @@
     gap: var(--space-2);
     align-items: baseline;
     min-width: 0;
-    min-height: 2.2rem;
-    padding-block: .35rem;
+    min-height: 2rem;
+    padding-block: .3rem;
     border-block-end: var(--border-width) solid var(--line);
   }
 
@@ -90,7 +90,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     min-width: 0;
-    margin-block-end: var(--space-4);
+    margin-block-end: var(--space-3);
     border-block-end: var(--border-width) solid var(--line);
     scrollbar-width: thin;
   }
