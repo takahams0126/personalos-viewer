@@ -365,14 +365,36 @@ Annotation:
 - 長いmaterial noticeはindicator + secondary surfaceを利用できる。
 - Weather / Action固有issueをglobal attentionへ重複移動しない。
 
-## Navigation / Execution Package
+## Navigation / Execution Package / Day Workspace
 
-Day / Route detail / Map / Fuel / Cost / Variant等のswitchはlocal presentation stateでありCanonicalを変更しない。
+PlanのPrimary Day Navigator、ConcretePlanのPrimary Workspace、Execution Package Selector、Day Workspace switcher、Route Mobile view switcherは別意味として扱う。
+
+```text
+Plan Primary Day Navigator
+→ どのconceptual Dayを見るか
+
+ConcretePlan Primary Workspace
+→ どのexecution Day / Fuel / Costを見るか
+
+Execution Package Selector
+→ baseline / explicit Variant
+
+ConcretePlan Day Workspace
+→ 行動順 / Modeled Route詳細? / マップ?
+
+Route Mobile View Switcher
+→ 立ち寄り順 / 地図
+```
+
+いずれもlocal presentation stateのみでCanonicalを変更しない。
+Tab / switcher railは横方向のpeer controlとし、必要に応じ`overflow-x`を許容するが`overflow-y`は発生させない。
 Semantic availabilityは上流Boundaryを尊重し、Viewerがrelationを推測してtabを増やさない。
 
-## Responsive principle
+Timeline ↔ Map cross-selectionはstable explicit bindingが存在する場合だけ追加する。Entity名・座標・表示順の類似性だけからrelationを推測しない。
 
-Responsiveは情報を単に隠す処理ではない。
+## Responsive rule
+
+Responsiveは単純なcolumn stackや情報隠蔽ではなく、Page purposeとSemantic priorityを保つpriority transformationとする。
 
 ```text
 same semantics
@@ -380,6 +402,54 @@ same semantics
 + viewport-specific geometry
 ```
 
-- Mobileで常時表示がPrimary taskを圧迫するsecondary informationはswitch / disclosureへ移せる。
-- Desktopで十分なspaceがあり同時比較価値が高いものはgrid / splitを使う。
+- Base reading orderをDesktop / Tablet / Mobileで共有し、viewport差で意味順序を不用意に反転しない。
+- Mobileで発見された情報階層上の問題は共通grammarへ直し、Desktopで意味上同じなら同じ構造を使う。
+- Desktop: Sequence × Map、DAY別Cost等、同時比較が明確に価値を持つ箇所だけ横方向を利用する。
+- Tablet: secondary supportを下段へ移動できる。
+- Mobile: primary visual anchor / identity / journeyを優先し、常時表示がPrimary taskを圧迫するsecondary informationはswitch / disclosureへ移せる。
+- TOP Mobileは候補比較のためcontrolsとseparator rows双方の情報密度を高める。
+- Plan Day Navigator / ConcretePlan Primary Workspaceは必要に応じ横scrollを許容するが、縦scrollbarを出さずcontent本体を横overflowさせない。
+- Route MobileはSequence / Map peer switchを使い、sequenceを横scroll card列へしない。
+- ConcretePlanはDay context → Weather → Journeyのreading orderを全viewportで維持する。
+- Weather wide dataだけはcomponent内部の単一horizontal viewportでscrollする。
+- Timeline / Event supportは狭幅で自然に1列へ収まり、Desktop専用右railをNormal grammarにしない。
+- CostはMobileでも科目と金額のcompact comparisonを維持する。
+- Spot MobileはMedia → Identity / Summary → Quick Practical → Appeal / Review → Supportの順。
+- Operational constraintをMobileだけ隠さない。
 - title / spacing / row densityはMobileで特にcompactにするが、情報階層問題ならDesktopにも共通反映する。
+
+Source DOM reading / focus orderを壊さない。
+
+## Deterministic runtime rules
+
+Allowed:
+- explicit page type
+- explicit semantic role
+- explicit relation / Action range
+- explicit optional presence
+- declared responsive/container state
+- local interaction state
+
+Not allowed:
+- prose interpretation
+- visual similarityからDomain relation推測
+- Route type label / transportからModeled Route relation推測
+- runtime layout scoring
+- missing semanticの作文
+- silent fallback to another Page Layout Definition
+
+## Implementation invariant
+
+Presentation issueをreview履歴fileとして積み上げない。
+
+禁止:
+
+```text
+convergence-N.css
+review-N.css
+fix.css
+patch.css
+temporary.css
+```
+
+修正は責務ownerの最終ruleを直接更新し、obsolete ruleを削除する。
