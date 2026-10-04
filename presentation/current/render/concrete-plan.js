@@ -60,21 +60,58 @@ function renderEventIcon(target) {
   });
 }
 
+function publicLink(data, semantic) {
+  return (data?.links || []).find(item => item.semantic === semantic && item.url) || null;
+}
+
+function renderExternalLink(link, className) {
+  if (!link?.url) return null;
+  return h('a', {
+    className,
+    attrs: { href: link.url, target: '_blank', rel: 'noopener noreferrer' },
+    text: link.label || '開く'
+  });
+}
+
 async function googleMapsLink(event, resolver) {
   const ref = event?.travel_point_ref;
   if (!ref) return null;
   try {
     const loaded = await resolver.load(ref);
-    const link = (loaded.data?.links || []).find(item => item.semantic === 'google_maps');
-    if (!link?.url) return null;
-    return h('a', {
-      className: 'google-maps-link',
-      attrs: { href: link.url, target: '_blank', rel: 'noopener noreferrer' },
-      text: link.label || 'Google Mapsで開く'
-    });
+    return renderExternalLink(publicLink(loaded.data, 'google_maps'), 'google-maps-link');
   } catch {
     return null;
   }
+}
+
+async function loadFuelStation(event, resolver) {
+  const ref = event?.travel_point_ref;
+  if (!ref) return null;
+  try {
+    const loaded = await resolver.load(ref);
+    return loaded.data || null;
+  } catch {
+    return null;
+  }
+}
+
+function renderFuelStationDetails(station) {
+  if (!station) return null;
+  const facts = station.facts || [];
+  return h('div', { className: 'fuel-station-details' },
+    station.location?.text
+      ? h('p', { className: 'fuel-station-address', text: station.location.text })
+      : null,
+    facts.length
+      ? h('dl', { className: 'fuel-station-facts' }, facts.map(fact =>
+          h('div', {}, h('dt', { text: fact.label }), h('dd', { text: fact.value }))
+        ))
+      : null,
+    h('div', { className: 'fuel-station-actions' },
+      renderExternalLink(publicLink(station, 'google_maps'), 'fuel-station-action'),
+      renderExternalLink(publicLink(station, 'official'), 'fuel-station-action')
+    )
+  );
 }
 
 function renderTimelineTime(action) {
@@ -307,10 +344,6 @@ async function renderRouteExecutionGroup(relation, routeActions, resolver, fuelE
   const resolved = await resolveRouteExecution(relation, resolver);
   const firstAction = routeActions[0];
   const lastAction = routeActions[routeActions.length - 1];
-  const [startTarget, endTarget] = await Promise.all([
-    firstAction ? describeTarget(firstAction.target, resolver) : null,
-    lastAction ? describeTarget(lastAction.target, resolver) : null
-  ]);
   const actionNodes = await Promise.all(routeActions.map(action => renderAction(action, resolver, fuelEvents)));
   const startLabel = actionStartLabel(firstAction);
   const endLabel = actionEndLabel(lastAction);
@@ -337,13 +370,6 @@ async function renderRouteExecutionGroup(relation, routeActions, resolver, fuelE
         h('p', { className: 'route-execution-label', text: 'ルート' }),
         h('h4', {}, entityTitle(relation.route_ref, resolved.title, resolved.unavailable)),
         resolved.identity ? h('p', { className: 'route-execution-identity', text: resolved.identity }) : null,
-        startTarget && endTarget
-          ? h('p', { className: 'route-execution-endpoints', dataset: { semantic: 'route-execution-endpoints' }, text: `${startTarget.title} → ${endTarget.title}` })
-          : null,
-        resolved.routeData?.summary
-          ? h('p', { className: 'route-execution-description', dataset: { semantic: 'route-execution-description' }, text: resolved.routeData.summary })
-          : null,
-        h('p', { className: 'route-execution-action-range', dataset: { semantic: 'route-execution-action-range' }, text: `Action ${relation.from_action_order}〜${relation.to_action_order}` }),
         resolved.unavailable ? h('p', { className: 'component-unavailable', text: 'Route詳細を取得できませんでした' }) : null
       ),
       h('ol', { className: 'execution-flow route-execution-actions', dataset: { semantic: 'route-execution-actions' } }, actionNodes),
@@ -542,7 +568,7 @@ function renderAttentionDetails(plan) {
   return h('details', { className: 'execution-attention-popover', dataset: { semantic: 'execution-attention' } },
     h('summary', { className: 'execution-warning-trigger' },
       h('span', { className: 'execution-warning-icon', attrs: { 'aria-hidden': 'true' }, text: '⚠' }),
-      h('span', { text: `${items.length}件の確認事項` })
+      h('span', { text: `確認事項 ${items.length}件` })
     ),
     h('div', { className: 'execution-attention-panel' },
       h('h3', { text: '確認事項' }),
@@ -609,8 +635,9 @@ async function renderFuelSummary(fuel, resolver) {
     const priority = value => value?.importance?.code === 'required' ? 0 : 1;
     return priority(a) - priority(b) || (a.day_ordinal || 99) - (b.day_ordinal || 99);
   });
-  const items = await Promise.all(events.map(async event =>
-    h('li', {
+  const items = await Promise.all(events.map(async event => {
+    const station = await loadFuelStation(event, resolver);
+    return h('li', {
       className: 'fuel-event-row',
       dataset: { semantic: 'fuel-event', importance: event.importance?.code || '', timing: event.timing?.code || '' }
     },
@@ -619,11 +646,11 @@ async function renderFuelSummary(fuel, resolver) {
         event.importance?.label ? h('span', { className: 'fuel-importance', text: event.importance.label }) : null,
         event.timing?.label ? h('span', { className: 'fuel-timing', text: event.timing.label }) : null
       ),
-      h('strong', { className: 'fuel-station-title', text: event.station_title || '給油ポイント' }),
+      h('strong', { className: 'fuel-station-title', text: station?.title || event.station_title || '給油ポイント' }),
       event.context ? h('p', { className: 'fuel-event-context', text: event.context }) : null,
-      await googleMapsLink(event, resolver)
-    )
-  ));
+      renderFuelStationDetails(station)
+    );
+  }));
   return h('section', { className: 'plan-fuel', dataset: { semantic: 'fuel' } },
     h('header', { className: 'support-panel-header' },
       h('h2', { text: '給油計画' }),
