@@ -24,7 +24,7 @@ async function describeTarget(target, resolver) {
           pointType = '';
         }
       }
-      return { title: described.title, kind: target.entity_type, ref: target, pointType, unavailable: false };
+      return { title: described.title, kind: target.entity_type, ref: target, pointType };
     } catch {
       return {
         title: `${target.entity_type}:${target.id}`,
