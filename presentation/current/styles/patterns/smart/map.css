@@ -222,7 +222,7 @@
   .map-segment-legend-item {
     display: inline-grid;
     grid-template-columns: max-content minmax(0, 1fr);
-    gap: var(--space-1);
+    gap: .55rem;
     align-items: center;
     max-width: 20rem;
     border: var(--border-width) solid var(--line);
@@ -242,9 +242,30 @@
   }
 
   .map-segment-number {
-    color: var(--segment-color);
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-soft);
+    font-size: var(--type-caption);
     font-weight: var(--font-weight-emphasis);
+    line-height: 1.2;
     white-space: nowrap;
+  }
+
+  .map-segment-number::before {
+    content: '';
+    display: block;
+    width: .72rem;
+    height: .72rem;
+    flex: 0 0 .72rem;
+    border-radius: 50%;
+    background: var(--segment-color);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, white 35%, transparent);
   }
 
   .map-segment-label {
