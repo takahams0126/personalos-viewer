@@ -5,14 +5,14 @@
     max-inline-size: 100%;
     block-size: auto;
     object-fit: contain;
-    border-radius: .65rem;
-    background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+    border-radius: .7rem;
+    background: color-mix(in srgb, var(--accent) 24%, var(--surface));
   }
 
   .weather-icon[data-weather-code="cloudy"],
   .weather-icon[data-weather-code="overcast"],
   .weather-icon[data-weather-code="fog"] {
-    background: color-mix(in srgb, var(--text) 24%, var(--surface));
+    background: color-mix(in srgb, var(--text) 38%, var(--surface));
   }
 
   .weather-icon[data-weather-code="drizzle"],
@@ -24,19 +24,19 @@
   .weather-icon[data-weather-code="extreme_rain"],
   .weather-icon[data-weather-code="thunderstorm"],
   .weather-icon[data-weather-code="thunderstorms"] {
-    background: color-mix(in srgb, var(--accent-strong) 28%, var(--surface));
+    background: color-mix(in srgb, var(--accent-strong) 38%, var(--surface));
   }
 
   .weather-icon-itinerary {
-    width: 2rem;
-    height: 2rem;
-    padding: .12rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: .1rem;
   }
 
   .weather-icon-hourly {
-    width: 3rem;
-    height: 3rem;
-    padding: .16rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    padding: .14rem;
   }
 
   .itinerary-weather-label {
@@ -128,7 +128,7 @@
 
   .weather-matrix-row:last-child { border-block-end: 0; }
   .weather-matrix-row[hidden] { display: none; }
-  .weather-matrix-icon-row { min-height: 3.65rem; }
+  .weather-matrix-icon-row { min-height: 4rem; }
 
   .weather-matrix-label {
     position: sticky;
@@ -162,7 +162,7 @@
 
   @media (max-width: 52rem) {
     .selected-day-weather { padding: var(--space-2); }
-    .weather-icon-itinerary { width: 1.9rem; height: 1.9rem; }
-    .weather-icon-hourly { width: 2.85rem; height: 2.85rem; }
+    .weather-icon-itinerary { width: 2.2rem; height: 2.2rem; }
+    .weather-icon-hourly { width: 3.25rem; height: 3.25rem; }
   }
 }
