@@ -132,7 +132,7 @@
 
   .itinerary-day-row {
     display: grid;
-    grid-template-columns: 4rem 6rem 2rem 6.5rem minmax(0, 1fr) auto;
+    grid-template-columns: 4rem 6rem 2rem 6.5rem minmax(0, 1fr);
     gap: var(--space-1) var(--space-2);
     align-items: center;
     min-width: 0;
@@ -162,8 +162,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
-  .itinerary-day-attention { color: var(--caution); }
 
   .concrete-primary-workspace { margin-block-start: 0; }
 
@@ -215,9 +213,9 @@
   }
 
   .selected-day-weather,
-  .hourly-weather-toggle,
-  .weather-matrix-preview,
-  .weather-matrix-detail {
+  .hourly-weather,
+  .weather-matrix-viewport,
+  .weather-matrix {
     min-width: 0;
     max-width: 100%;
   }
@@ -455,7 +453,7 @@
     }
 
     .itinerary-day-row {
-      grid-template-columns: 3.4rem 5.5rem 1.2rem 1.5rem minmax(0, 1fr) auto;
+      grid-template-columns: 3.4rem 5.5rem 1.2rem 1.5rem minmax(0, 1fr);
       gap: .25rem .4rem;
       min-width: 0;
       overflow: visible;
@@ -486,33 +484,11 @@
       gap: 0 var(--space-2);
       padding-inline-start: var(--space-5);
     }
-
-    .plan-cost,
-    .cost-table,
-    .cost-row,
-    .cost-item {
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .cost-row {
-      grid-template-columns: minmax(0, 1fr);
-      gap: .25rem;
-      align-items: start;
-    }
-
-    .cost-item-detail { overflow-wrap: anywhere; }
-
-    .cost-amount {
-      justify-content: flex-start;
-      max-width: 100%;
-      white-space: normal;
-    }
   }
 
   @media (max-width: 38rem) {
     .itinerary-day-row {
-      grid-template-columns: 3rem 5.15rem 1rem 1.35rem minmax(0, 1fr) auto;
+      grid-template-columns: 3rem 5.15rem 1rem 1.35rem minmax(0, 1fr);
       gap: .2rem .3rem;
     }
 
