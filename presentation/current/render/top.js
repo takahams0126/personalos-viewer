@@ -1,4 +1,5 @@
 import { hrefFor } from '../core/router.js';
+import { resources } from '../core/resource-store.js';
 import { h } from './dom.js';
 
 const EXPLORER_TYPES = new Set(['spot', 'route', 'plan', 'concrete_plan']);
@@ -73,6 +74,30 @@ function renderFilterPanel(manifest) {
   );
 }
 
+function renderResultMeta(entry) {
+  const type = entry.ref.entity_type;
+  if (type !== 'plan' && type !== 'concrete_plan') return null;
+
+  const meta = h('p', {
+    className: 'top-result-meta',
+    dataset: { semantic: 'explorer-result-meta' },
+    text: entry.explorer.type_label
+  });
+
+  if (type === 'concrete_plan' && entry.data_path) {
+    resources.loadJson(entry.data_path)
+      .then(data => {
+        if (!data?.period?.label) return;
+        meta.textContent = `${entry.explorer.type_label} · ${data.period.label}`;
+      })
+      .catch(error => {
+        console.warn('[current-viewer] Explorer ConcretePlan period unavailable', entry.ref?.id, error);
+      });
+  }
+
+  return meta;
+}
+
 function renderResult(entry) {
   const explorer = entry.explorer;
   const type = entry.ref.entity_type;
@@ -115,6 +140,7 @@ function renderResult(entry) {
           attrs: { 'aria-hidden': 'true' }
         }, h('span', { text: explorer.type_label })),
     h('div', { className: 'top-result-body' },
+      renderResultMeta(entry),
       h('h3', { text: entry.title }),
       explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null
     )
