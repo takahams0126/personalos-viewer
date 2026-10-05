@@ -77,6 +77,14 @@ function buildHourlyMatrix(weatherDay) {
   const header = document.createElement('header');
   header.className = 'hourly-weather-header';
 
+  const conditionSummary = document.createElement('span');
+  conditionSummary.className = 'selected-day-weather-condition';
+  const dailyIcon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-itinerary');
+  dailyIcon.title = weatherDay.condition?.label || '';
+  const conditionLabel = document.createElement('strong');
+  conditionLabel.textContent = weatherDay.condition?.label || '—';
+  conditionSummary.append(dailyIcon, conditionLabel);
+
   const heading = document.createElement('h3');
   heading.textContent = '3時間天気';
 
@@ -86,7 +94,7 @@ function buildHourlyMatrix(weatherDay) {
   toggle.setAttribute('aria-expanded', 'false');
   toggle.textContent = '詳細表示';
 
-  header.append(heading, toggle);
+  header.append(conditionSummary, heading, toggle);
 
   const viewport = document.createElement('div');
   viewport.className = 'weather-matrix-viewport';
