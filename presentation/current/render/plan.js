@@ -84,11 +84,17 @@ function renderPlanItineraryOverview(days = []) {
     className: 'plan-itinerary-overview itinerary-overview',
     dataset: { semantic: 'plan-itinerary-overview' }
   },
-    h('h2', { text: '日程' }),
+    h('h2', { text: '旅の全体像' }),
     h('ol', { className: 'plan-itinerary-overview-list itinerary-overview-list' }, days.map(day =>
       h('li', { className: 'plan-itinerary-day-row', dataset: { day: day.ordinal } },
-        h('strong', { className: 'plan-itinerary-day-label itinerary-day-label', text: `DAY${day.ordinal}` }),
-        h('span', { className: 'plan-itinerary-day-title', text: day.title || `Day ${day.ordinal}` })
+        h('button', {
+          className: 'plan-itinerary-day-select',
+          dataset: { daySelect: day.ordinal },
+          attrs: { type: 'button', 'aria-label': `Day ${day.ordinal} ${day.title || ''}` }
+        },
+          h('strong', { className: 'plan-itinerary-day-label itinerary-day-label', text: `DAY${day.ordinal}` }),
+          h('span', { className: 'plan-itinerary-day-title', text: day.title || `Day ${day.ordinal}` })
+        )
       )
     ))
   );
@@ -185,15 +191,13 @@ async function loadRouteChoice(ref, relation, resolver) {
 }
 
 function routeChoiceIdentity(choice) {
-  const routeData = choice.routeData;
-  return routeData
-    ? [routeData.family_label, routeData.variant?.label].filter(Boolean).join('・')
-    : choice.title;
+  return choice.routeData?.title || choice.title || choice.ref?.id || 'ルート';
 }
 
 function routeChoiceLabel(choice, index, total) {
   const identity = routeChoiceIdentity(choice);
-  return total > 1 && index === 0 ? `標準・${identity}` : identity;
+  if (total <= 1) return identity;
+  return `${index === 0 ? '標準' : '代替'}：${identity}`;
 }
 
 async function renderRouteStops(routeData, resolver) {
@@ -213,7 +217,7 @@ async function renderRouteStops(routeData, resolver) {
   }, stops);
 }
 
-async function renderRouteChoiceContent(choice, resolver) {
+async function renderRouteChoiceContent(choice, resolver, index, total) {
   const routeData = choice.routeData;
   const condition = choice.relation?.selection_condition?.text;
   const replacementIntent = choice.relation?.replacement_intent;
@@ -222,10 +226,11 @@ async function renderRouteChoiceContent(choice, resolver) {
     className: 'plan-route-choice-content',
     dataset: { semantic: 'selected-route-detail', routeId: choice.ref?.id || '' }
   },
+    h('p', { className: 'plan-route-role', text: total > 1 ? (index === 0 ? '標準ルート' : '代替ルート') : '採用ルート' }),
     replacementIntent ? h('p', { className: 'plan-route-intent', text: replacementIntent }) : null,
     condition
       ? h('dl', { className: 'plan-event-facts plan-route-condition' },
-          h('div', {}, h('dt', { text: '選択条件' }), h('dd', { text: condition }))
+          h('div', {}, h('dt', { text: '選択条件' }), h('dd', { text: condition.text }))
         )
       : null,
     summary ? h('p', { className: 'plan-route-summary', text: summary }) : null,
@@ -245,7 +250,9 @@ async function renderRoute(item, resolver) {
     loadRouteChoice(item.route_ref, { selection_condition: item.selection_condition }, resolver),
     ...(item.alternatives || []).map(alternative => loadRouteChoice(alternative.route_ref, alternative, resolver))
   ]);
-  const contentNodes = await Promise.all(choices.map(choice => renderRouteChoiceContent(choice, resolver)));
+  const contentNodes = await Promise.all(
+    choices.map((choice, index) => renderRouteChoiceContent(choice, resolver, index, choices.length))
+  );
   const contentHost = h('div', { className: 'plan-route-choice-host' }, contentNodes[0]);
   const routeLink = h('a', {
     className: 'plan-route-page-link',
@@ -360,8 +367,9 @@ export async function renderPlan({ plan, manifestEntry, resolver }) {
 
   return h('article', { className: 'plan-page', dataset: { semantic: 'plan' } },
     h('header', { className: 'plan-overview', dataset: { semantic: 'plan-overview' } },
+      h('p', { className: 'plan-overview-kicker', text: '旅の設計' }),
       h('h1', { text: plan.title }),
-      plan.summary ? h('p', { text: plan.summary }) : null
+      plan.summary ? h('p', { className: 'plan-thesis', text: plan.summary }) : null
     ),
     composition,
     h('section', { className: 'plan-days', dataset: { semantic: 'days' } },
