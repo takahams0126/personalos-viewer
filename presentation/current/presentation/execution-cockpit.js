@@ -35,6 +35,10 @@ function applyPackageSpatialSupport(packageNode, workspaceDefinition) {
   spatialContext.dataset.semantic = 'spatial-context';
   spatialContext.dataset.layoutBlock = supportDefinition.id || 'spatial-context';
   spatialContext.dataset.layoutGrammar = supportDefinition.view || 'map';
+  if (isMobileViewport()) {
+    spatialContext.dataset.mobileDisclosure = 'true';
+    spatialContext.hidden = true;
+  }
 
   support.dataset.layoutSlot = 'spatial-support';
   spatialContext.append(support);
@@ -233,13 +237,43 @@ function addMobileMapJumps(root) {
       || dayPanel.querySelector('.day-spatial-context');
     const contextFacts = dayPanel.querySelector('.concrete-day-context-facts');
     if (!spatial || !contextFacts || contextFacts.querySelector('.mobile-map-jump')) return;
+
     const day = dayPanel.dataset.day || 'day';
-    spatial.id = `execution-day-${day}-map`;
-    const anchor = document.createElement('a');
-    anchor.className = 'mobile-map-jump';
-    anchor.href = `#${spatial.id}`;
-    anchor.textContent = 'マップ';
-    contextFacts.append(anchor);
+    const timeline = dayPanel.querySelector('[data-semantic="execution-timeline"]');
+    const timelineId = `execution-day-${day}-timeline`;
+    const mapId = `execution-day-${day}-map`;
+    if (timeline) timeline.id = timelineId;
+    spatial.id = mapId;
+    spatial.hidden = true;
+
+    const opener = document.createElement('a');
+    opener.className = 'mobile-map-jump';
+    opener.href = `#${mapId}`;
+    opener.setAttribute('aria-controls', mapId);
+    opener.setAttribute('aria-expanded', 'false');
+    opener.textContent = 'マップ';
+    opener.addEventListener('click', event => {
+      event.preventDefault();
+      spatial.hidden = false;
+      opener.setAttribute('aria-expanded', 'true');
+      spatial.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+    contextFacts.append(opener);
+
+    if (!spatial.querySelector(':scope > .mobile-map-return')) {
+      const back = document.createElement('a');
+      back.className = 'mobile-map-jump mobile-map-return';
+      back.href = timeline ? `#${timelineId}` : '#';
+      back.textContent = '行動順へ戻る';
+      back.addEventListener('click', event => {
+        event.preventDefault();
+        spatial.hidden = true;
+        opener.setAttribute('aria-expanded', 'false');
+        const target = timeline || dayPanel.querySelector('.concrete-day-context');
+        target?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      });
+      spatial.prepend(back);
+    }
   });
 }
 
