@@ -313,6 +313,217 @@
   .cost-item-detail { max-width: none; color: var(--text-soft); font-size: var(--type-meta); }
   .cost-state { color: var(--text-soft); font-weight: var(--font-weight-strong); }
 
+  @media (max-width: 52rem) {
+    .concrete-plan > .plan-header {
+      margin-block-end: var(--space-1);
+    }
+
+    .concrete-plan > [data-layout-block="execution-overview"] {
+      margin-block-end: var(--space-1);
+    }
+
+    .execution-meta-row {
+      padding-block: .28rem;
+    }
+
+    .itinerary-overview {
+      margin-block: 0 var(--space-1);
+      padding-block: 0;
+      border-block-end: 0;
+    }
+
+    .mobile-trip-overview-disclosure > summary {
+      display: flex;
+      align-items: center;
+      min-height: 2rem;
+      width: fit-content;
+      padding: .2rem .55rem;
+      border: var(--border-width) solid var(--line-interactive);
+      border-radius: var(--radius-pill);
+      color: var(--accent-strong);
+      font-size: var(--type-caption);
+      font-weight: var(--font-weight-strong);
+      cursor: pointer;
+    }
+
+    .mobile-trip-overview-disclosure[open] > summary {
+      margin-block-end: var(--space-1);
+    }
+
+    .mobile-trip-overview-disclosure > h2 {
+      margin-block-start: 0;
+      font-size: var(--type-meta);
+    }
+
+    .concrete-primary-tabs {
+      margin-block-end: var(--space-1);
+    }
+
+    .concrete-day-context {
+      padding-block-end: var(--space-1);
+    }
+
+    .concrete-day-context > h2 {
+      font-size: var(--type-section-title);
+    }
+
+    .concrete-day-context .day-summary {
+      margin-block: .2rem .35rem;
+      font-size: var(--type-meta);
+    }
+
+    .concrete-day-context-facts {
+      gap: .25rem .55rem;
+      margin-block-start: .2rem;
+    }
+
+    .mobile-map-jump {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1.8rem;
+      padding: .12rem .5rem;
+      border: var(--border-width) solid var(--line-interactive);
+      border-radius: var(--radius-pill);
+      color: var(--accent-strong);
+      font-size: var(--type-caption);
+      font-weight: var(--font-weight-strong);
+      text-decoration: none;
+    }
+
+    .selected-day-weather {
+      padding: .38rem .5rem;
+    }
+
+    .selected-day-weather > h3 {
+      margin: 0;
+    }
+
+    .execution-action:not(.route-execution-group) {
+      padding-inline-start: 0;
+    }
+
+    .execution-action .next-move .service-fact {
+      grid-template-columns: minmax(0, 1fr);
+      gap: .08rem;
+      padding: .35rem .45rem;
+    }
+
+    .execution-action .service-reservation {
+      grid-column: 1;
+      grid-row: auto;
+      justify-self: start;
+      align-self: auto;
+    }
+
+    .execution-action:not(.route-execution-group) .action-facilities li {
+      grid-template-columns: max-content max-content;
+      gap: .12rem .4rem;
+    }
+
+    .execution-action:not(.route-execution-group) .action-facilities li > p {
+      grid-column: 1 / -1;
+    }
+
+    .action-constraints li {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: .12rem .4rem;
+    }
+
+    .action-constraints .constraint-margin,
+    .action-constraints .constraint-service {
+      grid-column: 1 / -1;
+    }
+
+    .fuel-practical-disclosure {
+      display: block;
+      padding: .38rem .5rem;
+    }
+
+    .fuel-practical-summary {
+      display: grid;
+      gap: .16rem;
+      cursor: pointer;
+      list-style-position: outside;
+    }
+
+    .fuel-practical-summary .action-practical-fuel-meta,
+    .fuel-practical-summary .day-fuel-cue-meta {
+      display: flex;
+    }
+
+    .fuel-practical-summary .action-practical-fuel-title,
+    .fuel-practical-summary .day-fuel-cue-title {
+      display: block;
+      color: var(--text);
+      font-size: var(--type-meta);
+      font-weight: var(--font-weight-strong);
+    }
+
+    .fuel-practical-body {
+      display: grid;
+      gap: .25rem;
+      padding-block-start: .45rem;
+    }
+
+    .fuel-practical-body .practical-link-row {
+      margin-block-start: .15rem;
+    }
+
+    .day-spatial-context {
+      margin-block-start: var(--space-2);
+      padding-block-start: var(--space-2);
+      border-block-start: var(--border-width) solid var(--line);
+    }
+
+    .day-spatial-context::before {
+      content: 'Spatial context';
+      display: block;
+      margin-block-end: .35rem;
+      color: var(--muted);
+      font-size: var(--type-caption);
+      font-weight: var(--font-weight-strong);
+    }
+
+    .day-spatial-context .map-canvas {
+      min-height: 15rem;
+    }
+
+    .fuel-event-list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+
+    .fuel-event-row {
+      padding: var(--space-2);
+    }
+
+    .fuel-station-title {
+      font-size: var(--type-entity-title);
+    }
+
+    .fuel-station-facts > div {
+      grid-template-columns: 5rem minmax(0, 1fr);
+    }
+
+    .plan-cost .support-panel-header {
+      display: grid;
+      gap: .15rem;
+    }
+
+    .plan-cost .cost-total {
+      font-size: var(--type-entity-title);
+    }
+
+    .cost-day-groups {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+
+    .cost-item-detail {
+      font-size: var(--type-caption);
+    }
+  }
+
   @media (min-width: 52.01rem) {
     .day-workspace[data-has-spatial-context="true"] {
       display: grid;
