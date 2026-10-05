@@ -49,7 +49,7 @@ function activateDay(navigation, nextTab, { focus = false } = {}) {
   return selectedPanel;
 }
 
-function hydrateNavigation(navigation) {
+function hydrateNavigation(navigation, initialDay = '') {
   if (navigation.dataset.dayNavigationReady === 'true') return;
   const tabs = tabsFor(navigation);
   if (!tabs.length) return;
@@ -78,11 +78,19 @@ function hydrateNavigation(navigation) {
     activateDay(navigation, tabs[nextIndex], { focus: true });
   });
 
-  const selected = tabs.find(tab => tab.getAttribute('aria-selected') === 'true') || tabs[0];
+  const restored = initialDay
+    ? tabs.find(tab => tab.dataset.day === String(initialDay))
+    : null;
+  const selected = restored
+    || tabs.find(tab => tab.getAttribute('aria-selected') === 'true')
+    || tabs[0];
   activateDay(navigation, selected);
   navigation.dataset.dayNavigationReady = 'true';
 }
 
-export function hydrateDayNavigation(root) {
-  root.querySelectorAll('[data-day-navigation]').forEach(hydrateNavigation);
+export function hydrateDayNavigation(root, initialState = {}) {
+  root.querySelectorAll('[data-day-navigation]').forEach(navigation => {
+    const key = navigation.dataset.dayNavigation || '';
+    hydrateNavigation(navigation, initialState?.[key] || '');
+  });
 }
