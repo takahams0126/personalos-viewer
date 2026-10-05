@@ -3,7 +3,11 @@ import { ManifestStore } from './core/manifest-store.js';
 import { EntityResolver } from './core/entity-resolver.js';
 import { ArtifactLoader } from './core/artifact-loader.js';
 import { readRequest } from './core/router.js';
-import { createNavigationContext, installNavigationCapture } from './core/navigation-context.js';
+import {
+  createNavigationContext,
+  installNavigationCapture,
+  restoreNavigationPresentation
+} from './core/navigation-context.js';
 import { renderConcretePlan } from './render/concrete-plan.js';
 import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
@@ -115,6 +119,7 @@ export async function startCurrentViewer({ presentation }) {
   hydrateDayNavigation(app, navigation.presentation?.dayNavigations);
   hydrateContentSwitchers(app, navigation.presentation?.contentSwitchers);
   hydrateExecutionPackageSwitchers(app);
+  restoreNavigationPresentation(app, navigation.presentation);
 
   if (request.type === 'concrete_plan') {
     hydrateWeatherPresentation(app, loaded.data);
