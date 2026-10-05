@@ -102,7 +102,12 @@ export async function startCurrentViewer({ presentation }) {
   app.replaceChildren(page);
   applyPageLayoutDefinition({ root: page, pageType: request.type, definition: pageLayoutDefinition });
   if (request.type === 'concrete_plan') {
-    applyExecutionCockpitLayout({ root: page, definition: pageLayoutDefinition });
+    await applyExecutionCockpitLayout({
+      root: page,
+      definition: pageLayoutDefinition,
+      concretePlan: loaded.data,
+      resolver
+    });
   }
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
