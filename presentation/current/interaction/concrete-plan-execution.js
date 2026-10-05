@@ -13,15 +13,25 @@ function sameRef(a, b) {
   );
 }
 
-async function executionRelationForFuel(event, concretePlan, resolver) {
+function fuelActionContext(event, concretePlan) {
   const day = (concretePlan?.days || []).find(item => item.ordinal === event.day_ordinal);
-  if (!day || !event?.travel_point_ref) return '';
+  if (!day || !event?.travel_point_ref) return null;
 
   const actions = [...(day.actions || [])].sort((a, b) => a.order - b.order);
   const index = actions.findIndex(action => sameRef(action.target, event.travel_point_ref));
-  if (index < 0) return '';
+  if (index < 0) return null;
+  return { action: actions[index], nextAction: actions[index + 1] || null };
+}
 
-  const nextAction = actions[index + 1];
+function actionReason(context) {
+  return (context?.action?.todos || [])
+    .map(todo => todo.instruction)
+    .filter(Boolean)
+    .join('・');
+}
+
+async function executionRelationForFuel(context, resolver) {
+  const nextAction = context?.nextAction;
   if (!nextAction) return '';
 
   let nextTitle = '';
@@ -54,15 +64,30 @@ async function annotateFuelPracticalInformation(root, concretePlan, resolver) {
 
   for (let index = 0; index < Math.min(events.length, rows.length); index += 1) {
     const row = rows[index];
-    if (row.querySelector('.fuel-execution-relation')) continue;
-    const relation = await executionRelationForFuel(events[index], concretePlan, resolver);
-    if (!relation) continue;
+    const event = events[index];
+    const context = fuelActionContext(event, concretePlan);
 
-    const note = document.createElement('p');
-    note.className = 'fuel-event-context fuel-execution-relation';
-    note.dataset.semantic = 'fuel-execution-relation';
-    note.textContent = relation;
-    row.append(note);
+    if (!event.context && !row.querySelector('.fuel-practical-reason')) {
+      const reason = actionReason(context);
+      if (reason) {
+        const note = document.createElement('p');
+        note.className = 'fuel-event-context fuel-practical-reason';
+        note.dataset.semantic = 'fuel-practical-reason';
+        note.textContent = reason;
+        row.append(note);
+      }
+    }
+
+    if (!row.querySelector('.fuel-execution-relation')) {
+      const relation = await executionRelationForFuel(context, resolver);
+      if (relation) {
+        const note = document.createElement('p');
+        note.className = 'fuel-event-context fuel-execution-relation';
+        note.dataset.semantic = 'fuel-execution-relation';
+        note.textContent = relation;
+        row.append(note);
+      }
+    }
   }
 }
 
