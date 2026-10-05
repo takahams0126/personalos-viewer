@@ -134,9 +134,15 @@ const LEISURE_PAGE_LAYOUT_V1 = Object.freeze({
               singleViewMode: 'direct',
               views: Object.freeze([
                 Object.freeze({ id: 'actions', label: '行動順', sourceSemantic: 'execution-sequence', view: VIEW.TIMELINE, mode: 'overview', required: true }),
-                Object.freeze({ id: 'route', label: 'ルート詳細', sourceSemantic: 'execution-sequence', availabilitySemantic: 'route-execution-group', view: VIEW.TIMELINE, mode: 'route-detail', optional: true }),
-                Object.freeze({ id: 'map', label: 'マップ', sourceSemantic: 'map', view: VIEW.MAP, mode: 'map', optional: true })
-              ])
+                Object.freeze({ id: 'route', label: 'ルート詳細', sourceSemantic: 'execution-sequence', availabilitySemantic: 'route-execution-group', view: VIEW.TIMELINE, mode: 'route-detail', optional: true })
+              ]),
+              parallelSupport: Object.freeze({
+                id: 'spatial-context',
+                label: '地図',
+                sourceSemantic: 'map',
+                view: VIEW.MAP,
+                optional: true
+              })
             })
           })
         })
