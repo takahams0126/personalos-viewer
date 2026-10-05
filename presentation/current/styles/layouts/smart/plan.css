@@ -2,7 +2,7 @@
   .plan-page { grid-template-columns: minmax(0, 1fr); }
 
   .plan-overview,
-  .plan-header { max-width: 58rem; }
+  .plan-header { max-width: 56rem; }
 
   .plan-overview {
     margin-block-end: var(--space-3);
@@ -19,7 +19,7 @@
   .plan-overview h1 { margin-block-end: .45rem; }
 
   .plan-thesis {
-    max-width: 54rem;
+    max-width: 52rem;
     margin: 0;
     color: var(--text-summary);
     font-size: var(--font-size-lead-compact);
@@ -28,7 +28,7 @@
 
   .plan-page > [data-layout-block="composition-context"],
   .plan-composition {
-    width: min(100%, 64rem);
+    width: min(100%, 56rem);
     margin-block: 0;
   }
 
@@ -38,7 +38,7 @@
     gap: var(--space-2) var(--space-3);
     align-items: baseline;
     min-width: 0;
-    padding-block: .4rem;
+    padding-block: .38rem;
     border-block-end: var(--border-width) solid var(--line);
   }
 
@@ -55,36 +55,30 @@
     overflow-wrap: anywhere;
   }
 
+  /* Compact-first desktop: whole-trip context precedes the selected Day instead of consuming a permanent side rail. */
   .plan-page > [data-layout-block="days"],
   .plan-days {
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(13.5rem, 17rem) minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: 0 var(--space-5);
-    align-items: start;
+    display: block;
     min-width: 0;
-    margin-block-start: var(--space-4);
+    margin-block-start: var(--space-3);
   }
 
   .plan-itinerary-overview {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    width: 100%;
-    margin: 0;
-    padding: 0 var(--space-4) 0 0;
-    border-block-end: 0;
-    border-inline-end: var(--border-width) solid var(--line);
+    width: min(100%, 56rem);
+    margin: 0 0 var(--space-3);
+    padding: 0 0 var(--space-2);
+    border-block-end: var(--border-width) solid var(--line);
   }
 
   .plan-itinerary-overview > h2 {
-    margin: 0 0 var(--space-2);
+    margin: 0 0 var(--space-1);
     font-size: var(--type-section-title);
   }
 
   .plan-itinerary-overview-list {
     display: grid;
-    gap: .2rem;
+    gap: 0;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -93,7 +87,10 @@
   .plan-itinerary-day-row {
     min-width: 0;
     margin: 0;
+    border-block-end: var(--border-width) solid var(--line);
   }
+
+  .plan-itinerary-day-row:last-child { border-block-end: 0; }
 
   .plan-itinerary-day-select {
     display: grid;
@@ -102,10 +99,11 @@
     align-items: baseline;
     width: 100%;
     min-width: 0;
-    min-height: 2.35rem;
-    padding: .45rem .5rem;
+    min-height: 2rem;
+    padding: .3rem .4rem;
     border: 0;
-    border-radius: var(--radius-sm);
+    border-inline-start: .18rem solid transparent;
+    border-radius: 0;
     background: transparent;
     color: inherit;
     font: inherit;
@@ -119,8 +117,9 @@
   }
 
   .plan-itinerary-day-select[aria-current="true"] {
+    border-inline-start-color: var(--accent);
     background: var(--accent-soft);
-    color: var(--accent-strong);
+    color: var(--text);
   }
 
   .plan-itinerary-day-label {
@@ -136,13 +135,12 @@
   }
 
   .plan-day-navigation {
-    grid-column: 2;
-    grid-row: 1;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     min-width: 0;
-    margin-block-end: var(--space-3);
+    width: min(100%, 56rem);
+    margin-block-end: var(--space-2);
     border-block-end: var(--border-width) solid var(--line);
     scrollbar-width: thin;
   }
@@ -175,9 +173,8 @@
   .plan-day-navigation .primary-day-tab-attention { display: none; }
 
   .plan-days-list {
-    grid-column: 2;
-    grid-row: 2;
     min-width: 0;
+    width: min(100%, 56rem);
   }
 
   .plan-day-panel[hidden] { display: none; }
@@ -203,36 +200,64 @@
   .plan-day-context .plan-day-title { font-size: var(--type-page-title); }
 
   .plan-day-summary {
-    max-width: 64rem;
-    margin-block: 0 var(--space-3);
+    max-width: 52rem;
+    margin-block: 0 var(--space-2);
     color: var(--text-soft);
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   .plan-sequence {
     display: grid;
     gap: 0;
-    max-width: 68rem;
+    max-width: 56rem;
     margin: var(--space-2) 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .plan-route-choice-host { margin-block-start: var(--space-1); }
-
-  .plan-route-choice-control-row {
-    margin-block: .3rem var(--space-2);
+  .plan-route-choice {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    gap: .25rem var(--space-2);
+    align-items: center;
+    min-width: 0;
   }
 
+  .plan-route-utility { display: contents; }
+
   .plan-route-choice-control-label {
+    grid-column: 1;
+    grid-row: 1;
     color: var(--muted);
     font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);
   }
 
+  .plan-route-choice-control-row {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .plan-route-page-link {
+    grid-column: 3;
+    grid-row: 1;
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    white-space: nowrap;
+  }
+
+  .plan-route-choice-host {
+    grid-column: 1 / -1;
+    margin-block-start: var(--space-1);
+  }
+
   .plan-route-choice-select {
     min-height: 2rem;
-    width: min(100%, 34rem);
+    width: min(100%, 28rem);
     max-width: 100%;
     padding: .18rem 1.8rem .18rem .5rem;
     font-size: var(--type-meta);
@@ -240,14 +265,14 @@
 
   .plan-route-current {
     margin: 0;
-    color: var(--text-soft);
+    color: var(--text);
     font-size: var(--type-meta);
     font-weight: var(--font-weight-strong);
   }
 
   .plan-route-choice-content {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-1);
     min-width: 0;
   }
 
@@ -259,40 +284,25 @@
     letter-spacing: var(--tracking-label);
   }
 
-  .plan-route-utility {
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-start;
-    gap: var(--space-2);
-    min-width: 0;
-  }
-
-  .plan-route-page-link {
-    margin-inline-start: 0;
-    color: var(--accent-strong);
-    font-size: var(--type-caption);
-    font-weight: var(--font-weight-strong);
-    white-space: nowrap;
-  }
-
   .plan-route-intent,
   .plan-route-summary {
     margin: 0;
-    max-width: 62rem;
+    max-width: 52rem;
   }
 
   .plan-route-intent {
-    padding: .45rem .55rem;
+    padding: .4rem .5rem;
     border-inline-start: 3px solid var(--line-accent);
     background: var(--surface-faint);
     color: var(--text-summary);
     font-size: var(--type-meta);
-    line-height: 1.5;
+    line-height: 1.45;
   }
 
   .plan-route-summary {
     color: var(--text-soft);
-    line-height: 1.55;
+    font-size: var(--type-meta);
+    line-height: 1.5;
   }
 
   .plan-route-condition { margin-block: 0; }
@@ -355,6 +365,7 @@
     .plan-itinerary-overview { display: none; }
 
     .plan-day-navigation {
+      width: 100%;
       margin-inline: -.75rem;
       margin-block-end: var(--space-2);
       padding-inline: .75rem;
@@ -364,6 +375,8 @@
       min-width: 4.2rem;
       padding-inline: .7rem;
     }
+
+    .plan-days-list { width: 100%; }
 
     .plan-day-context {
       display: grid;
@@ -396,6 +409,23 @@
     }
 
     .plan-route-body { padding: .55rem .6rem; }
+
+    .plan-route-choice {
+      grid-template-columns: max-content minmax(0, 1fr);
+    }
+
+    .plan-route-choice-control-label { grid-column: 1; }
+    .plan-route-choice-control-row { grid-column: 2; }
+    .plan-route-page-link {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: start;
+    }
+    .plan-route-choice-host {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+
     .plan-route-choice-select { width: 100%; }
   }
 }
