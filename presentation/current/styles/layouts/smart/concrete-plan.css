@@ -10,6 +10,7 @@
     max-width: 100%;
   }
 
+  /* ConcretePlan identity stays compact. The selected execution day is the working context. */
   .concrete-plan > .plan-header {
     max-width: 64rem;
     margin-block-end: var(--space-2);
@@ -38,13 +39,11 @@
   }
 
   .execution-meta-row:last-child { border-block-end: 0; }
-
   .execution-meta-row dt {
     color: var(--muted);
     font-size: var(--type-meta);
     font-weight: var(--font-weight-strong);
   }
-
   .execution-meta-row dd {
     display: flex;
     flex-wrap: wrap;
@@ -53,14 +52,9 @@
     min-width: 0;
     margin: 0;
   }
-
   .execution-status-label { font-weight: var(--font-weight-strong); }
 
-  .execution-attention-popover {
-    position: relative;
-    display: inline-block;
-  }
-
+  .execution-attention-popover { position: relative; display: inline-block; }
   .execution-warning-trigger {
     display: inline-flex;
     align-items: center;
@@ -77,20 +71,13 @@
     cursor: pointer;
     list-style: none;
   }
-
-  .execution-warning-icon {
-    font-size: 1.15rem;
-    line-height: 1;
-  }
-
+  .execution-warning-icon { font-size: 1.15rem; line-height: 1; }
   .execution-warning-trigger:hover,
   .execution-warning-trigger:focus-visible {
     background: color-mix(in srgb, var(--caution) 30%, var(--surface));
     border-color: var(--caution);
   }
-
   .execution-warning-trigger::-webkit-details-marker { display: none; }
-
   .execution-attention-panel {
     position: absolute;
     z-index: 40;
@@ -101,39 +88,19 @@
     border: .12rem solid color-mix(in srgb, var(--caution) 52%, var(--line-strong));
     border-radius: var(--radius-md);
     background: var(--surface);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-raised);
   }
+  .execution-attention-panel > h3 { margin: 0 0 var(--space-2); font-size: var(--type-control-label); }
+  .execution-attention-panel ul { display: grid; gap: var(--space-2); margin: 0; padding-inline-start: 1.1rem; }
+  .execution-attention-panel li { font-size: var(--type-meta); line-height: 1.55; }
 
-  .execution-attention-panel > h3 {
-    margin: 0 0 var(--space-2);
-    color: var(--text);
-    font-size: var(--type-control-label);
-  }
-
-  .execution-attention-panel ul {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-    padding-inline-start: 1.1rem;
-  }
-
-  .execution-attention-panel li {
-    color: var(--text);
-    font-size: var(--type-meta);
-    line-height: 1.55;
-  }
-
+  /* Trip overview is orientation, not the execution surface. */
   .itinerary-overview {
     margin-block: 0 var(--space-2);
     padding-block: var(--space-2);
     border-block-end: var(--border-width) solid var(--line);
   }
-
-  .itinerary-overview > h2 {
-    margin: 0 0 var(--space-1);
-    font-size: var(--type-section-title);
-  }
-
+  .itinerary-overview > h2 { margin: 0 0 var(--space-1); font-size: var(--type-section-title); }
   .itinerary-overview-list {
     display: grid;
     gap: 0;
@@ -143,7 +110,6 @@
     overflow: hidden;
     list-style: none;
   }
-
   .itinerary-day-row {
     display: grid;
     grid-template-columns: 3.25rem 5.2rem 1.3rem 4.25rem minmax(0, 1fr);
@@ -155,12 +121,10 @@
     border-block-end: var(--border-width) solid var(--line);
     font-size: var(--type-meta);
   }
-
   .itinerary-day-row:last-child { border-block-end: 0; }
   .itinerary-day-label { color: var(--accent-strong); font-size: var(--type-caption); }
   .itinerary-day-date { font-variant-numeric: tabular-nums; }
   .itinerary-day-weekday { color: var(--muted); }
-
   .itinerary-day-weather {
     display: inline-flex;
     align-items: center;
@@ -168,7 +132,6 @@
     min-width: 0;
     color: var(--text-soft);
   }
-
   .itinerary-day-title {
     overflow: hidden;
     min-width: 0;
@@ -177,8 +140,8 @@
     white-space: nowrap;
   }
 
+  /* Day / Fuel / Cost are peer execution workspaces. */
   .concrete-primary-workspace { margin-block-start: 0; }
-
   .concrete-primary-tabs {
     position: sticky;
     inset-block-start: .35rem;
@@ -195,14 +158,12 @@
     scrollbar-width: thin;
     overscroll-behavior-inline: contain;
   }
-
   .concrete-primary-tabs .day-workspace-tab {
     flex: 0 0 auto;
     min-width: 4.75rem;
     padding-inline: .85rem;
     font-size: var(--type-meta);
   }
-
   .concrete-primary-panel > [hidden] { display: none; }
 
   .concrete-day-body {
@@ -214,7 +175,6 @@
     min-width: 0;
     max-width: 100%;
   }
-
   .concrete-day-context,
   .selected-day-weather,
   .execution-package-selector,
@@ -225,35 +185,31 @@
     max-width: 100%;
   }
 
-  .selected-day-weather,
-  .hourly-weather,
-  .weather-matrix-viewport,
-  .weather-matrix {
-    min-width: 0;
-    max-width: 100%;
+  /* Selected Day/date remains the primary orientation anchor. */
+  .concrete-day-context {
+    display: grid;
+    gap: .15rem;
+    padding-block-end: var(--space-2);
+    border-block-end: .12rem solid var(--line-strong);
   }
-
   .concrete-day-context > h2 {
-    margin-block: .1rem var(--space-1);
+    margin: 0;
     font-size: var(--type-page-title);
   }
-
   .concrete-day-kicker,
   .concrete-day-window,
-  .concrete-day-constraint-indicator {
-    margin: 0;
-    font-size: var(--type-caption);
+  .concrete-day-constraint-indicator { margin: 0; font-size: var(--type-caption); }
+  .concrete-day-kicker {
+    color: var(--accent-strong);
+    font-weight: var(--font-weight-strong);
+    letter-spacing: var(--tracking-label);
   }
-
-  .concrete-day-kicker { color: var(--muted); }
-
   .concrete-day-context .day-summary {
     max-width: 64rem;
-    margin-block: var(--space-1) var(--space-2);
+    margin: var(--space-1) 0 0;
     color: var(--text-soft);
     line-height: 1.5;
   }
-
   .concrete-day-context-facts {
     display: flex;
     flex-wrap: wrap;
@@ -261,13 +217,11 @@
     align-items: center;
     margin-block-start: var(--space-1);
   }
-
   .concrete-day-window {
     color: var(--text-soft);
     font-variant-numeric: tabular-nums;
     font-weight: var(--font-weight-strong);
   }
-
   .concrete-day-constraint-indicator {
     padding: .12rem .45rem;
     border-radius: var(--radius-pill);
@@ -276,17 +230,82 @@
     font-weight: var(--font-weight-strong);
   }
 
+  /* Weather belongs to the selected day, but remains supporting context. */
+  .selected-day-weather {
+    padding: .55rem .7rem;
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface-faint);
+  }
+  .selected-day-weather > h3 { margin-block-end: .25rem; font-size: var(--type-meta); }
+  .selected-day-weather p { margin-block-end: .2rem; font-size: var(--type-caption); }
+  .selected-day-weather details { margin-block-start: .2rem; }
+  .hourly-weather,
+  .weather-matrix-viewport,
+  .weather-matrix { min-width: 0; max-width: 100%; }
+
+  /* Execution Cockpit: timeline owns the work; map is parallel spatial context. */
+  .execution-package { min-width: 0; }
+  .day-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(20rem, 5fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+  }
+  .day-workspace[data-has-spatial-context="false"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .day-workspace-tabs {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+  }
+  .day-workspace-panel,
+  .day-workspace[data-presentation-mode="direct"] > [data-layout-source] {
+    grid-column: 1;
+    grid-row: 2;
+    min-width: 0;
+  }
+  .day-spatial-context {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    position: sticky;
+    inset-block-start: 4.4rem;
+    min-width: 0;
+    max-width: 100%;
+    padding-inline-start: var(--space-3);
+    border-inline-start: var(--border-width) solid var(--line);
+  }
+  .day-spatial-context > [data-semantic="map"] {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+  }
+  .day-spatial-context .map-canvas { min-height: 24rem; }
+  .day-spatial-context .map-state { font-size: var(--type-caption); }
+  .day-spatial-context .map-data-fallback { max-height: 11rem; overflow: auto; }
+
+  .execution-sequence-title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--type-section-title);
+  }
+  .execution-flow { max-width: 100%; }
+
   .execution-action:not(.route-execution-group) {
     grid-template-columns: minmax(3.75rem, max-content) minmax(0, 1fr);
     gap: 0 var(--space-2);
     min-width: 0;
   }
-
   .execution-action:not(.route-execution-group) .action-time-axis {
     padding-block-start: .5rem;
+    color: var(--accent-strong);
     font-size: var(--type-caption);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--font-weight-strong);
   }
-
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -294,9 +313,8 @@
     align-items: start;
     min-width: 0;
     margin-block-end: 0;
-    padding: .42rem 0 .5rem;
+    padding: .42rem 0 .55rem;
   }
-
   .execution-action:not(.route-execution-group) .action-header,
   .execution-action:not(.route-execution-group) .next-move,
   .execution-action:not(.route-execution-group) .action-stay,
@@ -308,11 +326,6 @@
     min-width: 0;
     margin: 0;
   }
-
-  .execution-action:not(.route-execution-group) .next-move {
-    padding-block-start: var(--space-1);
-  }
-
   .execution-action:not(.route-execution-group) .action-heading > .action-purpose,
   .execution-action:not(.route-execution-group) .action-heading > .action-inclusion {
     display: inline;
@@ -321,9 +334,7 @@
     font-size: var(--type-caption);
     line-height: 1.35;
   }
-
   .execution-action:not(.route-execution-group) .action-heading > .action-inclusion::before { content: ' · '; }
-
   .execution-action:not(.route-execution-group) .action-stay {
     display: inline-flex;
     flex-wrap: wrap;
@@ -333,18 +344,9 @@
     font-size: var(--type-caption);
   }
 
-  .execution-action:not(.route-execution-group) .action-stay .semantic-row,
-  .execution-action:not(.route-execution-group) .action-stay.semantic-row {
-    display: inline-flex;
-    gap: .3rem;
-    margin: 0;
-  }
-
-  .execution-action:not(.route-execution-group) .action-todos > h5,
-  .execution-action:not(.route-execution-group) .action-facilities > h5 { display: none; }
-
-  .execution-action:not(.route-execution-group) .action-todos ul,
-  .execution-action:not(.route-execution-group) .action-facilities ul {
+  /* Supporting todos are deliberately quieter than execution-gating facts. */
+  .execution-action:not(.route-execution-group) .action-todos > h5 { display: none; }
+  .execution-action:not(.route-execution-group) .action-todos ul {
     display: flex;
     flex-wrap: wrap;
     gap: .2rem .65rem;
@@ -352,84 +354,146 @@
     padding: 0;
     list-style: none;
   }
-
   .execution-action:not(.route-execution-group) .action-todos li {
     display: inline-flex;
     flex-wrap: wrap;
     gap: .2rem .35rem;
     align-items: baseline;
     min-width: 0;
-    color: var(--text-soft);
+    color: var(--muted);
     font-size: var(--type-caption);
   }
-
   .execution-action:not(.route-execution-group) .action-todos li::before {
     content: '✓';
-    color: var(--accent-strong);
+    color: var(--accent-muted);
     font-weight: var(--font-weight-strong);
   }
+  .execution-action:not(.route-execution-group) .todo-duration { color: var(--muted); white-space: nowrap; }
 
-  .execution-action:not(.route-execution-group) .todo-duration {
-    color: var(--muted);
+  /* Service, reservation and connection margin stay attached to the movement they gate. */
+  .execution-action .next-move {
+    margin-block-start: .15rem;
+    padding-block-start: var(--space-1);
+  }
+  .execution-action .next-move .service-fact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .08rem .55rem;
+    align-items: baseline;
+    margin-block-start: .25rem;
+    padding: .38rem .5rem;
+    border-inline-start: .18rem solid var(--info);
+    background: var(--info-soft);
+  }
+  .execution-action .service-identity {
+    grid-column: 1;
+    margin: 0;
+    color: var(--text);
+    font-weight: var(--font-weight-strong);
+  }
+  .execution-action .service-time {
+    grid-column: 1;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .execution-action .service-reservation {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    margin: 0;
+    padding: .12rem .42rem;
+    border-radius: var(--radius-pill);
+    background: var(--positive-soft);
+    color: var(--positive);
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
     white-space: nowrap;
   }
-
-  .execution-action:not(.route-execution-group) .action-facilities li {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: .15rem .35rem;
-    align-items: baseline;
-    min-width: 0;
-    color: var(--muted);
+  .execution-action .connection-margin,
+  .execution-action .connection-state {
+    display: inline-block;
+    margin: .18rem .5rem 0 0;
     font-size: var(--type-caption);
   }
+  .execution-action .connection-state { font-weight: var(--font-weight-strong); }
+  .execution-action .next-move[data-connection-state="critical"] .connection-state,
+  .execution-action .next-move[data-connection-state="tight"] .connection-state { color: var(--caution); }
 
-  .execution-action:not(.route-execution-group) .action-facilities li > strong {
+  /* Parking / facility usability is execution-gating, not hidden facility trivia. */
+  .execution-action:not(.route-execution-group) .action-facilities {
+    margin-block-start: .18rem;
+    padding: .4rem .5rem;
+    border-inline-start: .18rem solid var(--accent);
+    background: var(--accent-soft);
+  }
+  .execution-action:not(.route-execution-group) .action-facilities > h5 {
+    display: block;
+    margin: 0 0 .18rem;
+    color: var(--accent-strong);
+    font-size: var(--type-caption);
+  }
+  .execution-action:not(.route-execution-group) .action-facilities ul {
+    display: grid;
+    gap: .15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .execution-action:not(.route-execution-group) .action-facilities li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .15rem .4rem;
+    align-items: baseline;
+    min-width: 0;
     color: var(--text-soft);
+    font-size: var(--type-caption);
+  }
+  .execution-action:not(.route-execution-group) .action-facilities li > strong {
+    color: var(--text);
     font-weight: var(--font-weight-strong);
   }
-
+  .execution-action:not(.route-execution-group) .action-facilities li[data-usable="true"] > span {
+    color: var(--positive);
+    font-weight: var(--font-weight-strong);
+  }
   .execution-action:not(.route-execution-group) .action-facilities li > p { margin: 0; }
 
-  .execution-action:not(.route-execution-group) .action-attention ul {
-    margin: 0;
-    padding-inline-start: 1rem;
+  /* Time constraints remain visibly stronger than todos. */
+  .execution-action .action-constraints { margin-block-start: .2rem; }
+  .execution-action .action-constraints ul { gap: .28rem; }
+  .execution-action .action-constraints li {
+    min-height: 2rem;
+    padding: .34rem .5rem;
   }
+
+  .execution-action:not(.route-execution-group) .action-attention ul { margin: 0; padding-inline-start: 1rem; }
 
   .day-workspace[data-active-view="actions"] .route-execution-body {
     margin-block: .12rem;
     padding: .32rem .45rem;
   }
-
   .day-workspace[data-active-view="actions"] .route-execution-summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
     min-width: 0;
   }
-
   .day-workspace[data-active-view="actions"] .route-execution-summary > .route-execution-label,
-  .day-workspace[data-active-view="actions"] .route-execution-identity {
-    display: none;
-  }
-
+  .day-workspace[data-active-view="actions"] .route-execution-identity { display: none; }
   .day-workspace[data-active-view="actions"] .route-execution-summary > h4 {
     min-width: 0;
     margin: 0;
     font-size: var(--type-entity-title);
     overflow-wrap: anywhere;
   }
-
   .day-workspace[data-active-view="actions"] .route-execution-actions:has(.action-constraints) {
     display: grid;
     margin: .25rem 0 0;
   }
-
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action { display: none; }
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints) { display: grid; }
   .day-workspace[data-active-view="actions"] .route-execution-actions > .execution-action:has(.action-constraints)::after { display: none; }
 
-  /* Route Detail is a detail surface, not a timeline-indent surface. */
   .day-workspace[data-active-view="route"] .route-execution-group,
   .day-workspace[data-active-view="route"] .route-execution-body,
   .day-workspace[data-active-view="route"] .route-execution-summary,
@@ -438,16 +502,10 @@
     max-width: 100%;
     margin-inline: 0 auto;
   }
+  .day-workspace[data-active-view="route"] .route-execution-body { padding-inline: 0; background: transparent; }
+  .day-workspace[data-active-view="route"] .route-execution-actions { padding-inline-start: 0; }
 
-  .day-workspace[data-active-view="route"] .route-execution-body {
-    padding-inline: 0;
-    background: transparent;
-  }
-
-  .day-workspace[data-active-view="route"] .route-execution-actions {
-    padding-inline-start: 0;
-  }
-
+  /* Fuel and Cost remain peer workspaces rather than interrupting the day timeline. */
   .concrete-primary-panel > .plan-fuel,
   .concrete-primary-panel > .plan-cost {
     width: min(100%, 64rem);
@@ -455,15 +513,7 @@
     padding-block: 0;
     border-block-start: 0;
   }
-
-  .fuel-event-list {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
+  .fuel-event-list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
   .fuel-event-row {
     display: flex;
     flex-direction: column;
@@ -475,7 +525,6 @@
     background: var(--surface-faint);
     text-align: start;
   }
-
   .fuel-station-details { display: contents; }
   .fuel-event-meta { order: 1; }
   .fuel-station-title { order: 2; font-size: var(--type-entity-title); }
@@ -483,7 +532,6 @@
   .fuel-station-facts { order: 4; }
   .fuel-event-context { order: 5; }
   .fuel-station-actions { order: 6; }
-
   .fuel-event-meta,
   .fuel-station-actions {
     display: flex;
@@ -492,34 +540,23 @@
     align-items: center;
     justify-content: flex-start;
   }
-
   .fuel-event-context,
   .fuel-station-address { margin: 0; color: var(--text-soft); font-size: var(--type-meta); }
-
   .fuel-event-context {
     margin-block-start: .3rem;
     padding-block-start: .35rem;
     border-block-start: var(--border-width) solid var(--line);
   }
-
-  .fuel-station-facts {
-    display: grid;
-    gap: .15rem;
-    margin: .1rem 0 0;
-  }
-
+  .fuel-station-facts { display: grid; gap: .15rem; margin: .1rem 0 0; }
   .fuel-station-facts > div {
     display: grid;
     grid-template-columns: 5rem minmax(0, 1fr);
     gap: var(--space-2);
     font-size: var(--type-meta);
   }
-
   .fuel-station-facts dt { color: var(--muted); }
   .fuel-station-facts dd { margin: 0; }
-
   .fuel-station-actions { margin-block-start: .25rem; }
-
   .fuel-station-action {
     display: inline-flex;
     min-height: 1.8rem;
@@ -542,26 +579,14 @@
     padding-block-end: var(--space-1);
     border-block-end: .12rem solid var(--line-strong);
   }
-
-  .cost-total {
-    margin: 0;
-    color: var(--accent-strong);
-    font-weight: var(--font-weight-emphasis);
-  }
-
+  .cost-total { margin: 0; color: var(--accent-strong); font-weight: var(--font-weight-emphasis); }
   .cost-group > h3,
   .cost-day-groups > h3 {
     margin: var(--space-3) 0 var(--space-1);
     color: var(--text-soft);
     font-size: var(--type-meta);
   }
-
-  .cost-table {
-    display: grid;
-    min-width: 0;
-    border-block-start: var(--border-width) solid var(--line);
-  }
-
+  .cost-table { display: grid; min-width: 0; border-block-start: var(--border-width) solid var(--line); }
   .cost-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) max-content;
@@ -571,15 +596,8 @@
     padding-block: .52rem;
     border-block-end: var(--border-width) solid var(--line);
   }
-
   .cost-item { display: contents; }
-  .cost-item-label {
-    grid-column: 1;
-    grid-row: 1;
-    min-width: 0;
-    font-size: var(--type-meta);
-  }
-
+  .cost-item-label { grid-column: 1; grid-row: 1; min-width: 0; font-size: var(--type-meta); }
   .cost-amount {
     grid-column: 2;
     grid-row: 1 / span 2;
@@ -592,14 +610,12 @@
     font-variant-numeric: tabular-nums;
     text-align: end;
   }
-
   .cost-amount > strong {
     grid-column: 1 / -1;
     justify-self: end;
     color: var(--text);
     font-size: var(--type-value);
   }
-
   .cost-item-detail {
     grid-column: 1;
     grid-row: 2;
@@ -609,14 +625,8 @@
     font-size: var(--type-caption);
     line-height: 1.4;
   }
-
   .cost-state,
-  .cost-amount sup {
-    color: var(--muted);
-    font-size: var(--type-caption);
-    font-weight: var(--font-weight-medium);
-  }
-
+  .cost-amount sup { color: var(--muted); font-size: var(--type-caption); font-weight: var(--font-weight-medium); }
   .cost-day-groups {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -624,7 +634,6 @@
     align-items: start;
     margin-block-start: var(--space-2);
   }
-
   .cost-day-groups > h3 { grid-column: 1 / -1; margin-block-end: 0; }
   .cost-day-groups > .cost-group {
     min-width: 0;
@@ -639,35 +648,20 @@
     border-block-end: .12rem solid var(--accent-muted);
     color: var(--accent-strong);
   }
-
-  .cost-day-groups .cost-row {
-    grid-template-columns: minmax(0, 1fr) max-content;
-    gap: .16rem .55rem;
-    padding-block: .4rem;
-  }
-
+  .cost-day-groups .cost-row { grid-template-columns: minmax(0, 1fr) max-content; gap: .16rem .55rem; padding-block: .4rem; }
   .cost-day-groups .cost-item-label { grid-column: 1; }
   .cost-day-groups .cost-amount { grid-column: 2; }
-  .cost-day-groups .cost-item-detail {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
+  .cost-day-groups .cost-item-detail { grid-column: 1; grid-row: 2; }
   .cost-notes {
     margin-block-start: var(--space-3);
     padding-block-start: var(--space-2);
     border-block-start: var(--border-width) solid var(--line);
   }
-
   .cost-notes > h3 { margin-block-end: var(--space-1); font-size: var(--type-meta); }
   .cost-notes ol { margin: 0; color: var(--text-soft); font-size: var(--type-caption); }
 
   @media (max-width: 52rem) {
-    .execution-meta-row {
-      grid-template-columns: 6rem minmax(0, 1fr);
-      gap: var(--space-2);
-    }
-
+    .execution-meta-row { grid-template-columns: 6rem minmax(0, 1fr); gap: var(--space-2); }
     .execution-attention-panel {
       position: fixed;
       inset: auto .75rem 1rem;
@@ -676,12 +670,7 @@
       overflow: auto;
       background: var(--surface);
     }
-
-    .itinerary-overview {
-      margin-block: 0 var(--space-2);
-      padding-block: var(--space-1);
-    }
-
+    .itinerary-overview { margin-block: 0 var(--space-2); padding-block: var(--space-1); }
     .itinerary-day-row {
       grid-template-columns: 2.8rem 4.55rem .9rem 2.1rem minmax(0, 1fr);
       gap: .12rem .22rem;
@@ -690,57 +679,55 @@
       overflow: visible;
       font-size: var(--type-caption);
     }
-
-    .itinerary-day-weather {
-      gap: 0;
-      justify-content: center;
-    }
-
+    .itinerary-day-weather { gap: 0; justify-content: center; }
     .itinerary-weather-label { display: none; }
     .itinerary-day-title { white-space: normal; }
-
     .concrete-primary-tabs {
       inset-block-start: .2rem;
       margin-inline: -.75rem;
       padding-inline: .75rem;
     }
+    .concrete-primary-tabs .day-workspace-tab { min-width: 4.3rem; padding-inline: .7rem; }
 
-    .concrete-primary-tabs .day-workspace-tab {
-      min-width: 4.3rem;
-      padding-inline: .7rem;
+    /* Batch4 will specialize mobile switching; Batch3 simply keeps all execution content usable. */
+    .day-workspace,
+    .day-workspace[data-has-spatial-context="true"] {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: var(--space-2);
     }
+    .day-workspace-tabs { grid-column: 1; grid-row: 1; }
+    .day-workspace-panel,
+    .day-workspace[data-presentation-mode="direct"] > [data-layout-source] { grid-column: 1; grid-row: 2; }
+    .day-spatial-context {
+      grid-column: 1;
+      grid-row: 3;
+      position: static;
+      padding-inline-start: 0;
+      border-inline-start: 0;
+      border-block-start: var(--border-width) solid var(--line);
+      padding-block-start: var(--space-2);
+    }
+    .day-spatial-context .map-canvas { min-height: 18rem; }
 
     .execution-action:not(.route-execution-group) {
       grid-template-columns: 3.6rem minmax(0, 1fr);
       gap: 0 var(--space-2);
       padding-inline-start: var(--space-5);
     }
-
-    .fuel-event-row,
-    .cost-day-groups > .cost-group {
-      padding: var(--space-1) var(--space-2);
-    }
-
-    .cost-row {
-      grid-template-columns: minmax(0, 1fr) max-content;
-      gap: .14rem .55rem;
-      padding-block: .4rem;
-    }
-
-    .cost-item-label { grid-column: 1; }
-    .cost-amount {
-      grid-column: 2;
-      grid-row: 1 / span 2;
-    }
-    .cost-item-detail {
+    .execution-action .next-move .service-fact { grid-template-columns: minmax(0, 1fr); }
+    .execution-action .service-reservation {
       grid-column: 1;
-      grid-row: 2;
+      grid-row: auto;
+      justify-self: start;
     }
-
-    .cost-day-groups {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-2);
-    }
+    .fuel-event-row,
+    .cost-day-groups > .cost-group { padding: var(--space-1) var(--space-2); }
+    .cost-row { grid-template-columns: minmax(0, 1fr) max-content; gap: .14rem .55rem; padding-block: .4rem; }
+    .cost-item-label { grid-column: 1; }
+    .cost-amount { grid-column: 2; grid-row: 1 / span 2; }
+    .cost-item-detail { grid-column: 1; grid-row: 2; }
+    .cost-day-groups { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
   }
 
   @media (max-width: 38rem) {
@@ -748,16 +735,7 @@
       grid-template-columns: 2.65rem 4.4rem .85rem 2rem minmax(0, 1fr);
       gap: .1rem .18rem;
     }
-
-    .itinerary-day-title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .plan-cost .support-panel-header {
-      display: grid;
-      gap: .15rem;
-    }
+    .itinerary-day-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .plan-cost .support-panel-header { display: grid; gap: .15rem; }
   }
 }
