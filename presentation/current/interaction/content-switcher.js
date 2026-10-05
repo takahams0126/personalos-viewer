@@ -50,10 +50,10 @@ function routeDetailTarget(event, switcher, tabs) {
   return tabs.find(tab => tab.dataset.viewId === 'route') || null;
 }
 
-function hydrateSwitcher(switcher) {
+function hydrateSwitcher(switcher, initialState = null) {
   if (switcher.dataset.contentSwitcherReady === 'true') return;
   const tabs = tabsFor(switcher);
-  if (tabs.length <= 1) {
+  if (!tabs.length) {
     switcher.dataset.contentSwitcherReady = 'true';
     return;
   }
@@ -89,9 +89,19 @@ function hydrateSwitcher(switcher) {
     activateTab(switcher, tabs[nextIndex], { focus: true });
   });
 
+  const restored = initialState?.viewId
+    ? tabs.find(tab => tab.dataset.viewId === initialState.viewId)
+    : null;
+  const selected = restored
+    || tabs.find(tab => tab.getAttribute('aria-selected') === 'true')
+    || tabs[0];
+  activateTab(switcher, selected);
   switcher.dataset.contentSwitcherReady = 'true';
 }
 
-export function hydrateContentSwitchers(root) {
-  root.querySelectorAll('[data-content-switcher]').forEach(hydrateSwitcher);
+export function hydrateContentSwitchers(root, initialState = {}) {
+  root.querySelectorAll('[data-content-switcher]').forEach(switcher => {
+    const key = switcher.dataset.contentSwitcher || '';
+    hydrateSwitcher(switcher, initialState?.[key] || null);
+  });
 }
