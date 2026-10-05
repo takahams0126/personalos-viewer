@@ -74,6 +74,22 @@ function renderFilterPanel(manifest) {
   );
 }
 
+function compactDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ''));
+  if (!match) return null;
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return `${month}/${day}`;
+}
+
+function compactPeriod(period) {
+  const start = compactDate(period?.start);
+  const end = compactDate(period?.end);
+  if (!start || !end) return null;
+  return `${start}–${end}`;
+}
+
 function renderResultMeta(entry) {
   const type = entry.ref.entity_type;
   if (type !== 'plan' && type !== 'concrete_plan') return null;
@@ -81,14 +97,15 @@ function renderResultMeta(entry) {
   const meta = h('p', {
     className: 'top-result-meta',
     dataset: { semantic: 'explorer-result-meta' },
-    text: entry.explorer.type_label
+    text: type === 'concrete_plan' ? '実施' : 'プラン'
   });
 
   if (type === 'concrete_plan' && entry.data_path) {
     resources.loadJson(entry.data_path)
       .then(data => {
-        if (!data?.period?.label) return;
-        meta.textContent = `${entry.explorer.type_label} · ${data.period.label}`;
+        const period = compactPeriod(data?.period);
+        if (!period) return;
+        meta.textContent = `実施 · ${period}`;
       })
       .catch(error => {
         console.warn('[current-viewer] Explorer ConcretePlan period unavailable', entry.ref?.id, error);
