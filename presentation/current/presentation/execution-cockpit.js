@@ -12,6 +12,10 @@ function sameRef(a, b) {
   return Boolean(a?.entity_type && a?.id && b?.entity_type && b?.id && a.entity_type === b.entity_type && a.id === b.id);
 }
 
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 52rem)').matches;
+}
+
 function applyPackageSpatialSupport(packageNode, workspaceDefinition) {
   const workspace = directChildBySemantic(packageNode, 'day-workspace');
   if (!workspace) return;
@@ -114,11 +118,49 @@ function relationText(context) {
   return next ? `この給油の次: ${next}` : '';
 }
 
+function appendFuelMeta(parent, event, className) {
+  const meta = document.createElement('span');
+  meta.className = `${className}-meta`;
+  for (const value of [event.importance?.label, event.timing?.label].filter(Boolean)) {
+    const badge = document.createElement('span');
+    badge.textContent = value;
+    meta.append(badge);
+  }
+  parent.append(meta);
+}
+
+function appendFuelPracticalDetails(parent, { event, station, context, className }) {
+  appendText(parent, `${className}-address`, station?.location?.text || '');
+  appendFacts(parent, station, `${className}-facts`);
+  appendText(parent, `${className}-context`, event.context || '');
+  appendText(parent, 'fuel-execution-relation', relationText(context));
+  appendLinks(parent, station);
+}
+
 function buildFuelCard({ event, station, context, className }) {
+  const title = station?.title || event.station_title || '給油ポイント';
+
+  if (isMobileViewport()) {
+    const disclosure = document.createElement('details');
+    disclosure.className = `${className} fuel-practical-disclosure`;
+    disclosure.dataset.semantic = 'fuel-practical';
+
+    const summary = document.createElement('summary');
+    summary.className = 'fuel-practical-summary';
+    appendFuelMeta(summary, event, className);
+    appendText(summary, `${className}-title`, title, 'span');
+    disclosure.append(summary);
+
+    const body = document.createElement('div');
+    body.className = 'fuel-practical-body';
+    appendFuelPracticalDetails(body, { event, station, context, className });
+    disclosure.append(body);
+    return disclosure;
+  }
+
   const card = document.createElement('section');
   card.className = className;
   card.dataset.semantic = 'fuel-practical';
-
   const meta = document.createElement('div');
   meta.className = `${className}-meta`;
   for (const value of [event.importance?.label, event.timing?.label].filter(Boolean)) {
@@ -127,13 +169,8 @@ function buildFuelCard({ event, station, context, className }) {
     meta.append(badge);
   }
   card.append(meta);
-
-  appendText(card, `${className}-title`, station?.title || event.station_title || '給油ポイント', 'h5');
-  appendText(card, `${className}-address`, station?.location?.text || '');
-  appendFacts(card, station, `${className}-facts`);
-  appendText(card, `${className}-context`, event.context || '');
-  appendText(card, 'fuel-execution-relation', relationText(context));
-  appendLinks(card, station);
+  appendText(card, `${className}-title`, title, 'h5');
+  appendFuelPracticalDetails(card, { event, station, context, className });
   return card;
 }
 
@@ -175,6 +212,37 @@ async function annotateFuelWorkspace(root, concretePlan, resolver) {
   }
 }
 
+function applyMobileTripOverviewDisclosure(root) {
+  if (!isMobileViewport()) return;
+  const overview = root.querySelector('[data-semantic="itinerary-overview"]');
+  if (!overview || overview.querySelector(':scope > .mobile-trip-overview-disclosure')) return;
+
+  const disclosure = document.createElement('details');
+  disclosure.className = 'mobile-trip-overview-disclosure';
+  const summary = document.createElement('summary');
+  summary.textContent = '旅程全体を確認';
+  disclosure.append(summary);
+  while (overview.firstChild) disclosure.append(overview.firstChild);
+  overview.append(disclosure);
+}
+
+function addMobileMapJumps(root) {
+  if (!isMobileViewport()) return;
+  root.querySelectorAll('[data-semantic="execution-day"]').forEach(dayPanel => {
+    const spatial = dayPanel.querySelector('.execution-package:not([hidden]) .day-spatial-context')
+      || dayPanel.querySelector('.day-spatial-context');
+    const contextFacts = dayPanel.querySelector('.concrete-day-context-facts');
+    if (!spatial || !contextFacts || contextFacts.querySelector('.mobile-map-jump')) return;
+    const day = dayPanel.dataset.day || 'day';
+    spatial.id = `execution-day-${day}-map`;
+    const anchor = document.createElement('a');
+    anchor.className = 'mobile-map-jump';
+    anchor.href = `#${spatial.id}`;
+    anchor.textContent = 'マップ';
+    contextFacts.append(anchor);
+  });
+}
+
 export async function applyExecutionCockpitLayout({ root, definition, concretePlan, resolver }) {
   const workspaceDefinition = concreteWorkspaceDefinition(definition);
   if (!root || !workspaceDefinition?.parallelSupport) return;
@@ -187,4 +255,7 @@ export async function applyExecutionCockpitLayout({ root, definition, concretePl
     await exposeFuelInExecution(root, concretePlan, resolver);
     await annotateFuelWorkspace(root, concretePlan, resolver);
   }
+
+  applyMobileTripOverviewDisclosure(root);
+  addMobileMapJumps(root);
 }
