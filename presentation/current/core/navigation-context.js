@@ -10,26 +10,96 @@ function normalizeSource(source) {
   });
 }
 
+function normalizeStateMap(value, normalizeValue) {
+  if (!value || typeof value !== 'object') return Object.freeze({});
+  const entries = Object.entries(value)
+    .map(([key, item]) => [String(key), normalizeValue(item)])
+    .filter(([, item]) => item != null);
+  return Object.freeze(Object.fromEntries(entries));
+}
+
+function normalizePresentation(presentation) {
+  if (!presentation || typeof presentation !== 'object') {
+    return Object.freeze({
+      dayNavigations: Object.freeze({}),
+      contentSwitchers: Object.freeze({})
+    });
+  }
+
+  const dayNavigations = normalizeStateMap(presentation.dayNavigations, value => {
+    const day = String(value || '').trim();
+    return day || null;
+  });
+  const contentSwitchers = normalizeStateMap(presentation.contentSwitchers, value => {
+    const viewId = String(value?.viewId || '').trim();
+    if (!viewId) return null;
+    return Object.freeze({
+      viewId,
+      mode: String(value?.mode || '').trim()
+    });
+  });
+
+  return Object.freeze({ dayNavigations, contentSwitchers });
+}
+
 function currentEntryKey(url = location) {
   return `${url.pathname}${url.search}`;
 }
 
+function readViewerState(state = history.state) {
+  return state?.[HISTORY_STATE_KEY] || null;
+}
+
 function readEntrySource(state = history.state) {
-  return normalizeSource(state?.[HISTORY_STATE_KEY]?.navigation?.source);
+  return normalizeSource(readViewerState(state)?.navigation?.source);
+}
+
+function readEntryPresentation(state = history.state) {
+  return normalizePresentation(readViewerState(state)?.presentation);
+}
+
+function writeViewerState(patch) {
+  const previous = history.state || {};
+  const viewerState = previous[HISTORY_STATE_KEY] || {};
+  history.replaceState({
+    ...previous,
+    [HISTORY_STATE_KEY]: {
+      ...viewerState,
+      ...patch
+    }
+  }, '', location.href);
 }
 
 function writeEntrySource(source) {
   const normalized = normalizeSource(source);
   if (!normalized) return;
+  writeViewerState({ navigation: { source: normalized } });
+}
 
-  const previous = history.state || {};
-  history.replaceState({
-    ...previous,
-    [HISTORY_STATE_KEY]: {
-      ...(previous[HISTORY_STATE_KEY] || {}),
-      navigation: { source: normalized }
-    }
-  }, '', location.href);
+function capturePresentation(root = document) {
+  const dayNavigations = {};
+  root.querySelectorAll('[data-day-navigation]').forEach(navigation => {
+    const key = String(navigation.dataset.dayNavigation || '').trim();
+    const activeDay = String(navigation.dataset.activeDay || '').trim();
+    if (key && activeDay) dayNavigations[key] = activeDay;
+  });
+
+  const contentSwitchers = {};
+  root.querySelectorAll('[data-content-switcher]').forEach(switcher => {
+    const key = String(switcher.dataset.contentSwitcher || '').trim();
+    const viewId = String(switcher.dataset.activeView || '').trim();
+    if (!key || !viewId) return;
+    contentSwitchers[key] = {
+      viewId,
+      mode: String(switcher.dataset.activeMode || '').trim()
+    };
+  });
+
+  return normalizePresentation({ dayNavigations, contentSwitchers });
+}
+
+function writeEntryPresentation(root = document) {
+  writeViewerState({ presentation: capturePresentation(root) });
 }
 
 function consumePendingSource() {
@@ -85,15 +155,42 @@ function internalViewerUrl(anchor) {
   return url;
 }
 
+function clickMatchingTab(root, selector, value) {
+  if (!value) return;
+  const tab = [...root.querySelectorAll(selector)].find(item => item.dataset.day === value || item.dataset.viewId === value);
+  tab?.click();
+}
+
 export function createNavigationContext() {
   const source = readEntrySource() || consumePendingSource();
-  return Object.freeze({ source });
+  const presentation = readEntryPresentation();
+  return Object.freeze({ source, presentation });
+}
+
+export function restoreNavigationPresentation(root = document, presentation = null) {
+  const normalized = normalizePresentation(presentation);
+
+  root.querySelectorAll('[data-day-navigation]').forEach(navigation => {
+    const key = String(navigation.dataset.dayNavigation || '').trim();
+    const day = normalized.dayNavigations[key];
+    if (!day || navigation.dataset.activeDay === day) return;
+    clickMatchingTab(navigation, ':scope > [role="tab"]', day);
+  });
+
+  root.querySelectorAll('[data-content-switcher]').forEach(switcher => {
+    const key = String(switcher.dataset.contentSwitcher || '').trim();
+    const viewId = normalized.contentSwitchers[key]?.viewId;
+    if (!viewId || switcher.dataset.activeView === viewId) return;
+    clickMatchingTab(switcher, ':scope > .day-workspace-tabs [role="tab"]', viewId);
+  });
 }
 
 /**
  * Keep normal document navigation and browser history intact. sessionStorage is
  * used only as a short-lived transport so the destination history entry can
- * record the source entity in history.state after loading.
+ * record the source entity in history.state after loading. The source entry's
+ * local presentation context remains attached to that history entry, allowing
+ * Browser Back to restore the selected Day and workspace (including Map view).
  */
 export function installNavigationCapture(context, root = document) {
   const onClick = event => {
@@ -104,6 +201,8 @@ export function installNavigationCapture(context, root = document) {
 
     const url = internalViewerUrl(anchor);
     if (!url) return;
+
+    writeEntryPresentation(root);
 
     const source = currentSource(context);
     try {
