@@ -134,11 +134,12 @@ function appendFuelMeta(parent, event, className) {
 }
 
 function appendFuelPracticalDetails(parent, { event, station, context, className }) {
+  // Execution actions belong immediately after station identity; supporting facts follow.
+  appendLinks(parent, station);
   appendText(parent, `${className}-address`, station?.location?.text || '');
   appendFacts(parent, station, `${className}-facts`);
   appendText(parent, `${className}-context`, event.context || '');
   appendText(parent, 'fuel-execution-relation', relationText(context));
-  appendLinks(parent, station);
 }
 
 function buildFuelCard({ event, station, context, className }) {
@@ -216,6 +217,35 @@ async function annotateFuelWorkspace(root, concretePlan, resolver) {
   }
 }
 
+function structureCostTotal(root, concretePlan) {
+  const total = concretePlan?.cost?.total;
+  const host = root.querySelector('[data-semantic="cost"] .cost-total');
+  if (!host || !total || host.dataset.presentationStructured === 'true') return;
+
+  const qualifiers = [total.amount_state?.label, total.coverage?.label].filter(Boolean);
+  host.replaceChildren();
+  host.dataset.presentationStructured = 'true';
+
+  const label = document.createElement('span');
+  label.className = 'cost-total-label';
+  label.textContent = '合計';
+  host.append(label);
+
+  if (total.amount_label) {
+    const amount = document.createElement('strong');
+    amount.className = 'cost-total-amount';
+    amount.textContent = total.amount_label;
+    host.append(amount);
+  }
+
+  if (qualifiers.length) {
+    const status = document.createElement('span');
+    status.className = 'cost-total-status';
+    status.textContent = qualifiers.join(' · ');
+    host.append(status);
+  }
+}
+
 function applyMobileTripOverviewDisclosure(root) {
   if (!isMobileViewport()) return;
   const overview = root.querySelector('[data-semantic="itinerary-overview"]');
@@ -288,6 +318,7 @@ export async function applyExecutionCockpitLayout({ root, definition, concretePl
   if (concretePlan && resolver) {
     await exposeFuelInExecution(root, concretePlan, resolver);
     await annotateFuelWorkspace(root, concretePlan, resolver);
+    structureCostTotal(root, concretePlan);
   }
 
   applyMobileTripOverviewDisclosure(root);
