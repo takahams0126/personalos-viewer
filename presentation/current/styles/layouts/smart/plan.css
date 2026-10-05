@@ -217,7 +217,8 @@
 
   .plan-route-choice {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    grid-template-columns: max-content minmax(0, 28rem) max-content;
+    justify-content: start;
     gap: .25rem var(--space-2);
     align-items: center;
     min-width: 0;
@@ -412,6 +413,7 @@
 
     .plan-route-choice {
       grid-template-columns: max-content minmax(0, 1fr);
+      justify-content: stretch;
     }
 
     .plan-route-choice-control-label { grid-column: 1; }
