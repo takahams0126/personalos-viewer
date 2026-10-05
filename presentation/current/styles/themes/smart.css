@@ -63,6 +63,7 @@
     --line-strong: #596d66;
     --focus-ring: #176b5a;
 
+    /* Product-wide semantic color grammar. Entity type does not change theme color. */
     --accent: #176b5a;
     --accent-strong: #0f5144;
     --accent-soft: #e2f0ea;
@@ -73,6 +74,8 @@
     --positive-soft: #edf8f0;
     --caution: #a66312;
     --caution-soft: #fff4df;
+    --danger: #b42318;
+    --danger-soft: #fff0ed;
 
     --radius-sm: 0.65rem;
     --radius-control: 0.8rem;
@@ -136,6 +139,8 @@
       --positive-soft: #1f3527;
       --caution: #e2ad65;
       --caution-soft: #3a2d18;
+      --danger: #f28b82;
+      --danger-soft: #3a211e;
 
       --shadow-raised: 0 0.9rem 2.2rem rgba(0, 0, 0, 0.28);
     }
