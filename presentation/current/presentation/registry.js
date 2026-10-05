@@ -65,6 +65,7 @@ const SMART_LAYOUT_STYLESHEETS = Object.freeze([
   new URL('../styles/layouts/smart/route.css', import.meta.url).href,
   new URL('../styles/layouts/smart/plan.css', import.meta.url).href,
   new URL('../styles/layouts/smart/concrete-plan.css', import.meta.url).href,
+  new URL('../styles/layouts/smart/execution-cockpit.css', import.meta.url).href,
   new URL('../styles/layouts/smart/responsive.css', import.meta.url).href
 ]);
 
