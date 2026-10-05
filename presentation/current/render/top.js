@@ -73,15 +73,35 @@ function renderFilterPanel(manifest) {
   );
 }
 
-function renderResult(entry) {
+async function concretePeriod(entry, resolver) {
+  if (entry.ref?.entity_type !== 'concrete_plan') return '';
+  try {
+    const loaded = await resolver.load(entry.ref);
+    return loaded.data?.period?.label || '';
+  } catch {
+    return '';
+  }
+}
+
+function renderResultMeta(entry, periodLabel = '') {
+  const type = entry.ref?.entity_type;
+  if (type !== 'plan' && type !== 'concrete_plan') return null;
+  const values = [entry.explorer?.type_label, periodLabel].filter(Boolean);
+  if (!values.length) return null;
+  return h('p', { className: 'top-result-meta', text: values.join(' · ') });
+}
+
+async function renderResult(entry, resolver) {
   const explorer = entry.explorer;
   const type = entry.ref.entity_type;
   const id = entry.ref.id;
+  const periodLabel = await concretePeriod(entry, resolver);
   const searchText = [
     entry.title,
     explorer.summary,
     explorer.type_label,
     explorer.category?.label,
+    periodLabel,
     id,
     ...(explorer.tags || [])
   ].filter(Boolean).join(' ');
@@ -115,14 +135,16 @@ function renderResult(entry) {
           attrs: { 'aria-hidden': 'true' }
         }, h('span', { text: explorer.type_label })),
     h('div', { className: 'top-result-body' },
+      renderResultMeta(entry, periodLabel),
       h('h3', { text: entry.title }),
       explorer.summary ? h('p', { className: 'top-result-summary', text: explorer.summary }) : null
     )
   );
 }
 
-export function renderTop({ manifest }) {
+export async function renderTop({ manifest, resolver }) {
   const entries = explorerEntries(manifest);
+  const results = await Promise.all(entries.map(entry => renderResult(entry, resolver)));
 
   return h('article', { className: 'top-page', dataset: { semantic: 'explorer' } },
     h('div', { className: 'top-explorer-layout' },
@@ -137,7 +159,7 @@ export function renderTop({ manifest }) {
             text: `${entries.length}件`
           })
         ),
-        h('div', { className: 'top-result-list' }, entries.map(renderResult)),
+        h('div', { className: 'top-result-list' }, results),
         h('p', {
           className: 'top-empty-state',
           attrs: { hidden: true },
