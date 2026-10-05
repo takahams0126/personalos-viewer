@@ -9,6 +9,7 @@ import { renderPlan } from './render/plan.js';
 import { renderRoute } from './render/route.js';
 import { renderSpot } from './render/spot.js';
 import { renderTop } from './render/top.js';
+import { applyExecutionCockpitLayout } from './presentation/execution-cockpit.js';
 import { applyPageLayoutDefinition } from './presentation/apply-layout-definition.js';
 import { hydrateMapViews } from './map/google-map.js';
 import { hydrateCarousels } from './interaction/carousel.js';
@@ -100,6 +101,9 @@ export async function startCurrentViewer({ presentation }) {
   document.title = `${loaded.data.title} | PersonalOS Viewer`;
   app.replaceChildren(page);
   applyPageLayoutDefinition({ root: page, pageType: request.type, definition: pageLayoutDefinition });
+  if (request.type === 'concrete_plan') {
+    applyExecutionCockpitLayout({ root: page, definition: pageLayoutDefinition });
+  }
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
 
