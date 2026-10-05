@@ -2,8 +2,12 @@ function tabsFor(navigation) {
   return [...navigation.querySelectorAll(':scope > [role="tab"]')];
 }
 
+function workspaceFor(navigation) {
+  return navigation.closest('[data-semantic="days"]');
+}
+
 function panelsFor(navigation) {
-  const workspace = navigation.closest('[data-semantic="days"]');
+  const workspace = workspaceFor(navigation);
   if (!workspace) return [];
   return [...workspace.querySelectorAll('[data-day-navigation-panel]')]
     .filter(panel => panel.closest('[data-semantic="days"]') === workspace);
@@ -13,6 +17,15 @@ function announceShown(panel) {
   panel.dispatchEvent(new Event('presentation:shown'));
   panel.querySelectorAll('[data-layout-source]:not([hidden])').forEach(source => {
     source.dispatchEvent(new Event('presentation:shown'));
+  });
+}
+
+function syncDaySelectors(navigation, day) {
+  const workspace = workspaceFor(navigation);
+  if (!workspace) return;
+  workspace.querySelectorAll('[data-day-select]').forEach(control => {
+    if (control.dataset.daySelect === day) control.setAttribute('aria-current', 'true');
+    else control.removeAttribute('aria-current');
   });
 }
 
@@ -42,6 +55,7 @@ function activateDay(navigation, nextTab, { focus = false } = {}) {
   });
 
   navigation.dataset.activeDay = day;
+  syncDaySelectors(navigation, day);
   if (focus) {
     nextTab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     nextTab.focus();
@@ -76,6 +90,14 @@ function hydrateNavigation(navigation, initialDay = '') {
 
     event.preventDefault();
     activateDay(navigation, tabs[nextIndex], { focus: true });
+  });
+
+  const workspace = workspaceFor(navigation);
+  workspace?.addEventListener('click', event => {
+    const selector = event.target.closest('[data-day-select]');
+    if (!selector || !workspace.contains(selector)) return;
+    const target = tabs.find(tab => tab.dataset.day === selector.dataset.daySelect);
+    if (target) activateDay(navigation, target);
   });
 
   const restored = initialDay
