@@ -20,7 +20,11 @@ function normalizeStateMap(value, normalizeValue) {
 
 function normalizePresentation(presentation) {
   if (!presentation || typeof presentation !== 'object') {
-    return Object.freeze({ dayNavigations: Object.freeze({}), contentSwitchers: Object.freeze({}) });
+    return Object.freeze({
+      dayNavigations: Object.freeze({}),
+      contentSwitchers: Object.freeze({}),
+      mapContexts: Object.freeze({})
+    });
   }
 
   const dayNavigations = normalizeStateMap(presentation.dayNavigations, value => {
@@ -35,8 +39,12 @@ function normalizePresentation(presentation) {
       mode: String(value?.mode || '').trim()
     });
   });
+  const mapContexts = normalizeStateMap(presentation.mapContexts, value => {
+    const state = String(value || '').trim();
+    return state || null;
+  });
 
-  return Object.freeze({ dayNavigations, contentSwitchers });
+  return Object.freeze({ dayNavigations, contentSwitchers, mapContexts });
 }
 
 function currentEntryKey(url = location) {
@@ -73,6 +81,16 @@ function writeEntrySource(source) {
   writeViewerState({ navigation: { source: normalized } });
 }
 
+function routeMapContextKey(workspace, index = 0) {
+  const entityId = workspace.closest('.route-page')?.dataset?.entityId || String(index);
+  return `route:${entityId}`;
+}
+
+function executionMapContextKey(dayPanel, index = 0) {
+  const day = String(dayPanel.dataset?.day || '').trim() || String(index);
+  return `concrete-day:${day}`;
+}
+
 function capturePresentation(root = document) {
   const dayNavigations = {};
   root.querySelectorAll('[data-day-navigation]').forEach(navigation => {
@@ -92,7 +110,20 @@ function capturePresentation(root = document) {
     };
   });
 
-  return normalizePresentation({ dayNavigations, contentSwitchers });
+  const mapContexts = {};
+  root.querySelectorAll('.route-workspace').forEach((workspace, index) => {
+    const selected = workspace.querySelector('.route-view-control:checked');
+    if (selected?.value) mapContexts[routeMapContextKey(workspace, index)] = selected.value;
+  });
+  root.querySelectorAll('[data-semantic="execution-day"]').forEach((dayPanel, index) => {
+    const opener = dayPanel.querySelector('.mobile-map-jump[aria-controls]');
+    if (!opener) return;
+    mapContexts[executionMapContextKey(dayPanel, index)] = opener.getAttribute('aria-expanded') === 'true'
+      ? 'map'
+      : 'timeline';
+  });
+
+  return normalizePresentation({ dayNavigations, contentSwitchers, mapContexts });
 }
 
 function writeEntryPresentation(root = document) {
@@ -156,6 +187,30 @@ export function createNavigationContext() {
   const source = readEntrySource() || consumePendingSource();
   const presentation = readEntryPresentation();
   return Object.freeze({ source, presentation });
+}
+
+export function restoreNavigationPresentation(root = document, presentation = null) {
+  const normalized = normalizePresentation(presentation);
+
+  root.querySelectorAll('.route-workspace').forEach((workspace, index) => {
+    const view = normalized.mapContexts[routeMapContextKey(workspace, index)];
+    if (!view) return;
+    const control = [...workspace.querySelectorAll('.route-view-control')]
+      .find(item => item.value === view);
+    if (control) control.checked = true;
+  });
+
+  root.querySelectorAll('[data-semantic="execution-day"]').forEach((dayPanel, index) => {
+    const view = normalized.mapContexts[executionMapContextKey(dayPanel, index)];
+    if (!view) return;
+    const opener = dayPanel.querySelector('.mobile-map-jump[aria-controls]');
+    if (!opener) return;
+    const spatial = dayPanel.querySelector(`#${CSS.escape(opener.getAttribute('aria-controls') || '')}`);
+    if (!spatial) return;
+    const open = view === 'map';
+    spatial.hidden = !open;
+    opener.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 }
 
 /**
