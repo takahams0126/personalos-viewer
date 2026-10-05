@@ -66,7 +66,7 @@ async function renderTopPage(app, pageLayoutDefinition) {
   const manifest = await manifestStore.ensure();
   document.documentElement.dataset.pageType = 'top';
   document.title = 'レジャー | PersonalOS Viewer';
-  const page = renderTop({ manifest });
+  const page = await renderTop({ manifest, resolver });
   app.replaceChildren(page);
   applyPageLayoutDefinition({ root: page, pageType: 'top', definition: pageLayoutDefinition });
   hydrateExplorer(app);
@@ -103,8 +103,8 @@ export async function startCurrentViewer({ presentation }) {
   renderAppShell({ request, navigation }, shell);
   installNavigationCapture({ request, data: loaded.data });
 
-  hydrateDayNavigation(app);
-  hydrateContentSwitchers(app);
+  hydrateDayNavigation(app, navigation.presentation?.dayNavigations);
+  hydrateContentSwitchers(app, navigation.presentation?.contentSwitchers);
   hydrateExecutionPackageSwitchers(app);
 
   if (request.type === 'concrete_plan') {
