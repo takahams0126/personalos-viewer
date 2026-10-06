@@ -42,32 +42,8 @@
       "label": "白神山地"
     },
     {
-      "id": "A011",
-      "label": "白神山地・西目屋側"
-    },
-    {
-      "id": "A012",
-      "label": "白神山地・深浦・十二湖側"
-    },
-    {
       "id": "A013",
       "label": "屋久島"
-    },
-    {
-      "id": "A014",
-      "label": "屋久島・宮之浦・白谷側"
-    },
-    {
-      "id": "A015",
-      "label": "屋久島・安房・中央山岳側"
-    },
-    {
-      "id": "A016",
-      "label": "屋久島・南〜南西側"
-    },
-    {
-      "id": "A017",
-      "label": "屋久島・西〜北西側"
     }
   ],
   "entities": [
@@ -90,6 +66,26 @@
         "image": {
           "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
           "alt": "屋久島 4泊5日 過去プラン"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "concrete_plan",
+        "id": "CP002"
+      },
+      "title": "屋久島 4泊5日 確定プラン",
+      "data_path": "data/concrete-plans/CP002.json",
+      "explorer": {
+        "type_label": "実施プラン",
+        "summary": "安房の民宿とまりに2泊して縄文杉ロングトレイルに臨み、島一周ドライブをしながら宮之浦の素泊民宿ふれんどへ拠点を移し2泊、白谷雲水峡を歩いて帰宅する4泊5日の屋久島旅行プラン。",
+        "tags": [],
+        "area_ids": [
+          "A013"
+        ],
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "屋久島 4泊5日 確定プラン"
         }
       }
     },
@@ -120,6 +116,35 @@
           "target_ref": {
             "entity_type": "concrete_plan",
             "id": "CP001"
+          }
+        }
+      ]
+    },
+    {
+      "ref": {
+        "entity_type": "plan",
+        "id": "P002"
+      },
+      "title": "屋久島 4泊5日 確定プラン",
+      "data_path": "data/plans/P002.json",
+      "explorer": {
+        "type_label": "プラン",
+        "summary": "安房の民宿とまりに2泊して縄文杉ロングトレイルに臨み、島一周ドライブをしながら宮之浦の素泊民宿ふれんどへ拠点を移し2泊、白谷雲水峡を歩いて帰宅する4泊5日の屋久島旅行プラン。",
+        "tags": [],
+        "area_ids": [
+          "A013"
+        ],
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
+          "alt": "屋久島 4泊5日 確定プラン"
+        }
+      },
+      "relations": [
+        {
+          "kind": "concrete_plan",
+          "target_ref": {
+            "entity_type": "concrete_plan",
+            "id": "CP002"
           }
         }
       ]
@@ -259,6 +284,33 @@
         "image": {
           "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
           "alt": "屋久島一周ドライブ"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R012"
+      },
+      "title": "屋久島一周ドライブ・時計回り",
+      "data_path": "data/routes/R012.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "屋久島東南部から南部・西部林道・北西海岸へ時計回りに進み、滝・海中温泉・深い森・海岸景観を一日の流れで体験する 東南部の滝から南部の温泉、大川の滝、西部林道、永田いなか浜へ進み、海・滝・温泉・森が連続して変化する屋久島の景観を時計回りで体験できる。",
+        "tags": [
+          "ドライブ"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "driving",
+          "label": "ドライブ"
+        },
+        "image": {
+          "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
+          "alt": "屋久島一周ドライブ・時計回り"
         }
       }
     },
@@ -1419,6 +1471,83 @@
     },
     {
       "ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "title": "民宿 とまり",
+      "data_path": "data/spots/S0052.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "安房市街地にある素泊まり民宿で、縄文杉方面の行動拠点として組み込みやすい。 安房を拠点に縄文杉トレッキング前後の宿泊と食料調達をまとめやすい。",
+        "tags": [
+          "宿泊"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "lodging",
+          "label": "宿泊"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0053"
+      },
+      "title": "定食・ぱすた かたぎりさん",
+      "data_path": "data/spots/S0053.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島産の地魚を使ったひつまぶし、定食、パスタ等を提供する安房の飲食店。 屋久島到着日の昼食として、地魚や飛び魚など島らしい食材を使った料理を安房への移動途中で味わえる。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-katagirisan-01.jpg",
+          "alt": "定食・ぱすた かたぎりさん"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0054"
+      },
+      "title": "Kitchen HUB Dining",
+      "data_path": "data/spots/S0054.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "屋久島の地魚や島内食材を使った料理、カレー、パスタ、ピザ等を提供する宮之浦のカフェ・ダイニング。 宮之浦から屋久島空港方面へ向かう途中に、屋久島の食材を使った昼食をとれる。",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A008",
+          "A013"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-kitchen-hub-03.jpg",
+          "alt": "Kitchen HUB Dining"
+        }
+      }
+    },
+    {
+      "ref": {
         "entity_type": "travel_point",
         "id": "T0001"
       },
@@ -1512,6 +1641,30 @@
       },
       "title": "ENEOS 屋久島安房SS",
       "data_path": "data/travel-points/T0012.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0013"
+      },
+      "title": "Aコープ 安房店",
+      "data_path": "data/travel-points/T0013.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0014"
+      },
+      "title": "Aコープ 宮之浦店",
+      "data_path": "data/travel-points/T0014.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0015"
+      },
+      "title": "福岡空港",
+      "data_path": "data/travel-points/T0015.json"
     }
   ]
 }

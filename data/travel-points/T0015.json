@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0015",
+  "title": "福岡空港",
+  "point_type": {
+    "code": "airport",
+    "label": "空港"
+  },
+  "location": {
+    "text": "日本福岡県福岡市博多区下臼井"
+  }
+}

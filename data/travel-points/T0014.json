@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0014",
+  "title": "Aコープ 宮之浦店",
+  "point_type": {
+    "code": "facility",
+    "label": "施設"
+  },
+  "location": {
+    "text": "鹿児島県熊毛郡屋久島町宮之浦2377-1"
+  }
+}

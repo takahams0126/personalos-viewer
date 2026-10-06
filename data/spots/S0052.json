@@ -1,0 +1,57 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0052",
+  "title": "民宿 とまり",
+  "summary": "安房市街地にある素泊まり民宿で、縄文杉方面の行動拠点として組み込みやすい。 安房を拠点に縄文杉トレッキング前後の宿泊と食料調達をまとめやすい。",
+  "theme_chips": [
+    "宿泊"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町安房130",
+    "google_place_id": "ChIJpdd498HfPDURy-BaddOEjIk",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%B0%91%E5%AE%BF+%E3%81%A8%E3%81%BE%E3%82%8A&query_place_id=ChIJpdd498HfPDURy-BaddOEjIk"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約推奨"
+    }
+  ],
+  "images": [],
+  "appeal": {
+    "highlights": [
+      "安房市街地にある素泊まり民宿で、縄文杉方面の行動拠点として組み込みやすい。"
+    ],
+    "review": {
+      "positives": [
+        "安房を拠点に縄文杉トレッキング前後の宿泊と食料調達をまとめやすい。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "素泊まり・大人1名",
+        "pricing": {
+          "label": "¥3,500（円/人泊）",
+          "amount": 3500,
+          "currency": "JPY",
+          "charging_basis": "円/人泊"
+        }
+      }
+    ]
+  },
+  "references": {
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6970.html"
+    }
+  }
+}

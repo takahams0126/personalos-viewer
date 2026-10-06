@@ -1,0 +1,459 @@
+{
+  "schema_version": 2,
+  "artifact_type": "execution_road_map",
+  "source": {
+    "concrete_plan_id": "CP002",
+    "day": 2,
+    "variant_id": "CP002-D2-V1-R007"
+  },
+  "points": [
+    {
+      "point_id": "point-spot-S0052",
+      "order": 1,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "position": {
+        "lat": 30.3147032,
+        "lon": 130.65599980000002
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJpdd498HfPDURy-BaddOEjIk"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0009",
+      "order": 2,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0009"
+      },
+      "position": {
+        "lat": 30.3104631,
+        "lon": 130.6315587
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgwb-AdQhPTURRFmUDP2_DQw"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0010",
+      "order": 3,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0010"
+      },
+      "position": {
+        "lat": 30.339712799999997,
+        "lon": 130.5952632
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJiT6SIjMgPTURw89OuR6DkOA"
+      }
+    },
+    {
+      "point_id": "point-spot-S0019",
+      "order": 4,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0019"
+      },
+      "position": {
+        "lat": 30.352445499999995,
+        "lon": 130.5783429
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJgSddNgAhPTUR1rG37QfoVa8"
+      }
+    },
+    {
+      "point_id": "point-spot-S0017",
+      "order": 5,
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0017"
+      },
+      "position": {
+        "lat": 30.356558399999994,
+        "lon": 130.5421957
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJK3BIjRciPTUR2S8_5yCwnUI"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "connection_id": "connection-CP002-D2-V1-LR1A-M01",
+      "order": 1,
+      "flow_element_id": "CP002-D2-V1-LR1A-M01",
+      "from_point_id": "point-spot-S0052",
+      "to_point_id": "point-travel_point-T0009",
+      "mode": "rental_car",
+      "geometry_segment_id": "segment-CP002-D2-V1-LR1A-M01"
+    },
+    {
+      "connection_id": "connection-CP002-D2-V1-LR1B-M01",
+      "order": 2,
+      "flow_element_id": "CP002-D2-V1-LR1B-M01",
+      "from_point_id": "point-travel_point-T0009",
+      "to_point_id": "point-travel_point-T0010",
+      "mode": "bus",
+      "geometry_segment_id": null
+    },
+    {
+      "connection_id": "connection-CP002-D2-V1-LR3A-M01",
+      "order": 3,
+      "flow_element_id": "CP002-D2-V1-LR3A-M01",
+      "from_point_id": "point-travel_point-T0010",
+      "to_point_id": "point-travel_point-T0009",
+      "mode": "bus",
+      "geometry_segment_id": null
+    }
+  ],
+  "segments": [
+    {
+      "segment_id": "segment-CP002-D2-V1-LR1A-M01",
+      "order": 1,
+      "flow_element_id": "CP002-D2-V1-LR1A-M01",
+      "from_point_id": "point-spot-S0052",
+      "to_point_id": "point-travel_point-T0009",
+      "mode": {
+        "code": "DRIVE",
+        "label": "車"
+      },
+      "path": [
+        {
+          "lat": 30.31468,
+          "lon": 130.65611
+        },
+        {
+          "lat": 30.31448,
+          "lon": 130.65606
+        },
+        {
+          "lat": 30.3142,
+          "lon": 130.65589
+        },
+        {
+          "lat": 30.31399,
+          "lon": 130.65571
+        },
+        {
+          "lat": 30.31384,
+          "lon": 130.65547
+        },
+        {
+          "lat": 30.31379,
+          "lon": 130.65536
+        },
+        {
+          "lat": 30.31374,
+          "lon": 130.65516
+        },
+        {
+          "lat": 30.31276,
+          "lon": 130.65519
+        },
+        {
+          "lat": 30.31244,
+          "lon": 130.65514
+        },
+        {
+          "lat": 30.31221,
+          "lon": 130.65502
+        },
+        {
+          "lat": 30.31204,
+          "lon": 130.65488
+        },
+        {
+          "lat": 30.31191,
+          "lon": 130.65471
+        },
+        {
+          "lat": 30.3118,
+          "lon": 130.6545
+        },
+        {
+          "lat": 30.31175,
+          "lon": 130.65428
+        },
+        {
+          "lat": 30.31173,
+          "lon": 130.65395
+        },
+        {
+          "lat": 30.31178,
+          "lon": 130.65359
+        },
+        {
+          "lat": 30.31228,
+          "lon": 130.65114
+        },
+        {
+          "lat": 30.31234,
+          "lon": 130.65061
+        },
+        {
+          "lat": 30.31233,
+          "lon": 130.65012
+        },
+        {
+          "lat": 30.31227,
+          "lon": 130.64969
+        },
+        {
+          "lat": 30.31214,
+          "lon": 130.64915
+        },
+        {
+          "lat": 30.31202,
+          "lon": 130.64884
+        },
+        {
+          "lat": 30.31186,
+          "lon": 130.6485
+        },
+        {
+          "lat": 30.31157,
+          "lon": 130.64801
+        },
+        {
+          "lat": 30.31173,
+          "lon": 130.64783
+        },
+        {
+          "lat": 30.31185,
+          "lon": 130.64755
+        },
+        {
+          "lat": 30.31225,
+          "lon": 130.64639
+        },
+        {
+          "lat": 30.31229,
+          "lon": 130.64617
+        },
+        {
+          "lat": 30.31228,
+          "lon": 130.64587
+        },
+        {
+          "lat": 30.31212,
+          "lon": 130.64471
+        },
+        {
+          "lat": 30.31213,
+          "lon": 130.64433
+        },
+        {
+          "lat": 30.3122,
+          "lon": 130.64381
+        },
+        {
+          "lat": 30.3122,
+          "lon": 130.64351
+        },
+        {
+          "lat": 30.3121,
+          "lon": 130.64301
+        },
+        {
+          "lat": 30.31173,
+          "lon": 130.6414
+        },
+        {
+          "lat": 30.31162,
+          "lon": 130.64113
+        },
+        {
+          "lat": 30.31129,
+          "lon": 130.64046
+        },
+        {
+          "lat": 30.3112,
+          "lon": 130.64021
+        },
+        {
+          "lat": 30.31117,
+          "lon": 130.63989
+        },
+        {
+          "lat": 30.3112,
+          "lon": 130.63959
+        },
+        {
+          "lat": 30.3114,
+          "lon": 130.63887
+        },
+        {
+          "lat": 30.31141,
+          "lon": 130.63856
+        },
+        {
+          "lat": 30.31124,
+          "lon": 130.63726
+        },
+        {
+          "lat": 30.31125,
+          "lon": 130.63705
+        },
+        {
+          "lat": 30.31131,
+          "lon": 130.63683
+        },
+        {
+          "lat": 30.3114,
+          "lon": 130.63667
+        },
+        {
+          "lat": 30.31213,
+          "lon": 130.63574
+        },
+        {
+          "lat": 30.31242,
+          "lon": 130.63549
+        },
+        {
+          "lat": 30.31282,
+          "lon": 130.63527
+        },
+        {
+          "lat": 30.31329,
+          "lon": 130.63507
+        },
+        {
+          "lat": 30.31346,
+          "lon": 130.63506
+        },
+        {
+          "lat": 30.31365,
+          "lon": 130.63512
+        },
+        {
+          "lat": 30.3138,
+          "lon": 130.63524
+        },
+        {
+          "lat": 30.31417,
+          "lon": 130.63565
+        },
+        {
+          "lat": 30.31434,
+          "lon": 130.63575
+        },
+        {
+          "lat": 30.31453,
+          "lon": 130.63578
+        },
+        {
+          "lat": 30.31498,
+          "lon": 130.63576
+        },
+        {
+          "lat": 30.31516,
+          "lon": 130.63581
+        },
+        {
+          "lat": 30.31532,
+          "lon": 130.6359
+        },
+        {
+          "lat": 30.31571,
+          "lon": 130.63625
+        },
+        {
+          "lat": 30.31586,
+          "lon": 130.63631
+        },
+        {
+          "lat": 30.31603,
+          "lon": 130.63631
+        },
+        {
+          "lat": 30.3162,
+          "lon": 130.63625
+        },
+        {
+          "lat": 30.31635,
+          "lon": 130.63612
+        },
+        {
+          "lat": 30.31645,
+          "lon": 130.63595
+        },
+        {
+          "lat": 30.3165,
+          "lon": 130.63577
+        },
+        {
+          "lat": 30.3165,
+          "lon": 130.63557
+        },
+        {
+          "lat": 30.31646,
+          "lon": 130.63539
+        },
+        {
+          "lat": 30.31635,
+          "lon": 130.63523
+        },
+        {
+          "lat": 30.31619,
+          "lon": 130.6351
+        },
+        {
+          "lat": 30.31595,
+          "lon": 130.63504
+        },
+        {
+          "lat": 30.31558,
+          "lon": 130.63499
+        },
+        {
+          "lat": 30.31536,
+          "lon": 130.63493
+        },
+        {
+          "lat": 30.31507,
+          "lon": 130.63478
+        },
+        {
+          "lat": 30.3137,
+          "lon": 130.63372
+        },
+        {
+          "lat": 30.31279,
+          "lon": 130.63302
+        },
+        {
+          "lat": 30.31238,
+          "lon": 130.63279
+        },
+        {
+          "lat": 30.31179,
+          "lon": 130.63251
+        },
+        {
+          "lat": 30.31147,
+          "lon": 130.63226
+        },
+        {
+          "lat": 30.31089,
+          "lon": 130.63176
+        },
+        {
+          "lat": 30.31048,
+          "lon": 130.63153
+        }
+      ]
+    }
+  ]
+}

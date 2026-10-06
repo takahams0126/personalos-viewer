@@ -1,0 +1,438 @@
+{
+  "schema_version": 4,
+  "entity_type": "plan",
+  "id": "P002",
+  "title": "屋久島 4泊5日 確定プラン",
+  "summary": "安房の民宿とまりに2泊して縄文杉ロングトレイルに臨み、島一周ドライブをしながら宮之浦の素泊民宿ふれんどへ拠点を移し2泊、白谷雲水峡を歩いて帰宅する4泊5日の屋久島旅行プラン。",
+  "days": [
+    {
+      "ordinal": 1,
+      "title": "移動日（安房）",
+      "summary": "東京から屋久島へ移動し、レンタカー受取後に食料を調達して安房の民宿とまりへチェックインする移動日。",
+      "start_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "actions": [
+            "レンタカーを受け取る",
+            "安房へ向かう途中または安房到着後に、夕食と2日目の登山分を含む食料を調達する"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "actions": [
+            "民宿とまりへチェックインする"
+          ]
+        }
+      ]
+    },
+    {
+      "ordinal": 2,
+      "title": "縄文杉ロングトレイル",
+      "summary": "安房の民宿とまりを拠点に、R005 縄文杉ルート・縄文杉往復をロングトレイルとして歩き、予定外の事象があった場合だけR007へ短縮する山行日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R005"
+          },
+          "entry_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "exit_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "alternatives": [
+            {
+              "route_ref": {
+                "entity_type": "route",
+                "id": "R007"
+              },
+              "replacement_intent": "予定外の事象で縄文杉までの完遂が適切でなくなった場合に、ウィルソン株往復へ短縮する"
+            }
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0010"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "actions": [
+            "宿で入浴して山行後の疲労を回復する",
+            "Day1に購入しておいた食事を宿で食べる"
+          ]
+        }
+      ]
+    },
+    {
+      "ordinal": 3,
+      "title": "屋久島一周ドライブ・宮之浦へ宿替え",
+      "summary": "民宿とまりを出発し、R012 屋久島一周ドライブ・時計回りで安房から宮之浦へ移動しながら島を巡り、素泊民宿ふれんどへチェックインする日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0052"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R012"
+          },
+          "entry_ref": {
+            "entity_type": "spot",
+            "id": "S0052"
+          },
+          "exit_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "alternatives": [
+            {
+              "route_ref": {
+                "entity_type": "route",
+                "id": "R010"
+              },
+              "replacement_intent": "雨天時に島一周へこだわらず南部中心のドライブへ切り替える"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ordinal": 4,
+      "title": "白谷雲水峡・太鼓岩",
+      "summary": "宮之浦の素泊民宿ふれんどを拠点にR004 白谷雲水峡ルート・太鼓岩往復を歩き、山行後に温泉と夕食へ立ち寄って宿へ戻る日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R004"
+          },
+          "entry_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "exit_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0004"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "visit_purpose": {
+            "code": "bath",
+            "label": "入浴"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0030"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "visit_purpose": {
+            "code": "dinner",
+            "label": "夕食"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0046"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        }
+      ]
+    },
+    {
+      "ordinal": 5,
+      "title": "屋久島出発・東京帰着",
+      "summary": "素泊民宿ふれんどを出て、給油までの時間を自由時間として使い、レンタカーを返却して屋久島から東京へ戻る帰宅日。",
+      "start_ref": {
+        "entity_type": "spot",
+        "id": "S0025"
+      },
+      "end_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "sequence": [
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "actions": [
+            "チェックアウト後、給油に向かうまでの時間を自由時間として使う",
+            "レンタカー返却前に給油する"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0025"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "transport": {
+            "code": "rental_car",
+            "label": "レンタカー"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "actions": [
+            "レンタカーを返却する"
+          ]
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0005"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0003"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "transport": {
+            "code": "airplane",
+            "label": "飛行機"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0002"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        }
+      ]
+    }
+  ],
+  "status": {
+    "state": {
+      "code": "complete",
+      "label": "完了"
+    }
+  }
+}

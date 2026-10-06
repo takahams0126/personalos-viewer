@@ -1,0 +1,70 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0054",
+  "title": "Kitchen HUB Dining",
+  "summary": "屋久島の地魚や島内食材を使った料理、カレー、パスタ、ピザ等を提供する宮之浦のカフェ・ダイニング。 宮之浦から屋久島空港方面へ向かう途中に、屋久島の食材を使った昼食をとれる。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町宮之浦368-21",
+    "google_place_id": "ChIJp3_efwUfPTURtsfwBkSz9aE",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Kitchen+HUB+Dining&query_place_id=ChIJp3_efwUfPTURtsfwBkSz9aE"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "要確認"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-kitchen-hub-03.jpg",
+      "source_url": "https://yakukan.jp/spot/6861.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-kitchen-hub-04.jpg",
+      "source_url": "https://yakukan.jp/spot/6861.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/09/spot-kitchen-hub-02.jpg",
+      "source_url": "https://yakukan.jp/spot/6861.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島の地魚や島内食材を使った料理、カレー、パスタ、ピザ等を提供する宮之浦のカフェ・ダイニング。"
+    ],
+    "review": {
+      "positives": [
+        "宮之浦から屋久島空港方面へ向かう途中に、屋久島の食材を使った昼食をとれる。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "ランチ平均予算",
+        "pricing": {
+          "label": "¥900（1名）",
+          "amount": 900,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      }
+    ]
+  },
+  "references": {
+    "supplemental": {
+      "url": "https://yakukan.jp/spot/6861.html"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0053",
+  "title": "定食・ぱすた かたぎりさん",
+  "summary": "屋久島産の地魚を使ったひつまぶし、定食、パスタ等を提供する安房の飲食店。 屋久島到着日の昼食として、地魚や飛び魚など島らしい食材を使った料理を安房への移動途中で味わえる。",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "鹿児島県熊毛郡屋久島町安房540-62",
+    "google_place_id": "ChIJD_3a29jfPDURa_WxHTCTNpA",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E5%AE%9A%E9%A3%9F%E3%83%BB%E3%81%B1%E3%81%99%E3%81%9F+%E3%81%8B%E3%81%9F%E3%81%8E%E3%82%8A%E3%81%95%E3%82%93&query_place_id=ChIJD_3a29jfPDURa_WxHTCTNpA"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-katagirisan-01.jpg",
+      "source_url": "https://yakukan.jp/spot/6851.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-katagirisan-02.jpg",
+      "source_url": "https://yakukan.jp/spot/6851.html"
+    },
+    {
+      "url": "https://yakukan.jp/wp-content/uploads/2024/02/spot-katagirisan-03.jpg",
+      "source_url": "https://yakukan.jp/spot/6851.html"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "屋久島産の地魚を使ったひつまぶし、定食、パスタ等を提供する安房の飲食店。"
+    ],
+    "review": {
+      "positives": [
+        "屋久島到着日の昼食として、地魚や飛び魚など島らしい食材を使った料理を安房への移動途中で味わえる。"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "ランチ参考価格",
+        "pricing": {
+          "label": "¥1,100〜¥3,000（1名）",
+          "min_amount": 1100,
+          "max_amount": 3000,
+          "currency": "JPY",
+          "charging_basis": "1名"
+        }
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://katagirisan.com/"
+    },
+    "supplemental": {
+      "url": "https://katagirisan.com/access/"
+    }
+  }
+}

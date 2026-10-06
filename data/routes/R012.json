@@ -1,0 +1,93 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R012",
+  "title": "屋久島一周ドライブ・時計回り",
+  "summary": "屋久島東南部から南部・西部林道・北西海岸へ時計回りに進み、滝・海中温泉・深い森・海岸景観を一日の流れで体験する 東南部の滝から南部の温泉、大川の滝、西部林道、永田いなか浜へ進み、海・滝・温泉・森が連続して変化する屋久島の景観を時計回りで体験できる。",
+  "theme_chips": [
+    "ドライブ"
+  ],
+  "family_label": "屋久島一周ドライブ",
+  "variant": {
+    "code": "clockwise",
+    "label": "時計回り"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "屋久島東南部から南部・西部林道・北西海岸へ時計回りに進み、滝・海中温泉・深い森・海岸景観を一日の流れで体験する",
+    "strengths": [
+      "東南部の滝から南部の温泉、大川の滝、西部林道、永田いなか浜へ進み、海・滝・温泉・森が連続して変化する屋久島の景観を時計回りで体験できる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0034"
+      }
+    },
+    {
+      "order": 2,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0035"
+      }
+    },
+    {
+      "order": 3,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0045"
+      },
+      "visit_purpose": {
+        "code": "lunch",
+        "label": "昼食"
+      }
+    },
+    {
+      "order": 4,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0028"
+      },
+      "visit_purpose": {
+        "code": "bath",
+        "label": "入浴"
+      },
+      "condition": {
+        "text": "潮位・波・風条件が入浴に適している状態"
+      }
+    },
+    {
+      "order": 5,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0036"
+      }
+    },
+    {
+      "order": 6,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0039"
+      },
+      "inclusion_requirement": {
+        "code": "required",
+        "label": "必須"
+      }
+    },
+    {
+      "order": 7,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0038"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R012/R012-conceptual-map.json"
+  }
+}
