@@ -92,20 +92,30 @@
   }
 
   .plan-day-navigation {
+    position: sticky;
+    inset-block-start: .35rem;
+    z-index: 20;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     min-width: 0;
     margin-block-end: var(--space-3);
     border-block-end: var(--border-width) solid var(--line);
+    background: color-mix(in srgb, var(--surface-page) 96%, transparent);
+    backdrop-filter: blur(.4rem);
     scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
   }
 
   .plan-day-navigation .primary-day-tab {
     position: relative;
     flex: 0 0 auto;
-    min-width: 4.6rem;
-    padding-inline: .85rem;
+    display: flex;
+    align-items: center;
+    min-width: 4.75rem;
+    min-height: 2.2rem;
+    padding: .38rem .85rem;
+    text-align: center;
   }
 
   .plan-day-navigation .primary-day-tab::before {
@@ -276,12 +286,13 @@
     }
 
     .plan-day-navigation {
+      inset-block-start: .2rem;
       margin-inline: -.75rem;
       padding-inline: .75rem;
     }
 
     .plan-day-navigation .primary-day-tab {
-      min-width: 4.2rem;
+      min-width: 4.3rem;
       padding-inline: .7rem;
     }
 

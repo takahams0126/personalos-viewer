@@ -290,54 +290,22 @@
   .execution-action:not(.route-execution-group) .action-body {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
+    gap: 0;
     align-items: start;
     min-width: 0;
     margin-block-end: 0;
-    padding: .42rem 0 .5rem;
+    padding: .2rem 0 .35rem;
   }
 
-  .execution-action:not(.route-execution-group) .action-header,
-  .execution-action:not(.route-execution-group) .next-move,
-  .execution-action:not(.route-execution-group) .action-stay,
-  .execution-action:not(.route-execution-group) .action-todos,
-  .execution-action:not(.route-execution-group) .action-facilities,
-  .execution-action:not(.route-execution-group) .action-constraints,
-  .execution-action:not(.route-execution-group) .action-attention {
+  .execution-action:not(.route-execution-group) .action-place-surface,
+  .execution-action:not(.route-execution-group) .next-move {
     grid-column: 1;
     min-width: 0;
     margin: 0;
   }
 
   .execution-action:not(.route-execution-group) .next-move {
-    padding-block-start: var(--space-1);
-  }
-
-  .execution-action:not(.route-execution-group) .action-heading > .action-purpose,
-  .execution-action:not(.route-execution-group) .action-heading > .action-inclusion {
-    display: inline;
-    margin: 0;
-    color: var(--muted);
-    font-size: var(--type-caption);
-    line-height: 1.35;
-  }
-
-  .execution-action:not(.route-execution-group) .action-heading > .action-inclusion::before { content: ' · '; }
-
-  .execution-action:not(.route-execution-group) .action-stay {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: .25rem;
-    align-items: baseline;
-    color: var(--muted);
-    font-size: var(--type-caption);
-  }
-
-  .execution-action:not(.route-execution-group) .action-stay .semantic-row,
-  .execution-action:not(.route-execution-group) .action-stay.semantic-row {
-    display: inline-flex;
-    gap: .3rem;
-    margin: 0;
+    padding-block-start: .35rem;
   }
 
   .execution-action:not(.route-execution-group) .action-todos > h5,
@@ -364,7 +332,7 @@
   }
 
   .execution-action:not(.route-execution-group) .action-todos li::before {
-    content: '✓';
+    content: '•';
     color: var(--accent-strong);
     font-weight: var(--font-weight-strong);
   }
@@ -448,9 +416,15 @@
     padding-inline-start: 0;
   }
 
-  .concrete-primary-panel > .plan-fuel,
-  .concrete-primary-panel > .plan-cost {
+  .concrete-primary-panel > .plan-fuel {
     width: min(100%, 64rem);
+    margin-inline: 0 auto;
+    padding-block: 0;
+    border-block-start: 0;
+  }
+
+  .concrete-primary-panel > .plan-cost {
+    width: min(100%, 52rem);
     margin-inline: 0 auto;
     padding-block: 0;
     border-block-start: 0;
@@ -536,9 +510,10 @@
 
   .plan-cost .support-panel-header {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    justify-content: space-between;
-    gap: var(--space-3);
+    justify-content: flex-start;
+    gap: var(--space-1) var(--space-3);
     padding-block-end: var(--space-1);
     border-block-end: .12rem solid var(--line-strong);
   }
@@ -619,8 +594,8 @@
 
   .cost-day-groups {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--space-2) var(--space-3);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
     align-items: start;
     margin-block-start: var(--space-2);
   }
