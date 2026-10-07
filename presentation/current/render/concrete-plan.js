@@ -118,24 +118,43 @@ function renderTimelineTime(action) {
   if (!action.arrival_label && !action.departure_label) return null;
   return h('aside', { className: 'action-time-axis', dataset: { semantic: 'timeline-time' } },
     action.arrival_label
-      ? h('span', { className: 'action-time-arrival', text: action.arrival_label, attrs: { 'aria-label': `到着 ${action.arrival_label}` } })
+      ? h('span', { className: 'action-time-arrival', attrs: { 'aria-label': `到着 ${action.arrival_label}` } },
+          h('span', { className: 'action-time-value', text: action.arrival_label }),
+          h('span', { className: 'action-time-kind', text: '着' })
+        )
       : null,
     action.departure_label && action.departure_label !== action.arrival_label
-      ? h('span', { className: 'action-time-departure', text: action.departure_label, attrs: { 'aria-label': `出発 ${action.departure_label}` } })
+      ? h('span', { className: 'action-time-departure', attrs: { 'aria-label': `出発 ${action.departure_label}` } },
+          h('span', { className: 'action-time-value', text: action.departure_label }),
+          h('span', { className: 'action-time-kind', text: '発' })
+        )
       : null
   );
 }
 
-function renderStay(action) {
-  return action.stay_label
-    ? h('section', { className: 'action-stay', dataset: { semantic: 'stay' } }, textRow('滞在', action.stay_label))
+function renderActionMeta(action) {
+  const items = [];
+  if (action.visit_purpose?.label) {
+    items.push(h('span', { className: 'action-purpose', text: action.visit_purpose.label }));
+  }
+  if (action.stay_label) {
+    items.push(h('span', { className: 'action-stay-inline', text: `滞在${action.stay_label}` }));
+  }
+  if (action.inclusion_requirement?.label) {
+    items.push(h('span', { className: 'action-inclusion', text: action.inclusion_requirement.label }));
+  }
+  return items.length
+    ? h('p', { className: 'action-meta', dataset: { semantic: 'action-meta' } }, items)
     : null;
 }
 
 function renderTodos(todos) {
   if (!todos?.length) return null;
-  return h('section', { className: 'action-todos', dataset: { semantic: 'todos' } },
-    h('h5', { text: 'やること' }),
+  return h('section', {
+    className: 'action-todos',
+    dataset: { semantic: 'todos' },
+    attrs: { 'aria-label': '行動' }
+  },
     h('ul', {}, todos.map(todo =>
       h('li', { dataset: { semantic: 'todo' } },
         h('span', { className: 'todo-instruction', text: todo.instruction }),
@@ -265,8 +284,6 @@ function fixedFuelEventForTarget(fuelEvents, target) {
 
 async function renderAction(action, resolver, fuelEvents = []) {
   const target = await describeTarget(action.target, resolver);
-  const purpose = action.visit_purpose?.label;
-  const inclusion = action.inclusion_requirement?.label;
   const fixedFuel = fixedFuelEventForTarget(fuelEvents, action.target);
   const fixedFuelMapLink = fixedFuel ? await googleMapsLink(fixedFuel, resolver) : null;
 
@@ -281,23 +298,23 @@ async function renderAction(action, resolver, fuelEvents = []) {
   },
     renderTimelineTime(action),
     h('article', { className: 'action-body' },
-      h('header', { className: 'action-header' },
-        renderEventIcon(target),
-        h('div', { className: 'action-heading' },
-          h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
-          target.unavailable
-            ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
-            : null,
-          purpose ? h('p', { className: 'action-purpose', text: purpose }) : null,
-          inclusion ? h('p', { className: 'action-inclusion', text: inclusion }) : null,
-          fixedFuelMapLink
-        )
+      h('div', { className: 'action-place-surface', dataset: { semantic: 'place-event' } },
+        h('header', { className: 'action-header' },
+          renderEventIcon(target),
+          h('div', { className: 'action-heading' },
+            h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
+            target.unavailable
+              ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
+              : null,
+            renderActionMeta(action),
+            fixedFuelMapLink
+          )
+        ),
+        renderTodos(action.todos),
+        renderFacilityExecutions(action.facility_executions),
+        renderConstraints(action.time_constraints),
+        renderAttention(action.attention)
       ),
-      renderStay(action),
-      renderTodos(action.todos),
-      renderFacilityExecutions(action.facility_executions),
-      renderConstraints(action.time_constraints),
-      renderAttention(action.attention),
       renderMove(action.next_move)
     )
   );
@@ -468,10 +485,24 @@ function renderWeather(weatherDay) {
     weatherDay.wind_label && `風 ${weatherDay.wind_label}`
   ].filter(Boolean);
   const periods = weatherDay.periods || [];
-  return h('section', { className: 'day-weather', dataset: { semantic: 'day-weather' } },
-    h('h4', { text: '天気' }),
+  const locationLabel = weatherDay.representative_location_label;
+  const weatherTitle = locationLabel ? `天気（${locationLabel}）` : '天気';
+  const coverageLabel = weatherDay.coverage_state?.label;
+
+  return h('section', {
+    className: 'day-weather',
+    dataset: {
+      semantic: 'day-weather',
+      coverageState: weatherDay.coverage_state?.code || ''
+    }
+  },
+    h('h4', { text: weatherTitle }),
     h('div', { className: 'weather-summary', dataset: { semantic: 'weather-summary' } },
-      weatherDay.condition?.label ? h('strong', { text: weatherDay.condition.label }) : null,
+      weatherDay.condition?.label
+        ? h('strong', { text: weatherDay.condition.label })
+        : coverageLabel
+          ? h('strong', { text: coverageLabel })
+          : null,
       summaryFacts.length ? h('p', { text: summaryFacts.join(' ・ ') }) : null
     ),
     periods.length
