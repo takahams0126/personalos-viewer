@@ -700,21 +700,25 @@ async function renderFuelSummary(fuel, resolver) {
 function renderCostGroup(title, items, notes) {
   if (!items.length) return null;
   return h('section', { className: 'cost-group' },
-    h('h3', { text: title }),
-    h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title } },
+    title ? h('h3', { text: title }) : null,
+    h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title || '費用明細' } },
+      h('div', { className: 'cost-table-head', attrs: { role: 'row' } },
+        h('span', { attrs: { role: 'columnheader' }, text: '科目' }),
+        h('span', { attrs: { role: 'columnheader' }, text: '金額' }),
+        h('span', { attrs: { role: 'columnheader' }, text: '状態' })
+      ),
       items.map(item => {
-        const noteNumber = item.annotation ? notes.push(item.annotation) : null;
-        const amount = item.amount_label || item.amount_state.label;
+        const noteText = [item.detail, item.annotation].filter(Boolean).join(' — ');
+        const noteNumber = noteText ? notes.push(noteText) : null;
         return h('div', { className: 'cost-row', attrs: { role: 'row' } },
           h('div', { className: 'cost-item', attrs: { role: 'cell' } },
             h('strong', { className: 'cost-item-label', text: item.label }),
-            item.detail ? h('span', { className: 'cost-item-detail', text: item.detail }) : null
+            noteNumber ? h('sup', { className: 'cost-note-ref' },
+              h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })
+            ) : null
           ),
-          h('div', { className: 'cost-amount', attrs: { role: 'cell' } },
-            h('strong', { text: amount }),
-            item.amount_label ? h('span', { className: 'cost-state', text: item.amount_state.label }) : null,
-            noteNumber ? h('sup', {}, h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })) : null
-          )
+          h('div', { className: 'cost-amount', attrs: { role: 'cell' }, text: item.amount_label || '—' }),
+          h('div', { className: 'cost-state', attrs: { role: 'cell' }, text: item.amount_state?.label || '—' })
         );
       })
     )
