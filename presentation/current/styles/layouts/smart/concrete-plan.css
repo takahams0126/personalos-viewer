@@ -727,6 +727,12 @@
     }
 
     .cost-row { padding-block: .42rem; }
+
+    .cost-day-disclosure > summary {
+      grid-template-columns: 4.2rem minmax(7rem, 1fr) max-content;
+      gap: .4rem;
+    }
+
     .cost-day-disclosure > .cost-group { padding-inline-start: .65rem; }
   }
 
