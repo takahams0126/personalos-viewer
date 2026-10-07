@@ -354,7 +354,6 @@ async function renderDay(day, resolver) {
     }
   },
     h('header', { className: 'plan-day-context' },
-      h('p', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
       h('h3', { className: 'plan-day-title', text: day.title })
     ),
     h('div', { className: 'plan-day-body' },
