@@ -1489,6 +1489,10 @@
         "category": {
           "code": "lodging",
           "label": "宿泊"
+        },
+        "image": {
+          "url": "https://trvimg.r10s.jp/share/image_up/128356/origin/02abf94e0030f047550b32572e923da0bf431c7a.47.1.26.2.jpg?fit=inside%7C888%3A498",
+          "alt": "民宿 とまり"
         }
       }
     },

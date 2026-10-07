@@ -20,7 +20,20 @@
       "value": "予約推奨"
     }
   ],
-  "images": [],
+  "images": [
+    {
+      "url": "https://trvimg.r10s.jp/share/image_up/128356/origin/02abf94e0030f047550b32572e923da0bf431c7a.47.1.26.2.jpg?fit=inside%7C888%3A498",
+      "source_url": "https://travel.rakuten.co.jp/HOTEL/128356/gallery.html"
+    },
+    {
+      "url": "https://trvimg.r10s.jp/share/image_up/128356/origin/1b53712679410f5f969fb2d75b16476ddf0450a1.47.1.26.2.jpg?fit=inside%7C888%3A498",
+      "source_url": "https://travel.rakuten.co.jp/HOTEL/128356/gallery.html"
+    },
+    {
+      "url": "https://trvimg.r10s.jp/share/image_up/128356/origin/4b5236c25168ef8da828548cfcf0bf7b9f67e5e0.47.1.26.2.jpg?fit=inside%7C888%3A498",
+      "source_url": "https://travel.rakuten.co.jp/HOTEL/128356/gallery.html"
+    }
+  ],
   "appeal": {
     "highlights": [
       "安房市街地にある素泊まり民宿で、縄文杉方面の行動拠点として組み込みやすい。"
