@@ -146,7 +146,7 @@
 
   .itinerary-day-row {
     display: grid;
-    grid-template-columns: 3.25rem 5.2rem 1.3rem 4.25rem minmax(0, 1fr);
+    grid-template-columns: 3.25rem 5.2rem 1.3rem 5.75rem minmax(0, 1fr);
     gap: .16rem .42rem;
     align-items: center;
     min-width: 0;

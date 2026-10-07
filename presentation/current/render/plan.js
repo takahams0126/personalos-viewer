@@ -123,9 +123,11 @@ async function renderPlace(item, resolver, { boundary = '' } = {}) {
     renderJourneyIcon(eventIconRole(item.target_ref, target), 'plan-event-icon'),
     h('article', { className: 'plan-event-body' },
       boundary ? h('p', { className: 'plan-boundary-label', text: boundary }) : null,
-      h('h4', {}, entityTitle(item.target_ref, target.title, target.unavailable)),
+      h('div', { className: 'plan-event-title-row' },
+        h('h4', {}, entityTitle(item.target_ref, target.title, target.unavailable)),
+        renderEventMeta(item)
+      ),
       target.unavailable ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' }) : null,
-      renderEventMeta(item),
       renderCondition(item),
       renderOptionalList(item.actions)
     )
@@ -293,8 +295,16 @@ async function renderRoute(item, resolver) {
 }
 
 async function renderJourney(day, resolver) {
-  const nodes = [await renderBoundary('START', day.start_ref, resolver)];
   const sequence = day.sequence || [];
+  const first = sequence[0];
+  const last = sequence[sequence.length - 1];
+  const startAlreadyShown = first?.kind === 'place' && sameRef(first.target_ref, day.start_ref);
+  const endAlreadyShown = last?.kind === 'place' && sameRef(last.target_ref, day.end_ref);
+  const nodes = [];
+
+  if (!startAlreadyShown) {
+    nodes.push(await renderBoundary('', day.start_ref, resolver));
+  }
 
   for (let index = 0; index < sequence.length; index += 1) {
     const item = sequence[index];
@@ -327,7 +337,9 @@ async function renderJourney(day, resolver) {
     }));
   }
 
-  nodes.push(await renderBoundary('END', day.end_ref, resolver));
+  if (!endAlreadyShown) {
+    nodes.push(await renderBoundary('', day.end_ref, resolver));
+  }
   return h('ol', { className: 'plan-sequence plan-journey', dataset: { semantic: 'conceptual-sequence' } }, nodes);
 }
 
@@ -342,7 +354,6 @@ async function renderDay(day, resolver) {
     }
   },
     h('header', { className: 'plan-day-context' },
-      h('p', { className: 'plan-day-number', text: `Day ${day.ordinal}` }),
       h('h3', { className: 'plan-day-title', text: day.title })
     ),
     h('div', { className: 'plan-day-body' },

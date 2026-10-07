@@ -466,7 +466,7 @@ async function renderVariant(variant, resolver, artifactLoader) {
   return h('details', { className: 'day-variant', dataset: { semantic: 'variant' } },
     h('summary', { text: variant.intent || variant.variant_id || '代替案' }),
     variant.selection_condition?.text ? h('p', { className: 'variant-condition', text: variant.selection_condition.text }) : null,
-    await renderActions(variant.actions, resolver),
+    await renderExecutionSequence(variant.actions, variant.routes, resolver),
     await renderMapPreview(variant.map_artifact_ref, artifactLoader, resolver)
   );
 }

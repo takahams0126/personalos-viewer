@@ -109,6 +109,13 @@
     font-size: var(--type-control-label);
   }
 
+  .hourly-weather-location {
+    min-width: 0;
+    color: var(--muted);
+    font-size: var(--type-caption);
+    white-space: nowrap;
+  }
+
   .hourly-weather-toggle {
     appearance: none;
     flex: 0 0 auto;

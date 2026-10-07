@@ -142,24 +142,13 @@
   .plan-day-panel[hidden] { display: none; }
 
   .plan-day-context {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1) var(--space-3);
-    align-items: baseline;
     margin-block-end: var(--space-2);
   }
 
-  .plan-day-context .plan-day-number,
-  .plan-day-context .plan-day-title { margin: 0; }
-
-  .plan-day-context .plan-day-number {
-    color: var(--accent-strong);
-    font-size: var(--type-caption);
-    font-weight: var(--font-weight-strong);
-    letter-spacing: var(--tracking-label);
+  .plan-day-context .plan-day-title {
+    margin: .1rem 0 var(--space-1);
+    font-size: var(--type-page-title);
   }
-
-  .plan-day-context .plan-day-title { font-size: var(--type-page-title); }
 
   .plan-day-summary {
     max-width: 64rem;
@@ -294,11 +283,6 @@
     .plan-day-navigation .primary-day-tab {
       min-width: 4.3rem;
       padding-inline: .7rem;
-    }
-
-    .plan-day-context {
-      display: grid;
-      gap: .15rem;
     }
 
     .plan-day-context .plan-day-title { font-size: clamp(1.35rem, 7vw, 1.85rem); }
