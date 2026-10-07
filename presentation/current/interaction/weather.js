@@ -111,7 +111,8 @@ function buildHourlyMatrix(weatherDay) {
   matrix.append(
     matrixRow('', periods, period => startTime(period.time_label), 'weather-matrix-time-row'),
     matrixRow('天気', periods, period => {
-      if (!period.condition?.code) return '—';
+      const code = period.condition?.code ? String(period.condition.code).toLowerCase() : '';
+      if (!code || !ICON_BY_CODE[code]) return '—';
       const icon = weatherIcon(period.condition, 'weather-icon weather-icon-hourly');
       icon.title = period.condition?.label || '';
       return icon;
