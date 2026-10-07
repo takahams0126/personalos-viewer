@@ -131,12 +131,19 @@ function decorateItineraryOverview(root, dayByOrdinal) {
     const slot = row.querySelector('[data-weather-slot]');
     if (!weatherDay || !slot || slot.childElementCount) return;
 
-    const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-itinerary');
-    icon.title = weatherDay.condition?.label || '';
     const label = document.createElement('span');
     label.className = 'itinerary-weather-label';
-    label.textContent = weatherDay.condition?.label || '—';
-    slot.append(icon, label);
+
+    if (weatherDay.condition) {
+      const icon = weatherIcon(weatherDay.condition, 'weather-icon weather-icon-itinerary');
+      icon.title = weatherDay.condition?.label || '';
+      label.textContent = weatherDay.condition?.label || '—';
+      slot.append(icon, label);
+      return;
+    }
+
+    label.textContent = weatherDay.coverage_state?.label || '—';
+    slot.append(label);
   });
 }
 
@@ -150,11 +157,8 @@ function decorateDayWeather(root, dayByOrdinal) {
     const source = panel.querySelector(':scope .day-weather');
     if (!source) return;
     const presentation = buildHourlyMatrix(weatherDay);
-    if (!presentation) {
-      source.remove();
-      return;
-    }
-    source.replaceWith(presentation);
+    if (!presentation) return;
+    source.insertAdjacentElement('afterend', presentation);
   });
 }
 
