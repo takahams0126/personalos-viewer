@@ -159,6 +159,9 @@ function applyDayWorkspace(container, workspaceDefinition, workspaceKey) {
 }
 
 function createExecutionSequenceFromVariant(variantNode) {
+  const existing = variantNode.querySelector(':scope > [data-semantic="execution-sequence"]');
+  if (existing) return existing;
+
   const timeline = variantNode.querySelector(':scope > [data-semantic="execution-timeline"]');
   if (!timeline) return null;
   const sequence = document.createElement('section');
