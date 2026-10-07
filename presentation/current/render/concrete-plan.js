@@ -643,15 +643,31 @@ function renderItineraryOverview(concretePlan, sourcePlan) {
     h('h2', { text: '日程' }),
     h('ol', { className: 'itinerary-overview-list' }, days.map(day => {
       const sourceDay = sourcePlan?.days?.find(item => item.ordinal === day.source_plan_day_ordinal);
+      const dayAttention = (concretePlan.status?.attention || []).find(item =>
+        Number(item.day_ordinal) === Number(day.ordinal) && item.short_label
+      );
       return h('li', {
         className: 'itinerary-day-row',
-        dataset: { itineraryDay: day.ordinal, day: day.ordinal }
+        dataset: {
+          itineraryDay: day.ordinal,
+          day: day.ordinal,
+          attention: dayAttention ? 'true' : 'false'
+        }
       },
         h('strong', { className: 'itinerary-day-label', text: `DAY${day.ordinal}` }),
         h('time', { className: 'itinerary-day-date', text: formatDate(day.date) }),
         day.weekday_label ? h('span', { className: 'itinerary-day-weekday', text: day.weekday_label.replace('曜日', '') }) : null,
         h('span', { className: 'itinerary-day-weather', dataset: { weatherSlot: '' } }),
-        h('span', { className: 'itinerary-day-title', text: sourceDay?.title || `Day ${day.ordinal}` })
+        h('span', { className: 'itinerary-day-title-wrap' },
+          h('span', { className: 'itinerary-day-title', text: sourceDay?.title || `Day ${day.ordinal}` }),
+          dayAttention
+            ? h('span', {
+                className: 'itinerary-day-attention',
+                dataset: { level: dayAttention.level || '' },
+                text: dayAttention.short_label
+              })
+            : null
+        )
       );
     }))
   );
