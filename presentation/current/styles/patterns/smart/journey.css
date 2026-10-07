@@ -360,7 +360,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: .08rem .55rem;
-    align-items: baseline;
+    align-items: center;
     min-width: 0;
   }
 
