@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "entity_type": "concrete_plan",
   "id": "CP002",
   "title": "屋久島 4泊5日 確定プラン",
@@ -2211,6 +2211,68 @@
         "label": "見積"
       }
     },
+    "day_totals": [
+      {
+        "day_ordinal": 1,
+        "coverage": {
+          "code": "partial",
+          "label": "未算定1件"
+        },
+        "amount_label": "¥3,335〜¥7,135",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        }
+      },
+      {
+        "day_ordinal": 2,
+        "coverage": {
+          "code": "complete",
+          "label": "全費用算定済み"
+        },
+        "amount_label": "¥6,000",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        }
+      },
+      {
+        "day_ordinal": 3,
+        "coverage": {
+          "code": "partial",
+          "label": "未算定1件"
+        },
+        "amount_label": "¥600",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        }
+      },
+      {
+        "day_ordinal": 4,
+        "coverage": {
+          "code": "complete",
+          "label": "全費用算定済み"
+        },
+        "amount_label": "¥9,200",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        }
+      },
+      {
+        "day_ordinal": 5,
+        "coverage": {
+          "code": "partial",
+          "label": "未算定1件"
+        },
+        "amount_label": "¥5,800",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        }
+      }
+    ],
     "items": [
       {
         "scope": "day",
