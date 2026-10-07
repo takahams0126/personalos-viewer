@@ -169,11 +169,35 @@
     color: var(--text-soft);
   }
 
+  .itinerary-day-title-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem .4rem;
+    align-items: center;
+    min-width: 0;
+  }
+
   .itinerary-day-title {
     overflow: hidden;
     min-width: 0;
     font-weight: var(--font-weight-strong);
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .itinerary-day-attention {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 1.35rem;
+    padding: .08rem .4rem;
+    border: var(--border-width) solid color-mix(in srgb, var(--caution) 52%, var(--line));
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--caution) 18%, var(--surface));
+    color: color-mix(in srgb, var(--caution) 88%, var(--text));
+    font-size: var(--type-caption);
+    font-weight: var(--font-weight-strong);
+    line-height: 1.2;
     white-space: nowrap;
   }
 
@@ -746,6 +770,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .itinerary-day-title-wrap {
+      align-items: flex-start;
     }
 
     .plan-cost .support-panel-header {
