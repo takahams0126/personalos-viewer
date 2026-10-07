@@ -6,7 +6,7 @@
   "period": {
     "start": "2026-10-19",
     "end": "2026-10-23",
-    "label": "2026-10-19〜2026-10-23"
+    "label": "2026/10/19(月)～10/23(金)"
   },
   "source_plan_ref": {
     "entity_type": "plan",
@@ -38,8 +38,8 @@
               "code": "walk",
               "label": "徒歩"
             },
-            "duration_label": "2分",
-            "distance_label": "157m"
+            "duration_label": "18分",
+            "distance_label": "1.4km"
           },
           "arrival_label": "05:20",
           "departure_label": "05:20"
@@ -50,15 +50,8 @@
             "entity_type": "travel_point",
             "id": "T0006"
           },
-          "arrival_label": "05:22",
-          "departure_label": "05:22"
-        },
-        {
-          "order": 3,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0006"
-          },
+          "arrival_label": "05:38",
+          "departure_label": "05:38",
           "next_move": {
             "transport": {
               "code": "train",
@@ -71,30 +64,21 @@
             },
             "depart_label": "05:45",
             "arrive_label": "07:04",
-            "connection_margin_label": "余裕 22分",
+            "connection_margin_label": "余裕 6分",
             "connection_state": {
               "code": "critical",
               "label": "余裕小"
             }
-          },
-          "arrival_label": "05:22",
-          "departure_label": "05:22"
+          }
         },
         {
-          "order": 4,
+          "order": 3,
           "target": {
             "entity_type": "travel_point",
             "id": "T0002"
           },
           "arrival_label": "07:04",
-          "departure_label": "07:04"
-        },
-        {
-          "order": 5,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0002"
-          },
+          "departure_label": "07:04",
           "next_move": {
             "transport": {
               "code": "airplane",
@@ -114,12 +98,10 @@
               "code": "comfortable",
               "label": "余裕あり"
             }
-          },
-          "arrival_label": "07:04",
-          "departure_label": "07:04"
+          }
         },
         {
-          "order": 6,
+          "order": 4,
           "target": {
             "entity_type": "travel_point",
             "id": "T0007"
@@ -148,20 +130,14 @@
           "departure_label": "09:50"
         },
         {
-          "order": 7,
+          "order": 5,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
           },
           "arrival_label": "11:10",
-          "departure_label": "11:10"
-        },
-        {
-          "order": 8,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0003"
-          },
+          "departure_label": "11:20",
+          "stay_label": "10分",
           "todos": [
             {
               "instruction": "荒川登山バス乗車券を空港の販売窓口で購入する",
@@ -175,13 +151,10 @@
             },
             "duration_label": "6分",
             "distance_label": "472m"
-          },
-          "arrival_label": "11:10",
-          "stay_label": "10分",
-          "departure_label": "11:20"
+          }
         },
         {
-          "order": 9,
+          "order": 6,
           "target": {
             "entity_type": "travel_point",
             "id": "T0005"
@@ -191,15 +164,14 @@
               "instruction": "12:00予約のレンタカーを受け取る"
             }
           ],
+          "time_constraints": [
+            {
+              "kind": "target",
+              "time_label": "12:00"
+            }
+          ],
           "arrival_label": "11:26",
-          "departure_label": "11:26"
-        },
-        {
-          "order": 10,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0005"
-          },
+          "departure_label": "12:00",
           "next_move": {
             "transport": {
               "code": "rental_car",
@@ -207,12 +179,10 @@
             },
             "duration_label": "9分",
             "distance_label": "7.8km"
-          },
-          "arrival_label": "11:26",
-          "departure_label": "11:26"
+          }
         },
         {
-          "order": 11,
+          "order": 7,
           "target": {
             "entity_type": "spot",
             "id": "S0053"
@@ -230,11 +200,11 @@
             "duration_label": "1分",
             "distance_label": "794m"
           },
-          "arrival_label": "11:36",
-          "departure_label": "12:36"
+          "arrival_label": "12:09",
+          "departure_label": "13:09"
         },
         {
-          "order": 12,
+          "order": 8,
           "target": {
             "entity_type": "travel_point",
             "id": "T0013"
@@ -253,11 +223,11 @@
             "duration_label": "2分",
             "distance_label": "639m"
           },
-          "arrival_label": "12:38",
-          "departure_label": "13:18"
+          "arrival_label": "13:11",
+          "departure_label": "13:51"
         },
         {
-          "order": 13,
+          "order": 9,
           "target": {
             "entity_type": "spot",
             "id": "S0052"
@@ -267,8 +237,8 @@
               "instruction": "16:00を目安に民宿とまりへチェックインする"
             }
           ],
-          "arrival_label": "13:20",
-          "departure_label": "13:20"
+          "arrival_label": "13:53",
+          "departure_label": "13:53"
         }
       ],
       "start_time_label": "05:20",
@@ -315,14 +285,7 @@
             "id": "T0009"
           },
           "arrival_label": "04:36",
-          "departure_label": "04:36"
-        },
-        {
-          "order": 3,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0009"
-          },
+          "departure_label": "04:36",
           "next_move": {
             "transport": {
               "code": "bus",
@@ -340,30 +303,19 @@
               "code": "critical",
               "label": "余裕小"
             }
+          }
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0010"
           },
-          "arrival_label": "04:36",
-          "departure_label": "04:36"
+          "arrival_label": "05:35",
+          "departure_label": "05:35"
         },
         {
           "order": 4,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0010"
-          },
-          "arrival_label": "05:35",
-          "departure_label": "05:35"
-        },
-        {
-          "order": 5,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0010"
-          },
-          "arrival_label": "05:35",
-          "departure_label": "05:35"
-        },
-        {
-          "order": 6,
           "target": {
             "kind": "route_local",
             "label": "橋"
@@ -372,7 +324,7 @@
           "departure_label": "06:00"
         },
         {
-          "order": 7,
+          "order": 5,
           "target": {
             "entity_type": "spot",
             "id": "S0019"
@@ -381,7 +333,7 @@
           "departure_label": "06:25"
         },
         {
-          "order": 8,
+          "order": 6,
           "target": {
             "kind": "route_local",
             "label": "楠川分れ"
@@ -390,7 +342,7 @@
           "departure_label": "07:15"
         },
         {
-          "order": 9,
+          "order": 7,
           "target": {
             "kind": "route_local",
             "label": "分岐"
@@ -399,7 +351,7 @@
           "departure_label": "07:30"
         },
         {
-          "order": 10,
+          "order": 8,
           "target": {
             "kind": "route_local",
             "label": "分岐"
@@ -408,7 +360,7 @@
           "departure_label": "07:33"
         },
         {
-          "order": 11,
+          "order": 9,
           "target": {
             "kind": "route_local",
             "label": "仁王杉"
@@ -417,7 +369,7 @@
           "departure_label": "08:23"
         },
         {
-          "order": 12,
+          "order": 10,
           "target": {
             "kind": "route_local",
             "label": "大株歩道入口"
@@ -426,7 +378,7 @@
           "departure_label": "08:53"
         },
         {
-          "order": 13,
+          "order": 11,
           "target": {
             "kind": "route_local",
             "label": "トロッコ道終点トイレ"
@@ -435,7 +387,7 @@
           "departure_label": "08:55"
         },
         {
-          "order": 14,
+          "order": 12,
           "target": {
             "kind": "route_local",
             "label": "大株歩道入口"
@@ -444,7 +396,7 @@
           "departure_label": "08:57"
         },
         {
-          "order": 15,
+          "order": 13,
           "target": {
             "entity_type": "spot",
             "id": "S0017"
@@ -453,7 +405,7 @@
           "departure_label": "09:22"
         },
         {
-          "order": 16,
+          "order": 14,
           "target": {
             "kind": "route_local",
             "label": "水場"
@@ -462,7 +414,7 @@
           "departure_label": "10:12"
         },
         {
-          "order": 17,
+          "order": 15,
           "target": {
             "entity_type": "spot",
             "id": "S0020"
@@ -471,7 +423,7 @@
           "departure_label": "10:20"
         },
         {
-          "order": 18,
+          "order": 16,
           "target": {
             "entity_type": "spot",
             "id": "S0016"
@@ -480,7 +432,7 @@
           "departure_label": "11:05"
         },
         {
-          "order": 19,
+          "order": 17,
           "target": {
             "entity_type": "spot",
             "id": "S0020"
@@ -489,7 +441,7 @@
           "departure_label": "11:45"
         },
         {
-          "order": 20,
+          "order": 18,
           "target": {
             "kind": "route_local",
             "label": "水場"
@@ -498,7 +450,7 @@
           "departure_label": "11:51"
         },
         {
-          "order": 21,
+          "order": 19,
           "target": {
             "entity_type": "spot",
             "id": "S0017"
@@ -507,7 +459,7 @@
           "departure_label": "12:36"
         },
         {
-          "order": 22,
+          "order": 20,
           "target": {
             "kind": "route_local",
             "label": "大株歩道入口"
@@ -516,7 +468,7 @@
           "departure_label": "12:56"
         },
         {
-          "order": 23,
+          "order": 21,
           "target": {
             "kind": "route_local",
             "label": "トロッコ道終点トイレ"
@@ -525,7 +477,7 @@
           "departure_label": "12:58"
         },
         {
-          "order": 24,
+          "order": 22,
           "target": {
             "kind": "route_local",
             "label": "大株歩道入口"
@@ -534,7 +486,7 @@
           "departure_label": "13:00"
         },
         {
-          "order": 25,
+          "order": 23,
           "target": {
             "kind": "route_local",
             "label": "仁王杉"
@@ -543,7 +495,7 @@
           "departure_label": "13:25"
         },
         {
-          "order": 26,
+          "order": 24,
           "target": {
             "kind": "route_local",
             "label": "分岐"
@@ -552,7 +504,7 @@
           "departure_label": "14:10"
         },
         {
-          "order": 27,
+          "order": 25,
           "target": {
             "kind": "route_local",
             "label": "分岐"
@@ -561,7 +513,7 @@
           "departure_label": "14:13"
         },
         {
-          "order": 28,
+          "order": 26,
           "target": {
             "kind": "route_local",
             "label": "楠川分れ"
@@ -570,7 +522,7 @@
           "departure_label": "14:28"
         },
         {
-          "order": 29,
+          "order": 27,
           "target": {
             "entity_type": "spot",
             "id": "S0019"
@@ -579,7 +531,7 @@
           "departure_label": "15:16"
         },
         {
-          "order": 30,
+          "order": 28,
           "target": {
             "kind": "route_local",
             "label": "橋"
@@ -588,20 +540,13 @@
           "departure_label": "15:40"
         },
         {
-          "order": 31,
+          "order": 29,
           "target": {
             "entity_type": "travel_point",
             "id": "T0010"
           },
           "arrival_label": "16:03",
-          "departure_label": "16:03"
-        },
-        {
-          "order": 32,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0010"
-          },
+          "departure_label": "16:03",
           "next_move": {
             "transport": {
               "code": "bus",
@@ -619,25 +564,16 @@
               "code": "critical",
               "label": "余裕小"
             }
-          },
-          "arrival_label": "16:03",
-          "departure_label": "16:03"
+          }
         },
         {
-          "order": 33,
+          "order": 30,
           "target": {
             "entity_type": "travel_point",
             "id": "T0009"
           },
           "arrival_label": "17:05",
-          "departure_label": "17:05"
-        },
-        {
-          "order": 34,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0009"
-          },
+          "departure_label": "17:05",
           "next_move": {
             "transport": {
               "code": "rental_car",
@@ -645,12 +581,10 @@
             },
             "duration_label": "7分",
             "distance_label": "4.1km"
-          },
-          "arrival_label": "17:05",
-          "departure_label": "17:05"
+          }
         },
         {
-          "order": 35,
+          "order": 31,
           "target": {
             "entity_type": "spot",
             "id": "S0052"
@@ -674,8 +608,8 @@
             "entity_type": "route",
             "id": "R005"
           },
-          "from_action_order": 5,
-          "to_action_order": 31
+          "from_action_order": 3,
+          "to_action_order": 29
         }
       ],
       "variants": [
@@ -707,14 +641,7 @@
                 "id": "T0009"
               },
               "arrival_label": "05:16",
-              "departure_label": "05:16"
-            },
-            {
-              "order": 3,
-              "target": {
-                "entity_type": "travel_point",
-                "id": "T0009"
-              },
+              "departure_label": "05:16",
               "next_move": {
                 "transport": {
                   "code": "bus",
@@ -732,30 +659,19 @@
                   "code": "critical",
                   "label": "余裕小"
                 }
+              }
+            },
+            {
+              "order": 3,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0010"
               },
-              "arrival_label": "05:16",
-              "departure_label": "05:16"
+              "arrival_label": "06:15",
+              "departure_label": "06:15"
             },
             {
               "order": 4,
-              "target": {
-                "entity_type": "travel_point",
-                "id": "T0010"
-              },
-              "arrival_label": "06:15",
-              "departure_label": "06:15"
-            },
-            {
-              "order": 5,
-              "target": {
-                "entity_type": "travel_point",
-                "id": "T0010"
-              },
-              "arrival_label": "06:15",
-              "departure_label": "06:15"
-            },
-            {
-              "order": 6,
               "target": {
                 "entity_type": "spot",
                 "id": "S0019"
@@ -764,7 +680,7 @@
               "departure_label": "07:05"
             },
             {
-              "order": 7,
+              "order": 5,
               "target": {
                 "entity_type": "spot",
                 "id": "S0017"
@@ -773,7 +689,7 @@
               "departure_label": "10:02"
             },
             {
-              "order": 8,
+              "order": 6,
               "target": {
                 "entity_type": "spot",
                 "id": "S0019"
@@ -782,20 +698,13 @@
               "departure_label": "12:39"
             },
             {
-              "order": 9,
+              "order": 7,
               "target": {
                 "entity_type": "travel_point",
                 "id": "T0010"
               },
               "arrival_label": "13:29",
-              "departure_label": "13:29"
-            },
-            {
-              "order": 10,
-              "target": {
-                "entity_type": "travel_point",
-                "id": "T0010"
-              },
+              "departure_label": "13:29",
               "next_move": {
                 "transport": {
                   "code": "bus",
@@ -813,12 +722,10 @@
                   "code": "comfortable",
                   "label": "余裕あり"
                 }
-              },
-              "arrival_label": "13:29",
-              "departure_label": "13:29"
+              }
             },
             {
-              "order": 11,
+              "order": 8,
               "target": {
                 "entity_type": "travel_point",
                 "id": "T0009"
@@ -1091,20 +998,11 @@
             "id": "T0004"
           },
           "arrival_label": "07:50",
-          "departure_label": "07:50"
+          "departure_label": "08:05",
+          "stay_label": "15分"
         },
         {
           "order": 3,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0004"
-          },
-          "stay_label": "15分",
-          "arrival_label": "07:50",
-          "departure_label": "08:05"
-        },
-        {
-          "order": 4,
           "target": {
             "kind": "route_local",
             "label": "さつき吊橋"
@@ -1113,7 +1011,7 @@
           "departure_label": "08:25"
         },
         {
-          "order": 5,
+          "order": 4,
           "target": {
             "kind": "route_local",
             "label": "白谷小屋"
@@ -1123,7 +1021,7 @@
           "departure_label": "09:25"
         },
         {
-          "order": 6,
+          "order": 5,
           "target": {
             "entity_type": "spot",
             "id": "S0021"
@@ -1133,7 +1031,7 @@
           "departure_label": "09:50"
         },
         {
-          "order": 7,
+          "order": 6,
           "target": {
             "kind": "route_local",
             "label": "辻峠"
@@ -1143,7 +1041,7 @@
           "departure_label": "10:30"
         },
         {
-          "order": 8,
+          "order": 7,
           "target": {
             "entity_type": "spot",
             "id": "S0015"
@@ -1157,7 +1055,7 @@
           "departure_label": "11:20"
         },
         {
-          "order": 9,
+          "order": 8,
           "target": {
             "kind": "route_local",
             "label": "辻峠"
@@ -1166,7 +1064,7 @@
           "departure_label": "11:35"
         },
         {
-          "order": 10,
+          "order": 9,
           "target": {
             "entity_type": "spot",
             "id": "S0021"
@@ -1175,7 +1073,7 @@
           "departure_label": "12:00"
         },
         {
-          "order": 11,
+          "order": 10,
           "target": {
             "kind": "route_local",
             "label": "白谷小屋"
@@ -1184,7 +1082,7 @@
           "departure_label": "12:10"
         },
         {
-          "order": 12,
+          "order": 11,
           "target": {
             "kind": "route_local",
             "label": "さつき吊橋"
@@ -1193,21 +1091,14 @@
           "departure_label": "12:55"
         },
         {
-          "order": 13,
+          "order": 12,
           "target": {
             "entity_type": "travel_point",
             "id": "T0004"
           },
           "stay_label": "30分",
           "arrival_label": "13:16",
-          "departure_label": "13:46"
-        },
-        {
-          "order": 14,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0004"
-          },
+          "departure_label": "13:46",
           "next_move": {
             "transport": {
               "code": "rental_car",
@@ -1215,12 +1106,10 @@
             },
             "duration_label": "24分",
             "distance_label": "14.3km"
-          },
-          "arrival_label": "13:46",
-          "departure_label": "13:46"
+          }
         },
         {
-          "order": 15,
+          "order": 13,
           "target": {
             "entity_type": "spot",
             "id": "S0030"
@@ -1242,7 +1131,7 @@
           "departure_label": "14:50"
         },
         {
-          "order": 16,
+          "order": 14,
           "target": {
             "entity_type": "travel_point",
             "id": "T0014"
@@ -1265,7 +1154,7 @@
           "departure_label": "15:26"
         },
         {
-          "order": 17,
+          "order": 15,
           "target": {
             "entity_type": "spot",
             "id": "S0046"
@@ -1287,7 +1176,7 @@
           "departure_label": "16:43"
         },
         {
-          "order": 18,
+          "order": 16,
           "target": {
             "entity_type": "spot",
             "id": "S0025"
@@ -1303,8 +1192,8 @@
             "entity_type": "route",
             "id": "R004"
           },
-          "from_action_order": 3,
-          "to_action_order": 13
+          "from_action_order": 2,
+          "to_action_order": 12
         }
       ],
       "map_artifact_ref": {
@@ -1422,15 +1311,14 @@
               "instruction": "14:30までにレンタカーを返却する"
             }
           ],
+          "time_constraints": [
+            {
+              "kind": "hard_limit",
+              "time_label": "14:30"
+            }
+          ],
           "arrival_label": "12:24",
-          "departure_label": "12:24"
-        },
-        {
-          "order": 6,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0005"
-          },
+          "departure_label": "12:24",
           "next_move": {
             "transport": {
               "code": "walk",
@@ -1438,25 +1326,16 @@
             },
             "duration_label": "6分",
             "distance_label": "472m"
-          },
-          "arrival_label": "12:24",
-          "departure_label": "12:24"
+          }
         },
         {
-          "order": 7,
+          "order": 6,
           "target": {
             "entity_type": "travel_point",
             "id": "T0003"
           },
           "arrival_label": "12:30",
-          "departure_label": "12:30"
-        },
-        {
-          "order": 8,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0003"
-          },
+          "departure_label": "12:30",
           "next_move": {
             "transport": {
               "code": "airplane",
@@ -1476,12 +1355,10 @@
               "code": "comfortable",
               "label": "余裕あり"
             }
-          },
-          "arrival_label": "12:30",
-          "departure_label": "12:30"
+          }
         },
         {
-          "order": 9,
+          "order": 7,
           "target": {
             "entity_type": "travel_point",
             "id": "T0015"
@@ -1516,20 +1393,13 @@
           "departure_label": "18:00"
         },
         {
-          "order": 10,
+          "order": 8,
           "target": {
             "entity_type": "travel_point",
             "id": "T0002"
           },
           "arrival_label": "20:20",
-          "departure_label": "20:20"
-        },
-        {
-          "order": 11,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0002"
-          },
+          "departure_label": "20:20",
           "next_move": {
             "transport": {
               "code": "bus",
@@ -1549,44 +1419,33 @@
               "code": "comfortable",
               "label": "余裕あり"
             }
-          },
-          "arrival_label": "20:20",
-          "departure_label": "20:20"
+          }
         },
         {
-          "order": 12,
+          "order": 9,
           "target": {
             "entity_type": "travel_point",
             "id": "T0006"
           },
           "arrival_label": "23:00",
-          "departure_label": "23:00"
-        },
-        {
-          "order": 13,
-          "target": {
-            "entity_type": "travel_point",
-            "id": "T0006"
-          },
+          "departure_label": "23:00",
           "next_move": {
             "transport": {
               "code": "walk",
               "label": "徒歩"
             },
-            "duration_label": "2分",
-            "distance_label": "157m"
-          },
-          "arrival_label": "23:00",
-          "departure_label": "23:00"
+            "duration_label": "18分",
+            "distance_label": "1.4km"
+          }
         },
         {
-          "order": 14,
+          "order": 10,
           "target": {
             "entity_type": "travel_point",
             "id": "T0001"
           },
-          "arrival_label": "23:02",
-          "departure_label": "23:02"
+          "arrival_label": "23:18",
+          "departure_label": "23:18"
         }
       ],
       "start_time_label": "10:00",
@@ -1598,69 +1457,66 @@
   ],
   "status": {
     "state": {
-      "code": "complete",
-      "label": "完了"
-    },
-    "attention": [
-      {
-        "semantic": "core.weather.days.day4",
-        "level": "attention",
-        "text": "WR20261006AはDay2・Day3を解決したがDay4はforecast_horizon。Weather partial coverageはConcretePlan completionをblockせず、次回ConcretizeでDay4を再取得・再評価する。"
-      }
-    ]
+      "code": "ready",
+      "label": "利用可能"
+    }
   },
   "weather": {
     "state": {
-      "code": "provisional",
-      "label": "暫定予報"
+      "code": "confirmed",
+      "label": "実予報"
     },
-    "notice": "暫定予報です。実施前に再確認してください。",
     "days": [
       {
-        "day": 2,
-        "date": "2026-10-20",
+        "day": 1,
+        "date": "2026-10-19",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "屋久島",
         "condition": {
           "code": "drizzle",
           "label": "霧雨"
         },
-        "temperature_min_label": "9.3℃",
-        "temperature_max_label": "14.1℃",
-        "precipitation_probability_label": "67%",
-        "precipitation_amount_label": "8.8mm",
-        "wind_label": "0.9m/s",
+        "temperature_min_label": "5.5℃",
+        "temperature_max_label": "12.9℃",
+        "precipitation_probability_label": "75%",
+        "precipitation_amount_label": "5.4mm",
+        "wind_label": "2.1m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
             },
-            "temperature_label": "10.1℃",
-            "precipitation_probability_label": "30%",
-            "precipitation_amount_label": "0.3mm",
+            "temperature_label": "5.5℃",
+            "precipitation_probability_label": "36%",
+            "precipitation_amount_label": "0mm",
             "wind_label": "0.9m/s"
           },
           {
             "time_label": "03:00〜06:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
             },
-            "temperature_label": "10.7℃",
-            "precipitation_probability_label": "25%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "0.8m/s"
+            "temperature_label": "6.7℃",
+            "precipitation_probability_label": "27%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.4m/s"
           },
           {
             "time_label": "06:00〜09:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
             },
-            "temperature_label": "12℃",
-            "precipitation_probability_label": "28%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "0.5m/s"
+            "temperature_label": "10℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2m/s"
           },
           {
             "time_label": "09:00〜12:00",
@@ -1668,10 +1524,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "13.2℃",
-            "precipitation_probability_label": "44%",
-            "precipitation_amount_label": "2.5mm",
-            "wind_label": "0.8m/s"
+            "temperature_label": "12.3℃",
+            "precipitation_probability_label": "53%",
+            "precipitation_amount_label": "0.8mm",
+            "wind_label": "2.1m/s"
           },
           {
             "time_label": "12:00〜15:00",
@@ -1679,10 +1535,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "14℃",
-            "precipitation_probability_label": "64%",
-            "precipitation_amount_label": "3.6mm",
-            "wind_label": "0.9m/s"
+            "temperature_label": "12.8℃",
+            "precipitation_probability_label": "72%",
+            "precipitation_amount_label": "1.2mm",
+            "wind_label": "2m/s"
           },
           {
             "time_label": "15:00〜18:00",
@@ -1690,10 +1546,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "13.4℃",
-            "precipitation_probability_label": "67%",
+            "temperature_label": "12.2℃",
+            "precipitation_probability_label": "75%",
             "precipitation_amount_label": "1.4mm",
-            "wind_label": "0.9m/s"
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "18:00〜21:00",
@@ -1701,10 +1557,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "11.2℃",
-            "precipitation_probability_label": "56%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "0.4m/s"
+            "temperature_label": "10.4℃",
+            "precipitation_probability_label": "64%",
+            "precipitation_amount_label": "1.5mm",
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "21:00〜00:00",
@@ -1712,25 +1568,30 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "9.5℃",
-            "precipitation_probability_label": "39%",
-            "precipitation_amount_label": "0.1mm",
-            "wind_label": "0.8m/s"
+            "temperature_label": "8.7℃",
+            "precipitation_probability_label": "47%",
+            "precipitation_amount_label": "0.5mm",
+            "wind_label": "1.8m/s"
           }
         ]
       },
       {
-        "day": 3,
-        "date": "2026-10-21",
+        "day": 2,
+        "date": "2026-10-20",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "屋久島",
         "condition": {
           "code": "drizzle",
           "label": "霧雨"
         },
-        "temperature_min_label": "9.1℃",
-        "temperature_max_label": "15.9℃",
-        "precipitation_probability_label": "35%",
-        "precipitation_amount_label": "2.1mm",
-        "wind_label": "2.6m/s",
+        "temperature_min_label": "7℃",
+        "temperature_max_label": "13.1℃",
+        "precipitation_probability_label": "69%",
+        "precipitation_amount_label": "4.2mm",
+        "wind_label": "1.9m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
@@ -1738,31 +1599,31 @@
               "code": "cloudy",
               "label": "曇り"
             },
-            "temperature_label": "9.1℃",
-            "precipitation_probability_label": "33%",
+            "temperature_label": "7.3℃",
+            "precipitation_probability_label": "41%",
             "precipitation_amount_label": "0mm",
-            "wind_label": "1.2m/s"
+            "wind_label": "1.4m/s"
           },
           {
             "time_label": "03:00〜06:00",
             "condition": {
-              "code": "cloudy",
-              "label": "曇り"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "9.5℃",
-            "precipitation_probability_label": "32%",
-            "precipitation_amount_label": "0mm",
-            "wind_label": "1.2m/s"
+            "temperature_label": "7.5℃",
+            "precipitation_probability_label": "39%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "1.4m/s"
           },
           {
             "time_label": "06:00〜09:00",
             "condition": {
-              "code": "partly_cloudy",
-              "label": "晴れ時々曇り"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "11℃",
-            "precipitation_probability_label": "35%",
-            "precipitation_amount_label": "0mm",
+            "temperature_label": "9.8℃",
+            "precipitation_probability_label": "39%",
+            "precipitation_amount_label": "0.3mm",
             "wind_label": "1.7m/s"
           },
           {
@@ -1771,10 +1632,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "14.5℃",
-            "precipitation_probability_label": "34%",
-            "precipitation_amount_label": "0.2mm",
-            "wind_label": "2.2m/s"
+            "temperature_label": "11.8℃",
+            "precipitation_probability_label": "51%",
+            "precipitation_amount_label": "1.1mm",
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "12:00〜15:00",
@@ -1782,10 +1643,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "15℃",
-            "precipitation_probability_label": "28%",
-            "precipitation_amount_label": "1.1mm",
-            "wind_label": "2.6m/s"
+            "temperature_label": "12.9℃",
+            "precipitation_probability_label": "66%",
+            "precipitation_amount_label": "1.5mm",
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "15:00〜18:00",
@@ -1793,10 +1654,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "12.5℃",
-            "precipitation_probability_label": "23%",
+            "temperature_label": "12.7℃",
+            "precipitation_probability_label": "69%",
             "precipitation_amount_label": "0.7mm",
-            "wind_label": "2m/s"
+            "wind_label": "1.9m/s"
           },
           {
             "time_label": "18:00〜21:00",
@@ -1804,21 +1665,339 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "11.7℃",
-            "precipitation_probability_label": "20%",
-            "precipitation_amount_label": "0.1mm",
-            "wind_label": "2.2m/s"
+            "temperature_label": "10.9℃",
+            "precipitation_probability_label": "64%",
+            "precipitation_amount_label": "0.3mm",
+            "wind_label": "1.2m/s"
           },
           {
             "time_label": "21:00〜00:00",
             "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "9.7℃",
+            "precipitation_probability_label": "53%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "1.3m/s"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "date": "2026-10-21",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "屋久島",
+        "condition": {
+          "code": "drizzle",
+          "label": "霧雨"
+        },
+        "temperature_min_label": "9.6℃",
+        "temperature_max_label": "16℃",
+        "precipitation_probability_label": "65%",
+        "precipitation_amount_label": "6mm",
+        "wind_label": "1.6m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
               "code": "cloudy",
               "label": "曇り"
             },
-            "temperature_label": "11.2℃",
-            "precipitation_probability_label": "20%",
+            "temperature_label": "9.7℃",
+            "precipitation_probability_label": "44%",
             "precipitation_amount_label": "0mm",
-            "wind_label": "2.3m/s"
+            "wind_label": "1m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "10.2℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "1.2mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "11.4℃",
+            "precipitation_probability_label": "26%",
+            "precipitation_amount_label": "1.8mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "13℃",
+            "precipitation_probability_label": "37%",
+            "precipitation_amount_label": "1.2mm",
+            "wind_label": "1.4m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.3℃",
+            "precipitation_probability_label": "61%",
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "1.6m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "15.4℃",
+            "precipitation_probability_label": "65%",
+            "precipitation_amount_label": "0.5mm",
+            "wind_label": "1.5m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "12.4℃",
+            "precipitation_probability_label": "56%",
+            "precipitation_amount_label": "0.3mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "10.3℃",
+            "precipitation_probability_label": "39%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "0.5m/s"
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "date": "2026-10-22",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "屋久島",
+        "condition": {
+          "code": "drizzle",
+          "label": "霧雨"
+        },
+        "temperature_min_label": "9.5℃",
+        "temperature_max_label": "13.5℃",
+        "precipitation_probability_label": "30%",
+        "precipitation_amount_label": "7.4mm",
+        "wind_label": "6.2m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "cloudy",
+              "label": "曇り"
+            },
+            "temperature_label": "10℃",
+            "precipitation_probability_label": "30%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.6m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "11.2℃",
+            "precipitation_probability_label": "25%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "0.7m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "13.3℃",
+            "precipitation_probability_label": "28%",
+            "precipitation_amount_label": "0.8mm",
+            "wind_label": "2.7m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "12.6℃",
+            "precipitation_probability_label": "30%",
+            "precipitation_amount_label": "2.4mm",
+            "wind_label": "5.3m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "12℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "1.9mm",
+            "wind_label": "5.7m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "11.3℃",
+            "precipitation_probability_label": "16%",
+            "precipitation_amount_label": "1.1mm",
+            "wind_label": "6m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "10.7℃",
+            "precipitation_probability_label": "15%",
+            "precipitation_amount_label": "0.7mm",
+            "wind_label": "6.2m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "9.8℃",
+            "precipitation_probability_label": "18%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "6.2m/s"
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "date": "2026-10-23",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "屋久島",
+        "condition": {
+          "code": "rain_showers",
+          "label": "にわか雨"
+        },
+        "temperature_min_label": "9.3℃",
+        "temperature_max_label": "12.6℃",
+        "precipitation_probability_label": "29%",
+        "precipitation_amount_label": "6.6mm",
+        "wind_label": "6.2m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "9.5℃",
+            "precipitation_probability_label": "22%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "6.2m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "10.1℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "0.7mm",
+            "wind_label": "5.9m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "10.5℃",
+            "precipitation_probability_label": "26%",
+            "precipitation_amount_label": "0.7mm",
+            "wind_label": "5.9m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "drizzle",
+              "label": "霧雨"
+            },
+            "temperature_label": "11.6℃",
+            "precipitation_probability_label": "27%",
+            "precipitation_amount_label": "0.6mm",
+            "wind_label": "5.3m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "rain_showers",
+              "label": "にわか雨"
+            },
+            "temperature_label": "12.6℃",
+            "precipitation_probability_label": "29%",
+            "precipitation_amount_label": "3mm",
+            "wind_label": "5.4m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "rain_showers",
+              "label": "にわか雨"
+            },
+            "temperature_label": "12.3℃",
+            "precipitation_probability_label": "29%",
+            "precipitation_amount_label": "1.4mm",
+            "wind_label": "4.9m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "other",
+              "label": "その他"
+            },
+            "precipitation_probability_label": "26%"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "other",
+              "label": "その他"
+            },
+            "precipitation_probability_label": "23%"
           }
         ]
       }
@@ -1829,6 +2008,24 @@
     "fuel_economy_label": "18km/L",
     "estimated_liters_label": "9.7L",
     "events": [
+      {
+        "fuel_event_id": "FUEL-CP002-D3-PREFERRED",
+        "importance": {
+          "code": "recommended",
+          "label": "推奨"
+        },
+        "timing": {
+          "code": "preferred",
+          "label": "推奨タイミング"
+        },
+        "day_ordinal": 3,
+        "travel_point_ref": {
+          "entity_type": "travel_point",
+          "id": "T0012"
+        },
+        "station_title": "ENEOS 屋久島安房SS",
+        "context": "受取時燃料状態は不明だが複数日にまたがる走行のため、Day3の島内ドライブ中に安房側で燃料残量を確認し余裕を確保する場合の優先給油候補とする"
+      },
       {
         "fuel_event_id": "FUEL-CP002-RETURN",
         "importance": {
@@ -1852,7 +2049,12 @@
     "total": {
       "coverage": {
         "code": "partial",
-        "label": "未算定あり"
+        "label": "未算定4件"
+      },
+      "amount_label": "¥71,991〜¥75,791",
+      "amount_state": {
+        "code": "estimated",
+        "label": "見積"
       }
     },
     "items": [
@@ -1883,6 +2085,20 @@
           "label": "確定"
         },
         "amount_label": "¥20,856"
+      },
+      {
+        "scope": "trip",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "航空券 大人2名",
+        "amount_state": {
+          "code": "unpriced",
+          "label": "未算定"
+        },
+        "detail": "CP002で採用している往路JAL643/JAL3743・復路JAL3676/BC022",
+        "annotation": "今回の予約情報では確定便は確認済みだが航空券金額を確認できないため未算定。"
       },
       {
         "scope": "trip",
