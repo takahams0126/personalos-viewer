@@ -302,11 +302,13 @@ async function renderAction(action, resolver, fuelEvents = []) {
         h('header', { className: 'action-header' },
           renderEventIcon(target),
           h('div', { className: 'action-heading' },
-            h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
+            h('div', { className: 'action-title-row' },
+              h('h4', {}, entityTitle(target.ref, target.title, target.unavailable)),
+              renderActionMeta(action)
+            ),
             target.unavailable
               ? h('p', { className: 'component-unavailable', text: '参照先を解決できませんでした' })
               : null,
-            renderActionMeta(action),
             fixedFuelMapLink
           )
         ),
