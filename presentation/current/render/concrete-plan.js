@@ -750,11 +750,29 @@ function renderCost(plan) {
       h('h2', { text: '費用' }),
       renderCostTotal(plan.cost.total)
     ),
-    renderCostGroup('旅程全体料金', trip, notes),
+    renderCostGroup('旅程全体', trip, notes),
     dayItems.length
       ? h('section', { className: 'cost-day-groups' },
-          h('h3', { text: '日別料金' }),
-          ordinals.map(ordinal => renderCostGroup(`DAY${ordinal}`, dayItems.filter(item => item.day_ordinal === ordinal), notes))
+          h('h3', { text: '日別' }),
+          h('div', { className: 'cost-day-disclosures' },
+            ordinals.map(ordinal => {
+              const itemsForDay = dayItems.filter(item => item.day_ordinal === ordinal);
+              const unpricedCount = itemsForDay.filter(item => item.amount_state?.code === 'unpriced').length;
+              const summaryText = [`${itemsForDay.length}件`, unpricedCount ? `未算定${unpricedCount}件` : null]
+                .filter(Boolean)
+                .join(' · ');
+              return h('details', {
+                className: 'cost-day-disclosure',
+                dataset: { semantic: 'cost-day', day: ordinal }
+              },
+                h('summary', {},
+                  h('strong', { text: `DAY${ordinal}` }),
+                  h('span', { className: 'cost-day-summary-meta', text: summaryText })
+                ),
+                renderCostGroup('', itemsForDay, notes)
+              );
+            })
+          )
         )
       : null,
     notes.length
