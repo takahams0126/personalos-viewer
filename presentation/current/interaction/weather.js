@@ -86,7 +86,13 @@ function buildHourlyMatrix(weatherDay) {
   toggle.setAttribute('aria-expanded', 'false');
   toggle.textContent = '詳細表示';
 
-  header.append(heading, toggle);
+  const location = document.createElement('span');
+  location.className = 'hourly-weather-location';
+  location.textContent = weatherDay.representative_location_label
+    ? `代表: ${weatherDay.representative_location_label}`
+    : '';
+
+  header.append(heading, toggle, location);
 
   const viewport = document.createElement('div');
   viewport.className = 'weather-matrix-viewport';
@@ -105,6 +111,7 @@ function buildHourlyMatrix(weatherDay) {
   matrix.append(
     matrixRow('', periods, period => startTime(period.time_label), 'weather-matrix-time-row'),
     matrixRow('天気', periods, period => {
+      if (!period.condition?.code) return '—';
       const icon = weatherIcon(period.condition, 'weather-icon weather-icon-hourly');
       icon.title = period.condition?.label || '';
       return icon;
