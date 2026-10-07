@@ -605,18 +605,21 @@
 
   .cost-day-disclosures {
     display: grid;
+    width: 100%;
     border-block-start: var(--border-width) solid var(--line);
   }
 
   .cost-day-disclosure {
+    width: 100%;
     border-block-end: var(--border-width) solid var(--line);
   }
 
   .cost-day-disclosure > summary {
     display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr);
+    grid-template-columns: 5rem 10rem minmax(0, 1fr);
     gap: var(--space-2);
     align-items: baseline;
+    width: 100%;
     padding: .55rem .1rem;
     cursor: pointer;
     color: var(--text);
@@ -624,6 +627,12 @@
   }
 
   .cost-day-disclosure > summary::marker { color: var(--muted); }
+
+  .cost-day-summary-amount {
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+    white-space: nowrap;
+  }
 
   .cost-day-summary-meta {
     color: var(--muted);
@@ -636,7 +645,12 @@
   }
 
   .cost-day-disclosure > .cost-group {
+    width: 100%;
     padding: 0 0 var(--space-2) 1rem;
+  }
+
+  .cost-day-disclosure .cost-table {
+    width: 100%;
   }
 
   .cost-notes {
@@ -713,6 +727,12 @@
     }
 
     .cost-row { padding-block: .42rem; }
+
+    .cost-day-disclosure > summary {
+      grid-template-columns: 4.2rem minmax(7rem, 1fr) max-content;
+      gap: .4rem;
+    }
+
     .cost-day-disclosure > .cost-group { padding-inline-start: .65rem; }
   }
 

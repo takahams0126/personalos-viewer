@@ -740,6 +740,7 @@ function renderCost(plan) {
   const notes = [];
   const trip = items.filter(item => item.scope === 'trip');
   const dayItems = items.filter(item => item.scope === 'day');
+  const dayTotals = new Map((plan.cost.day_totals || []).map(item => [Number(item.day_ordinal), item]));
   const ordinals = [...new Set(dayItems.map(item => item.day_ordinal))].sort((a, b) => a - b);
 
   return h('section', {
@@ -757,17 +758,15 @@ function renderCost(plan) {
           h('div', { className: 'cost-day-disclosures' },
             ordinals.map(ordinal => {
               const itemsForDay = dayItems.filter(item => item.day_ordinal === ordinal);
-              const unpricedCount = itemsForDay.filter(item => item.amount_state?.code === 'unpriced').length;
-              const summaryText = [`${itemsForDay.length}件`, unpricedCount ? `未算定${unpricedCount}件` : null]
-                .filter(Boolean)
-                .join(' · ');
+              const dayTotal = dayTotals.get(Number(ordinal));
               return h('details', {
                 className: 'cost-day-disclosure',
                 dataset: { semantic: 'cost-day', day: ordinal }
               },
                 h('summary', {},
-                  h('strong', { text: `DAY${ordinal}` }),
-                  h('span', { className: 'cost-day-summary-meta', text: summaryText })
+                  h('strong', { className: 'cost-day-summary-day', text: `DAY${ordinal}` }),
+                  h('strong', { className: 'cost-day-summary-amount', text: dayTotal?.amount_label || '—' }),
+                  h('span', { className: 'cost-day-summary-meta', text: dayTotal?.coverage?.label || '' })
                 ),
                 renderCostGroup('', itemsForDay, notes)
               );
