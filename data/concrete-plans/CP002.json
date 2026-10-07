@@ -1,5 +1,5 @@
 {
-  "schema_version": 9,
+  "schema_version": 10,
   "entity_type": "concrete_plan",
   "id": "CP002",
   "title": "屋久島 4泊5日 確定プラン",
@@ -1616,9 +1616,11 @@
     },
     "attention": [
       {
-        "semantic": "core.days.day4.logical_routes.CP002-D4-LR2",
-        "level": "attention",
-        "text": "実施条件に再確認が必要です。最新の利用・アクセス情報を確認してください。"
+        "semantic": "core.execution_restrictions.CP002-D4-S0014-CLOSURE",
+        "level": "blocking",
+        "text": "白谷雲水峡は現在利用できません。台風24号被害によりアクセス道路が通行止めで、園内も未整備のため閉園中です。DAY4（10/22）は現時点では実施できません。再開・解除状況の再確認が必要です。",
+        "day_ordinal": 4,
+        "short_label": "白谷雲水峡 閉鎖中"
       }
     ]
   },
