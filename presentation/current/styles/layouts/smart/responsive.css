@@ -36,8 +36,8 @@
     }
 
     .cost-day-groups {
-      grid-template-columns: repeat(auto-fit, minmax(15rem, 18rem));
-      justify-content: start;
+      grid-template-columns: minmax(0, 1fr);
+      justify-content: stretch;
     }
   }
 
