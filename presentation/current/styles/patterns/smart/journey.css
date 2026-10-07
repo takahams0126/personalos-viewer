@@ -185,6 +185,25 @@
   .plan-event-body,
   .plan-move-body { min-width: 0; }
 
+  .plan-place .plan-event-body,
+  .plan-waypoint .plan-event-body {
+    display: grid;
+    gap: var(--space-1);
+    padding: .5rem .65rem;
+    border: var(--border-width) solid color-mix(in srgb, var(--line) 72%, transparent);
+    border-radius: var(--radius-sm);
+    background: var(--surface-faint);
+  }
+
+  .plan-event-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .08rem .55rem;
+    align-items: baseline;
+    min-width: 0;
+  }
+
+  .plan-event-title-row > h4,
   .plan-event-body > h4,
   .plan-route-choice-detail > h4 {
     margin: 0;
@@ -192,26 +211,35 @@
   }
 
   .plan-event-meta {
-    margin: .1rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
     color: var(--muted);
     font-size: var(--type-caption);
     font-weight: var(--font-weight-strong);
   }
 
   .plan-event-todos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .2rem .7rem;
-    margin: .25rem 0 0;
+    display: grid;
+    gap: .15rem;
+    margin: .15rem 0 0;
     padding: 0;
     list-style: none;
     color: var(--text-soft);
     font-size: var(--type-caption);
   }
 
+  .plan-event-todos li {
+    position: relative;
+    padding-inline-start: .8rem;
+    line-height: 1.45;
+  }
+
   .plan-event-todos li::before {
-    content: '✓';
-    margin-inline-end: .3rem;
+    content: '•';
+    position: absolute;
+    inset-inline-start: .05rem;
     color: var(--accent-strong);
     font-weight: var(--font-weight-strong);
   }
