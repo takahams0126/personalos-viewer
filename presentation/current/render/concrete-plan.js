@@ -700,21 +700,25 @@ async function renderFuelSummary(fuel, resolver) {
 function renderCostGroup(title, items, notes) {
   if (!items.length) return null;
   return h('section', { className: 'cost-group' },
-    h('h3', { text: title }),
-    h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title } },
+    title ? h('h3', { text: title }) : null,
+    h('div', { className: 'cost-table', attrs: { role: 'table', 'aria-label': title || '費用明細' } },
+      h('div', { className: 'cost-table-head', attrs: { role: 'row' } },
+        h('span', { attrs: { role: 'columnheader' }, text: '科目' }),
+        h('span', { attrs: { role: 'columnheader' }, text: '金額' }),
+        h('span', { attrs: { role: 'columnheader' }, text: '状態' })
+      ),
       items.map(item => {
-        const noteNumber = item.annotation ? notes.push(item.annotation) : null;
-        const amount = item.amount_label || item.amount_state.label;
+        const noteText = [item.detail, item.annotation].filter(Boolean).join(' — ');
+        const noteNumber = noteText ? notes.push(noteText) : null;
         return h('div', { className: 'cost-row', attrs: { role: 'row' } },
           h('div', { className: 'cost-item', attrs: { role: 'cell' } },
             h('strong', { className: 'cost-item-label', text: item.label }),
-            item.detail ? h('span', { className: 'cost-item-detail', text: item.detail }) : null
+            noteNumber ? h('sup', { className: 'cost-note-ref' },
+              h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })
+            ) : null
           ),
-          h('div', { className: 'cost-amount', attrs: { role: 'cell' } },
-            h('strong', { text: amount }),
-            item.amount_label ? h('span', { className: 'cost-state', text: item.amount_state.label }) : null,
-            noteNumber ? h('sup', {}, h('a', { attrs: { href: `#cost-note-${noteNumber}` }, text: `注${noteNumber}` })) : null
-          )
+          h('div', { className: 'cost-amount', attrs: { role: 'cell' }, text: item.amount_label || '—' }),
+          h('div', { className: 'cost-state', attrs: { role: 'cell' }, text: item.amount_state?.label || '—' })
         );
       })
     )
@@ -746,11 +750,29 @@ function renderCost(plan) {
       h('h2', { text: '費用' }),
       renderCostTotal(plan.cost.total)
     ),
-    renderCostGroup('旅程全体料金', trip, notes),
+    renderCostGroup('旅程全体', trip, notes),
     dayItems.length
       ? h('section', { className: 'cost-day-groups' },
-          h('h3', { text: '日別料金' }),
-          ordinals.map(ordinal => renderCostGroup(`DAY${ordinal}`, dayItems.filter(item => item.day_ordinal === ordinal), notes))
+          h('h3', { text: '日別' }),
+          h('div', { className: 'cost-day-disclosures' },
+            ordinals.map(ordinal => {
+              const itemsForDay = dayItems.filter(item => item.day_ordinal === ordinal);
+              const unpricedCount = itemsForDay.filter(item => item.amount_state?.code === 'unpriced').length;
+              const summaryText = [`${itemsForDay.length}件`, unpricedCount ? `未算定${unpricedCount}件` : null]
+                .filter(Boolean)
+                .join(' · ');
+              return h('details', {
+                className: 'cost-day-disclosure',
+                dataset: { semantic: 'cost-day', day: ordinal }
+              },
+                h('summary', {},
+                  h('strong', { text: `DAY${ordinal}` }),
+                  h('span', { className: 'cost-day-summary-meta', text: summaryText })
+                ),
+                renderCostGroup('', itemsForDay, notes)
+              );
+            })
+          )
         )
       : null,
     notes.length
