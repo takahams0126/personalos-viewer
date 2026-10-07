@@ -673,6 +673,15 @@
             {
               "order": 4,
               "target": {
+                "kind": "route_local",
+                "label": "橋"
+              },
+              "arrival_label": "06:40",
+              "departure_label": "06:40"
+            },
+            {
+              "order": 5,
+              "target": {
                 "entity_type": "spot",
                 "id": "S0019"
               },
@@ -680,7 +689,70 @@
               "departure_label": "07:05"
             },
             {
-              "order": 5,
+              "order": 6,
+              "target": {
+                "kind": "route_local",
+                "label": "楠川分れ"
+              },
+              "arrival_label": "07:55",
+              "departure_label": "07:55"
+            },
+            {
+              "order": 7,
+              "target": {
+                "kind": "route_local",
+                "label": "分岐"
+              },
+              "arrival_label": "08:10",
+              "departure_label": "08:10"
+            },
+            {
+              "order": 8,
+              "target": {
+                "kind": "route_local",
+                "label": "分岐"
+              },
+              "arrival_label": "08:13",
+              "departure_label": "08:13"
+            },
+            {
+              "order": 9,
+              "target": {
+                "kind": "route_local",
+                "label": "仁王杉"
+              },
+              "arrival_label": "09:03",
+              "departure_label": "09:03"
+            },
+            {
+              "order": 10,
+              "target": {
+                "kind": "route_local",
+                "label": "大株歩道入口"
+              },
+              "arrival_label": "09:33",
+              "departure_label": "09:33"
+            },
+            {
+              "order": 11,
+              "target": {
+                "kind": "route_local",
+                "label": "トロッコ道終点トイレ"
+              },
+              "arrival_label": "09:35",
+              "departure_label": "09:35"
+            },
+            {
+              "order": 12,
+              "target": {
+                "kind": "route_local",
+                "label": "大株歩道入口"
+              },
+              "arrival_label": "09:37",
+              "departure_label": "09:37"
+            },
+            {
+              "order": 13,
               "target": {
                 "entity_type": "spot",
                 "id": "S0017"
@@ -689,16 +761,88 @@
               "departure_label": "10:02"
             },
             {
-              "order": 6,
+              "order": 14,
+              "target": {
+                "kind": "route_local",
+                "label": "大株歩道入口"
+              },
+              "arrival_label": "10:22",
+              "departure_label": "10:22"
+            },
+            {
+              "order": 15,
+              "target": {
+                "kind": "route_local",
+                "label": "トロッコ道終点トイレ"
+              },
+              "arrival_label": "10:24",
+              "departure_label": "10:24"
+            },
+            {
+              "order": 16,
+              "target": {
+                "kind": "route_local",
+                "label": "大株歩道入口"
+              },
+              "arrival_label": "10:26",
+              "departure_label": "10:26"
+            },
+            {
+              "order": 17,
+              "target": {
+                "kind": "route_local",
+                "label": "仁王杉"
+              },
+              "arrival_label": "10:51",
+              "departure_label": "10:51"
+            },
+            {
+              "order": 18,
+              "target": {
+                "kind": "route_local",
+                "label": "分岐"
+              },
+              "arrival_label": "11:36",
+              "departure_label": "11:36"
+            },
+            {
+              "order": 19,
+              "target": {
+                "kind": "route_local",
+                "label": "分岐"
+              },
+              "arrival_label": "11:39",
+              "departure_label": "11:39"
+            },
+            {
+              "order": 20,
+              "target": {
+                "kind": "route_local",
+                "label": "楠川分れ"
+              },
+              "arrival_label": "11:54",
+              "departure_label": "11:54"
+            },
+            {
+              "order": 21,
               "target": {
                 "entity_type": "spot",
                 "id": "S0019"
               },
-              "arrival_label": "12:39",
-              "departure_label": "12:39"
+              "arrival_label": "12:42",
+              "departure_label": "12:42"
             },
             {
-              "order": 7,
+              "order": 22,
+              "target": {
+                "kind": "route_local",
+                "label": "橋"
+              },
+              "arrival_label": "13:06",
+              "departure_label": "13:06"
+            },
+            {
+              "order": 23,
               "target": {
                 "entity_type": "travel_point",
                 "id": "T0010"
@@ -725,7 +869,7 @@
               }
             },
             {
-              "order": 8,
+              "order": 24,
               "target": {
                 "entity_type": "travel_point",
                 "id": "T0009"
@@ -741,7 +885,7 @@
                 "id": "R007"
               },
               "from_action_order": 3,
-              "to_action_order": 7
+              "to_action_order": 23
             }
           ],
           "intent": "予定外の事象で縄文杉までの完遂が適切でなくなった場合にウィルソン株往復へ短縮する",
