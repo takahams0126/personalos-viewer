@@ -7,8 +7,15 @@
   }
 
   html[data-page-type="top"] [data-layout-block="explorer-controls"] {
-    position: static;
+    position: sticky;
+    inset-block-start: .35rem;
+    z-index: 20;
     min-width: 0;
+    margin-inline: -.35rem;
+    padding: .35rem;
+    border-block-end: var(--border-width) solid color-mix(in srgb, var(--line) 82%, transparent);
+    background: color-mix(in srgb, var(--surface-page) 96%, transparent);
+    backdrop-filter: blur(.4rem);
   }
 
   html[data-page-type="top"] [data-layout-block="results"] { min-width: 0; }
