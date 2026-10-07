@@ -1611,9 +1611,16 @@
   ],
   "status": {
     "state": {
-      "code": "ready",
-      "label": "利用可能"
-    }
+      "code": "blocked",
+      "label": "調整が必要"
+    },
+    "attention": [
+      {
+        "semantic": "core.days.day4.logical_routes.CP002-D4-LR2",
+        "level": "attention",
+        "text": "実施条件に再確認が必要です。最新の利用・アクセス情報を確認してください。"
+      }
+    ]
   },
   "weather": {
     "state": {
