@@ -158,6 +158,7 @@ function decorateDayWeather(root, dayByOrdinal) {
     if (!source) return;
     const presentation = buildHourlyMatrix(weatherDay);
     if (!presentation) return;
+    source.querySelector(':scope > .weather-detail')?.remove();
     source.insertAdjacentElement('afterend', presentation);
   });
 }
