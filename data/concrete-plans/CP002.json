@@ -1639,47 +1639,47 @@
         },
         "representative_location_label": "屋久島",
         "condition": {
-          "code": "drizzle",
-          "label": "霧雨"
+          "code": "thunderstorm",
+          "label": "雷雨"
         },
-        "temperature_min_label": "5.5℃",
-        "temperature_max_label": "12.9℃",
-        "precipitation_probability_label": "75%",
-        "precipitation_amount_label": "5.4mm",
-        "wind_label": "2.1m/s",
+        "temperature_min_label": "11.3℃",
+        "temperature_max_label": "15.2℃",
+        "precipitation_probability_label": "69%",
+        "precipitation_amount_label": "9.8mm",
+        "wind_label": "0.7m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
             "condition": {
-              "code": "mainly_clear",
-              "label": "概ね晴れ"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "5.5℃",
-            "precipitation_probability_label": "36%",
-            "precipitation_amount_label": "0mm",
-            "wind_label": "0.9m/s"
+            "temperature_label": "11.3℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "0.6mm",
+            "wind_label": "0.7m/s"
           },
           {
             "time_label": "03:00〜06:00",
             "condition": {
-              "code": "mainly_clear",
-              "label": "概ね晴れ"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "6.7℃",
-            "precipitation_probability_label": "27%",
-            "precipitation_amount_label": "0mm",
-            "wind_label": "1.4m/s"
+            "temperature_label": "11.8℃",
+            "precipitation_probability_label": "30%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "0.3m/s"
           },
           {
             "time_label": "06:00〜09:00",
             "condition": {
-              "code": "mainly_clear",
-              "label": "概ね晴れ"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "10℃",
+            "temperature_label": "13.3℃",
             "precipitation_probability_label": "35%",
             "precipitation_amount_label": "0mm",
-            "wind_label": "2m/s"
+            "wind_label": "0.4m/s"
           },
           {
             "time_label": "09:00〜12:00",
@@ -1687,32 +1687,32 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "12.3℃",
-            "precipitation_probability_label": "53%",
-            "precipitation_amount_label": "0.8mm",
-            "wind_label": "2.1m/s"
+            "temperature_label": "14.5℃",
+            "precipitation_probability_label": "50%",
+            "precipitation_amount_label": "2.2mm",
+            "wind_label": "0.4m/s"
           },
           {
             "time_label": "12:00〜15:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "thunderstorm",
+              "label": "雷雨"
             },
-            "temperature_label": "12.8℃",
-            "precipitation_probability_label": "72%",
-            "precipitation_amount_label": "1.2mm",
-            "wind_label": "2m/s"
+            "temperature_label": "15.1℃",
+            "precipitation_probability_label": "67%",
+            "precipitation_amount_label": "3.3mm",
+            "wind_label": "0.5m/s"
           },
           {
             "time_label": "15:00〜18:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "thunderstorm",
+              "label": "雷雨"
             },
-            "temperature_label": "12.2℃",
-            "precipitation_probability_label": "75%",
-            "precipitation_amount_label": "1.4mm",
-            "wind_label": "1.8m/s"
+            "temperature_label": "14.7℃",
+            "precipitation_probability_label": "69%",
+            "precipitation_amount_label": "1.7mm",
+            "wind_label": "0.6m/s"
           },
           {
             "time_label": "18:00〜21:00",
@@ -1720,10 +1720,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "10.4℃",
-            "precipitation_probability_label": "64%",
-            "precipitation_amount_label": "1.5mm",
-            "wind_label": "1.8m/s"
+            "temperature_label": "12.9℃",
+            "precipitation_probability_label": "59%",
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "0.4m/s"
           },
           {
             "time_label": "21:00〜00:00",
@@ -1731,10 +1731,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "8.7℃",
-            "precipitation_probability_label": "47%",
-            "precipitation_amount_label": "0.5mm",
-            "wind_label": "1.8m/s"
+            "temperature_label": "11.7℃",
+            "precipitation_probability_label": "43%",
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "0.5m/s"
           }
         ]
       },
@@ -1750,22 +1750,22 @@
           "code": "drizzle",
           "label": "霧雨"
         },
-        "temperature_min_label": "7℃",
-        "temperature_max_label": "13.1℃",
-        "precipitation_probability_label": "69%",
-        "precipitation_amount_label": "4.2mm",
-        "wind_label": "1.9m/s",
+        "temperature_min_label": "9.8℃",
+        "temperature_max_label": "16.7℃",
+        "precipitation_probability_label": "77%",
+        "precipitation_amount_label": "1.2mm",
+        "wind_label": "1.2m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
             "condition": {
-              "code": "cloudy",
-              "label": "曇り"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "7.3℃",
-            "precipitation_probability_label": "41%",
-            "precipitation_amount_label": "0mm",
-            "wind_label": "1.4m/s"
+            "temperature_label": "11.6℃",
+            "precipitation_probability_label": "36%",
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "0.6m/s"
           },
           {
             "time_label": "03:00〜06:00",
@@ -1773,76 +1773,76 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "7.5℃",
-            "precipitation_probability_label": "39%",
-            "precipitation_amount_label": "0.2mm",
-            "wind_label": "1.4m/s"
+            "temperature_label": "12.2℃",
+            "precipitation_probability_label": "34%",
+            "precipitation_amount_label": "0.3mm",
+            "wind_label": "0.8m/s"
           },
           {
             "time_label": "06:00〜09:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "partly_cloudy",
+              "label": "晴れ時々曇り"
             },
-            "temperature_label": "9.8℃",
-            "precipitation_probability_label": "39%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "1.7m/s"
+            "temperature_label": "13.4℃",
+            "precipitation_probability_label": "41%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.1m/s"
           },
           {
             "time_label": "09:00〜12:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
             },
-            "temperature_label": "11.8℃",
-            "precipitation_probability_label": "51%",
-            "precipitation_amount_label": "1.1mm",
-            "wind_label": "1.8m/s"
+            "temperature_label": "14.8℃",
+            "precipitation_probability_label": "56%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
           },
           {
             "time_label": "12:00〜15:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "clear",
+              "label": "晴れ"
             },
-            "temperature_label": "12.9℃",
-            "precipitation_probability_label": "66%",
-            "precipitation_amount_label": "1.5mm",
-            "wind_label": "1.8m/s"
+            "temperature_label": "16.3℃",
+            "precipitation_probability_label": "73%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
           },
           {
             "time_label": "15:00〜18:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
             },
-            "temperature_label": "12.7℃",
-            "precipitation_probability_label": "69%",
-            "precipitation_amount_label": "0.7mm",
-            "wind_label": "1.9m/s"
+            "temperature_label": "16℃",
+            "precipitation_probability_label": "77%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.1m/s"
           },
           {
             "time_label": "18:00〜21:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "10.9℃",
-            "precipitation_probability_label": "64%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "1.2m/s"
+            "temperature_label": "13.1℃",
+            "precipitation_probability_label": "73%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.5m/s"
           },
           {
             "time_label": "21:00〜00:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "9.7℃",
-            "precipitation_probability_label": "53%",
-            "precipitation_amount_label": "0.1mm",
-            "wind_label": "1.3m/s"
+            "temperature_label": "10.4℃",
+            "precipitation_probability_label": "63%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.6m/s"
           }
         ]
       },
@@ -1858,11 +1858,11 @@
           "code": "drizzle",
           "label": "霧雨"
         },
-        "temperature_min_label": "9.6℃",
-        "temperature_max_label": "16℃",
-        "precipitation_probability_label": "65%",
-        "precipitation_amount_label": "6mm",
-        "wind_label": "1.6m/s",
+        "temperature_min_label": "8.5℃",
+        "temperature_max_label": "16.4℃",
+        "precipitation_probability_label": "61%",
+        "precipitation_amount_label": "2.4mm",
+        "wind_label": "1.8m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
@@ -1870,10 +1870,10 @@
               "code": "cloudy",
               "label": "曇り"
             },
-            "temperature_label": "9.7℃",
-            "precipitation_probability_label": "44%",
+            "temperature_label": "8.8℃",
+            "precipitation_probability_label": "52%",
             "precipitation_amount_label": "0mm",
-            "wind_label": "1m/s"
+            "wind_label": "0.6m/s"
           },
           {
             "time_label": "03:00〜06:00",
@@ -1881,10 +1881,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "10.2℃",
-            "precipitation_probability_label": "35%",
-            "precipitation_amount_label": "1.2mm",
-            "wind_label": "0.7m/s"
+            "temperature_label": "9.2℃",
+            "precipitation_probability_label": "41%",
+            "precipitation_amount_label": "0.2mm",
+            "wind_label": "0.4m/s"
           },
           {
             "time_label": "06:00〜09:00",
@@ -1892,10 +1892,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "11.4℃",
-            "precipitation_probability_label": "26%",
-            "precipitation_amount_label": "1.8mm",
-            "wind_label": "1.2m/s"
+            "temperature_label": "12.3℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "0.3mm",
+            "wind_label": "0.9m/s"
           },
           {
             "time_label": "09:00〜12:00",
@@ -1903,21 +1903,21 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "13℃",
-            "precipitation_probability_label": "37%",
-            "precipitation_amount_label": "1.2mm",
-            "wind_label": "1.4m/s"
+            "temperature_label": "14.8℃",
+            "precipitation_probability_label": "44%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "1.3m/s"
           },
           {
             "time_label": "12:00〜15:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "15.3℃",
-            "precipitation_probability_label": "61%",
-            "precipitation_amount_label": "0.9mm",
-            "wind_label": "1.6m/s"
+            "temperature_label": "16.2℃",
+            "precipitation_probability_label": "59%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.7m/s"
           },
           {
             "time_label": "15:00〜18:00",
@@ -1925,10 +1925,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "15.4℃",
-            "precipitation_probability_label": "65%",
-            "precipitation_amount_label": "0.5mm",
-            "wind_label": "1.5m/s"
+            "temperature_label": "15.7℃",
+            "precipitation_probability_label": "61%",
+            "precipitation_amount_label": "0.4mm",
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "18:00〜21:00",
@@ -1936,10 +1936,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "12.4℃",
-            "precipitation_probability_label": "56%",
-            "precipitation_amount_label": "0.3mm",
-            "wind_label": "0.7m/s"
+            "temperature_label": "12.8℃",
+            "precipitation_probability_label": "53%",
+            "precipitation_amount_label": "0.6mm",
+            "wind_label": "1.7m/s"
           },
           {
             "time_label": "21:00〜00:00",
@@ -1947,10 +1947,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "10.3℃",
+            "temperature_label": "10.6℃",
             "precipitation_probability_label": "39%",
-            "precipitation_amount_label": "0.1mm",
-            "wind_label": "0.5m/s"
+            "precipitation_amount_label": "0.8mm",
+            "wind_label": "1.7m/s"
           }
         ]
       },
@@ -1966,22 +1966,22 @@
           "code": "drizzle",
           "label": "霧雨"
         },
-        "temperature_min_label": "9.5℃",
-        "temperature_max_label": "13.5℃",
-        "precipitation_probability_label": "30%",
-        "precipitation_amount_label": "7.4mm",
-        "wind_label": "6.2m/s",
+        "temperature_min_label": "5.2℃",
+        "temperature_max_label": "9.9℃",
+        "precipitation_probability_label": "37%",
+        "precipitation_amount_label": "1.8mm",
+        "wind_label": "2.7m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
             "condition": {
-              "code": "cloudy",
-              "label": "曇り"
+              "code": "drizzle",
+              "label": "霧雨"
             },
-            "temperature_label": "10℃",
+            "temperature_label": "9.8℃",
             "precipitation_probability_label": "30%",
-            "precipitation_amount_label": "0mm",
-            "wind_label": "0.6m/s"
+            "precipitation_amount_label": "0.9mm",
+            "wind_label": "1.9m/s"
           },
           {
             "time_label": "03:00〜06:00",
@@ -1989,10 +1989,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "11.2℃",
-            "precipitation_probability_label": "25%",
-            "precipitation_amount_label": "0.2mm",
-            "wind_label": "0.7m/s"
+            "temperature_label": "9.3℃",
+            "precipitation_probability_label": "27%",
+            "precipitation_amount_label": "0.5mm",
+            "wind_label": "2.1m/s"
           },
           {
             "time_label": "06:00〜09:00",
@@ -2000,10 +2000,10 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "13.3℃",
-            "precipitation_probability_label": "28%",
-            "precipitation_amount_label": "0.8mm",
-            "wind_label": "2.7m/s"
+            "temperature_label": "9℃",
+            "precipitation_probability_label": "31%",
+            "precipitation_amount_label": "0.3mm",
+            "wind_label": "2.6m/s"
           },
           {
             "time_label": "09:00〜12:00",
@@ -2011,54 +2011,54 @@
               "code": "drizzle",
               "label": "霧雨"
             },
-            "temperature_label": "12.6℃",
-            "precipitation_probability_label": "30%",
-            "precipitation_amount_label": "2.4mm",
-            "wind_label": "5.3m/s"
+            "temperature_label": "8.9℃",
+            "precipitation_probability_label": "35%",
+            "precipitation_amount_label": "0.1mm",
+            "wind_label": "2.7m/s"
           },
           {
             "time_label": "12:00〜15:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "12℃",
-            "precipitation_probability_label": "24%",
-            "precipitation_amount_label": "1.9mm",
-            "wind_label": "5.7m/s"
+            "temperature_label": "9℃",
+            "precipitation_probability_label": "37%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.7m/s"
           },
           {
             "time_label": "15:00〜18:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "11.3℃",
-            "precipitation_probability_label": "16%",
-            "precipitation_amount_label": "1.1mm",
-            "wind_label": "6m/s"
+            "temperature_label": "8.2℃",
+            "precipitation_probability_label": "37%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.2m/s"
           },
           {
             "time_label": "18:00〜21:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "10.7℃",
-            "precipitation_probability_label": "15%",
-            "precipitation_amount_label": "0.7mm",
-            "wind_label": "6.2m/s"
+            "temperature_label": "6.2℃",
+            "precipitation_probability_label": "31%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "0.8m/s"
           },
           {
             "time_label": "21:00〜00:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "9.8℃",
-            "precipitation_probability_label": "18%",
-            "precipitation_amount_label": "0.2mm",
-            "wind_label": "6.2m/s"
+            "temperature_label": "5.3℃",
+            "precipitation_probability_label": "24%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.5m/s"
           }
         ]
       },
@@ -2071,96 +2071,102 @@
         },
         "representative_location_label": "屋久島",
         "condition": {
-          "code": "rain_showers",
-          "label": "にわか雨"
+          "code": "cloudy",
+          "label": "曇り"
         },
-        "temperature_min_label": "9.3℃",
-        "temperature_max_label": "12.6℃",
-        "precipitation_probability_label": "29%",
-        "precipitation_amount_label": "6.6mm",
-        "wind_label": "6.2m/s",
+        "temperature_min_label": "4.6℃",
+        "temperature_max_label": "10.6℃",
+        "precipitation_probability_label": "36%",
+        "precipitation_amount_label": "0mm",
+        "wind_label": "2.8m/s",
         "periods": [
           {
             "time_label": "00:00〜03:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "9.5℃",
-            "precipitation_probability_label": "22%",
-            "precipitation_amount_label": "0.2mm",
-            "wind_label": "6.2m/s"
+            "temperature_label": "6℃",
+            "precipitation_probability_label": "20%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.8m/s"
           },
           {
             "time_label": "03:00〜06:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "10.1℃",
-            "precipitation_probability_label": "24%",
-            "precipitation_amount_label": "0.7mm",
-            "wind_label": "5.9m/s"
+            "temperature_label": "7.2℃",
+            "precipitation_probability_label": "18%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.9m/s"
           },
           {
             "time_label": "06:00〜09:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "10.5℃",
-            "precipitation_probability_label": "26%",
-            "precipitation_amount_label": "0.7mm",
-            "wind_label": "5.9m/s"
+            "temperature_label": "8.5℃",
+            "precipitation_probability_label": "19%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2m/s"
           },
           {
             "time_label": "09:00〜12:00",
             "condition": {
-              "code": "drizzle",
-              "label": "霧雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "11.6℃",
-            "precipitation_probability_label": "27%",
-            "precipitation_amount_label": "0.6mm",
-            "wind_label": "5.3m/s"
+            "temperature_label": "9.7℃",
+            "precipitation_probability_label": "25%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.4m/s"
           },
           {
             "time_label": "12:00〜15:00",
             "condition": {
-              "code": "rain_showers",
-              "label": "にわか雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "12.6℃",
-            "precipitation_probability_label": "29%",
-            "precipitation_amount_label": "3mm",
-            "wind_label": "5.4m/s"
+            "temperature_label": "10.5℃",
+            "precipitation_probability_label": "33%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.8m/s"
           },
           {
             "time_label": "15:00〜18:00",
             "condition": {
-              "code": "rain_showers",
-              "label": "にわか雨"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "temperature_label": "12.3℃",
-            "precipitation_probability_label": "29%",
-            "precipitation_amount_label": "1.4mm",
-            "wind_label": "4.9m/s"
+            "temperature_label": "9.9℃",
+            "precipitation_probability_label": "36%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.8m/s"
           },
           {
             "time_label": "18:00〜21:00",
             "condition": {
-              "code": "other",
-              "label": "その他"
+              "code": "cloudy",
+              "label": "曇り"
             },
-            "precipitation_probability_label": "26%"
+            "temperature_label": "7.5℃",
+            "precipitation_probability_label": "36%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "2.5m/s"
           },
           {
             "time_label": "21:00〜00:00",
             "condition": {
-              "code": "other",
-              "label": "その他"
+              "code": "partly_cloudy",
+              "label": "晴れ時々曇り"
             },
-            "precipitation_probability_label": "23%"
+            "temperature_label": "5.2℃",
+            "precipitation_probability_label": "33%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.9m/s"
           }
         ]
       }
