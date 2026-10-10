@@ -1,0 +1,36 @@
+{
+  "schema_version": 3,
+  "entity_type": "route",
+  "id": "R013",
+  "title": "御岳山駅〜日の出山 往復ルート",
+  "summary": "御岳山駅から日の出山へ往復して展望を楽しむ日帰り登山。 同じ登山口に戻る往復ルートで山頂展望を楽しめる。",
+  "theme_chips": [
+    "ハイキング"
+  ],
+  "family_label": "御岳山・日の出山",
+  "variant": {
+    "code": "mitake_station_round_trip",
+    "label": "御岳山駅発着往復"
+  },
+  "hero_spots": [],
+  "hero_facts": [],
+  "appeal": {
+    "summary": "御岳山駅から日の出山へ往復して展望を楽しむ日帰り登山。",
+    "strengths": [
+      "同じ登山口に戻る往復ルートで山頂展望を楽しめる。"
+    ]
+  },
+  "sequence": [
+    {
+      "order": 1,
+      "spot_ref": {
+        "entity_type": "spot",
+        "id": "S0055"
+      }
+    }
+  ],
+  "constraints": [],
+  "map": {
+    "artifact_ref": "maps/routes/R013/R013-conceptual-map.json"
+  }
+}

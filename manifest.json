@@ -44,6 +44,10 @@
     {
       "id": "A013",
       "label": "屋久島"
+    },
+    {
+      "id": "A016",
+      "label": "青梅市"
     }
   ],
   "entities": [
@@ -86,6 +90,27 @@
         "image": {
           "url": "https://yakukan.jp/wp-content/uploads/2024/02/trekking-eyecatch-jyoumonsugi960.jpg",
           "alt": "屋久島 4泊5日 確定プラン"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "concrete_plan",
+        "id": "CP003"
+      },
+      "title": "日の出山・御岳山駅発着 日帰り登山",
+      "data_path": "data/concrete-plans/CP003.json",
+      "explorer": {
+        "type_label": "実施プラン",
+        "summary": "夫婦2人でバイクとケーブルカーを使って日の出山へ往復登山し、澤乃井園で昼食を取って帰宅する温泉なしの日帰り旅行。",
+        "tags": [],
+        "area_ids": [
+          "A003",
+          "A016"
+        ],
+        "image": {
+          "url": "https://cdn.funq.jp/contents/uploads/2019/09/19111416/123-7.jpg",
+          "alt": "日の出山・御岳山駅発着 日帰り登山"
         }
       }
     },
@@ -145,6 +170,36 @@
           "target_ref": {
             "entity_type": "concrete_plan",
             "id": "CP002"
+          }
+        }
+      ]
+    },
+    {
+      "ref": {
+        "entity_type": "plan",
+        "id": "P003"
+      },
+      "title": "日の出山・御岳山駅発着 日帰り登山",
+      "data_path": "data/plans/P003.json",
+      "explorer": {
+        "type_label": "プラン",
+        "summary": "夫婦2人でバイクとケーブルカーを使って日の出山へ往復登山し、澤乃井園で昼食を取って帰宅する温泉なしの日帰り旅行。",
+        "tags": [],
+        "area_ids": [
+          "A003",
+          "A016"
+        ],
+        "image": {
+          "url": "https://cdn.funq.jp/contents/uploads/2019/09/19111416/123-7.jpg",
+          "alt": "日の出山・御岳山駅発着 日帰り登山"
+        }
+      },
+      "relations": [
+        {
+          "kind": "concrete_plan",
+          "target_ref": {
+            "entity_type": "concrete_plan",
+            "id": "CP003"
           }
         }
       ]
@@ -311,6 +366,33 @@
         "image": {
           "url": "https://cdn.4travel.jp/img/tcs/t/album/src/10/04/00/src_10040066.jpg?updated_at=1130540866",
           "alt": "屋久島一周ドライブ・時計回り"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "route",
+        "id": "R013"
+      },
+      "title": "御岳山駅〜日の出山 往復ルート",
+      "data_path": "data/routes/R013.json",
+      "explorer": {
+        "type_label": "ルート",
+        "summary": "御岳山駅から日の出山へ往復して展望を楽しむ日帰り登山。 同じ登山口に戻る往復ルートで山頂展望を楽しめる。",
+        "tags": [
+          "ハイキング"
+        ],
+        "area_ids": [
+          "A003",
+          "A016"
+        ],
+        "category": {
+          "code": "hiking",
+          "label": "ハイキング"
+        },
+        "image": {
+          "url": "https://cdn.funq.jp/contents/uploads/2019/09/19111416/123-7.jpg",
+          "alt": "御岳山駅〜日の出山 往復ルート"
         }
       }
     },
@@ -1551,6 +1633,60 @@
     },
     {
       "ref": {
+        "entity_type": "spot",
+        "id": "S0055"
+      },
+      "title": "日の出山",
+      "data_path": "data/spots/S0055.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "標高902m、関東平野を望む山頂 御岳山駅からの日帰り登山と山頂展望",
+        "tags": [
+          "山"
+        ],
+        "area_ids": [
+          "A003",
+          "A016"
+        ],
+        "category": {
+          "code": "mountain",
+          "label": "山"
+        },
+        "image": {
+          "url": "https://cdn.funq.jp/contents/uploads/2019/09/19111416/123-7.jpg",
+          "alt": "日の出山"
+        }
+      }
+    },
+    {
+      "ref": {
+        "entity_type": "spot",
+        "id": "S0056"
+      },
+      "title": "清流ガーデン澤乃井園",
+      "data_path": "data/spots/S0056.json",
+      "explorer": {
+        "type_label": "スポット",
+        "summary": "多摩川沿いの庭園で豆腐や蕎麦などを提供する軽食施設 多摩川を眺めながら軽食と休憩を楽しむ",
+        "tags": [
+          "食事"
+        ],
+        "area_ids": [
+          "A003",
+          "A016"
+        ],
+        "category": {
+          "code": "food",
+          "label": "食事"
+        },
+        "image": {
+          "url": "https://kkkawai.heteml.net/sawanoi/img/big/20240814_121807.jpg",
+          "alt": "清流ガーデン澤乃井園"
+        }
+      }
+    },
+    {
+      "ref": {
         "entity_type": "travel_point",
         "id": "T0001"
       },
@@ -1668,6 +1804,30 @@
       },
       "title": "福岡空港",
       "data_path": "data/travel-points/T0015.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0017"
+      },
+      "title": "滝本駅駐車場",
+      "data_path": "data/travel-points/T0017.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0018"
+      },
+      "title": "御岳山駅（ケーブルカー）",
+      "data_path": "data/travel-points/T0018.json"
+    },
+    {
+      "ref": {
+        "entity_type": "travel_point",
+        "id": "T0019"
+      },
+      "title": "滝本駅（ケーブルカー）",
+      "data_path": "data/travel-points/T0019.json"
     }
   ]
 }

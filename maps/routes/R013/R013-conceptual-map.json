@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "artifact_type": "conceptual_map",
+  "source": {
+    "entity_type": "route",
+    "id": "R013"
+  },
+  "points": [
+    {
+      "entity_ref": {
+        "entity_type": "spot",
+        "id": "S0055"
+      },
+      "order": 1,
+      "position": {
+        "lat": 35.7811625,
+        "lon": 139.16746999999998
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJIfgZ9_k6GWARlG9GerPbshY"
+      }
+    }
+  ]
+}

@@ -1,0 +1,669 @@
+{
+  "schema_version": 10,
+  "entity_type": "concrete_plan",
+  "id": "CP003",
+  "title": "日の出山・御岳山駅発着 日帰り登山",
+  "period": {
+    "start": "2026-10-11",
+    "end": "2026-10-11",
+    "label": "2026/10/11(日)"
+  },
+  "source_plan_ref": {
+    "entity_type": "plan",
+    "id": "P003"
+  },
+  "days": [
+    {
+      "ordinal": 1,
+      "source_plan_day_ordinal": 1,
+      "date": "2026-10-11",
+      "weekday_label": "日曜日",
+      "start_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "end_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "actions": [
+        {
+          "order": 1,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "next_move": {
+            "transport": {
+              "code": "motorcycle",
+              "label": "バイク"
+            },
+            "duration_label": "1時間30分",
+            "distance_label": "37.5km"
+          },
+          "arrival_label": "07:00",
+          "departure_label": "07:00"
+        },
+        {
+          "order": 2,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "stay_label": "20分",
+          "arrival_label": "08:30",
+          "departure_label": "08:50",
+          "next_move": {
+            "transport": {
+              "code": "walk",
+              "label": "徒歩"
+            },
+            "duration_label": "0分",
+            "distance_label": "66m"
+          }
+        },
+        {
+          "order": 3,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "arrival_label": "08:51",
+          "departure_label": "09:46",
+          "next_move": {
+            "transport": {
+              "code": "train",
+              "label": "電車"
+            },
+            "service": {
+              "operator": "御岳登山鉄道",
+              "depart_label": "09:46",
+              "arrive_label": "09:52"
+            },
+            "depart_label": "09:46",
+            "arrive_label": "09:52",
+            "connection_margin_label": "余裕 54分",
+            "connection_state": {
+              "code": "tight",
+              "label": "注意"
+            }
+          }
+        },
+        {
+          "order": 4,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          },
+          "stay_label": "8分",
+          "arrival_label": "09:52",
+          "departure_label": "10:00"
+        },
+        {
+          "order": 5,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:03",
+          "departure_label": "10:03"
+        },
+        {
+          "order": 6,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:10",
+          "departure_label": "10:10"
+        },
+        {
+          "order": 7,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:14",
+          "departure_label": "10:14"
+        },
+        {
+          "order": 8,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:19",
+          "departure_label": "10:19"
+        },
+        {
+          "order": 9,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:23",
+          "departure_label": "10:23"
+        },
+        {
+          "order": 10,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "10:48",
+          "departure_label": "10:48"
+        },
+        {
+          "order": 11,
+          "target": {
+            "kind": "route_local",
+            "label": "日の出山トイレ"
+          },
+          "arrival_label": "11:08",
+          "departure_label": "11:08"
+        },
+        {
+          "order": 12,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0055"
+          },
+          "stay_label": "30分",
+          "arrival_label": "11:13",
+          "departure_label": "11:43"
+        },
+        {
+          "order": 13,
+          "target": {
+            "kind": "route_local",
+            "label": "日の出山トイレ"
+          },
+          "arrival_label": "11:48",
+          "departure_label": "11:48"
+        },
+        {
+          "order": 14,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:03",
+          "departure_label": "12:03"
+        },
+        {
+          "order": 15,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:28",
+          "departure_label": "12:28"
+        },
+        {
+          "order": 16,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:32",
+          "departure_label": "12:32"
+        },
+        {
+          "order": 17,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:37",
+          "departure_label": "12:37"
+        },
+        {
+          "order": 18,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:41",
+          "departure_label": "12:41"
+        },
+        {
+          "order": 19,
+          "target": {
+            "kind": "route_local",
+            "label": "分岐"
+          },
+          "arrival_label": "12:48",
+          "departure_label": "12:48"
+        },
+        {
+          "order": 20,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          },
+          "arrival_label": "12:51",
+          "departure_label": "13:14",
+          "next_move": {
+            "transport": {
+              "code": "train",
+              "label": "電車"
+            },
+            "service": {
+              "operator": "御岳登山鉄道",
+              "depart_label": "13:14",
+              "arrive_label": "13:20"
+            },
+            "depart_label": "13:14",
+            "arrive_label": "13:20",
+            "connection_margin_label": "余裕 23分",
+            "connection_state": {
+              "code": "critical",
+              "label": "余裕小"
+            }
+          }
+        },
+        {
+          "order": 21,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "arrival_label": "13:20",
+          "departure_label": "13:20",
+          "next_move": {
+            "transport": {
+              "code": "walk",
+              "label": "徒歩"
+            },
+            "duration_label": "1分",
+            "distance_label": "66m"
+          }
+        },
+        {
+          "order": 22,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "arrival_label": "13:21",
+          "departure_label": "13:21",
+          "next_move": {
+            "transport": {
+              "code": "motorcycle",
+              "label": "バイク"
+            },
+            "duration_label": "8分",
+            "distance_label": "4.1km"
+          }
+        },
+        {
+          "order": 23,
+          "target": {
+            "entity_type": "spot",
+            "id": "S0056"
+          },
+          "stay_label": "1時間",
+          "visit_purpose": {
+            "code": "lunch",
+            "label": "昼食"
+          },
+          "next_move": {
+            "transport": {
+              "code": "motorcycle",
+              "label": "バイク"
+            },
+            "duration_label": "1時間20分",
+            "distance_label": "34.4km"
+          },
+          "arrival_label": "13:29",
+          "departure_label": "14:29",
+          "attention": [
+            {
+              "level": "attention",
+              "text": "清流ガーデン澤乃井園：定休日の曜日条件を判定できません。"
+            }
+          ]
+        },
+        {
+          "order": 24,
+          "target": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "arrival_label": "15:50",
+          "departure_label": "15:50"
+        }
+      ],
+      "start_time_label": "07:00",
+      "routes": [
+        {
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R013"
+          },
+          "from_action_order": 4,
+          "to_action_order": 20
+        }
+      ],
+      "variants": [
+        {
+          "variant_id": "CP003-D1-DOWN-1346",
+          "actions": [
+            {
+              "order": 1,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0018"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "train",
+                  "label": "電車"
+                },
+                "service": {
+                  "operator": "御岳登山鉄道",
+                  "depart_label": "13:46",
+                  "arrive_label": "13:52"
+                },
+                "depart_label": "13:46",
+                "arrive_label": "13:52",
+                "connection_margin_label": "余裕 55分",
+                "connection_state": {
+                  "code": "tight",
+                  "label": "注意"
+                }
+              },
+              "arrival_label": "12:51",
+              "departure_label": "13:46"
+            },
+            {
+              "order": 2,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0019"
+              },
+              "arrival_label": "13:52",
+              "departure_label": "13:52"
+            }
+          ],
+          "intent": "目標13:14便に間に合わないときの次便",
+          "map_artifact_ref": {
+            "artifact_id": "maps/concrete/CP003/CP003-day01-variant01-road-map.json",
+            "kind": "execution_road_map"
+          }
+        },
+        {
+          "variant_id": "CP003-D1-DOWN-1418",
+          "actions": [
+            {
+              "order": 1,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0018"
+              },
+              "next_move": {
+                "transport": {
+                  "code": "train",
+                  "label": "電車"
+                },
+                "service": {
+                  "operator": "御岳登山鉄道",
+                  "depart_label": "14:18",
+                  "arrive_label": "14:24"
+                },
+                "depart_label": "14:18",
+                "arrive_label": "14:24",
+                "connection_margin_label": "余裕 1時間27分",
+                "connection_state": {
+                  "code": "comfortable",
+                  "label": "余裕あり"
+                }
+              },
+              "arrival_label": "12:51",
+              "departure_label": "14:18"
+            },
+            {
+              "order": 2,
+              "target": {
+                "entity_type": "travel_point",
+                "id": "T0019"
+              },
+              "arrival_label": "14:24",
+              "departure_label": "14:24"
+            }
+          ],
+          "intent": "13:46便にも間に合わないときの次便",
+          "map_artifact_ref": {
+            "artifact_id": "maps/concrete/CP003/CP003-day01-variant02-road-map.json",
+            "kind": "execution_road_map"
+          }
+        }
+      ],
+      "map_artifact_ref": {
+        "artifact_id": "maps/concrete/CP003/CP003-day01-road-map.json",
+        "kind": "execution_road_map"
+      }
+    }
+  ],
+  "status": {
+    "state": {
+      "code": "planned",
+      "label": "計画済み"
+    },
+    "attention": [
+      {
+        "semantic": "spot_operation",
+        "level": "attention",
+        "text": "清流ガーデン澤乃井園：定休日の曜日条件を判定できません。",
+        "day_ordinal": 1,
+        "short_label": "清流ガーデン澤乃井園 営業時間要確認"
+      }
+    ]
+  },
+  "weather": {
+    "state": {
+      "code": "confirmed",
+      "label": "実予報"
+    },
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-10-11",
+        "coverage_state": {
+          "code": "covered",
+          "label": "予報あり"
+        },
+        "representative_location_label": "青梅市",
+        "condition": {
+          "code": "mainly_clear",
+          "label": "概ね晴れ"
+        },
+        "temperature_min_label": "14.2℃",
+        "temperature_max_label": "25.1℃",
+        "precipitation_probability_label": "0%",
+        "precipitation_amount_label": "0mm",
+        "wind_label": "1.8m/s",
+        "periods": [
+          {
+            "time_label": "00:00〜03:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "15.7℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.3m/s"
+          },
+          {
+            "time_label": "03:00〜06:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "14.6℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "06:00〜09:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "16.2℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.2m/s"
+          },
+          {
+            "time_label": "09:00〜12:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "22.3℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.5m/s"
+          },
+          {
+            "time_label": "12:00〜15:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "24.8℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.6m/s"
+          },
+          {
+            "time_label": "15:00〜18:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "23.5℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1m/s"
+          },
+          {
+            "time_label": "18:00〜21:00",
+            "condition": {
+              "code": "clear",
+              "label": "晴れ"
+            },
+            "temperature_label": "19.8℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.8m/s"
+          },
+          {
+            "time_label": "21:00〜00:00",
+            "condition": {
+              "code": "mainly_clear",
+              "label": "概ね晴れ"
+            },
+            "temperature_label": "17.5℃",
+            "precipitation_probability_label": "0%",
+            "precipitation_amount_label": "0mm",
+            "wind_label": "1.4m/s"
+          }
+        ]
+      }
+    ]
+  },
+  "fuel": {
+    "distance_label": "76.055km",
+    "fuel_economy_label": "40km/L",
+    "estimated_liters_label": "1.902L"
+  },
+  "cost": {
+    "total": {
+      "coverage": {
+        "code": "complete",
+        "label": "全費用算定済み"
+      },
+      "amount_label": "¥5,800〜¥7,000",
+      "amount_state": {
+        "code": "estimated",
+        "label": "見積"
+      }
+    },
+    "day_totals": [
+      {
+        "day_ordinal": 1,
+        "coverage": {
+          "code": "complete",
+          "label": "全費用算定済み"
+        },
+        "amount_label": "¥5,800〜¥7,000",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        }
+      }
+    ],
+    "items": [
+      {
+        "scope": "day",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "滝本駅バイク駐車",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "day_ordinal": 1,
+        "amount_label": "¥500"
+      },
+      {
+        "scope": "day",
+        "category": {
+          "code": "transport",
+          "label": "交通"
+        },
+        "label": "ケーブルカー往復2名",
+        "amount_state": {
+          "code": "confirmed",
+          "label": "確定"
+        },
+        "day_ordinal": 1,
+        "amount_label": "¥2,800"
+      },
+      {
+        "scope": "day",
+        "category": {
+          "code": "meal",
+          "label": "食事"
+        },
+        "label": "澤乃井園昼食2名",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        },
+        "day_ordinal": 1,
+        "amount_label": "¥2,000〜¥3,000"
+      },
+      {
+        "scope": "day",
+        "category": {
+          "code": "fuel",
+          "label": "燃料"
+        },
+        "label": "二人乗り走行燃料費概算",
+        "amount_state": {
+          "code": "estimated",
+          "label": "見積"
+        },
+        "day_ordinal": 1,
+        "amount_label": "¥500〜¥700"
+      }
+    ]
+  }
+}

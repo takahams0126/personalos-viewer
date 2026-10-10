@@ -1,0 +1,65 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0055",
+  "title": "日の出山",
+  "summary": "標高902m、関東平野を望む山頂 御岳山駅からの日帰り登山と山頂展望",
+  "theme_chips": [
+    "山"
+  ],
+  "access": {
+    "location_text": "東京都青梅市日の出山山頂",
+    "google_place_id": "ChIJIfgZ9_k6GWARlG9GerPbshY",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%97%A5%E3%81%AE%E5%87%BA%E5%B1%B1&query_place_id=ChIJIfgZ9_k6GWARlG9GerPbshY"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    },
+    {
+      "semantic": "duration",
+      "label": "所要時間",
+      "value": "30分"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://cdn.funq.jp/contents/uploads/2019/09/19111416/123-7.jpg"
+    },
+    {
+      "url": "https://livedoor.blogimg.jp/keinosora/imgs/4/0/4003743e.jpg"
+    },
+    {
+      "url": "https://www.yamareco.com/uploads/thumbs/4845.jpg"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "標高902m、関東平野を望む山頂"
+    ],
+    "review": {
+      "positives": [
+        "御岳山駅からの日帰り登山と山頂展望"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "free",
+      "label": "無料"
+    },
+    "items": []
+  },
+  "references": {
+    "official": {
+      "url": "https://yamap.com/mountains/3632"
+    },
+    "supplemental": {
+      "url": "https://yamap.com/model-courses/19275"
+    }
+  }
+}

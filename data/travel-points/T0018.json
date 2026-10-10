@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "entity_type": "travel_point",
+  "id": "T0018",
+  "title": "御岳山駅（ケーブルカー）",
+  "point_type": {
+    "code": "station",
+    "label": "駅"
+  },
+  "location": {
+    "text": "東京都青梅市御岳山"
+  }
+}

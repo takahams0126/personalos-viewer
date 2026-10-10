@@ -1,0 +1,161 @@
+{
+  "schema_version": 4,
+  "entity_type": "plan",
+  "id": "P003",
+  "title": "日の出山・御岳山駅発着 日帰り登山",
+  "summary": "夫婦2人でバイクとケーブルカーを使って日の出山へ往復登山し、澤乃井園で昼食を取って帰宅する温泉なしの日帰り旅行。",
+  "days": [
+    {
+      "ordinal": 1,
+      "title": "日の出山登山と澤乃井園",
+      "summary": "一般道で滝本駅へ移動し、御岳山駅から日の出山を往復して昼食後バイクで帰宅。",
+      "start_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "end_ref": {
+        "entity_type": "travel_point",
+        "id": "T0001"
+      },
+      "sequence": [
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "transport": {
+            "code": "motorcycle",
+            "label": "バイク"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "kind": "route",
+          "route_ref": {
+            "entity_type": "route",
+            "id": "R013"
+          },
+          "entry_ref": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          },
+          "exit_ref": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0018"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "transport": {
+            "code": "train",
+            "label": "電車"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0019"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "transport": {
+            "code": "walk",
+            "label": "徒歩"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "travel_point",
+            "id": "T0017"
+          },
+          "to_ref": {
+            "entity_type": "spot",
+            "id": "S0056"
+          },
+          "transport": {
+            "code": "motorcycle",
+            "label": "バイク"
+          }
+        },
+        {
+          "kind": "place",
+          "target_ref": {
+            "entity_type": "spot",
+            "id": "S0056"
+          },
+          "visit_purpose": {
+            "code": "lunch",
+            "label": "昼食"
+          }
+        },
+        {
+          "kind": "movement",
+          "from_ref": {
+            "entity_type": "spot",
+            "id": "S0056"
+          },
+          "to_ref": {
+            "entity_type": "travel_point",
+            "id": "T0001"
+          },
+          "transport": {
+            "code": "motorcycle",
+            "label": "バイク"
+          }
+        }
+      ]
+    }
+  ],
+  "status": {
+    "state": {
+      "code": "complete",
+      "label": "完了"
+    }
+  }
+}

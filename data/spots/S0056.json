@@ -1,0 +1,75 @@
+{
+  "schema_version": 3,
+  "entity_type": "spot",
+  "id": "S0056",
+  "title": "清流ガーデン澤乃井園",
+  "summary": "多摩川沿いの庭園で豆腐や蕎麦などを提供する軽食施設 多摩川を眺めながら軽食と休憩を楽しむ",
+  "theme_chips": [
+    "食事"
+  ],
+  "access": {
+    "location_text": "東京都青梅市沢井2-770",
+    "google_place_id": "ChIJBZDodrc6GWARyCpxlbNyA6E",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E6%B8%85%E6%B5%81%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E6%BE%A4%E4%B9%83%E4%BA%95%E5%9C%92&query_place_id=ChIJBZDodrc6GWARyCpxlbNyA6E"
+  },
+  "related_spots": [],
+  "hero_facts": [
+    {
+      "semantic": "operating_hours",
+      "label": "通常",
+      "value": "庭園10:00〜17:00、麺類11:00〜16:00（L.O.16:00）"
+    },
+    {
+      "semantic": "closed_days",
+      "label": "定休日",
+      "value": "月曜日（祝日は翌火曜日）・年末年始"
+    },
+    {
+      "semantic": "reservation",
+      "label": "予約",
+      "value": "予約不要"
+    }
+  ],
+  "images": [
+    {
+      "url": "https://kkkawai.heteml.net/sawanoi/img/big/20240814_121807.jpg"
+    },
+    {
+      "url": "https://kkkawai.heteml.net/sawanoi/img/sawanoi05_pc.jpg"
+    },
+    {
+      "url": "https://www.salut-store.com/blog/2025091802.JPG"
+    }
+  ],
+  "appeal": {
+    "highlights": [
+      "多摩川沿いの庭園で豆腐や蕎麦などを提供する軽食施設"
+    ],
+    "review": {
+      "positives": [
+        "多摩川を眺めながら軽食と休憩を楽しむ"
+      ],
+      "cautions": []
+    }
+  },
+  "fees": {
+    "applicability": {
+      "code": "applicable",
+      "label": "料金あり"
+    },
+    "items": [
+      {
+        "scope": "軽食・飲料",
+        "pricing": null
+      }
+    ]
+  },
+  "references": {
+    "official": {
+      "url": "https://www.sawanoi-sake.com/service/sawanoien/"
+    },
+    "supplemental": {
+      "url": "https://www.sawanoi-sake.com/service/sawanoien/"
+    }
+  }
+}

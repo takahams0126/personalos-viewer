@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "artifact_type": "execution_road_map",
+  "source": {
+    "concrete_plan_id": "CP003",
+    "day": 1,
+    "variant_id": "CP003-D1-DOWN-1418"
+  },
+  "points": [
+    {
+      "point_id": "point-travel_point-T0018",
+      "order": 1,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0018"
+      },
+      "position": {
+        "lat": 35.789635200000006,
+        "lon": 139.1535516
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJ9Xz5C2Y6GWARluqhte6qaZc"
+      }
+    },
+    {
+      "point_id": "point-travel_point-T0019",
+      "order": 2,
+      "entity_ref": {
+        "entity_type": "travel_point",
+        "id": "T0019"
+      },
+      "position": {
+        "lat": 35.7961082,
+        "lon": 139.1613487
+      },
+      "external_ref": {
+        "provider_code": "google_places",
+        "id": "ChIJOVDC7GI6GWARLD9dDBypDeU"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "connection_id": "connection-CP003-D1-LR5-ALT1418-M01",
+      "order": 1,
+      "flow_element_id": "CP003-D1-LR5-ALT1418-M01",
+      "from_point_id": "point-travel_point-T0018",
+      "to_point_id": "point-travel_point-T0019",
+      "mode": "train",
+      "geometry_segment_id": null
+    }
+  ],
+  "segments": []
+}
