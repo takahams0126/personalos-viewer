@@ -15,6 +15,16 @@
   "related_spots": [],
   "hero_facts": [
     {
+      "semantic": "check_in",
+      "label": "チェックイン",
+      "value": "16:00から"
+    },
+    {
+      "semantic": "check_out",
+      "label": "チェックアウト",
+      "value": "09:30まで"
+    },
+    {
       "semantic": "reservation",
       "label": "予約",
       "value": "予約推奨"
@@ -54,10 +64,9 @@
       {
         "scope": "素泊まり・大人1名",
         "pricing": {
-          "label": "¥3,500（円/人泊）",
+          "label": "¥3,500／1人1泊あたり",
           "amount": 3500,
-          "currency": "JPY",
-          "charging_basis": "円/人泊"
+          "currency": "JPY"
         }
       }
     ]

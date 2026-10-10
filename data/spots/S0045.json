@@ -15,6 +15,16 @@
   "related_spots": [],
   "hero_facts": [
     {
+      "semantic": "operating_hours",
+      "label": "毎日（昼）",
+      "value": "11:30〜14:00"
+    },
+    {
+      "semantic": "operating_hours",
+      "label": "木曜を除く（夜）",
+      "value": "18:00〜21:00（L.O.20:00）"
+    },
+    {
       "semantic": "reservation",
       "label": "予約",
       "value": "予約推奨"
@@ -52,13 +62,12 @@
     },
     "items": [
       {
-        "scope": "参考価格・2026-09-13時点：JPY_per_person_lunch_reference",
+        "scope": "ランチ参考価格（2026-09-13時点）",
         "pricing": {
-          "label": "¥1,000〜¥1,999（JPY_per_person_lunch_reference）",
+          "label": "¥1,000〜¥1,999／1人あたり",
           "min_amount": 1000,
           "max_amount": 1999,
-          "currency": "JPY",
-          "charging_basis": "JPY_per_person_lunch_reference"
+          "currency": "JPY"
         }
       }
     ]

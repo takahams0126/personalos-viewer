@@ -1014,7 +1014,13 @@
             "distance_label": "13.8km"
           },
           "arrival_label": "12:46",
-          "departure_label": "13:31"
+          "departure_label": "13:31",
+          "attention": [
+            {
+              "level": "attention",
+              "text": "平内海中温泉：通常営業時間が未確認です。"
+            }
+          ]
         },
         {
           "order": 6,
@@ -1282,7 +1288,13 @@
             "distance_label": "4.4km"
           },
           "arrival_label": "14:10",
-          "departure_label": "14:50"
+          "departure_label": "14:50",
+          "attention": [
+            {
+              "level": "attention",
+              "text": "楠川温泉：定休日の曜日条件を判定できません。"
+            }
+          ]
         },
         {
           "order": 14,
@@ -1327,7 +1339,13 @@
             "distance_label": "364m"
           },
           "arrival_label": "15:28",
-          "departure_label": "16:43"
+          "departure_label": "16:43",
+          "attention": [
+            {
+              "level": "blocking",
+              "text": "PANORAMA：通常営業時間18:00〜23:00（L.O.22:00）に対し訪問予定15:28〜16:43は成立しません。予定の調整が必要です。"
+            }
+          ]
         },
         {
           "order": 16,
@@ -1429,7 +1447,13 @@
             "distance_label": "10.4km"
           },
           "arrival_label": "10:50",
-          "departure_label": "11:50"
+          "departure_label": "11:50",
+          "attention": [
+            {
+              "level": "attention",
+              "text": "Kitchen HUB Dining：定休日の曜日条件を判定できません。"
+            }
+          ]
         },
         {
           "order": 4,
@@ -1621,6 +1645,34 @@
         "text": "白谷雲水峡は現在利用できません。台風24号被害によりアクセス道路が通行止めで、園内も未整備のため閉園中です。DAY4（10/22）は現時点では実施できません。再開・解除状況の再確認が必要です。",
         "day_ordinal": 4,
         "short_label": "白谷雲水峡 閉鎖中"
+      },
+      {
+        "semantic": "spot_operation",
+        "level": "attention",
+        "text": "平内海中温泉：通常営業時間が未確認です。",
+        "day_ordinal": 3,
+        "short_label": "平内海中温泉 営業時間要確認"
+      },
+      {
+        "semantic": "spot_operation",
+        "level": "attention",
+        "text": "楠川温泉：定休日の曜日条件を判定できません。",
+        "day_ordinal": 4,
+        "short_label": "楠川温泉 営業時間要確認"
+      },
+      {
+        "semantic": "spot_operation",
+        "level": "blocking",
+        "text": "PANORAMA：通常営業時間18:00〜23:00（L.O.22:00）に対し訪問予定15:28〜16:43は成立しません。予定の調整が必要です。",
+        "day_ordinal": 4,
+        "short_label": "PANORAMA 営業時間要調整"
+      },
+      {
+        "semantic": "spot_operation",
+        "level": "attention",
+        "text": "Kitchen HUB Dining：定休日の曜日条件を判定できません。",
+        "day_ordinal": 5,
+        "short_label": "Kitchen HUB Dining 営業時間要確認"
       }
     ]
   },

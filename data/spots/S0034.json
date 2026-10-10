@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "entity_type": "spot",
   "id": "S0034",
   "title": "トローキの滝",
@@ -8,14 +8,16 @@
     "観光スポット"
   ],
   "access": {
-    "location_text": "鹿児島県屋久島町南東部"
+    "location_text": "鹿児島県屋久島町南東部",
+    "google_place_id": "ChIJpZ4RCOMmPTURIa4QaPRlDmg",
+    "google_maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%83%88%E3%83%AD%E3%83%BC%E3%82%AD%E3%81%AE%E6%BB%9D&query_place_id=ChIJpZ4RCOMmPTURIa4QaPRlDmg"
   },
   "related_spots": [],
   "hero_facts": [
     {
       "semantic": "reservation",
       "label": "予約",
-      "value": "unnecessary"
+      "value": "予約不要"
     }
   ],
   "images": [

@@ -15,6 +15,21 @@
   "related_spots": [],
   "hero_facts": [
     {
+      "semantic": "operating_hours",
+      "label": "営業時間",
+      "value": "18:00〜23:00"
+    },
+    {
+      "semantic": "closed_days",
+      "label": "定休日",
+      "value": "水曜日"
+    },
+    {
+      "semantic": "last_order",
+      "label": "ラストオーダー",
+      "value": "22:00"
+    },
+    {
       "semantic": "reservation",
       "label": "予約",
       "value": "予約推奨"
@@ -53,12 +68,11 @@
     },
     "items": [
       {
-        "scope": "参考価格・2026-09-13時点：JPY_per_person_average",
+        "scope": "参考予算（2026-09-13時点）",
         "pricing": {
-          "label": "¥3,500（JPY_per_person_average）",
+          "label": "約¥3,500／1人あたり",
           "amount": 3500,
-          "currency": "JPY",
-          "charging_basis": "JPY_per_person_average"
+          "currency": "JPY"
         }
       }
     ]

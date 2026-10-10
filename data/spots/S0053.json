@@ -15,6 +15,16 @@
   "related_spots": [],
   "hero_facts": [
     {
+      "semantic": "operating_hours",
+      "label": "月曜日〜土曜日",
+      "value": "11:00〜15:00（L.O.14:30）"
+    },
+    {
+      "semantic": "closed_days",
+      "label": "定休日",
+      "value": "日曜日"
+    },
+    {
       "semantic": "reservation",
       "label": "予約",
       "value": "予約不要"
@@ -54,11 +64,10 @@
       {
         "scope": "ランチ参考価格",
         "pricing": {
-          "label": "¥1,100〜¥3,000（1名）",
+          "label": "¥1,100〜¥3,000／1人あたり",
           "min_amount": 1100,
           "max_amount": 3000,
-          "currency": "JPY",
-          "charging_basis": "1名"
+          "currency": "JPY"
         }
       }
     ]
