@@ -93,7 +93,7 @@ function renderUsageDecision(fees, facts = []) {
     className: 'spot-usage-decision',
     dataset: { semantic: 'utilization-decision' }
   },
-    h('h2', { text: '利用判断' }),
+    h('h2', { text: '利用案内' }),
     facts.length ? renderFacts(facts, 'spot-major-facts') : null,
     feeNode
   );
